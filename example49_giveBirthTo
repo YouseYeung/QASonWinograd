@@ -1,0 +1,21 @@
+(declare-sort person)
+(declare-const Anne person)
+(declare-const herDaughter person)
+(declare-rel giveBirthTo (person person))
+(declare-rel woman (person))
+(declare-rel baby (person))
+
+
+(assert (not (= Anne herDaughter)))
+
+(assert (forall ((x person) (y person)) (= (and (= x Anne) (= y herDaughter)) (giveBirthTo x y))))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (giveBirthTo x y) (or (woman x) (baby y))))))
+
+
+(assert (forall ((x person)) (= (or (= x Anne) (= x herDaughter)) (or (baby x) (woman x)))))
+
+(assert (exists ((x person)) (woman x)))
+(assert (exists ((y person)) (baby y)))
+(check-sat)
+(get-model)

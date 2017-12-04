@@ -1,0 +1,21 @@
+(declare-sort thing)
+(declare-sort person)
+(declare-const bottle thing)
+(declare-const table thing)
+(declare-rel balanceSthOnSth (person thing thing))
+(declare-rel top-heavy (thing))
+(declare-rel uneven (thing))
+
+(assert (not (= bottle table)))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (exists ((z person)) (= (balanceSthOnSth z x y) (or (top-heavy x) (uneven y)))))))
+
+(assert (forall ((x thing) (y thing)) (= (and (= x bottle) (= y table)) (exists ((z person)) (balanceSthOnSth z x y)))))
+
+(assert (forall ((x thing)) (= (or (= x bottle) (= x table)) (or (top-heavy x) (uneven x)))))
+
+(assert (exists ((x thing)) (top-heavy x)))
+(assert (exists ((y thing)) (uneven y)))
+
+(check-sat)
+(get-model)

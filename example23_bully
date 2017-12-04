@@ -1,0 +1,20 @@
+(declare-sort _student)
+(declare-const _older _student)
+(declare-const _younger _student)
+(declare-rel _bullying (_student _student))
+(declare-rel _beRescured (_student))
+(declare-rel _bePunished (_student))
+
+
+(assert (not (= _older _younger)))
+
+(assert (forall ((x _student) (y _student)) (= (and (= x _older) (= y _younger)) (_bullying x y))))
+
+(assert (forall ((x _student) (y _student)) (= (_bullying x y) (and (_beRescured y) (_bePunished x)))))
+
+(assert (forall ((x _student)) (= (or (= x _younger) (= x _older)) (or (_beRescured x) (_bePunished x)))))
+
+(assert (exists ((x _student)) (_beRescured x)))
+;(assert (exists ((x _student)) (_bePunished x)))
+(check-sat)
+(get-model)

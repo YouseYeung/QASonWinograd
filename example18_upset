@@ -1,0 +1,21 @@
+(declare-sort person)
+(declare-const Jim person)
+(declare-const Kevin person)
+(declare-rel yellAt (person person))
+(declare-rel comfort (person person))
+(declare-rel upset (person))
+
+(assert (not (= Jim Kevin)))
+
+;(assert (forall ((x person)) (exists ((y person)) (=> (not (= x y)) (= (yellAt x y) (upset x))))))
+
+(assert (forall ((x person)) (exists ((y person)) (=> (not (= x y)) (= (comfort x y) (upset y))))))
+
+(assert (forall ((x person) (y person)) (= (and (= x Jim) (= y Kevin)) (comfort x y))))
+
+(assert (forall ((x person)) (= (or (= x Jim) (= x Kevin)) (upset x))))
+
+(assert (exists ((x person)) (upset x)))
+
+(check-sat)
+(get-model)

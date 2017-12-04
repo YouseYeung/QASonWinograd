@@ -1,0 +1,16 @@
+(declare-sort person)
+(declare-const Tom person)
+(declare-const Ray person)
+(declare-rel throwDownTo (person person))
+(declare-rel top (person))
+(declare-rel bottom (person))
+
+(assert (not (= Tom Ray)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (throwDownTo x y) (and (top x) (bottom y))))))
+
+(assert (not (=> (throwDownTo Tom Ray) (top Tom))))
+;(assert (not (=> (throwDownTo Tom Ray) (bottom Ray))))
+
+(check-sat)
+(get-model)

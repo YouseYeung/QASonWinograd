@@ -1,0 +1,25 @@
+(declare-sort house)
+(declare-sort person)
+(declare-const p person)
+(declare-const newHouse house)
+(declare-const oldHouse house)
+(declare-rel sell (person house))
+(declare-rel buy (person house))
+(declare-rel moveOutOf (house))
+(declare-rel moveInto (house))
+
+
+(assert (not (= newHouse oldHouse)))
+
+(assert (forall ((x house)) (= (= x newHouse) (buy p x))))
+(assert (forall ((x house)) (= (= x oldHouse) (sell p x))))
+
+(assert (forall ((x house)) (= (sell p x) (moveOutOf x))))
+(assert (forall ((x house)) (= (buy p x) (moveInto x))))
+
+(assert (forall ((x house)) (= (or (= x newHouse) (= x oldHouse)) (or (moveInto x) (moveOutOf x)))))
+
+(assert (exists ((x house)) (moveOutOf x)))
+(assert (exists ((y house)) (moveInto y)))
+(check-sat)
+(get-model)

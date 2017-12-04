@@ -1,0 +1,22 @@
+(declare-sort thing)
+(declare-sort person)
+(declare-const p person)
+(declare-const bottle thing)
+(declare-const backpack thing)
+(declare-rel takeSthOutOfSth (person thing thing))
+(declare-rel lighter (thing))
+(declare-rel handy (thing))
+
+(assert (not (= bottle backpack)))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (takeSthOutOfSth p x y) (or (lighter y) (handy x))))))
+
+(assert (forall ((x thing) (y thing)) (= (and (= x bottle) (= y backpack)) (takeSthOutOfSth p x y))))
+
+(assert (forall ((x thing)) (= (or (= x bottle) (= x backpack)) (or (lighter x) (handy x)))))
+
+(assert (exists ((x thing)) (lighter x)))
+(assert (exists ((y thing)) (handy y)))
+
+(check-sat)
+(get-model)
