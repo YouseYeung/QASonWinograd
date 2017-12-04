@@ -1,0 +1,25 @@
+(declare-sort thing)
+(declare-const SamDrawing thing)
+(declare-const TinaDrawing thing)
+(declare-rel hungAbove (thing thing))
+(declare-rel below (thing thing))
+(declare-rel above (thing thing))
+(declare-rel better (thing))
+
+(assert (not (= SamDrawing TinaDrawing)))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (hungAbove x y) (and (above x y) (below y x))))))
+
+;(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (above x y) (not (better x))))))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (below x y) (not (better x))))))
+
+;additional KB: "better" only can be used in one thing
+(assert (= (better SamDrawing) (not (better TinaDrawing))))
+
+;(assert (not (=> (hungAbove SamDrawing TinaDrawing) (better TinaDrawing))))
+(assert (not (=> (hungAbove SamDrawing TinaDrawing) (better SamDrawing))))
+
+
+(check-sat)
+(get-model)

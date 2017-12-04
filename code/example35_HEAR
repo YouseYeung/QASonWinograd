@@ -1,0 +1,29 @@
+(declare-sort thing)
+(declare-sort person)
+(declare-const p person)
+(declare-const annoucement thing)
+(declare-const subway thing)
+(declare-rel broadcast (person thing))
+(declare-rel loud (thing))
+(declare-rel come (thing))
+(declare-rel notHear (person thing))
+(declare-rel notHearOver (person thing))
+
+
+(assert (not (= annoucement subway)))
+
+(assert (forall ((x thing)) (= (come x) (loud x))))
+
+(assert (forall ((x thing)) (= (broadcast p x) (notHear p x))))
+
+(assert (forall ((x thing)) (= (loud x) (notHearOver p x))))
+
+(assert (forall ((x thing)) (= (= x subway) (come x))))
+
+(assert (forall ((x thing)) (= (= x annoucement) (broadcast p x))))
+
+(assert (exists ((x thing)) (notHear p x)))
+(assert (exists ((y thing)) (notHearOver p y)))
+
+(check-sat)
+(get-model)

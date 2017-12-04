@@ -1,0 +1,25 @@
+(declare-sort person)
+(declare-sort thing)
+(declare-const Mary person)
+(declare-const flute thing)
+(declare-const pieces thing)
+(declare-rel favorite (person thing))
+(declare-rel takeOut (person thing))
+(declare-rel love (person thing))
+(declare-rel had (person thing))
+
+
+(assert (not (= flute pieces)))
+
+(assert (forall ((x thing)) (= (= x flute) (takeOut Mary x))))
+(assert (forall ((x thing)) (= (= x pieces) (favorite Mary x))))
+
+(assert (forall ((x thing)) (= (takeOut Mary x) (had Mary x))))
+(assert (forall ((x thing)) (= (favorite Mary x) (love Mary x))))
+
+(assert (forall ((x thing)) (= (or (= x flute) (= x pieces)) (or (had Mary x) (love Mary x)))))
+
+(assert (exists ((x thing)) (love Mary x)))
+(assert (exists ((y thing)) (had Mary y)))
+(check-sat)
+(get-model)

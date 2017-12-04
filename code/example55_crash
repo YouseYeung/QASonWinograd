@@ -1,0 +1,22 @@
+(declare-sort thing)
+(declare-const tree thing)
+(declare-const roof thing)
+(declare-rel crashThrough (thing thing))
+(declare-rel broken (thing))
+(declare-rel removed (thing))
+(declare-rel repaired (thing))
+
+(assert (not (= roof tree)))
+
+(assert (forall ((x thing) (y thing)) (= (and (= x tree) (= y roof)) (crashThrough x y))))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (crashThrough x y) (or (removed x) (broken y))))))
+
+(assert (forall ((x thing)) (= (broken x) (repaired x))))
+
+(assert (forall ((x thing)) (= (or (= x tree) (= x roof)) (or (removed x) (repaired x)))))
+
+(assert (exists ((x thing)) (removed x)))
+(assert (exists ((y thing)) (repaired y)))
+(check-sat)
+(get-model)

@@ -1,0 +1,20 @@
+(declare-sort thing)
+(declare-const drain thing)
+(declare-const hair thing)
+(declare-rel beCloggedWith (thing thing))
+(declare-rel beCleaned (thing))
+(declare-rel beRemoved (thing))
+
+(assert (not (= drain hair)))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (beCloggedWith x y) (or (beCleaned x) (beRemoved y))))))
+
+(assert (forall ((x thing) (y thing)) (= (and (= x drain) (= y hair)) (beCloggedWith x y))))
+
+(assert (forall ((x thing)) (= (or (= x drain) (= x hair)) (or (beCleaned x) (beRemoved x)))))
+
+(assert (exists ((x thing)) (beCleaned x)))
+(assert (exists ((y thing)) (beRemoved y)))
+
+(check-sat)
+(get-model)

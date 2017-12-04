@@ -1,0 +1,20 @@
+(declare-sort person)
+(declare-const Frank person)
+(declare-const Bill person)
+(declare-rel feltVindicated (person))
+(declare-rel feltCrushed (person))
+(declare-rel beWinner (person))
+(declare-rel rival (person person))
+
+(assert (not (= Frank Bill)))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (rival x y) (feltVindicated x)) (beWinner x)))))
+
+;(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (rival x y) (feltCrushed x)) (beWinner y)))))
+
+(assert (and (rival Frank Bill) (rival Bill Frank)))
+
+(assert (not (=> (feltVindicated Bill) (beWinner Bill))))
+;(assert (not (=> (feltCrushed Bill) (beWinner Frank))))
+
+(check-sat)
+(get-model)

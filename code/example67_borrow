@@ -1,0 +1,21 @@
+(declare-sort thing)
+(declare-const book thing)
+(declare-const George thing)
+(declare-rel notSucceedToCall (thing thing))
+(declare-rel notSuccessful (thing))
+(declare-rel notAvailable (thing))
+
+
+(assert (not (= book George)))
+
+(assert (forall ((x thing) (y thing)) (= (and (= x book) (= y George)) (notSucceedToCall x y))))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (notSucceedToCall x y) (or (notSuccessful x) (notAvailable y))))))
+
+
+(assert (forall ((x thing)) (= (or (= x book) (= x George)) (or (notAvailable x) (notSuccessful x)))))
+
+(assert (exists ((x thing)) (notSuccessful x)))
+(assert (exists ((y thing)) (notAvailable y)))
+(check-sat)
+(get-model)

@@ -1,0 +1,21 @@
+(declare-sort animal)
+(declare-const fish animal)
+(declare-const worm animal)
+(declare-rel ate (animal animal))
+(declare-rel hungry (animal))
+(declare-rel tasty (animal))
+
+
+(assert (not (= fish worm)))
+
+(assert (forall ((x animal) (y animal)) (= (and (= x fish) (= y worm)) (ate x y))))
+
+(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (= (ate x y) (or (hungry x) (tasty y))))))
+
+
+(assert (forall ((x animal)) (= (or (= x fish) (= x worm)) (or (tasty x) (hungry x)))))
+
+(assert (exists ((x animal)) (hungry x)))
+(assert (exists ((y animal)) (tasty y)))
+(check-sat)
+(get-model)

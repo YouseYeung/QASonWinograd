@@ -1,0 +1,24 @@
+(declare-sort person)
+(declare-const customer person)
+(declare-const teller person)
+(declare-rel stab (person person))
+(declare-rel hurt (person))
+(declare-rel commitACrime (person))
+(declare-rel takenToEmergency (person))
+(declare-rel takenToPolice (person))
+
+(assert (not (= teller customer)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (stab x y) (or (commitACrime x) (hurt y))))))
+
+(assert (forall ((x person) (y person)) (= (and (= x customer) (= y teller)) (stab x y))))
+
+(assert (forall ((x person)) (= (commitACrime x) (takenToPolice x))))
+(assert (forall ((x person)) (= (hurt x) (takenToEmergency x))))
+
+(assert (forall ((x person)) (= (or (= x customer) (= x teller)) (or (takenToEmergency x) (takenToPolice x)))))
+
+(assert (exists ((x person)) (takenToEmergency x)))
+(assert (exists ((y person)) (takenToPolice y)))
+(check-sat)
+(get-model)

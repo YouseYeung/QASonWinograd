@@ -1,0 +1,21 @@
+(declare-sort person)
+(declare-const John person)
+(declare-const aMan person)
+(declare-rel hearHummingAndWhistling (person person))
+(declare-rel annoyed (person))
+(declare-rel annoying (person))
+
+
+(assert (not (= John aMan)))
+
+(assert (forall ((x person) (y person)) (= (and (= x John) (= y aMan)) (hearHummingAndWhistling x y))))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (hearHummingAndWhistling x y) (or (annoyed x) (annoying y))))))
+
+
+(assert (forall ((x person)) (= (or (= x John) (= x aMan)) (or (annoying x) (annoyed x)))))
+
+(assert (exists ((x person)) (annoyed x)))
+(assert (exists ((y person)) (annoying y)))
+(check-sat)
+(get-model)

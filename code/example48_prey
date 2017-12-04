@@ -1,0 +1,25 @@
+(declare-sort animal)
+(declare-sort thing)
+(declare-const t thing)
+(declare-const cat animal)
+(declare-const mouse animal)
+(declare-rel waitFor (animal animal))
+(declare-rel itsPrey (animal animal))
+(declare-rel impatient (animal))
+(declare-rel cautious (animal))
+
+
+(assert (not (= cat mouse)))
+
+(assert (forall ((x animal) (y animal)) (= (and (= x cat) (itsPrey x y)) (and (waitFor x y)))))
+
+(assert (forall ((x animal) (y animal)) (= (and (= x cat) (= y mouse)) (itsPrey x y))))
+
+(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (= (and (waitFor x y) (itsPrey x y)) (or (impatient x) (cautious y))))))
+
+(assert (forall ((x animal)) (= (or (= x cat) (= x mouse)) (or (cautious x) (impatient x)))))
+
+(assert (exists ((x animal)) (impatient x)))
+(assert (exists ((y animal)) (cautious y)))
+(check-sat)
+(get-model)

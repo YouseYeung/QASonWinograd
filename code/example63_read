@@ -1,0 +1,21 @@
+(declare-sort thingOrPerson)
+(declare-const Mary thingOrPerson)
+(declare-const PaulsBooks thingOrPerson)
+(declare-rel read (thingOrPerson thingOrPerson))
+(declare-rel gripped (thingOrPerson))
+(declare-rel popular (thingOrPerson))
+
+
+(assert (not (= Mary PaulsBooks)))
+
+(assert (forall ((x thingOrPerson) (y thingOrPerson)) (=> (not (= x y)) (= (read y x) (or (gripped y) (popular x))))))
+
+(assert (forall ((x thingOrPerson) (y thingOrPerson)) (= (and (= x PaulsBooks) (= y Mary)) (read y x))))
+
+(assert (forall ((x thingOrPerson)) (= (or (= x Mary) (= x PaulsBooks)) (or (popular x) (gripped x)))))
+
+
+(assert (exists ((x thingOrPerson)) (gripped x)))
+(assert (exists ((y thingOrPerson)) (popular y)))
+(check-sat)
+(get-model)

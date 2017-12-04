@@ -1,0 +1,20 @@
+(declare-sort person)
+(declare-const Sid person)
+(declare-const Mark person)
+(declare-rel explainSthTo (person person))
+(declare-rel notConvince (person person))
+(declare-rel notUnderstand (person person))
+
+(assert (not (= Sid Mark)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (explainSthTo x y) (or (notConvince x y) (notUnderstand y x))))))
+
+(assert (forall ((x person) (y person)) (= (and (= x Sid) (= y Mark)) (explainSthTo x y))))
+
+(assert (forall ((x person) (y person)) (= (or (and (= x Sid) (= y Mark)) (and (= x Mark) (= y Sid))) (or (notUnderstand x y) (notConvince x y)))))
+
+(assert (exists ((x person) (y person)) (and (not (= x y)) (notConvince x y))))
+(assert (exists ((m person) (n person)) (and (not (= m n)) (notUnderstand m n))))
+
+(check-sat)
+(get-model)

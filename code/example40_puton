@@ -1,0 +1,22 @@
+(declare-sort thing)
+(declare-sort person)
+(declare-const p person)
+(declare-const pot thing)
+(declare-const shelf thing)
+(declare-rel putSthOnSth (person thing thing))
+(declare-rel tall (thing))
+(declare-rel high (thing))
+
+(assert (not (= pot shelf)))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (putSthOnSth p x y) (or (tall x) (high y))))))
+
+(assert (forall ((x thing) (y thing)) (= (and (= x pot) (= y shelf)) (putSthOnSth p x y))))
+
+(assert (forall ((x thing)) (= (or (= x pot) (= x shelf)) (or (tall x) (high x)))))
+
+(assert (exists ((x thing)) (tall x)))
+(assert (exists ((y thing)) (high y)))
+
+(check-sat)
+(get-model)

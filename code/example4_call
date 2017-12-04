@@ -1,0 +1,17 @@
+(declare-sort person)
+(declare-const Paul person)
+(declare-const George person)
+(declare-rel notSucceedToCall (person person))
+(declare-rel notSuccessful (person))
+(declare-rel notAvailable (person))
+
+
+(assert (not (= Paul George)))
+
+;(assert (not (=> (notSucceedToCall Paul George) (notSuccessful Paul))))
+(assert (not (=> (notSucceedToCall Paul George) (notAvailable George))))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (notSucceedToCall x y) (and (notSuccessful x) (notAvailable y))))))
+
+(check-sat)
+(get-model)
