@@ -1,0 +1,12 @@
+除了需要添加与WSC问题相关的背景知识外，还需引入以下规则：
+1. 限定实体不相等
+(assert (not (= bottle table)))
+
+2. 限定谓词只对一个实体成立
+对添加的背景知识中新出现的谓词用或、且来限定
+
+对WSC中陈述语句的谓词使用forall来限定
+(assert (forall ((x person) (y person)) (= (and (= x Jim) (= y Kevin)) (yellAt x y))))
+
+3. 限定谓词只对问题中的实体成立
+(assert (or (and (uneven bottle) (not (uneven table))) (and (uneven table) (not (uneven bottle)))))

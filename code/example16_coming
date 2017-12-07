@@ -1,0 +1,22 @@
+(declare-sort person)
+(declare-const firemen person)
+(declare-const police person)
+(declare-rel comeAfter (person person))
+(declare-rel comeBefore (person person))
+(declare-rel comingFromFarAway (person))
+
+(assert (not (= firemen police)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (comeAfter x y) (comingFromFarAway x)))))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (comeBefore x y) (comingFromFarAway y)))))
+
+(assert (not (=> (comeAfter firemen police) (comingFromFarAway firemen))))
+;(assert (not (=> (comeBefore firemen police) (comingFromFarAway police))))
+
+
+
+(check-sat)
+(get-model)
+
+

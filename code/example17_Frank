@@ -1,20 +1,29 @@
 (declare-sort person)
+(declare-sort thing)
 (declare-const Frank person)
 (declare-const Tom person)
+(declare-const toaster thing)
 (declare-rel beUspetWith (person person))
-(declare-rel boughtFrom (person person))
-(declare-rel soldTo (person person))
+(declare-rel boughtFrom (person person thing))
+(declare-rel soldTo (person person thing))
+(declare-rel notWork (thing))
+(declare-rel doSthBadTo (person person))
 
 (assert (not (= Frank Tom)))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (beUspetWith x y) (or (boughtFrom x y) (soldTo y x))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (beUspetWith x y) (doSthBadTo y x)))))
 
-(assert (forall ((x person) (y person)) (= (and (= x Frank) (= y Tom)) (beUspetWith x y))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (boughtFrom x y toaster) (notWork toaster)) (doSthBadTo y x)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (soldTo x y toaster) (notWork toaster)) (doSthBadTo x y)))))
 
-(assert (forall ((x person) (y person)) (= (or (and (= x Frank) (= y Tom)) (and (= x Tom) (= y Frank))) (or (boughtFrom x y) (soldTo x y) (soldTo y x) (boughtFrom y x)))))
+;以下三条语句用于限定每个谓词对第一个实体成立则它对第二个实体不成立。
+(assert (or (and (boughtFrom Frank Tom toaster) (not (boughtFrom Tom Frank toaster))) (and (boughtFrom Tom Frank toaster) (not (boughtFrom Frank Tom toaster)))))
+(assert (or (and (soldTo Frank Tom toaster) (not (soldTo Tom Frank toaster))) (and (soldTo Tom Frank toaster) (not (soldTo Frank Tom toaster)))))
+(assert (or (and (doSthBadTo Frank Tom ) (not (doSthBadTo Tom Frank ))) (and (doSthBadTo Tom Frank ) (not (doSthBadTo Frank Tom )))))
 
-(assert (exists ((x person)) (exists ((y person)) (boughtFrom x y))))
-(assert (exists ((y person)) (exists ((x person)) (soldTo y x))))
+;(assert (not (=> (and (notWork toaster) (beUspetWith Frank Tom)) (boughtFrom Frank Tom toaster))))
+
+(assert (not (=> (and (notWork toaster) (beUspetWith Frank Tom)) (soldTo Tom Frank toaster))))
 
 (check-sat)
 (get-model)

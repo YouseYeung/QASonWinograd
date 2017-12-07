@@ -7,15 +7,19 @@
 
 (assert (not (= sackOfPotatoes bagOfFlour)))
 
-(assert (forall ((x thing)) (exists ((y thing)) (=> (not (= x y)) (= (placeAbove x y) (beMovedFirst x))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (placeAbove x y) (beMovedFirst x)))))
 
-;(assert (forall ((x thing)) (exists ((y thing)) (=> (not (= x y)) (= (placeBelow x y) (beMovedFirst y))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (placeBelow x y) (beMovedFirst y)))))
 
 (assert (forall ((x thing) (y thing)) (= (and (= x sackOfPotatoes) (= y bagOfFlour)) (placeAbove x y))))
+;(assert (forall ((x thing) (y thing)) (= (and (= x sackOfPotatoes) (= y bagOfFlour)) (placeBelow x y))))
 
-(assert (forall ((x thing)) (= (or (= x sackOfPotatoes) (= x bagOfFlour)) (beMovedFirst x))))
+(assert (or (and (beMovedFirst sackOfPotatoes) (not (beMovedFirst bagOfFlour))) (and (beMovedFirst bagOfFlour) (not (beMovedFirst sackOfPotatoes)))))
 
-(assert (exists ((x thing)) (beMovedFirst x)))
+(assert (not (=> (placeAbove sackOfPotatoes bagOfFlour) (beMovedFirst sackOfPotatoes))))
+
+;(assert (not (=> (placeBelow sackOfPotatoes bagOfFlour) (beMovedFirst bagOfFlour))))
+
 
 (check-sat)
 (get-model)
