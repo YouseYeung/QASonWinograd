@@ -2,11 +2,10 @@
 1. 限定实体不相等
 (assert (not (= bottle table)))
 
-2. 限定谓词只对一个实体成立
-对添加的背景知识中新出现的谓词用或、且来限定
+2. 对于溯因推理问题做封闭世界假定
+对于溯因推理问题，问题需要我们根据结果推倒出原因是什么？
+而我们引入的背景知识是“由原因A得出结果B”，在这基础上加入封闭世界假定，只有原因A能得出该结果B，也就是结果B能推出原因A。
 
-对WSC中陈述语句的谓词使用forall来限定
-(assert (forall ((x person) (y person)) (= (and (= x Jim) (= y Kevin)) (yellAt x y))))
-
-3. 限定谓词只对问题中的实体成立
+3. 答案唯一假设
+对于问句中的问题，有且只有一个答案成立。即A答案成立则B答案不成立，B答案成立则A答案不成立。
 (assert (or (and (uneven bottle) (not (uneven table))) (and (uneven table) (not (uneven bottle)))))
