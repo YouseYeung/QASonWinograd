@@ -1,21 +1,27 @@
 (declare-sort person)
 (declare-const John person)
-(declare-const aMan person)
-(declare-rel hearHummingAndWhistling (person person))
-(declare-rel annoyed (person))
-(declare-rel annoying (person))
+(declare-const man person)
+(declare-rel hear (person person))
+(declare-rel makeNoise (person))
+(declare-rel humAndWhistle (person))
+(declare-rel beAnnoyed (person))
+(declare-rel beAnnoying (person))
 
+(assert (not (= John man)))
 
-(assert (not (= John aMan)))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (hear x y) (makeNoise y)) (and (beAnnoying y) (beAnnoyed x))))))
 
-(assert (forall ((x person) (y person)) (= (and (= x John) (= y aMan)) (hearHummingAndWhistling x y))))
+(assert (forall ((x person)) (=> (humAndWhistle x) (makeNoise x))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (hearHummingAndWhistling x y) (or (annoyed x) (annoying y))))))
+(assert (forall ((x person) (y person)) (= (and (= x John) (= y man)) (and (hear x y) (humAndWhistle y)))))
 
+(assert (or (and (makeNoise John) (not (makeNoise man))) (and (makeNoise man) (not (makeNoise John)))))
+(assert (or (and (humAndWhistle John) (not (humAndWhistle man))) (and (humAndWhistle man) (not (humAndWhistle John)))))
+(assert (or (and (beAnnoying John) (not (beAnnoying man))) (and (beAnnoying man) (not (beAnnoying John)))))
+(assert (or (and (beAnnoyed John) (not (beAnnoyed man))) (and (beAnnoyed man) (not (beAnnoyed John)))))
 
-(assert (forall ((x person)) (= (or (= x John) (= x aMan)) (or (annoying x) (annoyed x)))))
+(assert (not (=> (and (hear John man) (humAndWhistle man)) (beAnnoyed John))))
+;(assert (not (=> (and (hear John man) (humAndWhistle man)) (beAnnoying man))))
 
-(assert (exists ((x person)) (annoyed x)))
-(assert (exists ((y person)) (annoying y)))
 (check-sat)
 (get-model)
