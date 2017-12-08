@@ -1,17 +1,18 @@
-(declare-sort _car)
-(declare-const _deliveryTruck _car)
-(declare-const _schoolBus _car)
-(declare-rel _zoomedBy (_car _car))
-(declare-rel _fast (_car))
-(declare-rel _slow (_car))
+(declare-sort  car)
+(declare-const  deliveryTruck  car)
+(declare-const  schoolBus  car)
+(declare-rel  zoomedBy ( car  car))
+(declare-rel  fast ( car))
+(declare-rel  slow ( car))
 
 
-(assert (not (= _deliveryTruck _schoolBus)))
+(assert (not (=  deliveryTruck  schoolBus)))
 
-;(assert (not (=> (_zoomedBy _deliveryTruck _schoolBus) (_fast _deliveryTruck))))
-(assert (not (=> (_zoomedBy _deliveryTruck _schoolBus) (_slow _schoolBus))))
+(assert (not (=> ( zoomedBy  deliveryTruck  schoolBus) ( fast  deliveryTruck))))
+;(assert (not (=> ( zoomedBy  deliveryTruck  schoolBus) ( slow  schoolBus))))
 
-(assert (forall ((x _car) (y _car)) (=> (not (= x y)) (= (_zoomedBy x y) (and (_fast x) (_slow y))))))
+(assert (forall ((x  car) (y  car)) (=> (not (= x y)) (= (fast x) (zoomedBy x y)))))
+;(assert (forall ((x  car) (y  car)) (=> (not (= x y)) (= (slow y) (zoomedBy x y)))))
 
 (check-sat)
 (get-model)

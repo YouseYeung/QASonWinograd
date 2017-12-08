@@ -11,7 +11,7 @@
 ;(assert (not (=> (notSucceedToCall Paul George) (notSuccessful Paul))))
 (assert (not (=> (notSucceedToCall Paul George) (notAvailable George))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (notSucceedToCall x y) (and (notSuccessful x) (notAvailable y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (notSucceedToCall x y) (and (notSuccessful x) (notAvailable y))))))
 
 (check-sat)
 (get-model)
