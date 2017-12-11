@@ -9,6 +9,9 @@
 
 (assert (forall ((x person) (y person)) (=> (not (= x y)) (= (throwDownTo x y) (and (top x) (bottom y))))))
 
+(assert (= (top Tom) (not (top Ray))))
+(assert (= (bottom Tom) (not (bottom Ray)))
+
 (assert (not (=> (throwDownTo Tom Ray) (top Tom))))
 ;(assert (not (=> (throwDownTo Tom Ray) (bottom Ray))))
 

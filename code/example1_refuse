@@ -9,4 +9,13 @@
 
 (assert (not (= councilmen demonstrators)))
 
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (and (fear x vlc) (advocate y vlc)) (refuse x y)))))
 
+(assert (= (fear councilmen vlc) (not (fear demonstrators vlc))))
+(assert (= (advocate councilmen vlc) (not (advocate demonstrators vlc))))
+
+(assert (not (=> (refuse councilmen demonstrators) (fear councilmen vlc))))
+;(assert (not (=> (refuse councilmen demonstrators) (advocate demonstrators vlc))))
+
+(check-sat)
+(get-model)

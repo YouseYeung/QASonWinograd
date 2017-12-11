@@ -9,6 +9,9 @@
 
 (assert (forall ((x person) (y person)) (=> (not (= x y)) (= (notSeeSthWithSbInFront x y) (and (tall y) (short x))))))
 
+(assert (= (tall John) (not (tall Billy))))
+(assert (= (short John) (not (short John))))
+
 ;(assert (not (=> (notSeeSthWithSbInFront John Billy) (tall Billy))))
 (assert (not (=> (notSeeSthWithSbInFront John Billy) (short John))))
 (check-sat)

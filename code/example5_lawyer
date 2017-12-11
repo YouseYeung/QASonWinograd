@@ -3,15 +3,18 @@
 (declare-const lawyer  person)
 (declare-const  witness  person)
 (declare-const  q  question)
-(declare-rel  ask ( person  person  question))
-(declare-rel  answer ( person  question))
-(declare-rel  repeat ( person  question))
+(declare-rel ask ( person  person  question))
+(declare-rel answer (person question))
+(declare-rel repeated (person question))
 
 (assert (not (=  lawyer  witness)))
 
-(assert (forall ((x  person) (y  person)) (=> (not (= x y)) (= ( ask x y  q) (and ( answer y  q) ( repeat x  q))))))
+(assert (forall ((x  person) (y  person)) (=> (not (= x y)) (= ( ask x y  q) (and ( answer y  q) ( repeated x  q))))))
 
-(assert (not (=> ( ask  lawyer  witness  q) ( repeat  lawyer  q))))
+(assert (= (repeated lawyer q) (not (repeated witness q))))
+(assert (= (answer lawyer q) (not (answer witness q))))
+
+(assert (not (=> ( ask  lawyer  witness  q) ( repeated  lawyer  q))))
 ;(assert (not (=> ( ask  lawyer  witness  q) ( answer  witness  q))))
 (check-sat)
 (get-model)

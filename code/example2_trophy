@@ -9,7 +9,10 @@
 (assert (not (= trophy suitcase)))
 
 ;(assert (not (=> (not_fit_into trophy suitcase) (big trophy))))
-(assert (not (=> (not_fit_into trophy suitcase) (small trophy))))
+(assert (not (=> (not_fit_into trophy suitcase) (small suitcase))))
+
+(assert (= (small trophy) (not (small suitcase))))
+(assert (= (big trophy) (not (big suitcase))))
 
 (assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (not_fit_into x y) ( and (small y) (big x))))))
 

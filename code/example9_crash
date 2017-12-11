@@ -1,0 +1,24 @@
+(declare-sort thing)
+(declare-const ball thing)
+(declare-const table thing)
+(declare-rel crashThrough (thing thing))
+(declare-rel madeOfSteel (thing))
+(declare-rel madeOfStyrofoam (thing))
+(declare-rel fragile (thing))
+(declare-rel solid (thing))
+
+(assert (not (= ball table)))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (and (solid x) (fragile y)) (crashThrough x y)))))
+
+(assert (forall ((x thing)) (= (madeOfSteel x) (solid x))))
+(assert (forall ((x thing)) (= (madeOfStyrofoam x) (fragile x))))
+
+(assert (= (madeOfSteel ball) (not (madeOfSteel table))))
+(assert (= (madeOfStyrofoam ball) (not (madeOfStyrofoam table))))
+
+(assert (not (=> (crashThrough ball table) (madeOfSteel ball))))
+;(assert (not (=> (crashThrough ball table) (madeOfSteel table))))
+
+(check-sat)
+(get-model)

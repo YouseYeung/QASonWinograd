@@ -11,6 +11,9 @@
 ;(assert (not (=> (thank Joan Susan) (recHelpFrom Joan Susan))))
 (assert (not (=> (thank Joan Susan) (giveHelpTo Susan Joan))))
 
+(assert (= (recHelpFrom Joan Susan) (not (recHelpFrom Susan Joan))))
+(assert (= (giveHelpTo Joan Susan) (not (giveHelpTo Susan Joan))))
+
 ;only one rule to reason another verb from one verb
 (assert (forall ((x person) (y person)) (=> (not (= x y)) (= (and (giveHelpTo y x) (recHelpFrom x y)) (thank x y)))))
 

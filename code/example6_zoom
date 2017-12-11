@@ -11,6 +11,9 @@
 (assert (not (=> ( zoomedBy  deliveryTruck  schoolBus) ( fast  deliveryTruck))))
 ;(assert (not (=> ( zoomedBy  deliveryTruck  schoolBus) ( slow  schoolBus))))
 
+(assert (= (fast deliveryTruck) (not (fast schoolBus))))
+(assert (= (slow deliveryTruck) (not (slow schoolBus))))
+
 (assert (forall ((x  car) (y  car)) (=> (not (= x y)) (= (fast x) (zoomedBy x y)))))
 ;(assert (forall ((x  car) (y  car)) (=> (not (= x y)) (= (slow y) (zoomedBy x y)))))
 

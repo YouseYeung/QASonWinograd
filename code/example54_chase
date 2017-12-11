@@ -3,21 +3,19 @@
 (declare-const cat animal)
 (declare-rel chase (animal animal))
 (declare-rel runUp (animal))
-(declare-rel bottom (animal))
-(declare-rel top (animal))
+(declare-rel waitAtBottom (animal))
+(declare-rel waitAtTop (animal))
 
 
 (assert (not (= dog cat)))
 
-(assert (forall ((x animal) (y animal)) (= (and (= x dog) (= y cat)) (chase x y))))
+(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (= (and (runUp y) (chase x y)) (and (waitAtBottom x) (waitAtTop y))))))
 
-(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (= (and (runUp y) (chase x y)) (or (bottom x) (top y))))))
+(assert (or (and (waitAtBottom cat) (not (waitAtBottom dog))) (and (waitAtBottom dog) (not (waitAtBottom cat)))))
+(assert (or (and (waitAtTop cat) (not (waitAtTop dog))) (and (waitAtTop dog) (not (waitAtTop cat)))))
 
-(assert (forall ((x animal)) (= (= x cat) (runUp x))))
+(assert (not (=> (and (chase dog cat) (runUp cat)) (waitAtBottom dog))))
+;(assert (not (=> (and (chase dog cat) (runUp cat)) (waitAtTop cat))))
 
-(assert (forall ((x animal)) (= (or (= x dog) (= x cat)) (or (top x) (bottom x)))))
-
-(assert (exists ((x animal)) (bottom x)))
-(assert (exists ((y animal)) (top y)))
 (check-sat)
 (get-model)

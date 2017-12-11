@@ -7,7 +7,11 @@
 
 (assert (not (= sculpture shelf)))
 
-(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (rollOff x y) (and (notAnchored x) (notLeveled y))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (rollOff x y) (and (notAnchored x) (notLeveled y))))))
+
+
+(assert (= (not (notLeveled sculpture)) (notLeveled shelf)))
+(assert (= (not (notAnchored sculpture)) (notAnchored shelf)))
 
 ;(assert (not (=> (rollOff sculpture shelf) (notAnchored sculpture))))
 (assert (not (=> (rollOff sculpture shelf) (notLeveled shelf))))

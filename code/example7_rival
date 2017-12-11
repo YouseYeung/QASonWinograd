@@ -8,11 +8,14 @@
 
 (assert (not (= Frank Bill)))
 ;(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (and (rival x y) (beWinner x)) (feltVindicated x)))))
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (and (rival x y) (beWinner x)) (feltCrushed y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (and (rival x y) (beWinner x)) (and (feltVindicated x) (feltCrushed y))))))
 
 (assert (and (rival Frank Bill) (rival Bill Frank)))
 
-(assert (or (and (beWinner Frank) (not (beWinner Bill))) (and (beWinner Bill) (not (beWinner Frank)))))
+(assert (= (beWinner Frank) (not (beWinner Bill))))
+
+(assert (forall ((x person)) (= (= x Bill) (feltVindicated x))))
+(assert (forall ((x person)) (= (= x Frank) (feltCrushed x))))
 
 ;(assert (not (=> (feltVindicated Bill) (beWinner Bill))))
 (assert (not (=> (feltCrushed Bill) (beWinner Frank))))
