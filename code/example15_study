@@ -7,13 +7,14 @@
 
 (assert (not (= Anna Lucy)))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (doBetter x y) (studyHard x)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (studyHard x) (doWorse y x)))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (doWorse x y) (studyHard y)))))
+;(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (studyHard x) (doBetter x y)))))
+
+(assert (= (studyHard Lucy) (not (studyHard Anna))))
 
 ;(assert (not (=> (doBetter Anna Lucy) (studyHard Anna))))
 (assert (not (=> (doWorse Anna Lucy) (studyHard Lucy))))
-
 
 (check-sat)
 (get-model)

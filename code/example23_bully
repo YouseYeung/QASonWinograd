@@ -2,21 +2,23 @@
 (declare-sort person)
 (declare-const olderStudents person)
 (declare-const youngerStudents person)
-(declare-const we person)
 (declare-rel bully (person person))
-(declare-rel rescue (person person))
-(declare-rel punish (person person))
+(declare-rel doSthBad (person))
+(declare-rel inDanger (person))
+(declare-rel beRescued (person))
+(declare-rel bePunished (person))
 
 (assert (not (= youngerStudents olderStudents)))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (bully x y) (and (rescue we y) (punish we y))))))
+(assert (forall ((x person)) (or (= x olderStudents) (= x youngerStudents))))
 
-(assert (forall ((x person) (y person)) (= (and (= x olderStudents) (= y youngerStudents)) (bully x y))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (bully x y) (and (doSthBad x) (inDanger y))))))
 
-(assert (or (and (rescue we olderStudents) (not (rescue we youngerStudents))) (and (rescue we youngerStudents) (not (rescue we olderStudents)))))
-(assert (or (and (punish we olderStudents) (not (punish we youngerStudents))) (and (punish we youngerStudents) (not (punish we olderStudents)))))
+(assert (forall ((x person)) (= (doSthBad x) (bePunished x))))
+(assert (forall ((x person)) (= (inDanger x) (beRescued x))))
 
-(assert (not (=> (bully olderStudents youngerStudents) (rescue we youngerStudents))))
-;(assert (not (=> (bully olderStudents youngerStudents) (punish we olderStudents))))
+;(assert (not (=> (bully olderStudents youngerStudents) (beRescued youngerStudents))))
+(assert (not (=> (bully olderStudents youngerStudents) (bePunished olderStudents))))
 
 (check-sat)
+(get-model)

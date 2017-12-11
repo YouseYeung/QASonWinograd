@@ -7,9 +7,10 @@
 
 (assert (not (= firemen police)))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (comeAfter x y) (comingFromFarAway x)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (comingFromFarAway x) (comeAfter x y)))))
+;(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (comingFromFarAway x) (comeBefore y x)))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (comeBefore x y) (comingFromFarAway y)))))
+(assert (= (comingFromFarAway firemen) (not (comingFromFarAway police))))
 
 (assert (not (=> (comeAfter firemen police) (comingFromFarAway firemen))))
 ;(assert (not (=> (comeBefore firemen police) (comingFromFarAway police))))

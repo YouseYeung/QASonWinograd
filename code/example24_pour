@@ -9,7 +9,10 @@
 
 (assert (not (= bottle cup)))
 
-(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (pourFromSthIntoSth I x y) (and (empty x) (full y))))))
+(assert (forall ((x thing)) (or (= x bottle) (= x cup))))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (pourFromSthIntoSth I x y) (empty x)))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (pourFromSthIntoSth I x y) (empty x)))))
 
 (assert (forall ((x thing) (y thing)) (= (and (= x bottle) (= y cup)) (pourFromSthIntoSth I x y))))
 

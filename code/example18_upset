@@ -8,19 +8,18 @@
 
 (assert (not (= Jim Kevin)))
 
-(assert (forall ((x person)) (exists ((y person)) (=> (upset x) (and (doSthStrange x) (comfort y x))))))
+(assert (forall ((x person)) (or (= x Jim) (= x Kevin))))
 
-(assert (forall ((x person)) (exists ((y person)) (=> (doSthStrange x) (yellAt x y)))))
+;对于存在量词，应该使用and，如果使用=> (not (= x y)) ()，那么只要使得y与x相等，这个式子就成立了，也就没办法求证=>后部分的式子。
+;(assert (forall ((x person)) (exists ((y person)) (and (not (= x y)) (= (upset x) (doSthStrange x))))))
+(assert (forall ((x person)) (exists ((y person)) (and (not (= x y)) (= (upset x) (comfort y x))))))
 
-(assert (or (and (upset Kevin) (not (upset Jim))) (and (upset Jim) (not (upset Kevin)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (yellAt x y) (doSthStrange x)))))
 
-(assert (or (and (doSthStrange Jim) (not (doSthStrange Kevin))) (and (doSthStrange Kevin) (not (doSthStrange Jim)))))
+(assert (= (upset Jim) (not (upset Kevin))))
 
-(assert (forall ((x person) (y person)) (= (and (= x Jim) (= y Kevin)) (yellAt x y))))
-;(assert (forall ((x person) (y person)) (= (and (= x Jim) (= y Kevin)) (comfort x y))))
-
-(assert (not (=> (yellAt Jim Kevin) (upset Jim))))
-;(assert (not (=> (comfort Jim Kevin) (upset Kevin))))
+;(assert (not (=> (yellAt Jim Kevin) (upset Jim))))
+(assert (not (=> (comfort Jim Kevin) (upset Kevin))))
 
 (check-sat)
 (get-model)

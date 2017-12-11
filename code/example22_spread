@@ -6,17 +6,19 @@
 (declare-rel spreadSthOnSth (person thing thing))
 (declare-rel display (thing))
 (declare-rel protect (thing))
+(declare-rel cover (thing))
 
 (assert (not (= cloth table)))
 
-(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (spreadSthOnSth I x y) (and (protect y) (display x))))))
+;(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (spreadSthOnSth I x y) (display x)))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (spreadSthOnSth I x y) (cover y)))))
+(assert (forall ((x thing)) (= (cover x) (protect x))))
 
-(assert (forall ((x thing) (y thing)) (= (and (= x cloth) (= y table)) (spreadSthOnSth I x y))))
+(assert (= (display cloth) (not (display table))))
+(assert (= (protect cloth) (not (protect table))))
 
-(assert (or (and (display cloth) (not (display table))) (and (display table) (not (display cloth)))))
-(assert (or (and (protect cloth) (not (protect table))) (and (protect table) (not (protect cloth)))))
-
-(assert (not (=> (spreadSthOnSth I cloth table) (display table))))
-;(assert (not (=> (spreadSthOnSth I cloth table) (protect table))))
+;(assert (not (=> (spreadSthOnSth I cloth table) (display cloth))))
+(assert (not (=> (spreadSthOnSth I cloth table) (protect table))))
 
 (check-sat)
+(get-model)

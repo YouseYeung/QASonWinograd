@@ -7,17 +7,13 @@
 
 (assert (not (= Susan Ann)))
 
-(assert (forall ((x person) (y person)) (= (and (= x Susan) (= y Ann)) (knowPersonalProblem x y))))
-;此处用Or不用and是因为要保证当Know不成立的时候，indiscreet 和 nosy都不成立。
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (or (nosy x) (indiscreet y)) (knowPersonalProblem x y)))))
+(assert (forall ((x person)) (or (= x Susan) (= x Ann))))
 
-;(assert (forall ((x person) (y person)) (= (indiscreet x)  (=> (not (= x y)) (knowPersonalProblem y x)))))
+(assert (forall ((x person)) (= (nosy x) (exists ((y person)) (and (not (= x y)) (knowPersonalProblem x y))))))
+;(assert (forall ((x person)) (= (indiscreet x) (exists ((y person)) (and (not (= x y)) (knowPersonalProblem y x))))))
 
-(assert (forall ((x person)) (= (or (= x Susan) (= x Ann)) (or (nosy x) (indiscreet x)))))
-
-
-(assert (exists ((x person)) (nosy x)))
-(assert (exists ((y person)) (indiscreet y)))
+(assert (not (=> (knowPersonalProblem Susan Ann) (nosy Susan))))
+;(assert (not (=> (knowPersonalProblem Susan Ann) (indiscreet Ann))))
 
 (check-sat)
 (get-model)
