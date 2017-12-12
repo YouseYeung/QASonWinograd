@@ -10,6 +10,13 @@
 而我们引入的背景知识是“由原因A得出结果B”，在这基础上加入封闭世界假定，只有原因A能得出该结果B，也就是结果B能推出原因A。
 将与答案相关的谓词的事实分开列出。
 
+A^B->C
+C->A^B
+
+C->A^B
+A->C
+B->C
+
 3. 答案唯一假设
 对于问句中的问题，有且只有一个答案成立。即A答案成立则B答案不成立，B答案成立则A答案不成立。
 (assert (or (and (uneven bottle) (not (uneven table))) (and (uneven table) (not (uneven bottle)))))
