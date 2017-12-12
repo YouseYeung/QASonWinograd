@@ -10,7 +10,10 @@
 (assert (forall ((x person)) (or (= x Susan) (= x Ann))))
 
 (assert (forall ((x person)) (= (nosy x) (exists ((y person)) (and (not (= x y)) (knowPersonalProblem x y))))))
-;(assert (forall ((x person)) (= (indiscreet x) (exists ((y person)) (and (not (= x y)) (knowPersonalProblem y x))))))
+(assert (forall ((x person)) (= (indiscreet x) (exists ((y person)) (and (not (= x y)) (knowPersonalProblem y x))))))
+
+(assert (= (nosy Susan) (not (nosy Ann))))
+(assert (= (indiscreet Susan) (not (indiscreet Ann))))
 
 (assert (not (=> (knowPersonalProblem Susan Ann) (nosy Susan))))
 ;(assert (not (=> (knowPersonalProblem Susan Ann) (indiscreet Ann))))

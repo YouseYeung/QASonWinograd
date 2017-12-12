@@ -7,14 +7,14 @@
 (declare-rel upset (person))
 
 (assert (not (= Jim Kevin)))
-
 (assert (forall ((x person)) (or (= x Jim) (= x Kevin))))
 
 ;对于存在量词，应该使用and，如果使用=> (not (= x y)) ()，那么只要使得y与x相等，这个式子就成立了，也就没办法求证=>后部分的式子。
-;(assert (forall ((x person)) (exists ((y person)) (and (not (= x y)) (= (upset x) (doSthStrange x))))))
-(assert (forall ((x person)) (exists ((y person)) (and (not (= x y)) (= (upset x) (comfort y x))))))
+(assert (forall ((x person)) (=> (upset x) (or (doSthStrange x) (exists ((y person)) (and (not (= x y)) (comfort y x)))))))
+(assert (forall ((x person)) (=> (or (doSthStrange x) (exists ((y person)) (and (not (= x y)) (comfort y x)))) (upset x))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (yellAt x y) (doSthStrange x)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (yellAt x y) (doSthStrange x)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (doSthStrange x) (yellAt x y)))))
 
 (assert (= (upset Jim) (not (upset Kevin))))
 

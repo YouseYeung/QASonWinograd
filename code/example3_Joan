@@ -5,17 +5,17 @@
 (declare-rel recHelpFrom (person person))
 (declare-rel thank (person person))
 
-;two const must be difference
 (assert (not (= Joan Susan)))
-
-;(assert (not (=> (thank Joan Susan) (recHelpFrom Joan Susan))))
-(assert (not (=> (thank Joan Susan) (giveHelpTo Susan Joan))))
+(assert (forall ((x person)) (or (= x Joan) (= x Susan))))
 
 (assert (= (recHelpFrom Joan Susan) (not (recHelpFrom Susan Joan))))
 (assert (= (giveHelpTo Joan Susan) (not (giveHelpTo Susan Joan))))
 
-;only one rule to reason another verb from one verb
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (and (giveHelpTo y x) (recHelpFrom x y)) (thank x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (or (giveHelpTo y x) (recHelpFrom x y)) (thank x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (giveHelpTo x y) (recHelpFrom y x)))))
+
+;(assert (not (=> (thank Joan Susan) (giveHelpTo Susan Joan))))
+(assert (not (=> (thank Joan Susan) (recHelpFrom Joan Susan))))
 
 (check-sat)
 (get-model)

@@ -8,8 +8,11 @@
 (declare-rel advocate (person violence))
 
 (assert (not (= councilmen demonstrators)))
+(assert (forall ((x person)) (or (= x councilmen) (= x demonstrators))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (and (fear x vlc) (advocate y vlc)) (refuse x y)))))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (fear x vlc) (advocate y vlc)) (refuse x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (refuse x y) (and (fear x vlc) (advocate y vlc))))))
 
 (assert (= (fear councilmen vlc) (not (fear demonstrators vlc))))
 (assert (= (advocate councilmen vlc) (not (advocate demonstrators vlc))))

@@ -11,13 +11,12 @@
 
 (assert (forall ((x thing)) (or (= x bottle) (= x cup))))
 
-(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (pourFromSthIntoSth I x y) (empty x)))))
-(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (pourFromSthIntoSth I x y) (empty x)))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (pourFromSthIntoSth I x y) (and (full y) (empty x))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (full y) (pourFromSthIntoSth I x y)))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (empty x) (pourFromSthIntoSth I x y)))))
 
-(assert (forall ((x thing) (y thing)) (= (and (= x bottle) (= y cup)) (pourFromSthIntoSth I x y))))
-
-(assert (or (and (empty bottle) (not (empty cup))) (and (empty cup) (not (empty bottle)))))
-(assert (or (and (full bottle) (not (full cup))) (and (full cup) (not (full bottle)))))
+(assert (= (full bottle) (not (full cup))))
+(assert (= (empty bottle) (not (empty cup))))
 
 (assert (not (=> (pourFromSthIntoSth I bottle cup) (empty bottle))))
 ;(assert (not (=> (pourFromSthIntoSth I bottle cup) (full cup))))

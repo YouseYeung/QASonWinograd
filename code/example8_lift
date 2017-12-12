@@ -6,11 +6,13 @@
 (declare-rel heavy (person))
 
 (assert (not (= man hisSon)))
+(assert (forall ((x person)) (or (= x man) (= x hisSon))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (notLift x y) (and (weak x) (heavy y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (weak x) (heavy y)) (notLift x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (notLift x y) (and (weak x) (heavy y))))))
 
-(assert (= (weak man) (not (weak man))))
-(assert (= (heavy man) (not (heavy man))))
+(assert (= (weak hisSon) (not (weak man))))
+(assert (= (heavy hisSon) (not (heavy man))))
 
 ;(assert (not (=> (notLift man hisSon) (weak man))))
 (assert (not (=> (notLift man hisSon) (heavy hisSon))))

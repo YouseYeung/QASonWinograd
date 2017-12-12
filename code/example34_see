@@ -8,15 +8,21 @@
 (declare-rel notSeeAround (person thing))
 
 (assert (not (= Pillar Stage)))
+(assert (forall ((x thing)) (or (= x Pillar) (= x Stage))))
+(assert (forall ((x person)) (= x p)))
 
-(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (between x p y) (or (notSee p y) (notSeeAround p x))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (exists ((z person)) (=> (between x z y) (and (notSee z y) (notSeeAround z x)))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (exists ((z person)) (=> (notSee z y) (between x z y))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (exists ((z person)) (=> (notSeeAround z x) (between x z y))))))
 
-(assert (forall ((x thing) (y thing)) (= (and (= x Pillar) (= y Stage)) (between x p y))))
+(assert (= (notSee p Pillar) (not (notSee p Stage))))
+(assert (= (notSeeAround p Pillar) (not (notSeeAround p Stage))))
 
-(assert (forall ((x thing)) (= (or (= x Pillar) (= x Stage)) (or (notSee p x) (notSeeAround p x)))))
+(assert (not (=> (between Pillar p Stage) (notSee p Pillar))))
+;(assert (not (=> (between Pillar p Stage) (notSeeAround p Pillar))))
 
-(assert (exists ((x thing)) (notSee p x)))
-(assert (exists ((y thing)) (notSeeAround p y)))
+
+
 
 (check-sat)
 (get-model)

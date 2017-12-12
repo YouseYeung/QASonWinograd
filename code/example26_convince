@@ -6,15 +6,19 @@
 (declare-rel notUnderstand (person person))
 
 (assert (not (= Sid Mark)))
+(assert (forall ((x person)) (or (= x Sid) (= x Mark))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (explainSthTo x y) (or (notConvince x y) (notUnderstand y x))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (explainSthTo x y) (and (notConvince x y) (notUnderstand y x))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (notConvince x y) (explainSthTo x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (notUnderstand y x) (explainSthTo x y)))))
 
-(assert (forall ((x person) (y person)) (= (and (= x Sid) (= y Mark)) (explainSthTo x y))))
+(assert (= (notConvince Sid Mark) (not (notConvince Mark Sid))))
+(assert (= (notUnderstand Sid Mark) (not (notUnderstand Mark Sid))))
 
-(assert (forall ((x person) (y person)) (= (or (and (= x Sid) (= y Mark)) (and (= x Mark) (= y Sid))) (or (notUnderstand x y) (notConvince x y)))))
+(assert (not (=> (explainSthTo Sid Mark) (notConvince Sid Mark))))
+;(assert (not (=> (explainSthTo Sid Mark) (notUnderstand Mark Sid))))
 
-(assert (exists ((x person) (y person)) (and (not (= x y)) (notConvince x y))))
-(assert (exists ((m person) (n person)) (and (not (= m n)) (notUnderstand m n))))
+
 
 (check-sat)
 (get-model)

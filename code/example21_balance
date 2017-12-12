@@ -11,12 +11,12 @@
 
 (assert (forall ((x thing)) (or (= x bottle) (= x table))))
 
-(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (top-heavy x) (balanceSthOnSth p x y)))))
-
-;(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (uneven y) (balanceSthOnSth p x y))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (or (uneven y) (top-heavy x)) (balanceSthOnSth p x y)))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (balanceSthOnSth p x y) (or (uneven y) (top-heavy x))))))
 
 (assert (= (top-heavy table) (not (top-heavy bottle))))
 (assert (= (uneven table) (not (uneven bottle))))
+(assert (= (uneven table) (top-heavy bottle)))
 
 (assert (not (=> (balanceSthOnSth p bottle table) (top-heavy bottle))))
 ;(assert (not (=> (balanceSthOnSth p bottle table) (uneven table))))

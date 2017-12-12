@@ -4,21 +4,25 @@
 (declare-const table thing)
 (declare-const I person)
 (declare-rel spreadSthOnSth (person thing thing))
-(declare-rel display (thing))
-(declare-rel protect (thing))
-(declare-rel cover (thing))
+(declare-rel beDisplayed (thing))
+(declare-rel beProtected (thing))
+(declare-rel beCovered (thing))
 
 (assert (not (= cloth table)))
+(assert (forall ((x thing)) (or (= x cloth) (= x table))))
 
-;(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (spreadSthOnSth I x y) (display x)))))
-(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (spreadSthOnSth I x y) (cover y)))))
-(assert (forall ((x thing)) (= (cover x) (protect x))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (spreadSthOnSth I x y) (and (beDisplayed x) (beCovered y))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (beDisplayed x) (spreadSthOnSth I x y)))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (beCovered y) (spreadSthOnSth I x y)))))
 
-(assert (= (display cloth) (not (display table))))
-(assert (= (protect cloth) (not (protect table))))
+(assert (forall ((x thing)) (=> (beCovered x) (beProtected x))))
+(assert (forall ((x thing)) (=> (beProtected x) (beCovered x))))
 
-;(assert (not (=> (spreadSthOnSth I cloth table) (display cloth))))
-(assert (not (=> (spreadSthOnSth I cloth table) (protect table))))
+(assert (= (beDisplayed cloth) (not (beDisplayed table))))
+(assert (= (beProtected cloth) (not (beProtected table))))
+
+;(assert (not (=> (spreadSthOnSth I cloth table) (beDisplayed cloth))))
+(assert (not (=> (spreadSthOnSth I cloth table) (beProtected table))))
 
 (check-sat)
 (get-model)

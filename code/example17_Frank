@@ -10,17 +10,20 @@
 (declare-rel doSthBadTo (person person))
 
 (assert (not (= Frank Tom)))
+(assert (forall ((x person)) (or (= x Frank) (= x Tom))))
+(assert (forall ((x thing)) (= x toaster)))
 
 (assert (forall ((x person) (y person)) (=> (not (= x y)) (= (beUspetWith x y) (doSthBadTo y x)))))
-;(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (and (boughtFrom x y toaster) (notWork toaster)) (doSthBadTo y x)))))
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (and (soldTo x y toaster) (notWork toaster)) (doSthBadTo x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (exists ((z thing)) (and (boughtFrom x y z) (notWork z))) (doSthBadTo y x)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (exists ((z thing)) (and (soldTo y x z) (notWork z))) (doSthBadTo y x)))))
+
+
 
 (assert (= (boughtFrom Frank Tom toaster) (not (boughtFrom Tom Frank toaster))))
 (assert (= (soldTo Frank Tom toaster) (not (soldTo Tom Frank toaster))))
 
-;(assert (not (=> (and (notWork toaster) (beUspetWith Frank Tom)) (boughtFrom Frank Tom toaster))))
-
-(assert (not (=> (and (notWork toaster) (beUspetWith Frank Tom)) (soldTo Tom Frank toaster))))
+(assert (not (=> (and (notWork toaster) (beUspetWith Frank Tom)) (boughtFrom Frank Tom toaster))))
+;(assert (not (=> (and (notWork toaster) (beUspetWith Frank Tom)) (soldTo Tom Frank toaster))))
 
 (check-sat)
 (get-model)

@@ -6,10 +6,10 @@
 (declare-rel beMovedFirst (thing))
 
 (assert (not (= sackOfPotatoes bagOfFlour)))
+(assert (forall ((x thing)) (or (= x sackOfPotatoes) (= x bagOfFlour))))
 
-(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (placeAbove x y) (beMovedFirst x)))))
-
-;(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (placeBelow x y) (beMovedFirst y)))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (or (placeBelow y x) (placeAbove x y)) (beMovedFirst x)))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (beMovedFirst x) (or (placeAbove x y) (placeBelow y x))))))
 
 (assert (= (beMovedFirst sackOfPotatoes) (not (beMovedFirst bagOfFlour))))
 

@@ -7,15 +7,17 @@
 
 
 (assert (not (=  deliveryTruck  schoolBus)))
+(assert (forall ((x car)) (or (= x deliveryTruck) (= x schoolBus))))
 
-(assert (not (=> ( zoomedBy  deliveryTruck  schoolBus) ( fast  deliveryTruck))))
-;(assert (not (=> ( zoomedBy  deliveryTruck  schoolBus) ( slow  schoolBus))))
+
+(assert (forall ((x  car) (y  car)) (=> (not (= x y)) (=> (and (slow y) (fast x)) (zoomedBy x y)))))
+(assert (forall ((x  car) (y  car)) (=> (not (= x y)) (=> (zoomedBy x y) (and (slow y) (fast x))))))
 
 (assert (= (fast deliveryTruck) (not (fast schoolBus))))
 (assert (= (slow deliveryTruck) (not (slow schoolBus))))
 
-(assert (forall ((x  car) (y  car)) (=> (not (= x y)) (= (fast x) (zoomedBy x y)))))
-;(assert (forall ((x  car) (y  car)) (=> (not (= x y)) (= (slow y) (zoomedBy x y)))))
+(assert (not (=> (zoomedBy deliveryTruck schoolBus) (fast deliveryTruck))))
+;(assert (not (=> (zoomedBy deliveryTruck schoolBus) (slow schoolBus))))
 
 (check-sat)
 (get-model)

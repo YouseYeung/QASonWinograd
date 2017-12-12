@@ -7,14 +7,17 @@
 
 
 (assert (not (= Paul George)))
+(assert (forall ((x person)) (or (= x Paul) (= x George))))
 
-;(assert (not (=> (notSucceedToCall Paul George) (notSuccessful Paul))))
-(assert (not (=> (notSucceedToCall Paul George) (notAvailable George))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (notSucceedToCall x y) (and (notSuccessful x) (notAvailable y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (notSuccessful x) (notSucceedToCall x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (notAvailable y) (notSucceedToCall x y)))))
 
 (assert (= (notSuccessful Paul) (not (notSuccessful George))))
 (assert (= (notAvailable George) (not (notAvailable Paul))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (notSucceedToCall x y) (and (notSuccessful x) (notAvailable y))))))
+;(assert (not (=> (notSucceedToCall Paul George) (notSuccessful Paul))))
+(assert (not (=> (notSucceedToCall Paul George) (notAvailable Paul))))
 
 (check-sat)
 (get-model)

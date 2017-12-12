@@ -6,11 +6,13 @@
 (declare-rel bottom (person))
 
 (assert (not (= Tom Ray)))
+(assert (forall ((x person)) (or (= x Tom) (= x Ray))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (throwDownTo x y) (and (top x) (bottom y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (top x) (bottom y)) (throwDownTo x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (throwDownTo x y) (and (top x) (bottom y))))))
 
 (assert (= (top Tom) (not (top Ray))))
-(assert (= (bottom Tom) (not (bottom Ray)))
+(assert (= (bottom Tom) (not (bottom Ray))))
 
 (assert (not (=> (throwDownTo Tom Ray) (top Tom))))
 ;(assert (not (=> (throwDownTo Tom Ray) (bottom Ray))))

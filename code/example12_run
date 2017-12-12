@@ -1,19 +1,23 @@
 (declare-sort person)
 (declare-const Sue person)
 (declare-const Sally person)
-(declare-rel beatAtArunWithSameSpeed (person person))
+(declare-rel runAtSameSpeed (person person))
+(declare-rel beat (person person))
 (declare-rel goodStart (person))
 (declare-rel badStart (person))
 
 (assert (not (= Sue Sally)))
+(assert (forall ((x person) (y person)) (or (= x Sue) (= x Sally))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (beatAtArunWithSameSpeed x y) (and (goodStart x) (badStart y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (goodStart x) (badStart y) (runAtSameSpeed x y)) (beat x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (beat x y) (and (goodStart x) (badStart y) (runAtSameSpeed x y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (runAtSameSpeed y x) (runAtSameSpeed x y)))))
 
 (assert (= (goodStart Sue) (not (goodStart Sally))))
 (assert (= (badStart Sue) (not (badStart Sally))))
 
-(assert (not (=> (beatAtArunWithSameSpeed Sue Sally) (goodStart Sue))))
-;(assert (not (=> (beatAtArunWithSameSpeed Sue Sally) (badStart Sally))))
+(assert (not (=> (and (runAtSameSpeed Sue Sally) (beat Sue Sally)) (goodStart Sue))))
+;(assert (not (=> (and (runAtSameSpeed Sue Sally) (beat Sue Sally)) (badStart Sally))))
 
 (check-sat)
 (get-model)

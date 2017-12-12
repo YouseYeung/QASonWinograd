@@ -8,11 +8,15 @@
 (declare-rel solid (thing))
 
 (assert (not (= ball table)))
+(assert (forall ((x thing) (y thing)) (or (= x ball) (= x table))))
 
-(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (and (solid x) (fragile y)) (crashThrough x y)))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (and (solid x) (fragile y)) (crashThrough x y)))))
+(assert (forall ((x thing)) (=> (madeOfSteel x) (solid x))))
+(assert (forall ((x thing)) (=> (madeOfStyrofoam x) (fragile x))))
 
-(assert (forall ((x thing)) (= (madeOfSteel x) (solid x))))
-(assert (forall ((x thing)) (= (madeOfStyrofoam x) (fragile x))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (crashThrough x y) (and (solid x) (fragile y))))))
+(assert (forall ((x thing)) (=> (solid x) (madeOfSteel x))))
+(assert (forall ((x thing)) (=> (fragile x) (madeOfStyrofoam x))))
 
 (assert (= (madeOfSteel ball) (not (madeOfSteel table))))
 (assert (= (madeOfStyrofoam ball) (not (madeOfStyrofoam table))))

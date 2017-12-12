@@ -9,11 +9,11 @@
 (declare-rel bePunished (person))
 
 (assert (not (= youngerStudents olderStudents)))
-
 (assert (forall ((x person)) (or (= x olderStudents) (= x youngerStudents))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (bully x y) (and (doSthBad x) (inDanger y))))))
-
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (bully x y) (and (doSthBad x) (inDanger y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (doSthBad x) (bully x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (inDanger y) (bully x y)))))
 (assert (forall ((x person)) (= (doSthBad x) (bePunished x))))
 (assert (forall ((x person)) (= (inDanger x) (beRescued x))))
 

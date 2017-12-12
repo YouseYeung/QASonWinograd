@@ -7,18 +7,18 @@
 (declare-rel rival (person person))
 
 (assert (not (= Frank Bill)))
-;(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (and (rival x y) (beWinner x)) (feltVindicated x)))))
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (and (rival x y) (beWinner x)) (and (feltVindicated x) (feltCrushed y))))))
+(assert (forall ((x person)) (or (= x Frank) (= x Bill))))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (rival x y) (beWinner x)) (and (feltVindicated x) (feltCrushed y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (feltVindicated x)(and (rival x y) (beWinner x))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (feltCrushed y)(and (rival x y) (beWinner x))))))
 
 (assert (and (rival Frank Bill) (rival Bill Frank)))
 
-(assert (= (beWinner Frank) (not (beWinner Bill))))
+(assert (= (beWinner Bill) (not (beWinner Bill))))
 
-(assert (forall ((x person)) (= (= x Bill) (feltVindicated x))))
-(assert (forall ((x person)) (= (= x Frank) (feltCrushed x))))
-
-;(assert (not (=> (feltVindicated Bill) (beWinner Bill))))
-(assert (not (=> (feltCrushed Bill) (beWinner Frank))))
+(assert (not (=> (feltVindicated Bill) (beWinner Frank))))
+;(assert (not (=> (feltCrushed Bill) (beWinner Frank))))
 
 (check-sat)
 (get-model)

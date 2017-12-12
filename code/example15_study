@@ -6,10 +6,11 @@
 (declare-rel studyHard (person))
 
 (assert (not (= Anna Lucy)))
+(assert (forall ((x person)) (or (= x Anna) (= x Lucy))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (studyHard x) (doWorse y x)))))
-
-;(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (studyHard x) (doBetter x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (studyHard x) (and (doWorse y x) (doBetter x y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (doWorse y x) (studyHard x)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (doBetter x y) (studyHard x)))))
 
 (assert (= (studyHard Lucy) (not (studyHard Anna))))
 

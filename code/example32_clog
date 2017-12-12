@@ -6,15 +6,17 @@
 (declare-rel beRemoved (thing))
 
 (assert (not (= drain hair)))
+(assert (forall ((x thing)) (or (= x drain) (= x hair))))
 
-(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (beCloggedWith x y) (or (beCleaned x) (beRemoved y))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (beCloggedWith x y) (and (beCleaned x) (beRemoved y))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (beCleaned x) (beCloggedWith x y)))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (beRemoved y) (beCloggedWith x y)))))
 
-(assert (forall ((x thing) (y thing)) (= (and (= x drain) (= y hair)) (beCloggedWith x y))))
+(assert (= (beCleaned drain) (not (beCleaned hair))))
+(assert (= (beRemoved drain) (not (beRemoved hair))))
 
-(assert (forall ((x thing)) (= (or (= x drain) (= x hair)) (or (beCleaned x) (beRemoved x)))))
-
-(assert (exists ((x thing)) (beCleaned x)))
-(assert (exists ((y thing)) (beRemoved y)))
+(assert (not (=> (beCloggedWith drain hair) (beCleaned drain))))
+;(assert (not (=> (beCloggedWith drain hair) (beRemoved hair))))
 
 (check-sat)
 (get-model)
