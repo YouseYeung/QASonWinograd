@@ -4,19 +4,26 @@
 (declare-const rag thing)
 (declare-const knife thing)
 (declare-rel useSthToCleanSth (person thing thing))
+(declare-rel cleaned (thing))
+(declare-rel dirty (thing))
 (declare-rel putInDrawer (person thing))
 (declare-rel putInTrash (person thing))
 
 (assert (not (= rag knife)))
+(assert (forall ((x thing) (y thing)) (or (= x rag) (= x knife))))
 
-(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (useSthToCleanSth p x y) (or (putInDrawer p y) (putInTrash p x))))))
+(assert (forall ((x thing ) (y thing)) (=> (not (= x y)) (=> (useSthToCleanSth p x y) (and (cleaned y) (dirty x))))))
+(assert (forall ((x thing ) (y thing)) (=> (not (= x y)) (=> (dirty x) (useSthToCleanSth p x y)))))
+(assert (forall ((x thing ) (y thing)) (=> (not (= x y)) (=> (cleaned y) (useSthToCleanSth p x y)))))
 
-(assert (forall ((x thing) (y thing)) (= (and (= x rag) (= y knife)) (useSthToCleanSth p x y))))
+(assert (forall ((x thing)) (= (cleaned x) (putInDrawer p x))))
+(assert (forall ((x thing)) (= (dirty x) (putInTrash p x))))
 
-(assert (forall ((x thing)) (= (or (= x rag) (= x knife)) (or (putInDrawer p x) (putInTrash p x)))))
+(assert (= (putInDrawer p rag) (not (putInDrawer p knife))))
+(assert (= (putInTrash p rag) (not (putInTrash p knife))))
 
-(assert (exists ((x thing)) (putInDrawer p x)))
-(assert (exists ((y thing)) (putInTrash p y)))
+(assert (not (=> (useSthToCleanSth p rag knife) (putInDrawer p knife))))
+;(assert (not (=> (useSthToCleanSth p rag knife) (putInTrash p rag))))
 
 (check-sat)
 (get-model)

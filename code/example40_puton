@@ -9,14 +9,16 @@
 
 (assert (not (= pot shelf)))
 
-(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (putSthOnSth p x y) (or (tall x) (high y))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (or (tall x) (high y)) (putSthOnSth p x y)))))
 
-(assert (forall ((x thing) (y thing)) (= (and (= x pot) (= y shelf)) (putSthOnSth p x y))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (putSthOnSth p x y) (or (high y) (tall x))))))
 
-(assert (forall ((x thing)) (= (or (= x pot) (= x shelf)) (or (tall x) (high x)))))
+(assert (= (tall pot) (not (tall shelf))))
+(assert (= (high pot) (not (high shelf))))
+(assert (= (high pot) (tall shelf)))
 
-(assert (exists ((x thing)) (tall x)))
-(assert (exists ((y thing)) (high y)))
+(assert (not (=> (putSthOnSth p pot shelf) (tall pot))))
+;(assert (not (=> (putSthOnSth p pot shelf) (high shelf))))
 
 (check-sat)
 (get-model)

@@ -11,19 +11,17 @@
 
 
 (assert (not (= annoucement subway)))
-
-(assert (forall ((x thing)) (= (come x) (loud x))))
+(assert (forall ((x thing)) (or (= x annoucement) (= x subway))))
 
 (assert (forall ((x thing)) (= (broadcast p x) (notHear p x))))
-
 (assert (forall ((x thing)) (= (loud x) (notHearOver p x))))
+(assert (forall ((x thing)) (= (come subway) (loud subway))))
 
-(assert (forall ((x thing)) (= (= x subway) (come x))))
+(assert (= (notHear p subway) (not (notHear p annoucement))))
+(assert (= (notHearOver p subway) (not (notHearOver p annoucement))))
 
-(assert (forall ((x thing)) (= (= x annoucement) (broadcast p x))))
-
-(assert (exists ((x thing)) (notHear p x)))
-(assert (exists ((y thing)) (notHearOver p y)))
+;(assert (not (=> (and (broadcast p annoucement) (come subway)) (notHear p annoucement))))
+(assert (not (=> (and (broadcast p annoucement) (come subway)) (notHearOver p subway))))
 
 (check-sat)
 (get-model)

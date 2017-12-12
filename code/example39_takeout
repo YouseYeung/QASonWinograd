@@ -8,15 +8,17 @@
 (declare-rel handy (thing))
 
 (assert (not (= bottle backpack)))
+(assert (forall ((x thing) (y thing)) (or (= x bottle) (= x backpack))))
 
-(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (takeSthOutOfSth p x y) (or (lighter y) (handy x))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (takeSthOutOfSth p x y) (and (lighter y) (handy x))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (lighter y) (takeSthOutOfSth p x y)))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (handy x) (takeSthOutOfSth p x y)))))
 
-(assert (forall ((x thing) (y thing)) (= (and (= x bottle) (= y backpack)) (takeSthOutOfSth p x y))))
+(assert (= (lighter bottle) (not (lighter backpack))))
+(assert (= (handy bottle) (not (handy backpack))))
 
-(assert (forall ((x thing)) (= (or (= x bottle) (= x backpack)) (or (lighter x) (handy x)))))
-
-(assert (exists ((x thing)) (lighter x)))
-(assert (exists ((y thing)) (handy y)))
+(assert (not (=> (takeSthOutOfSth p bottle backpack) (handy bottle))))
+;(assert (not (=> (takeSthOutOfSth p bottle backpack) (lighter backpack))))
 
 (check-sat)
 (get-model)
