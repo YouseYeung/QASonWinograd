@@ -7,15 +7,17 @@
 
 
 (assert (not (= Bob aMan)))
+(assert (forall ((x person)) (or (= x Bob) (= x aMan))))
 
-(assert (forall ((x person) (y person)) (= (and (= x Bob) (= y aMan)) (seeDoingSth x y))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (seeDoingSth x y) (and (impressive y) (impressed x))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (impressive y) (seeDoingSth x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (impressed x) (seeDoingSth x y)))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (seeDoingSth x y) (or (impressive y) (impressed x))))))
+(assert (= (impressive Bob) (not (impressive aMan))))
+(assert (= (impressed Bob) (not (impressed aMan))))
 
+(assert (not (=> (seeDoingSth Bob aMan) (impressive aMan))))
+;(assert (not (=> (seeDoingSth Bob aMan) (impressed Bob))))
 
-(assert (forall ((x person)) (= (or (= x Bob) (= x aMan)) (or (impressed x) (impressive x)))))
-
-(assert (exists ((x person)) (impressive x)))
-(assert (exists ((y person)) (impressed y)))
 (check-sat)
 (get-model)

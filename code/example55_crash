@@ -7,16 +7,20 @@
 (declare-rel repaired (thing))
 
 (assert (not (= roof tree)))
+(assert (forall ((x thing)) (or (= x roof) (= x tree))))
 
-(assert (forall ((x thing) (y thing)) (= (and (= x tree) (= y roof)) (crashThrough x y))))
-
-(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (crashThrough x y) (or (removed x) (broken y))))))
-
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (crashThrough x y) (and (removed x) (broken y))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (broken y) (crashThrough x y)))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (removed x) (crashThrough x y)))))
 (assert (forall ((x thing)) (= (broken x) (repaired x))))
 
-(assert (forall ((x thing)) (= (or (= x tree) (= x roof)) (or (removed x) (repaired x)))))
+(assert (= (removed tree) (not (removed roof))))
+(assert (= (repaired tree) (not (repaired roof))))
 
-(assert (exists ((x thing)) (removed x)))
-(assert (exists ((y thing)) (repaired y)))
+(assert (not (=> (crashThrough tree roof) (removed tree))))
+;(assert (not (=> (crashThrough tree roof) (repaired roof))))
+
+
+
 (check-sat)
 (get-model)

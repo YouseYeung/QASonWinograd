@@ -1,0 +1,26 @@
+(declare-sort thing)
+(declare-sort person)
+(declare-const I person)
+(declare-const newspaper thing)
+(declare-const backpack thing)
+(declare-rel carrySthOverSth (person thing thing))
+(declare-rel carrySthInSth (person thing thing))
+(declare-rel over (thing thing))
+(declare-rel dry (thing))
+
+(assert (not (= newspaper backpack)))
+(assert (forall ((x thing)) (or (= x newspaper) (= x backpack))))
+(assert (forall ((x person)) (= x I)))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (exists ((z person)) (or (carrySthOverSth z y x) (carrySthInSth z x y))) (over y x)))))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (exists ((z person)) (or (carrySthOverSth z y x) (carrySthInSth z x y))) (over y x)))))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (over x y) (dry y)))))
+
+(assert (= (dry newspaper) (not (dry backpack))))
+
+(assert (not (=> (carrySthOverSth I newspaper backpack) (dry backpack))))
+;(assert (not (=> (carrySthInSth I newspaper backpack) (dry newspaper))))
+(check-sat)
+(get-model)

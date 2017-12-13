@@ -1,0 +1,26 @@
+(declare-sort person)
+(declare-const Jane person)
+(declare-const Susan person)
+(declare-rel knockDoor (person))
+(declare-rel answer (person))
+(declare-rel inviteOut (person person))
+(declare-rel inviteIn (person person))
+(declare-rel outside (person))
+(declare-rel inside (person))
+
+(assert (not (= Jane Susan)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (knockDoor x) (answer y)) (and (outside x) (inside y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (outside x) (and (knockDoor x) (answer y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (inside y) (and (knockDoor x) (answer y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (outside x) (inside y)) (or (inviteOut x y) (inviteIn y x))))))
+
+(assert (= (inviteOut Jane Susan) (not (inviteOut Susan Jane))))
+(assert (= (inviteIn Jane Susan) (not (inviteIn Susan Jane))))
+(assert (= (inviteOut Jane Susan) (inviteIn Susan Jane)))
+
+(assert (not (=> (and (knockDoor Jane) (answer Susan)) (inviteOut Jane Susan))))
+;(assert (not (=> (and (knockDoor Jane) (answer Susan)) (inviteIn Susan Jane))))
+
+(check-sat)
+

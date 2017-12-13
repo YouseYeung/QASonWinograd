@@ -3,19 +3,22 @@
 (declare-const chewingGum thing)
 (declare-rel openLockWith (thing))
 (declare-rel fillTheKeyhole (thing))
-(declare-rel getIn (thing))
-(declare-rel getOut (thing))
+(declare-rel inTheKeyhole (thing))
+(declare-rel notGetIn (thing))
+(declare-rel notGetOut (thing))
 
 (assert (not (= chewingGum key)))
+(assert (forall ((x thing)) (or (= x chewingGum) (= x key))))
 
-(assert (forall ((x thing)) (= (= x key) (openLockWith x))))
-(assert (forall ((x thing)) (= (= x chewingGum) (fillTheKeyhole x))))
-(assert (forall ((x thing)) (= (openLockWith x) (getIn x))))
-(assert (forall ((x thing)) (= (fillTheKeyhole x) (getOut x))))
+(assert (forall ((x thing)) (= (openLockWith x) (notGetIn x))))
+(assert (forall ((x thing)) (= (fillTheKeyhole x) (inTheKeyhole x))))
+(assert (forall ((x thing)) (= (inTheKeyhole x) (notGetOut x))))
 
-(assert (forall ((x thing)) (= (or (= x key) (= x chewingGum)) (or (getIn x) (getOut x)))))
+(assert (= (notGetIn key) (not (notGetIn chewingGum))))
+(assert (= (notGetOut key) (not (notGetOut chewingGum))))
 
-(assert (exists ((x thing)) (getIn x)))
-(assert (exists ((y thing)) (getOut y)))
+(assert (not (=> (and (openLockWith key) (fillTheKeyhole chewingGum)) (notGetIn key))))
+;(assert (not (=> (and (openLockWith key) (fillTheKeyhole chewingGum)) (notGetOut chewingGum))))
+
 (check-sat)
 (get-model)

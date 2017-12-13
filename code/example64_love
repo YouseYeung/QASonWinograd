@@ -6,20 +6,21 @@
 (declare-rel favorite (person thing))
 (declare-rel takeOut (person thing))
 (declare-rel love (person thing))
-(declare-rel had (person thing))
+(declare-rel have (person thing))
 
 
 (assert (not (= flute pieces)))
+(assert (forall ((x thing)) (or (= x flute) (= x pieces))))
+(assert (forall ((x person)) (= x Mary)))
 
-(assert (forall ((x thing)) (= (= x flute) (takeOut Mary x))))
-(assert (forall ((x thing)) (= (= x pieces) (favorite Mary x))))
+(assert (forall ((x thing)) (exists ((y person)) (= (love y x) (favorite y x)))))
+(assert (forall ((x thing)) (exists ((y person)) (= (takeOut y x) (have y x)))))
 
-(assert (forall ((x thing)) (= (takeOut Mary x) (had Mary x))))
-(assert (forall ((x thing)) (= (favorite Mary x) (love Mary x))))
+(assert (= (love Mary flute) (not (love Mary pieces))))
+(assert (= (have Mary flute) (not (have Mary pieces))))
 
-(assert (forall ((x thing)) (= (or (= x flute) (= x pieces)) (or (had Mary x) (love Mary x)))))
+(assert (not (=> (and (takeOut Mary flute) (favorite Mary pieces)) (have Mary pieces))))
+;(assert (not (=> (and (takeOut Mary flute) (favorite Mary pieces)) (have Mary flute))))
 
-(assert (exists ((x thing)) (love Mary x)))
-(assert (exists ((y thing)) (had Mary y)))
 (check-sat)
 (get-model)

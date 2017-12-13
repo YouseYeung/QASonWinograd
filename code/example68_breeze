@@ -1,0 +1,26 @@
+(declare-sort thing)
+(declare-const sandCaslte thing)
+(declare-const flag thing)
+(declare-rel knockDown (thing thing))
+(declare-rel highPosition (thing))
+(declare-rel inHighestTower (thing))
+(declare-rel builtBy (thing thing))
+(declare-const breeze thing)
+(declare-const tide thing)
+(declare-const sand thing)
+
+
+(assert (not (= sandCaslte flag)))
+
+(assert (builtBy sandCaslte sand))
+(assert (forall ((x thing)) (= (builtBy x sand) (knockDown tide x))))
+(assert (forall ((x thing)) (= (highPosition x) (knockDown breeze x))))
+(assert (forall ((x thing)) (= (inHighestTower x) (highPosition x))))
+
+(assert (= (knockDown tide sandCaslte) (not (knockDown tide flag))))
+(assert (= (knockDown breeze sandCaslte) (not (knockDown breeze flag))))
+
+(assert (not (knockDown tide sandCaslte)))
+;(assert (not (=> (inHighestTower flag) (knockDown breeze flag))))
+
+(check-sat)

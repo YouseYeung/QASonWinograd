@@ -1,0 +1,23 @@
+(declare-sort person)
+(declare-const Bob person)
+(declare-const Carl person)
+(declare-rel collapse (person))
+(declare-rel ill (person))
+(declare-rel help (person person))
+(declare-rel seeSbComeToHelp (person person))
+(declare-rel concerned (person))
+
+(assert (not (= Bob Carl)))
+(assert (forall ((x person)) (or (= x Bob) (= x Carl))))
+
+(assert (forall ((x person)) (= (collapse x) (ill x))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (seeSbComeToHelp x y) (help y x)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (concerned x) (help x y)))))
+
+(assert (= (ill Bob) (not (ill Carl))))
+(assert (= (concerned Bob) (not (concerned Carl))))
+
+(assert (not (=> (and (collapse Bob) (seeSbComeToHelp Bob Carl)) (ill Carl))))
+;(assert (not (=> (and (collapse Bob) (seeSbComeToHelp Bob Carl)) (concerned Carl))))
+
+(check-sat)

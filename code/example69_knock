@@ -1,0 +1,24 @@
+(declare-sort person)
+(declare-const Jane person)
+(declare-const Susan person)
+(declare-rel knockDoor (person person))
+(declare-rel noAnswer (person))
+(declare-rel disappointed (person))
+(declare-rel out (person))
+(declare-rel notAtHouse (person))
+
+(assert (not (= Jane Susan)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (exists ((z person)) (noAnswer z)) (knockDoor x y)) (and (disappointed x) (notAtHouse y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (disappointed x) (and (exists ((z person)) (noAnswer z)) (knockDoor x y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (out y) (and (exists ((z person)) (noAnswer z)) (knockDoor x y))))))
+
+(assert (= (disappointed Jane) (not (disappointed Susan))))
+(assert (= (out Jane) (not (out Susan))))
+
+(assert (not (=> (and (knockDoor Jane Susan) (exists ((z person)) (noAnswer z))) (disappointed Jane))))
+;(assert (not (=> (and (knockDoor Jane Susan) (exists ((z person)) (noAnswer z))) (out Susan))))
+
+
+(check-sat)
+

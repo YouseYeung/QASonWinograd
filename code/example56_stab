@@ -9,23 +9,19 @@
 (declare-rel beTakenToPoliceStation (person))
 
 (assert (not (= oneOfTheTellers customer)))
+(assert (forall ((x person)) (or (= x oneOfTheTellers) (= x customer))))
 
 (assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (stab x y) (and (commitACrime customer) (beHurt oneOfTheTellers))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (beHurt y) (stab x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (commitACrime x) (stab x y)))))
 
-(assert (forall ((x person) (y person)) (= (and (= x customer) (= y oneOfTheTellers)) (stab x y))))
+(assert (forall ((x person)) (= (beHurt x) (beTakenToEmergencyRoom x))))
+(assert (forall ((x person)) (= (commitACrime x) (beTakenToPoliceStation x))))
 
-(assert (forall ((x person)) (=> (beHurt x) (beTakenToEmergencyRoom x))))
+(assert (not (=> (stab customer oneOfTheTellers) (beTakenToEmergencyRoom oneOfTheTellers))))
+;(assert (not (=> (stab customer oneOfTheTellers) (beTakenToPoliceStation customer))))
 
-(assert (forall ((x person)) (=> (commitACrime x) (beTakenToPoliceStation x))))
 
-(assert (or (and (beHurt customer) (not (beHurt oneOfTheTellers))) (and (beHurt oneOfTheTellers) (not (beHurt customer)))))
-(assert (or (and (commitACrime customer) (not (commitACrime oneOfTheTellers))) (and (commitACrime oneOfTheTellers) (not (commitACrime customer)))))
 
-(assert (or (and (beTakenToPoliceStation customer) (not (beTakenToPoliceStation oneOfTheTellers))) (and (beTakenToPoliceStation oneOfTheTellers) (not (beTakenToPoliceStation customer)))))
-
-(assert (or (and (beTakenToEmergencyRoom customer) (not (beTakenToEmergencyRoom oneOfTheTellers))) (and (beTakenToEmergencyRoom oneOfTheTellers) (not (beTakenToEmergencyRoom customer)))))
-
-;(assert (not (=> (stab customer oneOfTheTellers) (beTakenToEmergencyRoom oneOfTheTellers))))
-(assert (not (=> (stab customer oneOfTheTellers) (beTakenToPoliceStation customer))))
 
 (check-sat)

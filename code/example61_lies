@@ -7,15 +7,18 @@
 
 
 (assert (not (= Mark Pete)))
+(assert (forall ((x person)) (or (= x Mark) (= x Pete))))
 
-(assert (forall ((x person) (y person)) (= (and (= x Mark) (= y Pete)) (tellLiesTo x y))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (tellLiesTo x y) (and (truthful x) (skeptical y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (truthful x) (tellLiesTo x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (skeptical y) (tellLiesTo x y)))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (tellLiesTo x y) (or (truthful x) (skeptical y))))))
+(assert (= (truthful Mark) (not (truthful Pete))))
+(assert (= (skeptical Mark) (not (skeptical Pete))))
+
+(assert (not (=> (tellLiesTo Mark Pete) (truthful Mark))))
+;(assert (not (=> (tellLiesTo Mark Pete) (skeptical Pete))))
 
 
-(assert (forall ((x person)) (= (or (= x Mark) (= x Pete)) (or (skeptical x) (truthful x)))))
-
-(assert (exists ((x person)) (truthful x)))
-(assert (exists ((y person)) (skeptical y)))
 (check-sat)
 (get-model)
