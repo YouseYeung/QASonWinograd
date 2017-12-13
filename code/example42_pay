@@ -1,6 +1,6 @@
 (declare-sort person)
 (declare-sort thing)
-(declare-const t thing)
+(declare-const colledgeEducation thing)
 (declare-const Bob person)
 (declare-const Charlie person)
 (declare-rel payFor (person thing))
@@ -10,16 +10,18 @@
 
 
 (assert (not (= Bob Charlie)))
+(assert (forall ((x person)) (or (= x Bob) (= x Charlie))))
+(assert (forall ((x thing)) (= x colledgeEducation)))
 
-(assert (forall ((x person) (y person)) (= (and (= x Bob) (= y Charlie)) (and (payFor x t) (belongTo t y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (exists ((z thing)) (=> (and (payFor x z) (belongTo z y)) (and (grateful y) (generous x)))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (exists ((z thing)) (=> (grateful y) (and (payFor x z) (belongTo z y)))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (exists ((z thing)) (=> (generous x) (and (payFor x z) (belongTo z y)))))))
 
-(assert (forall ((x person)) (= (= x Charlie) (belongTo t x))))
+(assert (= (generous Bob) (not (generous Charlie))))
+(assert (= (grateful Bob) (not (grateful Charlie))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (and (payFor x t) (belongTo t y)) (or (generous x) (grateful y))))))
+(assert (not (=> (and (payFor Bob colledgeEducation) (belongTo colledgeEducation Charlie)) (grateful Charlie))))
+;(assert (not (=> (and (payFor Bob colledgeEducation) (belongTo colledgeEducation Charlie)) (generous Bob))))
 
-(assert (forall ((x person)) (= (or (= x Bob) (= x Charlie)) (or (grateful x) (generous x)))))
-
-(assert (exists ((x person)) (generous x)))
-(assert (exists ((y person)) (grateful y)))
 (check-sat)
 (get-model)

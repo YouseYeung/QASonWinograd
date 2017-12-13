@@ -2,20 +2,28 @@
 (declare-const conArtist person)
 (declare-const Sam person)
 (declare-rel succeedInFooling (person person))
+(declare-rel getBenefit (person))
+(declare-rel loseBenefit (person))
 (declare-rel getMoney (person))
 (declare-rel loseMoney (person))
 
 
 (assert (not (= conArtist Sam)))
+(assert (forall ((x person)) (or (= x conArtist) (= x Sam))))
 
-(assert (forall ((x person) (y person)) (= (and (= x conArtist) (= y Sam)) (succeedInFooling x y))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (succeedInFooling x y) (and (getBenefit x) (loseBenefit y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (getBenefit x) (succeedInFooling x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (loseBenefit y) (succeedInFooling x y)))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (succeedInFooling x y) (or (getMoney x) (loseMoney y))))))
+(assert (forall ((x person)) (= (loseBenefit x) (loseMoney x))))
+(assert (forall ((x person)) (= (getBenefit x) (getMoney x))))
+
+(assert (= (getMoney conArtist) (not (getMoney Sam))))
+(assert (= (loseMoney conArtist) (not (loseMoney Sam))))
+
+(assert (not (=> (succeedInFooling conArtist Sam) (loseMoney Sam))))
+;(assert (not (=> (succeedInFooling conArtist Sam) (getMoney conArtist))))
 
 
-(assert (forall ((x person)) (= (or (= x conArtist) (= x Sam)) (or (loseMoney x) (getMoney x)))))
-
-(assert (exists ((x person)) (getMoney x)))
-(assert (exists ((y person)) (loseMoney y)))
 (check-sat)
 (get-model)

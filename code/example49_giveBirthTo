@@ -7,15 +7,18 @@
 
 
 (assert (not (= Anne herDaughter)))
+(assert (forall ((x person)) (or (= x Anne) (= x herDaughter))))
 
-(assert (forall ((x person) (y person)) (= (and (= x Anne) (= y herDaughter)) (giveBirthTo x y))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (giveBirthTo x y) (or (woman x) (baby y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (or (woman x) (baby y)) (giveBirthTo x y)))))
 
-(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (giveBirthTo x y) (or (woman x) (baby y))))))
+(assert (= (woman Anne) (not (woman herDaughter))))
+(assert (= (baby Anne) (not (baby herDaughter))))
+(assert (= (baby Anne) (woman herDaughter)))
+
+(assert (not (=> (giveBirthTo Anne herDaughter) (woman Anne))))
+;(assert (not (=> (giveBirthTo Anne herDaughter) (baby herDaughter))))
 
 
-(assert (forall ((x person)) (= (or (= x Anne) (= x herDaughter)) (or (baby x) (woman x)))))
-
-(assert (exists ((x person)) (woman x)))
-(assert (exists ((y person)) (baby y)))
 (check-sat)
 (get-model)

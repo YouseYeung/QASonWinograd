@@ -7,15 +7,15 @@
 
 
 (assert (not (= fish worm)))
+(assert (forall ((x animal)) (or (= x fish) (= x worm))))
 
-(assert (forall ((x animal) (y animal)) (= (and (= x fish) (= y worm)) (ate x y))))
+(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (=> (ate x y) (and (hungry x) (tasty y))))))
 
-(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (= (ate x y) (or (hungry x) (tasty y))))))
+(assert (= (hungry fish) (not (hungry worm))))
+(assert (= (tasty worm) (not (tasty fish))))
 
+(assert (not (=> (ate fish worm) (hungry fish))))
+;(assert (not (=> (ate fish worm) (tasty worm))))
 
-(assert (forall ((x animal)) (= (or (= x fish) (= x worm)) (or (tasty x) (hungry x)))))
-
-(assert (exists ((x animal)) (hungry x)))
-(assert (exists ((y animal)) (tasty y)))
 (check-sat)
 (get-model)

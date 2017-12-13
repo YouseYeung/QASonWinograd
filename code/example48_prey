@@ -7,19 +7,18 @@
 (declare-rel impatient (animal))
 
 (assert (not (= cat mouse)))
+(assert (forall ((x animal)) (or (= x cat) (= x mouse))))
 
-(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (=> (waitFor x y) (impatient x)))))
-(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (=> (and (waitFor x y) (isPreyOf y x)) (cautious y)))))
-(assert (forall ((x animal) (y animal)) (= (and (= x cat) (= y mouse)) (isPreyOf y x))))
+(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (=> (and (isPreyOf y x) (waitFor x y)) (and (cautious y) (impatient x))))))
+(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (=> (cautious y) (and (isPreyOf y x) (waitFor x y))))))
+(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (=> (impatient x) (and (isPreyOf y x) (waitFor x y))))))
 
+(assert (isPreyOf mouse cat))
+(assert (= (cautious cat) (not (cautious mouse))))
+(assert (= (impatient cat) (not (impatient mouse))))
 
-(assert (forall ((x animal) (y animal)) (= (and (= x cat) (= y mouse)) (waitFor x y))))
-
-(assert (or (and (impatient cat) (not (impatient mouse))) (and (impatient mouse) (not (impatient cat)))))
-(assert (or (and (cautious cat) (not (cautious mouse))) (and (cautious mouse) (not (cautious cat)))))
-
-(assert (not (=> (waitFor cat mouse) (impatient mouse))))
-;(assert (not (=> (waitFor cat mouse) (cautious mouse))))
+;(assert (not (=> (waitFor cat mouse) (impatient cat))))
+(assert (not (=> (waitFor cat mouse) (cautious mouse))))
 
 (check-sat)
 (get-model)
