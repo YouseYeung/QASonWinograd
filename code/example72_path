@@ -1,0 +1,21 @@
+(declare-sort thing)
+(declare-const path thing)
+(declare-const lake thing)
+(declare-rel block (thing))
+(declare-rel to (thing thing))
+(declare-rel notReach (thing))
+(declare-rel notUse (thing))
+
+(assert (not (= path lake)))
+
+(assert (forall ((x thing)) (=> (not (= x path)) (=> (and (to path x) (block path)) (and (notReach x) (notUse path))))))
+
+(assert (= (notReach path) (not (notReach lake))))
+(assert (= (notUse path) (not (notUse lake))))
+
+;(assert (not (=> (and (to path lake) (block path)) (notReach lake))))
+(assert (not (=> (and (to path lake) (block path)) (notUse path))))
+
+
+(check-sat)
+

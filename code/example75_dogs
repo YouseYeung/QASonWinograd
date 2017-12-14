@@ -1,0 +1,26 @@
+(declare-sort thing)
+(declare-sort specie)
+(declare-const dogs thing)
+(declare-const golfers thing)
+(declare-const shepherds thing)
+(declare-const sheep thing)
+(declare-fun whatSpecies (thing) specie)
+(declare-rel looksLike (thing thing))
+(declare-rel sameShapeWith (thing thing))
+
+(assert (not (= dogs sheep)))
+(assert (not (= shepherds golfers)))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (looksLike x y) (sameShapeWith x y)))))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (sameShapeWith x y) (= (whatSpecies x) (whatSpecies y))))))
+
+(assert (= (whatSpecies shepherds) (whatSpecies golfers)))
+(assert (= (whatSpecies dogs) (whatSpecies sheep)))
+(assert (not (= (whatSpecies dogs) (whatSpecies golfers))))
+
+;(assert (not (looksLike shepherds golfers)))
+(assert (not (looksLike sheep dogs)))
+
+(check-sat)
+(get-model)
+

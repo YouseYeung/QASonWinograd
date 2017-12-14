@@ -1,0 +1,24 @@
+(declare-sort thing)
+(declare-const lake thing)
+(declare-const beach thing)
+(declare-const shark thing)
+(declare-rel dangerous (thing))
+(declare-rel safer (thing))
+(declare-rel at (thing thing))
+
+(assert (not (= beach lake)))
+
+(assert (forall ((x thing)) (=> (exists ((y thing)) (and (dangerous y) (at y x))) (dangerous x))))
+
+(assert (dangerous shark))
+
+(assert (= (dangerous beach) (not (dangerous lake))))
+(assert (= (safer beach) (not (safer lake))))
+(assert (= (dangerous beach) (safer lake)))
+
+(assert (not (=> (at shark beach) (dangerous beach))))
+;(assert (not (=> (at shark beach) (safer lake))))
+
+
+(check-sat)
+

@@ -1,0 +1,27 @@
+(declare-sort person)
+(declare-const Sam person)
+(declare-const Adam person)
+(declare-rel takeClassFrom (person person))
+(declare-rel teach (person person))
+(declare-rel knowLessThan (person person))
+(declare-rel eager (person))
+(declare-rel known (person))
+(declare-rel speak (person))
+
+(assert (not (= Sam Adam)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (takeClassFrom x y) (teach y x)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (teach x y) (knowLessThan y x)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (knowLessThan x y) (and (eager x) (known y))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (eager x) (knowLessThan x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (known y) (knowLessThan x y)))))
+(assert (forall ((x person)) (= (speak x) (known x))))
+
+(assert (= (known Sam) (not (known Adam))))
+(assert (= (eager Sam) (not (eager Adam))))
+
+(assert (not (=> (takeClassFrom Sam Adam) (eager Sam))))
+;(assert (not (=> (takeClassFrom Sam Adam) (known Adam))))
+
+(check-sat)
+
