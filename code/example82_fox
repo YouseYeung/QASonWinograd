@@ -1,0 +1,25 @@
+(declare-sort animal)
+(declare-const foxes animal)
+(declare-const chickens animal)
+(declare-rel attack (animal animal))
+(declare-rel inDanger (animal))
+(declare-rel dangerous (animal))
+(declare-rel guard (animal))
+(declare-rel kill (animal))
+
+(assert (not (= foxes chickens)))
+
+(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (=> (attack x y) (and (inDanger y) (dangerous x))))))
+(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (=> (inDanger y) (attack x y)))))
+(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (=> (dangerous x) (attack x y)))))
+
+(assert (forall ((x animal)) (= (inDanger x) (guard x))))
+(assert (forall ((x animal)) (= (dangerous x) (kill x))))
+
+(assert (= (guard foxes) (not (guard chickens))))
+(assert (= (kill foxes) (not (kill chickens))))
+
+(assert (not (=> (attack foxes chickens) (guard chickens))))
+;(assert (not (=> (attack foxes chickens) (kill foxes))))
+
+(check-sat)

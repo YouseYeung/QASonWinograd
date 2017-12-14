@@ -1,0 +1,26 @@
+(declare-sort thing)
+(declare-const hand thing)
+(declare-const eyes thing)
+(declare-rel coverWith (thing thing))
+(declare-rel lowerPositionThan (thing thing))
+(declare-rel closed (thing))
+(declare-rel raiseUp (thing))
+(declare-rel open (thing))
+(declare-rel lower (thing))
+
+(assert (not (= hand eyes)))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (and (coverWith x y) (lowerPositionThan y x)) (and (closed x) (raiseUp y))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (closed x) (and (coverWith x y) (lowerPositionThan y x))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (raiseUp y) (and (coverWith x y) (lowerPositionThan y x))))))
+
+(assert (forall ((x thing)) (= (open x) (closed x))))
+(assert (forall ((x thing)) (= (raiseUp x) (lower x))))
+
+(assert (= (open hand) (not (open eyes))))
+(assert (= (lower hand) (not (lower eyes))))
+
+(assert (not (=> (and (lowerPositionThan hand eyes) (coverWith eyes hand)) (open eyes))))
+;(assert (not (=> (and (lowerPositionThan hand eyes) (coverWith eyes hand)) (lower hand))))
+
+(check-sat)

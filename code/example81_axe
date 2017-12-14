@@ -1,0 +1,20 @@
+(declare-sort thing)
+(declare-const tree thing)
+(declare-const axe thing)
+(declare-rel notCutWith (thing thing))
+(declare-rel thick (thing))
+(declare-rel thin (thing))
+
+(assert (not (= tree axe)))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (or (thin x) (thick y)) (notCutWith y x)))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (notCutWith y x) (or (thin x) (thick y))))))
+
+(assert (= (thick tree) (not (thick axe))))
+(assert (= (thin tree) (not (thin axe))))
+(assert (= (thin tree) (thick axe)))
+
+(assert (not (=> (notCutWith tree axe) (thick tree))))
+;(assert (not (=> (notCutWith tree axe) (thin axe))))
+
+(check-sat)

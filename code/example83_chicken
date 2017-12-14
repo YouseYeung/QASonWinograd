@@ -1,0 +1,21 @@
+(declare-sort animal)
+(declare-const foxes animal)
+(declare-const chickens animal)
+(declare-rel attack (animal animal))
+(declare-rel bold (animal))
+(declare-rel nervous (animal))
+
+(assert (not (= foxes chickens)))
+
+(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (=> (attack x y) (and (nervous y) (bold x))))))
+(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (=> (nervous y) (attack x y)))))
+(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (=> (bold x) (attack x y)))))
+
+
+(assert (= (bold foxes) (not (bold chickens))))
+(assert (= (nervous foxes) (not (nervous chickens))))
+
+(assert (not (=> (attack foxes chickens) (bold foxes))))
+;(assert (not (=> (attack foxes chickens) (nervous chickens))))
+
+(check-sat)

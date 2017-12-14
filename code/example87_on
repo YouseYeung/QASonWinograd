@@ -1,0 +1,23 @@
+(declare-sort thing)
+(declare-const TV thing)
+(declare-const dishwasher thing)
+(declare-rel watch (thing))
+(declare-rel putOff (thing))
+(declare-rel on (thing))
+(declare-rel off (thing))
+(declare-rel beTurnOn (thing))
+(declare-rel beTurnOff (thing))
+
+(assert (not (= TV dishwasher)))
+
+(assert (forall ((x thing)) (= (watch x) (on x))))
+(assert (forall ((x thing)) (= (putOff x) (off x))))
+(assert (forall ((x thing)) (= (beTurnOn x) (off x))))
+(assert (forall ((x thing)) (= (beTurnOff x) (on x))))
+(assert (= (beTurnOn TV) (not (beTurnOn dishwasher))))
+(assert (= (beTurnOff TV) (not (beTurnOff dishwasher))))
+
+(assert (not (=> (and (watch TV) (putOff dishwasher)) (beTurnOn dishwasher))))
+;(assert (not (=> (and (watch TV) (putOff dishwasher)) (beTurnOff TV))))
+
+(check-sat)

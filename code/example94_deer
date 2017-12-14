@@ -1,0 +1,18 @@
+(declare-sort animal)
+(declare-const deer animal)
+(declare-const wolves animal)
+(declare-rel isPreyOf (animal animal))
+(declare-rel decrease (animal))
+(declare-rel increase (animal))
+
+(assert (not (= deer wolves)))
+
+(assert (forall ((x animal) (y animal)) (=> (not (= x y)) (=> (isPreyOf x y) (and (increase y) (decrease x))))))
+
+(assert (= (decrease deer) (not (decrease wolves))))
+(assert (= (increase deer) (not (increase wolves))))
+
+(assert (not (=> (isPreyOf deer wolves) (decrease deer))))
+;(assert (not (=> (isPreyOf deer wolves) (increase wolves))))
+
+(check-sat)

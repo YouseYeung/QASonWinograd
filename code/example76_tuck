@@ -1,0 +1,20 @@
+(declare-sort person)
+(declare-const Mary person)
+(declare-const Anne person)
+(declare-rel tuckIntoBed (person person))
+(declare-rel sleep (person))
+(declare-rel work (person))
+
+(assert (not (= Mary Anne)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (tuckIntoBed x y) (sleep y)))))
+
+(assert (forall ((x person)) (= (sleep x) (not (work x)))))
+
+(assert (= (sleep Mary) (not (sleep Anne))))
+(assert (= (work Mary) (not (work Anne))))
+
+(assert (not (=> (tuckIntoBed Mary Anne) (sleep Mary))))
+;(assert (not (=> (tuckIntoBed Mary Anne) (work Mary))))
+
+(check-sat)

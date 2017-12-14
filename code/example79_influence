@@ -1,0 +1,18 @@
+(declare-sort person)
+(declare-const Jackson person)
+(declare-const Arnold person)
+(declare-rel influenceBy (person person))
+(declare-rel earlier (person))
+(declare-rel later (person))
+
+(assert (not (= Jackson Arnold)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (influenceBy x y) (and (later x) (earlier y))))))
+
+(assert (= (earlier Jackson) (not (earlier Arnold))))
+(assert (= (later Jackson) (not (later Arnold))))
+
+(assert (not (=> (influenceBy Jackson Arnold) (earlier Arnold))))
+;(assert (not (=> (influenceBy Jackson Arnold) (later Jackson))))
+
+(check-sat)

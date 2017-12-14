@@ -1,0 +1,22 @@
+(declare-sort person)
+(declare-const Fred person)
+(declare-const George person)
+(declare-rel watchTV (person))
+(declare-rel goOutToBuyGroceries (person))
+(declare-rel out (person))
+(declare-rel getBack (person))
+(declare-rel getUp (person))
+
+(assert (not (= Fred George)))
+
+(assert (forall ((x person)) (= (goOutToBuyGroceries x) (out x))))
+(assert (forall ((x person)) (= (getBack x) (out x))))
+(assert (forall ((x person)) (= (watchTV x) (getUp x))))
+
+(assert (= (getBack Fred) (not (getBack George))))
+(assert (= (getUp Fred) (not (getUp George))))
+
+(assert (not (=> (and (goOutToBuyGroceries Fred) (watchTV George)) (getBack Fred))))
+;(assert (not (=> (and (goOutToBuyGroceries Fred) (watchTV George)) (getUp George))))
+
+(check-sat)

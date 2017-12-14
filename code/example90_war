@@ -1,0 +1,21 @@
+(declare-sort person)
+(declare-const Kamtchatka person)
+(declare-const Yakutsk person)
+(declare-rel stronger (person))
+(declare-rel better (person)) 
+(declare-rel wins (person)) 
+(declare-rel defeated (person))
+(declare-rel victorious (person))
+
+(assert (not (= Kamtchatka Yakutsk)))
+
+(assert (forall ((x person)) (= (stronger x) (wins x))))
+(assert (forall ((x person)) (= (better x) (stronger x))))
+(assert (forall ((x person)) (=> (wins x) (and (victorious x) (not (defeated x))))))
+(assert (= (defeated Kamtchatka) (not (defeated Yakutsk))))
+(assert (= (victorious Kamtchatka) (not (victorious Yakutsk))))
+
+;(assert (not (=> (better Kamtchatka) (defeated Yakutsk))))
+(assert (not (=> (better Kamtchatka) (victorious Kamtchatka))))
+
+(check-sat)

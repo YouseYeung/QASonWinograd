@@ -1,0 +1,21 @@
+(declare-sort person)
+(declare-const Cooper person)
+(declare-const Thomsom person)
+(declare-rel visit (person))
+(declare-rel haveGrave (person))
+(declare-rel dead (person))
+(declare-rel traveling (person))
+
+(assert (not (= Cooper Thomsom)))
+
+(assert (forall ((x person)) (= (visit x) (traveling x))))
+
+(assert (forall ((x person)) (= (haveGrave x) (dead x))))
+
+(assert (= (dead Cooper) (not (dead Thomsom))))
+(assert (= (traveling Cooper) (not (traveling Thomsom))))
+
+(assert (not (=> (haveGrave Thomsom) (dead Thomsom))))
+;(assert (not (=> (visit Cooper) (traveling Cooper))))
+
+(check-sat)

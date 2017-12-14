@@ -1,0 +1,24 @@
+(declare-sort place)
+(declare-const Sparta place)
+(declare-const Troy place)
+(declare-rel moveTo (place place))
+(declare-rel doSthIn (place))
+(declare-rel doSthIn (place))
+(declare-rel saveMoneyIn (place))
+(declare-rel lower (place))
+(declare-rel higher (place))
+
+(assert (not (= Sparta Troy)))
+
+(assert (forall ((x place) (y place)) (=> (not (= x y)) (= (moveTo x y) (doSthIn x)))))
+(assert (forall ((x place)) (= (saveMoneyIn x) (doSthIn x))))
+(assert (forall ((x place) (y place)) (=> (not (= x y)) (=> (and (lower x) (higher y)) (saveMoneyIn x)))))
+(assert (forall ((x place) (y place)) (=> (not (= x y)) (=> (saveMoneyIn x) (and (lower x) (higher y))))))
+
+(assert (= (lower Sparta) (not (lower Troy))))
+(assert (= (higher Sparta) (not (higher Troy))))
+
+(assert (not (=> (attack Sparta Troy) (lower Sparta))))
+;(assert (not (=> (attack Sparta Troy) (higher Troy)))
+
+(check-sat)
