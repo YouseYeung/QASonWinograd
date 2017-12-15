@@ -1,0 +1,26 @@
+(declare-sort person)
+(declare-const police person)
+(declare-const gang person)
+(declare-rel goodMan (person))
+(declare-rel badMan (person))
+(declare-rel doGoodThings (person))
+(declare-rel doBadThings (person))
+(declare-rel runDrugTrade (person))
+(declare-rel stopDrugTrade (person))
+
+(assert (not (= police gang)))
+
+(assert (forall ((x person)) (= (goodMan x) (doGoodThings x))))
+(assert (forall ((x person)) (= (badMan x) (doBadThings x))))
+(assert (forall ((x person)) (= (runDrugTrade x) (doBadThings x))))
+(assert (forall ((x person)) (= (stopDrugTrade x) (doGoodThings x))))
+(assert (forall ((x person)) (= (= police x) (goodMan x))))
+(assert (forall ((x person)) (= (= gang x) (badMan x))))
+
+(assert (= (runDrugTrade police) (not (runDrugTrade gang))))
+(assert (= (stopDrugTrade police) (not (stopDrugTrade gang))))
+
+(assert (not (runDrugTrade gang)))
+(assert (not (stopDrugTrade police)))
+
+(check-sat)

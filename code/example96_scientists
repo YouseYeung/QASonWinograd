@@ -1,0 +1,20 @@
+(declare-sort thing)
+(declare-const fish thing)
+(declare-const scientists thing)
+(declare-rel beenFoundLiving (thing))
+(declare-rel studySth (thing))
+(declare-rel appeared (thing))
+(declare-rel began (thing))
+
+(assert (not (= fish scientists)))
+
+(assert (forall ((x thing)) (= (beenFoundLiving x) (appeared x))))
+(assert (forall ((x thing)) (= (studySth x) (began x))))
+
+(assert (= (appeared fish) (not (appeared scientists))))
+(assert (= (began fish) (not (began scientists))))
+
+(assert (not (=> (and (beenFoundLiving fish) (studySth scientists)) (appeared fish))))
+;(assert (not (=> (and (beenFoundLiving fish) (studySth scientists)) (began scientists))))
+
+(check-sat)

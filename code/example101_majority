@@ -1,0 +1,19 @@
+(declare-sort person)
+(declare-const opponents person)
+(declare-const sponsors person)
+(declare-rel isFullOf (person))
+(declare-rel majority (person))
+(declare-rel minority (person))
+
+(assert (not (= opponents sponsors)))
+
+(assert (forall ((x person)) (= (isFullOf x) (majority x))))
+
+(assert (= (majority opponents) (not (majority sponsors))))
+(assert (= (minority opponents) (not (minority sponsors))))
+(assert (= (majority opponents) (minority sponsors)))
+
+;(assert (not (=> (isFullOf opponents) (majority opponents))))
+(assert (not (=> (isFullOf opponents) (minority sponsors))))
+
+(check-sat)

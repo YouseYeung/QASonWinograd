@@ -1,0 +1,19 @@
+(declare-sort thing)
+(declare-const chairs thing)
+(declare-const copies thing)
+(declare-rel all (thing))
+(declare-rel notEnough (thing))
+(declare-rel tooMany (thing))
+
+(assert (not (= chairs copies)))
+
+(assert (forall ((x thing)) (= (all x) (tooMany x))))
+
+(assert (= (notEnough chairs) (not (notEnough copies))))
+(assert (= (tooMany chairs) (not (tooMany copies))))
+(assert (= (notEnough chairs) (tooMany copies)))
+
+;(assert (not (=> (all chairs) (notEnough copies))))
+(assert (not (=> (all chairs) (tooMany chairs))))
+
+(check-sat)

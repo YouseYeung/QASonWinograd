@@ -1,0 +1,23 @@
+(declare-sort person)
+(declare-const prehistoricHumans person)
+(declare-const archaeologists person)
+(declare-rel isAncient (person))
+(declare-rel concludeSth (person))
+(declare-rel liveManyYearsAgo (person))
+(declare-rel huntForDeer (person))
+(declare-rel huntForAnimal (person))
+(declare-rel huntForEvidence (person))
+
+(assert (not (= prehistoricHumans archaeologists)))
+
+(assert (forall ((x person)) (= (concludeSth x) (huntForEvidence x))))
+(assert (forall ((x person)) (= (liveManyYearsAgo x) (huntForAnimal x))))
+(assert (forall ((x person)) (= (huntForAnimal x) (huntForDeer x))))
+
+(assert (= (huntForDeer prehistoricHumans) (not (huntForDeer archaeologists))))
+(assert (= (huntForEvidence prehistoricHumans) (not (huntForEvidence archaeologists))))
+
+(assert (not (=> (and (concludeSth archaeologists) (liveManyYearsAgo prehistoricHumans)) (huntForDeer prehistoricHumans))))
+;(assert (not (=> (and (concludeSth archaeologists) (liveManyYearsAgo prehistoricHumans)) (huntForEvidence archaeologists))))
+
+(check-sat)

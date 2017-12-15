@@ -1,0 +1,18 @@
+(declare-sort person)
+(declare-const stars person)
+(declare-const journalists person)
+(declare-rel interview (person person))
+(declare-rel persistent (person))
+(declare-rel coopertative (person))
+
+(assert (not (= stars journalists)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (interview x y) (and (coopertative y) (persistent x))))))
+
+(assert (= (persistent stars) (not (persistent journalists))))
+(assert (= (coopertative stars) (not (coopertative journalists))))
+
+(assert (not (=> (interview journalists stars) (coopertative stars))))
+;(assert (not (=> (interview journalists stars) (persistent journalists))))
+
+(check-sat)

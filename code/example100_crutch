@@ -1,0 +1,19 @@
+(declare-sort thing)
+(declare-const ankles thing)
+(declare-const crutches thing)
+(declare-rel broken (thing))
+(declare-rel isTool (thing))
+(declare-rel better (thing))
+(declare-rel unnecessary (thing))
+
+(assert (not (= ankles crutches)))
+
+(assert (forall ((x thing)) (= (broken x) (better x))))
+
+(assert (= (better ankles) (not (better crutches))))
+(assert (= (unnecessary ankles) (not (unnecessary crutches))))
+
+(assert (not (=> (isPreyOf ankles crutches) (better ankles))))
+;(assert (not (=> (isPreyOf ankles crutches) (unnecessary crutches))))
+
+(check-sat)

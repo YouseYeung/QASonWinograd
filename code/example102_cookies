@@ -1,0 +1,29 @@
+(declare-sort thing)
+(declare-sort person)
+(declare-const cookies thing)
+(declare-const chocolate thing)
+(declare-const everyone person)
+(declare-const morePeople person)
+(declare-const lessPeople person)
+(declare-const aFewPeople person)
+(declare-rel love (person thing))
+(declare-rel like (person thing))
+(declare-rel makeMore (thing))
+(declare-rel makeFewer (thing))
+
+(assert (not (= cookies chocolate)))
+
+(assert (forall ((x person) (y thing)) (=> (and (like x y) (= morePeople x)) (makeMore y))))
+(assert (forall ((x person) (y thing)) (=> (and (like x y) (= lessPeople x)) (makeFewer y))))
+(assert (= everyone morePeople))
+(assert (= aFewPeople lessPeople))
+(assert (forall ((x person) (y thing)) (= (love x y) (like x y))))
+
+(assert (= (makeMore cookies) (not (makeMore chocolate))))
+(assert (= (makeFewer cookies) (not (makeFewer chocolate))))
+(assert (= (makeMore cookies) (makeFewer chocolate)))
+
+(assert (not (=> (and (like aFewPeople chocolate) (love everyone cookies)) (makeMore cookies))))
+;(assert (not (=> (and (like aFewPeople chocolate) (love everyone cookies)) (makeFewer chocolate))))
+
+(check-sat)

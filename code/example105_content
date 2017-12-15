@@ -1,0 +1,24 @@
+(declare-sort thing)
+(declare-sort content)
+(declare-const ink content)
+(declare-const coffees content)
+(declare-const coffee thing)
+(declare-const pen thing)
+(declare-fun whatContent (thing) content)
+(declare-rel fullOf (thing content))
+(declare-rel useSthToStir (thing thing))
+
+(assert (not (= ink coffees)))
+
+(assert (= (whatContent pen) ink))
+(assert (= (whatContent coffee) coffees))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (useSthToStir x y) (and (fullOf x (whatContent y)) (fullOf y (whatContent x)))))))
+
+(assert (= (fullOf pen ink) (not (fullOf coffee ink))))
+(assert (= (fullOf pen coffees) (not (fullOf coffee coffees))))
+
+;(assert (not (=> (useSthToStir pen coffee) (fullOf coffee ink))))
+(assert (not (=> (useSthToStir pen coffee) (fullOf pen coffees))))
+
+(check-sat)

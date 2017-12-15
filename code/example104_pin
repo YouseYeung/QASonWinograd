@@ -1,0 +1,19 @@
+(declare-sort thing)
+(declare-const pin thing)
+(declare-const carrot thing)
+(declare-rel stuckThrough (thing thing))
+(declare-rel haveAhole (thing))
+(declare-rel leftAhole (thing))
+
+(assert (not (= pin carrot)))
+
+(assert (forall ((x thing) (y thing)) (=> (stuckThrough x y) (and (leftAhole x) (haveAhole y)))))
+
+(assert (= (haveAhole pin) (not (haveAhole carrot))))
+(assert (= (leftAhole pin) (not (leftAhole carrot))))
+(assert (= (haveAhole pin) (leftAhole carrot)))
+
+;(assert (not (=> (stuckThrough pin carrot) (haveAhole carrot))))
+(assert (not (=> (stuckThrough pin carrot) (leftAhole pin))))
+
+(check-sat)
