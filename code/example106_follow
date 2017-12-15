@@ -1,0 +1,19 @@
+(declare-sort person)
+(declare-const Steve person)
+(declare-const Fred person)
+(declare-rel follow (person person))
+(declare-rel admire (person person))
+(declare-rel influence (person person))
+
+(assert (not (= Steve Fred)))
+
+(assert (forall ((x person) (y person)) (= (admire x y) (follow x y))))
+(assert (forall ((x person) (y person)) (= (influence y x) (follow x y))))
+
+(assert (= (admire Fred Steve) (not (admire Steve Fred))))
+(assert (= (influence Fred Steve) (not (influence Steve Fred))))
+
+(assert (not (=> (follow Steve Fred) (admire Steve Fred))))
+;(assert (not (=> (follow Steve Fred) (influence Fred Steve))))
+
+(check-sat)

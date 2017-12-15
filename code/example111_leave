@@ -1,0 +1,22 @@
+(declare-sort person)
+(declare-sort action)
+(declare-const John person)
+(declare-const Bill person)
+(declare-const leave action)
+(declare-rel orderToDo (person person action))
+(declare-rel promiseToDo (person person action))
+(declare-rel do (person action))
+
+(assert (not (= John Bill)))
+
+(assert (forall ((x action)) (= x leave)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (exists ((z action)) (= (orderToDo x y z) (do y z))))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (exists ((z action)) (= (promiseToDo x y z) (do x z))))))
+
+(assert (= (do Bill leave) (not (do John leave))))
+
+;(assert (not (=> (orderToDo John Bill leave) (do Bill leave))))
+(assert (not (=> (promiseToDo John Bill leave) (do John leave))))
+
+(check-sat)

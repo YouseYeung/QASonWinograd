@@ -1,0 +1,19 @@
+(declare-sort person)
+(declare-const Emma person)
+(declare-const EmmaMother person)
+(declare-rel died (person))
+(declare-rel placeBeTaken (person))
+(declare-rel educationBeManaged (person))
+
+(assert (not (= Emma EmmaMother)))
+
+(assert (forall ((x person) (y person)) (= (died x) (placeBeTaken x))))
+
+(assert (= (placeBeTaken EmmaMother) (not (placeBeTaken Emma))))
+(assert (= (educationBeManaged EmmaMother) (not (educationBeManaged Emma))))
+(assert (= (educationBeManaged Emma) (placeBeTaken EmmaMother)))
+
+(assert (not (=> (died EmmaMother) (placeBeTaken EmmaMother))))
+;(assert (not (=> (died EmmaMother) (educationBeManaged Emma))))
+
+(check-sat)

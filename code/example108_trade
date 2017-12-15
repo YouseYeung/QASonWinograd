@@ -1,0 +1,24 @@
+(declare-sort thing)
+(declare-const jacket thing)
+(declare-const sweater thing)
+(declare-rel tradesFor (thing thing))
+(declare-rel like (thing))
+(declare-rel looksGreat (thing))
+(declare-rel looksDowdy (thing))
+
+(assert (not (= jacket sweater)))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (tradesFor x y) (and (like y) (not (like x)))))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (like y) (tradesFor x y)))))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (not (like x)) (tradesFor x y)))))
+
+(assert (forall ((x thing)) (= (looksDowdy x) (not (like x)))))
+(assert (forall ((x thing)) (= (looksGreat x) (like x))))
+
+(assert (= (looksGreat sweater) (not (looksGreat jacket))))
+(assert (= (looksDowdy sweater) (not (looksDowdy jacket))))
+
+(assert (not (=> (tradesFor sweater jacket) (looksDowdy sweater))))
+;(assert (not (=> (tradesFor sweater jacket) (looksGreat jacket))))
+
+(check-sat)

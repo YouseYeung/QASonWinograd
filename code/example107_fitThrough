@@ -1,0 +1,20 @@
+(declare-sort thing)
+(declare-const table thing)
+(declare-const doorway thing)
+(declare-rel notFitThrough (thing thing))
+(declare-rel wide (thing))
+(declare-rel narrow (thing))
+
+(assert (not (= table doorway)))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (and (wide x) (narrow y)) (notFitThrough x y)))))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (notFitThrough x y) (and (wide x) (narrow y))))))
+
+(assert (= (wide doorway) (not (wide table))))
+(assert (= (narrow doorway) (not (narrow table))))
+
+(assert (not (=> (notFitThrough table doorway) (wide table))))
+;(assert (not (=> (notFitThrough table doorway) (narrow doorway))))
+
+(check-sat)

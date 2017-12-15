@@ -1,0 +1,18 @@
+(declare-sort person)
+(declare-const Susan person)
+(declare-const Jane person)
+(declare-rel knockDoor (person person))
+(declare-rel answer (person))
+(declare-rel getAnAnswer (person))
+
+(assert (not (= Susan Jane)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (knockDoor x y) (and (getAnAnswer x) (answer y))))))
+
+(assert (= (answer Jane) (not (answer Susan))))
+(assert (= (getAnAnswer Jane) (not (getAnAnswer Susan))))
+
+(assert (not (=> (knockDoor Jane Susan) (answer Susan))))
+;(assert (not (=> (knockDoor Jane Susan) (getAnAnswer Jane))))
+
+(check-sat)
