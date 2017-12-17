@@ -1,0 +1,26 @@
+(declare-sort person)
+(declare-sort thing)
+(declare-const man person)
+(declare-const boy person)
+(declare-const bunkBed thing)
+(declare-const shoulders thing)
+(declare-rel liftOnto (person person thing))
+(declare-rel hasBunkBed (person))
+(declare-rel hasShoulders (person))
+
+(assert (not (= man boy)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (liftOnto x y bunkBed) (hasBunkBed y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (liftOnto x y shoulders) (hasShoulders x)))))
+
+(assert (forall ((x person)) (=> (hasBunkBed x) (or (= x boy) (= x man)))))
+(assert (forall ((x person)) (=> (hasShoulders x) (or (= x boy) (= x man)))))
+(assert (= (hasBunkBed boy) (not (hasBunkBed man))))
+(assert (= (hasShoulders boy) (not (hasShoulders man))))
+(assert (= (hasShoulders boy) (hasBunkBed man)))
+
+;(assert (not (=> (liftOnto man boy bunkBed) (hasBunkBed boy))))
+(assert (not (=> (liftOnto man boy shoulders) (hasShoulders man))))
+
+
+(check-sat)

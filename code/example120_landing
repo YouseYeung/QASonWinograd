@@ -1,0 +1,30 @@
+(declare-sort person)
+(declare-sort thing)
+(declare-const Andrea person)
+(declare-const Susan person)
+(declare-const airplane thing)
+(declare-const cropDuster thing)
+(declare-rel in (person thing))
+(declare-rel passOver (thing person))
+(declare-rel sayCheck (person person))
+(declare-rel seeLandingStrip (person))
+(declare-rel seeLandingGear (person))
+
+(assert (not (= Andrea Susan)))
+
+(assert (forall ((x person)) (= (in x airplane) (seeLandingStrip x))))
+(assert (forall ((x person)) (= (passOver airplane x) (seeLandingGear x))))
+(assert (= airplane cropDuster))
+
+(assert (forall ((x person)) (=> (seeLandingStrip x) (or (= x Susan) (= x Andrea)))))
+(assert (forall ((x person)) (=> (seeLandingGear x) (or (= x Susan) (= x Andrea)))))
+
+(assert (= (seeLandingStrip Susan) (not (seeLandingStrip Andrea))))
+(assert (= (seeLandingGear Susan) (not (seeLandingGear Andrea))))
+(assert (= (seeLandingGear Susan) (seeLandingStrip Andrea)))
+
+(assert (not (=> (and (in Andrea cropDuster) (passOver cropDuster Susan)) (seeLandingStrip Andrea))))
+;(assert (not (=> (and (in Andrea cropDuster) (passOver cropDuster Susan)) (seeLandingGear Susan))))
+
+(check-sat)
+(get-model)

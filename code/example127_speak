@@ -1,0 +1,21 @@
+(declare-sort person)
+(declare-const Lily person)
+(declare-const Donna person)
+(declare-rel speakTo (person person))
+(declare-rel breakConcentration (person))
+(declare-rel breakSilence (person))
+
+(assert (not (= Lily Donna)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (speakTo x y) (and (breakConcentration y) (breakSilence x)))))
+
+(assert (forall ((x person)) (=> (breakConcentration x) (or (= x Donna) (= x Lily)))))
+(assert (forall ((x person)) (=> (breakSilence x) (or (= x Donna) (= x Lily)))))
+(assert (= (breakConcentration Donna) (not (breakConcentration Lily))))
+(assert (= (breakSilence Donna) (not (breakSilence Lily))))
+(assert (= (breakSilence Donna) (breakConcentration Lily)))
+
+(assert (not (=> (speakTo Lily Donna) (breakSilence Lily))))
+;(assert (not (=> (speakTo Lily Donna) (breakConcentration Donna))))
+
+(check-sat)

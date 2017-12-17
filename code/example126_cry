@@ -1,0 +1,23 @@
+(declare-sort person)
+(declare-sort thing)
+(declare-const Billy person)
+(declare-const Toby person)
+(declare-const toy thing)
+(declare-rel own (person thing))
+(declare-rel share (person thing))
+(declare-rel accept (person thing))
+
+(assert (not (= Billy Toby)))
+
+(assert (forall ((x person) (y thing)) (= (share x y) (own x y))))
+(assert (forall ((x person) (y thing)) (= (accept x y) (not (own x y)))))
+
+(assert (forall ((x person) (y thing)) (=> (own x y) (or (= x Toby) (= x Billy)))))
+(assert (= (own Toby toy) (not (own Billy toy))))
+
+(assert (not (=> (share Toby toy) (own Toby toy))))
+;(assert (not (=> (accept Toby toy) (own Billy toy))))
+
+
+
+(check-sat)

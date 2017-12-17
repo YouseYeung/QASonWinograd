@@ -3,7 +3,9 @@
 1. 限定实体
 
 1.1 限定实体不相等 (assert (not (= bottle table)))
-1.2 限定实体取值范围 (assert (forall ((x thing)) (or (= x bottle) (= x table))))
+1.2 限定答案谓词对应的实体的取值范围:
+(assert (forall ((x thing)) (=> (top-heavy x) (or (= x bottle) (= x table)))))
+(assert (forall ((x thing)) (=> (uneven x) (or (= x bottle) (= x table)))))
 
 2. 对于溯因推理问题做封闭世界假定
 对于溯因推理问题，问题需要我们根据结果推倒出原因是什么？

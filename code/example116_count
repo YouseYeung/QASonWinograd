@@ -1,0 +1,22 @@
+(declare-sort person)
+(declare-const Beth person)
+(declare-const Sally person)
+(declare-rel notAngryWith (person person))
+(declare-rel countToTen (person))
+(declare-rel apologize (person))
+(declare-rel calmDown (person))
+
+(assert (not (= Beth Sally)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (notAngryWith x y) (or (calmDown x) (apologize y))))))
+
+(assert (forall ((x person)) (= (calmDown x) (countToTen x))))
+
+(assert (= (countToTen Sally) (not (countToTen Beth))))
+(assert (= (apologize Sally) (not (apologize Beth))))
+(assert (= (apologize Sally) (countToTen Beth)))
+
+(assert (not (=> (notAngryWith Beth Sally) (countToTen Beth))))
+;(assert (not (=> (notAngryWith Beth Sally) (apologize Sally))))
+
+(check-sat)

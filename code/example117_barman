@@ -1,0 +1,24 @@
+(declare-sort person)
+(declare-const Jim person)
+(declare-const barman person)
+(declare-const customer person)
+(declare-const waiters person)
+(declare-rel signal (person person))
+(declare-rel hasEmptyGlass (person))
+(declare-rel hasBathroomKey (person))
+
+(assert (not (= Jim barman)))
+
+(assert (forall ((x person)) (= (signal x waiters) (= customer x))))
+(assert (forall ((x person)) (= (= waiters x) (hasBathroomKey x))))
+(assert (forall ((x person)) (= (= customer x) (hasEmptyGlass x))))
+(assert (= barman waiters))
+
+(assert (= (hasEmptyGlass barman) (not (hasEmptyGlass Jim))))
+(assert (= (hasBathroomKey barman) (not (hasBathroomKey Jim))))
+(assert (= (hasBathroomKey barman) (hasEmptyGlass Jim)))
+
+(assert (not (=> (signal Jim barman) (hasEmptyGlass Jim))))
+;(assert (not (=> (signal Jim barman) (hasBathroomKey barman))))
+
+(check-sat)

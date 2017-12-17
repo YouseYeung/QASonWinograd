@@ -1,0 +1,24 @@
+(declare-sort person)
+(declare-sort thing)
+(declare-const Bill person)
+(declare-const John person)
+(declare-const gameboy thing)
+(declare-rel pass (person thing person))
+(declare-rel over (person))
+(declare-rel next (person))
+
+(assert (not (= Bill John)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (pass x gameboy y) (and (over x) (next y))))))
+
+(assert (forall ((x person)) (=> (over x) (or (= x John) (= x Bill)))))
+(assert (forall ((x person)) (=> (next x) (or (= x John) (= x Bill)))))
+(assert (= (over John) (not (over Bill))))
+(assert (= (next John) (not (next Bill))))
+(assert (= (next John) (over Bill)))
+
+;(assert (not (=> (pass Bill gameboy John) (over Bill))))
+(assert (not (=> (pass Bill gameboy John) (next John))))
+
+
+(check-sat)

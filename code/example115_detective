@@ -1,0 +1,18 @@
+(declare-sort person)
+(declare-const Joe person)
+(declare-const detective person)
+(declare-rel receive (person))
+(declare-rel delieve (person))
+
+(assert (not (= Joe detective)))
+
+(assert (forall ((x person))  (=> (= detective x) (and (delieve x) (exists ((y person)) (and (not (= x y)) (receive y)))))))
+
+(assert (= (receive detective) (not (receive Joe))))
+(assert (= (delieve detective) (not (delieve Joe))))
+(assert (= (delieve detective) (receive Joe)))
+
+(assert (not (receive Joe)))
+;(assert (not (delieve detective)))
+
+(check-sat)

@@ -1,0 +1,24 @@
+(declare-sort person)
+(declare-const Tom person)
+(declare-const Ralph person)
+(declare-rel sayCheck (person person))
+(declare-rel take (person))
+(declare-rel move (person))
+(declare-rel hasBishop (person))
+
+(assert (not (= Tom Ralph)))
+
+(assert (forall ((x person)) (= (exists ((y person)) (and (not (= x y)) (sayCheck x y))) (hasBishop x))))
+
+(assert (forall ((x person)) (=> (hasBishop x) (or (exists ((y person)) (and (not (= x y)) (take y))) (move x)))))
+
+(assert (forall ((x person)) (=> (take x) (or (= x Ralph) (= x Tom)))))
+(assert (forall ((x person)) (=> (move x) (or (= x Ralph) (= x Tom)))))
+(assert (= (take Ralph) (not (take Tom))))
+(assert (= (move Ralph) (not (move Tom))))
+(assert (= (move Ralph) (take Tom)))
+
+;(assert (not (=> (sayCheck Tom Ralph) (take Ralph))))
+(assert (not (=> (sayCheck Tom Ralph) (move Tom))))
+
+(check-sat)

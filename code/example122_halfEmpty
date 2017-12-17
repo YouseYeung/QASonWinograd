@@ -1,0 +1,27 @@
+(declare-sort person)
+(declare-sort thing)
+(declare-const Bill person)
+(declare-const John person)
+(declare-const plate thing)
+(declare-rel nonEmpty (thing))
+(declare-rel halfEmpty (thing))
+(declare-rel pass (person thing person))
+(declare-rel full (person))
+(declare-rel hungry (person))
+
+(assert (not (= Bill John)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (pass x plate y) (nonEmpty plate)) (and (full x) (hungry y))))))
+
+(assert (forall ((x thing)) (= (halfEmpty x) (nonEmpty x))))
+
+(assert (forall ((x person)) (=> (full x) (or (= x John) (= x Bill)))))
+(assert (forall ((x person)) (=> (hungry x) (or (= x John) (= x Bill)))))
+(assert (= (full John) (not (full Bill))))
+(assert (= (hungry John) (not (hungry Bill))))
+(assert (= (hungry John) (full Bill)))
+
+;(assert (not (=> (and (pass Bill plate John) (halfEmpty plate)) (full Bill))))
+(assert (not (=> (and (pass Bill plate John) (halfEmpty plate)) (hungry John))))
+
+(check-sat)

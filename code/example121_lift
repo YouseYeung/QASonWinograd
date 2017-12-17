@@ -1,0 +1,24 @@
+(declare-sort person)
+(declare-const Tom person)
+(declare-const Ralph person)
+(declare-rel giveSbLift (person person))
+(declare-rel notWalk (person))
+(declare-rel notDriveAlone (person))
+(declare-rel isDriver (person))
+
+(assert (not (= Tom Ralph)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (giveSbLift x y) (and (isDriver x) (notWalk y))))))
+
+(assert (forall ((x person)) (= (isDriver x) (notDriveAlone x))))
+
+(assert (forall ((x person)) (=> (notWalk x) (or (= x Ralph) (= x Tom)))))
+(assert (forall ((x person)) (=> (notDriveAlone x) (or (= x Ralph) (= x Tom)))))
+(assert (= (notWalk Ralph) (not (notWalk Tom))))
+(assert (= (notDriveAlone Ralph) (not (notDriveAlone Tom))))
+(assert (= (notDriveAlone Ralph) (notWalk Tom)))
+
+;(assert (not (=> (giveSbLift Tom Ralph) (notWalk Ralph))))
+(assert (not (=> (giveSbLift Tom Ralph) (notDriveAlone Tom))))
+
+(check-sat)
