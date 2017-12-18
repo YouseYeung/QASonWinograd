@@ -1,0 +1,30 @@
+(declare-sort person)
+(declare-sort thing)
+(declare-const presidency thing)
+(declare-const Kirilov person)
+(declare-const Shatov person)
+(declare-rel cedeSthTo (person person thing))
+(declare-rel loseSth (person thing))
+(declare-rel getSth (person thing))
+(declare-rel morePopular (person))
+(declare-rel lessPopular (person))
+
+(assert (not (= Kirilov Shatov)))
+(assert (forall ((x person)) (or (= x Kirilov) (= x Shatov))))
+(assert (forall ((x thing)) (= x presidency)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (exists ((z thing)) (=> (cedeSthTo x y z) (and (getSth y z) (loseSth x z)))))))
+
+(assert (forall ((x person)) (=> (exists ((y thing)) (loseSth x y)) (lessPopular x))))
+(assert (forall ((x person)) (=> (exists ((y thing)) (getSth x y)) (morePopular x))))
+
+(assert (forall ((x person)) (=> (lessPopular x) (or (= x Shatov) (= x Kirilov)))))
+(assert (forall ((x person)) (=> (morePopular x) (or (= x Shatov) (= x Kirilov)))))
+(assert (= (morePopular Shatov) (not (morePopular Kirilov))))
+(assert (= (lessPopular Shatov) (not (lessPopular Kirilov))))
+(assert (= (lessPopular Shatov) (morePopular Kirilov)))
+
+(assert (not (=> (cedeSthTo Kirilov Shatov presidency) (lessPopular Kirilov))))
+;(assert (not (=> (cedeSthTo Kirilov Shatov presidency) (morePopular Shatov))))
+
+(check-sat)

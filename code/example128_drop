@@ -1,0 +1,43 @@
+(declare-sort person)
+(declare-sort thing)
+(declare-const Tommy person)
+(declare-const Timmy person)
+(declare-const father person)
+(declare-const sympatheticLook thing)
+(declare-const stemLook thing)
+(declare-const icecream thing)
+(declare-rel give (person person thing))
+(declare-rel drop (person thing))
+(declare-rel giggle (person))
+(declare-rel smile (person))
+(declare-rel unfortuante (person))
+(declare-rel annoying (person))
+
+(assert (not (= Tommy Timmy)))
+(assert (not (= father Tommy)))
+(assert (not (= father Timmy)))
+(assert (forall ((x person)) (or (= x Tommy) (= x Timmy) (= x father))))
+
+(assert (forall ((x person)) (= (exists ((y thing)) (drop x y)) (unfortuante x))))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (unfortuante x) (smile y)) (and (exists ((z person)) (and (not (= z x)) (not (= z y)) (give z x sympatheticLook))) (annoying y))))))
+
+(assert (forall ((x person)) (= (annoying x) (exists ((y person)) (and (not (= x y)) (give y x stemLook))))))
+
+(assert (forall ((x person)) (= (giggle x) (smile x))))
+
+(assert (forall ((x person)) (=> (give father x stemLook) (or (= x Timmy) (= x Tommy)))))
+(assert (forall ((x person)) (=> (give father x sympatheticLook) (or (= x Timmy) (= x Tommy)))))
+
+;限定give谓词只能是father give sb. sth.
+;(assert (forall ((x person)) (= (= x father) (exists ((y person) (z thing)) (give x y z)))))
+
+(assert (= (give father Timmy stemLook) (not (give father Tommy stemLook))))
+(assert (= (give father Timmy sympatheticLook) (not (give father Tommy sympatheticLook))))
+(assert (= (give father Timmy sympatheticLook) (give father Tommy stemLook)))
+
+;(assert (not (=> (and (drop Tommy icecream) (giggle Timmy)) (give father Tommy sympatheticLook))))
+(assert (not (=> (and (drop Tommy icecream) (giggle Timmy)) (give father Timmy stemLook))))
+
+(check-sat)
+(get-model)

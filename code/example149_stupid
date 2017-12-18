@@ -1,0 +1,21 @@
+(declare-sort person)
+(declare-const chatbots person)
+(declare-const judges person)
+(declare-rel notFigureOut (person))
+(declare-rel advanced (person))
+(declare-rel stupid (person))
+
+(assert (not (= chatbots judges)))
+
+(assert (forall ((x person)) (= (notFigureOut x) (stupid x))))
+
+(assert (forall ((x person)) (=> (advanced x) (or (= x judges) (= x chatbots)))))
+(assert (forall ((x person)) (=> (stupid x) (or (= x judges) (= x chatbots)))))
+(assert (= (advanced judges) (not (advanced chatbots))))
+(assert (= (stupid judges) (not (stupid chatbots))))
+(assert (= (stupid judges) (advanced chatbots)))
+
+;(assert (not (=> (notFigureOut judges) (stupid judges))))
+(assert (not (=> (notFigureOut judges) (advanced chatbots))))
+
+(check-sat)

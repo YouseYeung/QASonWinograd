@@ -1,0 +1,25 @@
+(declare-sort person)
+(declare-sort thing)
+(declare-const Jane person)
+(declare-const Joan person)
+(declare-const candy thing)
+(declare-const food thing)
+(declare-rel give (person person thing))
+(declare-rel hungry (person))
+
+(assert (not (= Jane Joan)))
+(assert (forall ((x person)) (or (= x Joan) (= x Jane))))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (give x y food) (and (hungry y) (not (hungry x))))))
+
+(assert (= candy food))
+
+(assert (forall ((x person)) (=> (hungry x) (or (= x Jane) (= x Joan)))))
+(assert (forall ((x person)) (=> (not (hungry x)) (or (= x Jane) (= x Joan)))))
+
+(assert (= (hungry Joan) (not (hungry Jane))))
+
+(assert (not (=> (give Jane Joan candy) (not (hungry Jane)))))
+;(assert (not (=> (give Jane Joan candy) (hungry Joan))))
+
+(check-sat)

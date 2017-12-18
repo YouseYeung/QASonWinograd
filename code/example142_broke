@@ -1,0 +1,28 @@
+(declare-sort thing)
+(declare-sort person)
+(declare-const ButterflyWing thing)
+(declare-const table thing)
+(declare-const heavyBook thing)
+(declare-const I person)
+(declare-rel putOn (person thing thing))
+(declare-rel heavy (thing))
+(declare-rel fragile (thing))
+(declare-rel broke (thing))
+
+(assert (not (= ButterflyWing heavyBook)))
+(assert (forall ((x thing)) (or (= x heavyBook) (= x ButterflyWing))))
+(assert (forall ((x person)) (= x I)))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (and (exists ((z person)) (putOn z x y)) (heavy x)) (broke y)))))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (=> (and (exists ((z person)) (putOn z x y)) (fragile x)) (broke x)))))
+
+(assert (fragile ButterflyWing))
+(assert (heavy heavyBook))
+
+(assert (forall ((x thing)) (=> (broke x) (or (= x ButterflyWing) (= x table)))))
+(assert (= (broke ButterflyWing) (not (broke table))))
+(assert (not (=> (putOn I ButterflyWing table) (broke ButterflyWing))))
+;(assert (not (=> (putOn I heavyBook table) (broke table))))
+
+(check-sat)

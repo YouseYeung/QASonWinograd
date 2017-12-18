@@ -1,0 +1,25 @@
+(declare-sort person)
+(declare-const Alice person)
+(declare-const Jade person)
+(declare-rel spot (person person))
+(declare-rel hasGoodLuck (person))
+(declare-rel obvious (person))
+(declare-rel wearsRedTurban (person))
+
+(assert (not (= Alice Jade)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (or (hasGoodLuck x) (obvious y)) (spot x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (spot x y) (or (hasGoodLuck x) (obvious y))))))
+
+(assert (forall ((x person)) (= (wearsRedTurban x) (obvious x))))
+
+(assert (forall ((x person)) (=> (hasGoodLuck x) (or (= x Jade) (= x Alice)))))
+(assert (forall ((x person)) (=> (wearsRedTurban x) (or (= x Jade) (= x Alice)))))
+(assert (= (hasGoodLuck Jade) (not (hasGoodLuck Alice))))
+(assert (= (wearsRedTurban Jade) (not (wearsRedTurban Alice))))
+(assert (= (wearsRedTurban Jade) (hasGoodLuck Alice)))
+
+(assert (not (=> (spot Alice Jade) (wearsRedTurban Jade))))
+;(assert (not (=> (spot Alice Jade) (hasGoodLuck Alice))))
+
+(check-sat)

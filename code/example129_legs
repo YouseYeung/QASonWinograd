@@ -1,0 +1,27 @@
+(declare-sort person)
+(declare-const Lily person)
+(declare-const Tommy person)
+(declare-rel carryUp (person person))
+(declare-rel legsFloating (person))
+(declare-rel legsWeight-bearing (person))
+(declare-rel legsDangled (person))
+(declare-rel legsAched (person))
+
+(assert (not (= Lily Tommy)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (carryUp x y) (and (legsFloating y) (legsWeight-bearing x))))))
+
+(assert (forall ((x person)) (= (legsFloating x) (legsDangled x))))
+(assert (forall ((x person)) (= (legsWeight-bearing x) (legsAched x))))
+
+(assert (forall ((x person)) (=> (legsDangled x) (or (= x Tommy) (= x Lily)))))
+(assert (forall ((x person)) (=> (legsAched x) (or (= x Tommy) (= x Lily)))))
+
+(assert (= (legsDangled Tommy) (not (legsDangled Lily))))
+(assert (= (legsAched Tommy) (not (legsAched Lily))))
+(assert (= (legsDangled Tommy) (legsAched Lily)))
+
+(assert (not (=> (carryUp Lily Tommy) (legsAched Lily))))
+;(assert (not (=> (carryUp Lily Tommy) (legsWeight-bearing Tommy))))
+
+(check-sat)

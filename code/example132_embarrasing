@@ -1,0 +1,26 @@
+(declare-sort person)
+(declare-const Pam person)
+(declare-const PamParents person)
+(declare-rel find (person person))
+(declare-rel doingSthEmbarrasing (person))
+(declare-rel havingSex (person))
+(declare-rel embarrased (person))
+(declare-rel furious (person))
+
+(assert (not (= Pam PamParents)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (find x y) (doingSthEmbarrasing y)) (and (embarrased y) (furious x))))))
+
+(assert (forall ((x person)) (= (havingSex x) (doingSthEmbarrasing x))))
+
+(assert (forall ((x person)) (=> (embarrased x) (or (= x PamParents) (= x Pam)))))
+(assert (forall ((x person)) (=> (furious x) (or (= x PamParents) (= x Pam)))))
+
+(assert (= (embarrased PamParents) (not (embarrased Pam))))
+(assert (= (furious PamParents) (not (furious Pam))))
+(assert (= (embarrased PamParents) (furious Pam)))
+
+(assert (not (=> (and (find PamParents Pam) (havingSex Pam)) (furious PamParents))))
+;(assert (not (=> (and (find PamParents Pam) (havingSex Pam)) (embarrased Pam))))
+
+(check-sat)

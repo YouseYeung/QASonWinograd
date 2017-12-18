@@ -1,0 +1,26 @@
+(declare-sort thing)
+(declare-sort shape)
+(declare-const lemons thing)
+(declare-const lemonTree thing)
+(declare-const telephonePole thing)
+(declare-const lightBulb thing)
+(declare-fun whatShape (thing) shape)
+(declare-rel looksLike (thing thing))
+(declare-rel sameShapeWith (thing thing))
+
+(assert (not (= lemons lightBulb)))
+(assert (not (= telephonePole lemonTree)))
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (looksLike x y) (sameShapeWith x y)))))
+
+(assert (forall ((x thing) (y thing)) (=> (not (= x y)) (= (sameShapeWith x y) (= (whatShape x) (whatShape y))))))
+
+(assert (= (whatShape telephonePole) (whatShape lemonTree)))
+(assert (= (whatShape lemons) (whatShape lightBulb)))
+(assert (not (= (whatShape lemons) (whatShape lemonTree))))
+
+;(assert (not (looksLike telephonePole lemonTree)))
+(assert (not (looksLike lightBulb lemons)))
+
+(check-sat)
+(get-model)
+

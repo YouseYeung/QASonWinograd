@@ -1,3 +1,7 @@
 1.自动区分人物和物品
 2.谓词是否需要带人物，对物品相关的谓词取消人物实体。
 3.对于每个动词都要把所有与之相关的实体分类出来。sb pass sth to sb.需要解析出三个实体。
+4.对于whose thing did sth?要翻译为thing_did1和thing_did2 即把thing与谓词凑在一起。
+5.对于find sb doing sth，解析为and (find (person peson)) (doing person)
+6.对于give sb sth.解析为give (person person thing) 
+7.对于类比推理需要套用不同的模板。

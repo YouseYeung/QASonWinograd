@@ -1,0 +1,26 @@
+(declare-sort person)
+(declare-const Dan person)
+(declare-const Bill person)
+(declare-rel stop (person person))
+(declare-rel doingSthCrucial (person))
+(declare-rel toyWithInjuredBird (person))
+(declare-rel cruel (person))
+(declare-rel compassionate (person))
+
+(assert (not (= Dan Bill)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (stop x y) (doingSthCrucial y)) (and (cruel y) (compassionate x))))))
+
+(assert (forall ((x person)) (= (toyWithInjuredBird x) (doingSthCrucial x))))
+
+(assert (forall ((x person)) (=> (cruel x) (or (= x Bill) (= x Dan)))))
+(assert (forall ((x person)) (=> (compassionate x) (or (= x Bill) (= x Dan)))))
+
+(assert (= (cruel Bill) (not (cruel Dan))))
+(assert (= (compassionate Bill) (not (compassionate Dan))))
+(assert (= (cruel Bill) (compassionate Dan)))
+
+(assert (not (=> (and (stop Bill Dan) (toyWithInjuredBird Dan)) (compassionate Bill))))
+;(assert (not (=> (and (stop Bill Dan) (toyWithInjuredBird Dan)) (cruel Dan))))
+
+(check-sat)

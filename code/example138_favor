@@ -1,0 +1,23 @@
+(declare-sort person)
+(declare-sort thing)
+(declare-const favor thing)
+(declare-const James person)
+(declare-const Robert person)
+(declare-rel askFor (person person thing))
+(declare-rel refuse (person))
+(declare-rel beRefused (person))
+
+(assert (not (= James Robert)))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (askFor x y favor) (and (refuse y) (beRefused x)))))
+
+(assert (forall ((x person)) (=> (refuse x) (or (= x Robert) (= x James)))))
+(assert (forall ((x person)) (=> (beRefused x) (or (= x Robert) (= x James)))))
+(assert (= (refuse Robert) (not (refuse James))))
+(assert (= (beRefused Robert) (not (beRefused James))))
+(assert (= (beRefused Robert) (refuse James)))
+
+(assert (not (=> (askFor James Robert favor) (beRefused James))))
+;(assert (not (=> (askFor James Robert favor) (refuse Robert))))
+
+(check-sat)

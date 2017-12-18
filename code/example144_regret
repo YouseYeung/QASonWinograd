@@ -1,0 +1,26 @@
+(declare-sort person)
+(declare-const Carol person)
+(declare-const Rebecca person)
+(declare-rel suspect (person person))
+(declare-rel regret (person person))
+(declare-rel doSth (person))
+(declare-rel beSuspectOfDoingSth (person))
+(declare-rel stealWatch (person))
+
+(assert (not (= Carol Rebecca)))
+
+(assert (forall ((x person)) (or (= x Carol) (= x Rebecca))))
+
+(assert (forall ((x person)) (=> (exists ((y person)) (=> (and (suspect x y) (doSth y)) (beSuspectOfDoingSth y))))))
+(assert (forall ((x person)) (=> (exists ((y person)) (=> (and (suspect x y) (doSth y)) (beSuspectOfDoingSth y))))))
+
+(assert (forall ((x person)) (=> (refuse x) (or (= x Rebecca) (= x Carol)))))
+(assert (forall ((x person)) (=> (beRefused x) (or (= x Rebecca) (= x Carol)))))
+(assert (= (refuse Rebecca) (not (refuse Carol))))
+(assert (= (beRefused Rebecca) (not (beRefused Carol))))
+(assert (= (beRefused Rebecca) (refuse Carol)))
+
+(assert (not (=> (askFor Carol Rebecca favor) (beRefused Carol))))
+;(assert (not (=> (askFor Carol Rebecca favor) (refuse Rebecca))))
+
+(check-sat)
