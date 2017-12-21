@@ -1,0 +1,22 @@
+(declare-sort person)
+(declare-const Bob person)
+(declare-const Adam person)
+(declare-rel notHaveSuddenOfGoodLuck (person))
+(declare-rel wayAhead (person))
+(declare-rel win (person))
+(declare-rel lose (person))
+
+(assert (not (= Bob Adam)))
+(assert (forall ((x person)) (or (= x Bob) (= x Adam))))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (=> (and (wayAhead x) (notHaveSuddenOfGoodLuck y)) (and (win x) (lose y))))))
+
+(assert (= (win Bob) (not (win Adam))))
+(assert (= (lose Bob) (not (lose Adam))))
+(assert (= (lose Bob) (win Adam)))
+
+(assert (not (=> (and (wayAhead Bob) (notHaveSuddenOfGoodLuck Adam)) (lose Adam))))
+;(assert (not (=> (and (wayAhead Bob) (notHaveSuddenOfGoodLuck Adam)) (win Bob))))
+
+(check-sat)
+(get-model)

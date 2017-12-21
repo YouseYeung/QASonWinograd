@@ -1,0 +1,24 @@
+(declare-sort person)
+(declare-sort thing)
+(declare-const Susan person)
+(declare-const Ann person)
+(declare-const it (thing))
+(declare-rel know (person thing))
+(declare-rel tell (person person thing))
+
+(assert (not (= Susan Ann)))
+(assert (forall ((x person)) (or (= x Susan) (= x Ann))))
+(assert (forall ((x thing)) (= x it)))
+
+;使用because的时候用这个kb
+;(assert (forall ((x person) (y person)) (=> (not (= x y)) (exists ((z thing)) (=> (tell x y z) (know y z))))))
+;because的时候，tell作为前件
+;(assert (not (=> (tell Ann Susan it) (know Susan it))))
+
+;使用so的时候用这个kb
+(assert (forall ((x person)) (exists ((y person) (z thing)) (=> (know x z) (and (not (= x y)) (tell x y z))))))
+;so的时候，know作为前件
+(assert (not (=> (know Susan it) (tell Susan Ann it))))
+
+(check-sat)
+(get-model)

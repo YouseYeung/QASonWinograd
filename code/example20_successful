@@ -1,0 +1,18 @@
+(declare-sort person)
+(declare-const Pete person)
+(declare-const Martin person)
+(declare-rel envy (person person))
+(declare-rel successful (person))
+
+(assert (not (= Pete Martin)))
+(assert (forall ((x person)) (or (= x Pete) (= x Martin))))
+
+(assert (forall ((x person)) (=> (successful x) (exists ((y person)) (and (not (= x y)) (envy y x))))))
+(assert (forall ((x person)) (=> (exists ((y person)) (and (not (= x y)) (envy y x))) (successful x))))
+
+(assert (= (successful Pete) (not (successful Martin))))
+
+(assert (not (=> (envy Pete Martin) (successful Martin))))
+
+(check-sat)
+(get-model)

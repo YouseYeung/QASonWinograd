@@ -1,0 +1,20 @@
+(declare-sort person)
+(declare-sort thing)
+(declare-const whatTime thing)
+(declare-const Ann person)
+(declare-const Mary person)
+(declare-rel ask (person person thing))
+(declare-rel forget (person thing))
+
+(assert (not (= Ann Mary)))
+(assert (forall ((x person)) (or (= x Ann) (= x Mary))))
+(assert (forall ((x thing)) (= x whatTime)))
+
+(assert (forall ((x person)) (exists ((y thing)) (=> (forget x y) (exists ((z person)) (and (not (= x z)) (ask x z y)))))))
+(assert (forall ((x person)) (exists ((y thing)) (=> (exists ((z person)) (and (not (= x z)) (ask x z y))) (forget x y)))))
+
+(assert (not  (=> (ask Ann Mary whatTime) (forget Ann whatTime))))
+
+
+(check-sat)
+(get-model)

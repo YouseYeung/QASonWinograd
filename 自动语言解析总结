@@ -1,3 +1,11 @@
+翻译工具：sempre
+@inproceedings{berant2013freebase,
+  author = {J. Berant and A. Chou and R. Frostig and P. Liang},
+  booktitle = {Empirical Methods in Natural Language Processing (EMNLP)},
+  title = {Semantic Parsing on {F}reebase from Question-Answer Pairs},
+  year = {2013},
+}
+
 1.自动区分人物和物品
 2.谓词是否需要带人物，对物品相关的谓词取消人物实体。
 3.对于每个动词都要把所有与之相关的实体分类出来。sb pass sth to sb.需要解析出三个实体。
@@ -5,3 +13,7 @@
 5.对于find sb doing sth，解析为and (find (person peson)) (doing person)
 6.对于give sb sth.解析为give (person person thing) 
 7.对于类比推理需要套用不同的模板。
+8.对于because和although，because按照正常KB来分析，although将答案换过来即可。
+9.对于because和so，明确前件和后件，只为kb加入蕴含=>，不加入等价式。详细例子参考例27.
+10.对于比较级，需要一个 二元谓词 youngerThan 和 一元谓词younger。这样比较好解析答案。
+

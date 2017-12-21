@@ -1,0 +1,22 @@
+(declare-sort person)
+(declare-const Joe person)
+(declare-const JoeUncle person)
+(declare-rel beat (person person))
+(declare-rel younger (person person))
+(declare-rel older (person person))
+
+(assert (not (= Joe JoeUncle)))
+(assert (forall ((x person)) (or (= x Joe) (= x JoeUncle))))
+
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (younger x y) (beat x y)))))
+(assert (forall ((x person) (y person)) (=> (not (= x y)) (= (younger x y) (older y x)))))
+
+
+(assert (= (younger Joe JoeUncle) (not (younger JoeUncle Joe))))
+(assert (= (older Joe JoeUncle) (not (older JoeUncle Joe))))
+
+(assert (not (=> (beat Joe JoeUncle) (younger Joe JoeUncle))))
+;(assert (not (=> (beat Joe JoeUncle) (older JoeUncle Joe))))
+
+(check-sat)
+(get-model)
