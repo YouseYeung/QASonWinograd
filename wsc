@@ -1,0 +1,539 @@
+Question:The city councilmen refused the demonstrators a permit because they [feared/advocated] violence. Who [feared/advocated] violence?
+KB:If person A fears violence and person B advocates violence , person A might refuse person B a permit.
+Answers: The city councilmen/the demonstrators.
+
+Question:The trophy doesn't fit into the brown suitcase because it's too [small/large]. What is too [small/large]?   
+KB:If thing A is big and thing B is small, thing A doesn’t fit into thing B.
+Answers:The suitcase/the trophy.
+
+Question:Joan made sure to thank Susan for all the help she had [given/received]. Who had [given/received] help? 
+KB:If B gives help to A or A receives help from B, person A thanks person B. If person B gives help to person A, person A receives help from person B.)
+Answers: Susan/Joan.
+
+Question:Paul tried to call George on the phone, but he wasn't [successful/available]. Who was not [successful/available]? 
+KB: If person A try to call person B, person A might be not successful and person B might be not available.
+Answers: Paul/George
+
+Question:The lawyer asked the witness a question, but he was reluctant to [answer/repeat] it . Who was reluctant to [answer/repeat] the question? 
+KB: If person A asks person B a question, person A might not repeat the question again and person B might not answer the question.
+Answers: The witness/the lawyer.
+
+Question:The delivery truck zoomed by the school bus because it was going so [fast/slow]. What was going so [fast/slow]? 
+KB:If  car A goes so fast and car B goes so slow, car A zooms by car B.
+Answers: The truck/the bus
+
+Question:Frank felt [vindicated/crushed] when his longtime rival Bill revealed that he was the winner of the competition. Who was the winner of the competition? 
+KB:If person B and person A is rival and person B is the winner of the competition, person B will feel vindicated and person A will feel crushed.
+Answers: Frank/Bill
+
+8. The man couldn't lift his son because he was so [weak/heavy]. Who was [weak/heavy]? 
+(KB: If person A is weak and person B is heavy, person A couldn’t lift person B.)
+Answers: The man/the son.
+9. The large ball crashed right through the table because it was made of [steel/styrofoam]. What was made of [steel/styrofoam]? 
+(KB: If thing A is solid and thing B is fragile, thing A can crash right through thing B.  If thing A is made of steel, thing A is solid. If thing A is made of styrofoam, thing A is fragile.)
+Answers: The ball/the table.
+10. John couldn't see the stage with Billy in front of him because he is so [short/tall]. Who is so [short/tall]? 
+(KB: If person A is short and person B is tall, and person B stands in front of person A, person A can’t see something.)
+Answers: John/Billy.
+11. Tom threw his schoolbag down to Ray after he reached the [top/bottom] of the stairs. Who reached the [top/bottom] of the stairs?
+(KB: If  person A is at the top and person B is at the bottom, person A can throw something to person B.) 
+Answers: Tom/Ray.
+12. Although they ran at about the same speed, Sue beat Sally because she had such a [good/bad] start. Who had a [good/bad] start? 
+(KB: If person A has a good start and person B has bad start and person A and person B runs at the same speed, person A beats person B. If person A and person B runs at the same speed, person B and person A runs at the same speed.)
+Answers: Sue/Sally.
+13. The sculpture rolled off the shelf because it wasn't [anchored/level]. What wasn't [anchored/level]? 
+(KB: If thing A isn’t anchored or thing B isn’t level, thing A runs off thing B.)
+Answers: The sculpture/the shelf.
+14. Sam's drawing was hung just above Tina's and it did look much better with another one [below/above] it. Which looked better? (翻译难点：it look better with 如何翻译成KB)
+(KB: don’t need KB)
+Answers: Sam's drawing/Tina's drawing.
+15. Anna did a lot [better/worse] than her good friend Lucy on the test because she had studied so hard. Who studied hard?
+(KB: If person A studies hard, person A does better than person B and person B does worse than person A.) 
+Answers: Anna/Lucy
+16. The firemen arrived [after/before] the police because they were coming from so far away. Who came from far away? 
+(KB: If person A comes from far away, person A comes after person B and person B comes before person A.)
+Answers: The firemen/the police.
+17. Frank was upset with Tom because the toaster he had [bought from/sold to] him didn't work. Who had [bought/sold] the toaster? （难翻译的点：toaster的提取以及toaset与exists量词的对应）
+(KB: If person A is upset with person B, person B does something bad to person A. If something person A bought from person B doesn’t work or something person B sold to person A doesn’t work, person B does something bad to person A..)
+Answers: Frank/Tom.
+18. Jim [yelled at/comforted] Kevin because he was so upset. Who was upset?
+(If person A is upset, person A might do something strange or somebody might comfort person A. If person A yells at person B, person A is doing something strange.) 
+Answers: Jim/Kevin.
+19. The sack of potatoes had been placed [above/below] the bag of flour, so it had to be moved first. What had to be moved first?
+(If thing A is placed above thing B or thing B is placed below thing A,  thing A has to be moved first. )  
+Answers: The sack of potatoes/the bag of flour.
+20. Pete envies Martin [because/although] he is very successful. Who is very successful? 
+(KB: If person A is successful, somebody might envy person A.)
+Answers: Martin/Pete.
+21. I was trying to balance the bottle upside down on the table, but I couldn't do it because it was so [top-heavy/uneven]. What was [top-heavy/uneven]? 
+(KB: If  thing A is top-heavy or thing B is uneven, somebody can’t balance thing A on thing B.)
+Answers: the bottle/the table.
+22. I spread the cloth on the table in order to [protect/display] it. To [protect/display] what? 
+(KB: If somebody spread thing A on thing B, thing A is displayed and thing B is covered by thing A. If thing B is covered by thing A, thing B is protected.)
+Answers: the table/the cloth.
+23. The older students were bullying the younger ones, so we [rescued/punished] them. Whom did we [rescue/punish]? 
+(KB: If person A bully person B, person A does something bad and person B is in danger. If person A is in danger, person A will be rescued. If person A does something bad, person A will be punished.)
+Answers: The younger students/the older students.
+24. I poured water from the bottle into the cup until it was [full/empty]. What was [full/empty]? 
+(KB: If somebody pours something from thing A into thing B, thing A will be empty and thing B will be full.)
+Answers: The cup/the bottle.
+25. Susan knows all about Ann's personal problems because she is [nosy/indiscreet]. Who is [nosy/indiscreet]? 
+(KB: If person A is nosy, person A will know about somebody’s personal problems. If person A is indiscreet, somebody will know about person A’s personal problems.)
+Answers: Susan/Anne.
+26. Sid explained his theory to Mark but he couldn't [convince/understand] him. Who did not [convince/understand] whom? 
+(KB: If person A explains something to person B, person A might not convince person B and person B might not understand person A.)
+Answer Pair A: Sid did not convince Mark/Mark did not convince Sid. 
+Answer Pair B: Sid did not understand Mark/Mark did not understand Sid. 
+Comment: Winograd schema in the broad sense, since the question asks about two pronouns.
+27. Susan knew that Ann's son had been in a car accident, [so/because] she told her about it. Who told the other about the accident? 
+(KB: If person A knows sth, person A might tell sth to somebody. If person A tells person B srth, person B knows sth.)
+Answers: Susan/Ann.
+Comment: There is a large literature on "implicit causality" and "implicit consequentiality" biases (see, for example, (Hartshorne, 2013), (Kehler et al. 2008)), in which a comprehender obtains a preference for the antecedent of a pronoun in a second clause based on the content of the first clause and the connective, before seeing the content of the second clause. These are often associated with "so" and "because". For example seeing:
+
+"Sally frightened Mary because she ..." people interpret "she" as Sally. 
+"Sally loves Mary because she ..." people interpret "she" as Mary. 
+"Sally frightened Mary, so she ..." people interpret "she" as Mary. 
+"Sally loves Mary, so she ..." people interpret "she" as Sally. 
+If there are biases that favor the correct disambiguation in our example here, and if the direction of the biases can be determined purely from linguistic characteristics of the first clause e.g. from the use of the verb "knew", then this is not a valid Winograd schema, because an automated understander could do better than chance on this without employing world knowledge. However, I currently have no reason to think that this is the case.
+
+28. Joe's uncle can still beat him at tennis, even though he is 30 years [older/younger]. Who is [older/younger]? 
+(KB: If person A is younger than person B, person A can beat person B. If person A is older than person B, person B is younger than person A.)
+Answers:Joe's uncle/Joe.
+Comment: Note the following results of Google search (1/9/11).
+
+                          "uncle older"    14,500,000 
+                          "uncle younger"   9,630,000 
+                          "older"         357,000,000 
+                          "younger"        93,000,000
+Thus "uncle" is not particularly associated with "older".
+29. The police left the house and went into the garage, [where/after] they found the murder weapon. Where did they find the murder weapon? 
+(KB: how to add KB for conjunction)
+Answers: In the garage/in the house.
+Comment: "after" is perhaps slightly awkward here. Winograd schema in the broad sense, since there is no ambiguous pronoun.
+
+30. The painting in Mark's living room shows an oak tree. It is to the right of [the bookcase/a house]. What is to the right of [the bookcase/a house]? 
+(KB: I don’t know)
+Answers: The painting/the tree.
+31. There is a gap in the wall. You can see the garden [through/behind] it. You can see the garden [through/behind] what? 
+(KB: see sth through the gap, see sth behind the wall) 
+Answers: The gap/the wall.
+Comment. The syntax of the question is strictly incorrect, but ``[Behind/through] what can you see the garden?'' is almost incomprehensible.
+
+32. The drain is clogged with hair. It has to be [cleaned/removed]. What has to be [cleaned/removed]? 
+(KB: If thing A is clogged with thing B, thing A must be cleaned and thing B must be removed.)
+Answers: The drain/the hair.
+33. My meeting started at 4:00 and I needed to catch the train at 4:30, so there wasn't much time. Luckily, it was [short/delayed], so it worked out. What was [short/delayed]? 
+(KB: )
+Answers: The meeting/the train.
+34. There is a pillar between me and the stage, and I can't [see/see around] it. What can't I [see/see around]? 
+(If thing A is between somebody and thing B, he can’t see thing B or he can’t see around thing A)
+Answers: The stage/the pillar.
+35. They broadcast an announcement, but a subway came into the station and I couldn't [hear/hear over] it. What couldn't I [hear/hear over]? 
+(KB: If somebody broadcast sth, another might not hear it. If there exists a loud, another one might not hear over it. If a subway comes, there exists a loud.)
+Answers: The announcement/the subway.
+36. In the middle of the outdoor concert, the rain started falling, [and/but] it continued until 10. What continued until 10?
+(KB: ) 
+Answers: The rain/the concert.
+37. I used an old rag to clean the knife, and then I put it in the [drawer/trash]. What did I put in the [drawer/trash]?
+(KB: If somebody uses thing A to clean thing B,  thing A is dirty and thing B is cleaned. If thing A is cleaned, thing A will be pushed in the drawer. If thing A is dirty, thing A will be pushed in the trash.)
+Answers: The knife/the rag.
+38. Ann asked Mary what time the library closes, [but/because] she had forgotten. Who had forgotten? 
+(KB: If person A forgets sth, person A might ask sb sth.)
+Answers:Mary/Ann.
+39. I took the water bottle out of the backpack so that it would be [lighter/handy]. What would be [lighter/handy]?
+(KB: If somebody takes thing A out of thing B, thing B will be lighter and thing A will be handy.) 
+Answers: The backpack/the bottle.
+40. I couldn't put the pot on the shelf because it was too [high/tall]. What was too [high/tall]? 
+(KB: If  thing A is tall or thing B is high, somebody can’t put thing A on the thing B.)
+Answers: The shelf/the pot.
+Comment: The Google query ``high pot" gives about 10 times as many pages as ``tall pot" (search 9/8/11) for reasons unconnected with the meanings in this sentence.
+
+41. I'm sure that my map will show this building; it is very [famous/good]. What is [famous/good]? 
+(KB: Building is famous? Map is good?)
+Answers: The building/the map.
+Comment: ``Detailed'' would of course be a better word to describe the map, but it would certainly be Googlable, and probably solvable by selectional restriction. One might suppose that "famous building" would be a more frequent combination than "famous map" but Google search (5/11/2012) suggests the reverse:
+
+"building": 2.2 billion 
+"famous building": 250 million 
+"map": 1.4 billion 
+"famous map": 500 million
+42. Bob paid for Charlie's college education. He is very [generous/grateful]. Who is [generous/grateful]? 
+(KB: If person A pays for thing C and thing C belongs to person B, person A is generous and person B is grateful.)
+Answers: Bob/Charlie.
+43. Bob paid for Charlie's college education, but now Charlie acts as though it never happened. He is very [hurt/ungrateful]. Who is [hurt/ungrateful]? 
+(KB: don’t know)
+Answers: Bob/Charlie
+44. Bob was playing cards with Adam and was way ahead. If Adam hadn't had a sudden run of good luck, he would have [won/lost]. Who would have [won/lost]? 
+(KB: If person A is way head  and person B doesn’t have a sudden run of good luck, person A wins and person B loses.)
+Answers: Bob/Adam.
+45. Adam can't leave work here until Bob arrives to replace him. If Bob had left home for work on time, he would be [here/gone] by this time. Who would be [here/gone]? 
+(KB:??)
+Answers: Bob/Adam
+46. If the con artist has succeeded in fooling Sam, he would have [gotten/lost] a lot of money. Who would have [gotten/lost] the money? 
+(KB:If person A succeed in fooling person B, person A will get benefit and person B will lose benefit. If person A get money, person A will get benefit. If person B will lose money, person B will lose benefit.)
+Answers: The con artist/Sam.
+47. It was a summer afternoon, and the dog was sitting in the middle of the lawn. After a while, it got up and moved to a spot under the tree, because it was [hot/cooler]. What was [hot/cooler]?
+(KB:If somewhere is exposed to the sun in the summer afternoon, it is hot, and  if not exposed it is cool. If 
+Answers: The dog/The spot under the tree.
+Comment: An earlier version of this page omitted "to a spot" in the second sentence, but that was problematic. Thanks to Peter Schueller for discussion.
+
+48. The cat was lying by the mouse hole waiting for the mouse, but it was too [cautious/impatient]. What was too [cautious/impatient]? 
+(If thing A is waiting for its prey, thing A might be impatient or its prey might be cautious. Mouse is cat’s prey.)
+Answers: The mouse/the cat.
+49. Anne gave birth to a daughter last month. She is a very charming [woman/baby]. Who is a very charming [woman/baby]? 
+(KB: If person A gives birth to person B, person A is a woman or person B is a baby.)
+Answers: Anne/Anne's daughter.
+50. Alice tried frantically to stop her daughter from [chatting/barking] at the party, leaving us to wonder why she was behaving so strangely. Who was behaving strangely? 
+(KB: ??)
+Answers: Alice/Alice's daughter.
+51. I saw Jim yelling at some guy in a military uniform with a huge red beard. I don't know [who/why] he was, but he looked very unhappy. Who looked very unhappy? 
+(KB:??)
+Answers: The guy in the uniform/Jim.
+Comment: If you stop the second sentence at "I don't know [who/why] he was" you still have the same ambiguity, but it becomes very difficult to ask the question. "I don't know who who was?'' is perhaps best. Of course, either way there is a reading in which the two ``he'' refer to different people, but it seems to me that that's considerably less preferred.
+
+52. The fish ate the worm. It was [tasty/hungry]. What was [tasty/hungry]? 
+(KB: If thing A eats thing B, thing A is hungry and thing B is tasty.)
+Answers: The worm/the fish.
+53. I was trying to open the lock with the key, but someone had filled the keyhole with chewing gum, and I couldn't get it [in/out]. What couldn't I get [in/out]? 
+(KB: If somebody tries to open the lock with the thing A, he might not get the thing A in. If somebody fills the keyhole with thing B, thing B is in the keyhole. If thing B is in the keyhole, somebody might not get thing B out. )
+Answers: The key/the chewing gum.
+54. The dog chased the cat, which ran up a tree. It waited at the [top/bottom]. Which waited at the [top/bottom]? 
+(KB: If thing A chases thing B and thing B runs up, thing A might waits at the bottom or thing B might waits at the top.)
+Answers: The cat/the dog.
+55. In the storm, the tree fell down and crashed through the roof of my house. Now, I have to get it [removed/repaired]. What has to be [removed/repaired]?
+(KB: If thing A crash through thing B, thing A might be removed and thing B is broken. If thing B is broken, thing B might be repaired.)
+Answers: The tree/the roof.
+56. The customer walked into the bank and stabbed one of the tellers. He was immediately taken to the [emergency room/police station]. Who was taken to the [emergency room/police station]? 
+(KB: If person A stabs person B, person B might be hurt and person A might commit a crime. If person A commits a crime, person A might be taken to the police station. If person A is hurt,  person A might be taken to emergency.) 
+Answers: The teller/the customer.
+57. John was doing research in the library when he heard a man humming and whistling. He was very [annoyed/annoying]. Who was [annoyed/annoying]?
+(KB:When person A hear person B and person B is making noise, person A might be annoyed or person B might be annoying. If person A is humming and whistling, person A is making noise.)
+(If A hear B and B is making noise, A might be annoyed) 
+Answers:John/the hummer.
+58. John was jogging through the park when he saw a man juggling watermelons. He was very [impressed/impressive]. Who was [impressed/impressive]?
+(KB: If person A sees person B doing something, person A might be impressed and person B might be impressive.) 
+Answers: John/the juggler.
+59. Bob collapsed on the sidewalk. Soon he saw Carl coming to help. He was very [ill/concerned]. Who was [ill/concerned]? 
+(KB:If person A collapses, person A is ill. If person B helps person A, person B is concerned. If person A sees person B coming to help, person B helps person A.)
+Answers: Bob/Carl.
+60. Sam and Amy are passionately in love, but Amy's parents are unhappy about it, because they are [snobs/fifteen]. Who are [snobs/fifteen]? 
+(KB: ??)
+Answers: Amy's parents/Sam and Amy.
+61. Mark told Pete many lies about himself, which Pete included in his book. He should have been more [truthful/skeptical]. Who should have been more [truthful/skeptical]? 
+(KB: If person A tells person B lies, person A should be truthful and person B should be skeptical.)
+Answers: Mark/Pete.
+62. Joe has sold his house and bought a new one a few miles away. He will be moving [out of/into] it on Thursday. Which house will he be moving [out of/into]? 
+(KB: If somebody sells his house A and buys a house B, he might move out of house A and move into house B.)
+Answers: The old house/the new house.
+63. Many people start to read Paul's books and can't put them down. They are [gripped/popular] because Paul writes so well. Who or what are [gripped/popular]?
+(KB:  If person A reads thing B, person A might be gripped or thing B might be popular.)
+Answers: The readers/the books.
+Comment: A lot of synonyms for ``gripped" (e.g. ``fascinated") can be resolved by selectional restrictions. ``Gripped" cannot because it is polysemic with physical grasping.
+
+64. Mary took out her flute and played one of her favorite pieces. She has [loved/had] it since she was a child. What has Mary [loved/had] since she was a child? 
+(KB: If thing A is somebody’s favorite, he loves thing A. If somebody takes out thing A, he has thing A.)
+Answers: The piece/the flute.
+65. Sam pulled up a chair to the piano, but it was broken, so he had to [stand/sing] instead. What was broken?
+(KB: If chair is broken, somebody has to stand. If instrument is broken, somebody has to sing. Piano is an instrument.) 
+Answers: The chair/the piano.
+66. Since it was raining, I carried the newspaper [over/in] my backpack to keep it dry. What was I trying to keep dry? 
+(KB: If somebody carries thing A over thing B, thing A is over thing B. If somebody carries thing A in thing B, thing B is over thing A. When it is rainy and thing A is over thing B, thing B is dry.)
+Answers: The backpack/the newspaper.
+Comment: The form of the question is quite far from the text, but there doesn't seem to be a better way to formulate this question.
+
+67. Sara borrowed the book from the library because she needs it for an article she is working on. She [reads/writes] it when she gets home from work. What does Sara [read/write] when she gets home from work?
+(KB:If somebody borrows thing A for thing B, he can reads thing A or can writes thing B.) 
+Answers: The book/the article.
+68. This morning, Joey built a sand castle on the beach, and put a toy flag in the highest tower, but this afternoon [a breeze/the tide] knocked it down. What did the [breeze/tide] knock down? 
+(KB: If thing B is built by sand, tide will knock down thing B. Sand castle is built by sand. If thing A is in a high position,  breeze will knock down thing A. If thing A is in highest tower,  thing A is in a high position.)
+Answers: The flag/the sand castle.
+Comment: Perhaps a little overly delicate.
+
+69. Jane knocked on Susan's door, but there was no answer. She was [out/disappointed]. Who was [out/disappointed]? 
+(KB: If person A knocks on person B’s door and there is no answer, person B might be not at the house or person A might be disappointed. If person B might be not at the house, person B might be out.)
+Answers: Susan/Jane.
+Comment: Note that Jane is also "out" (of the house or room); The disambiguation in this case involves issues of textual coherence. A simplified version is given in #114.
+
+70. Jane knocked on the door, and Susan answered it. She invited her to come [out/in]. Who invited whom? 
+(KB: If person A knock on the door and person B answers it, person A is outside and person B is inside. If person A is outside and person B is inside, person B might invite person A to come in or person A might invite person B to come out.)
+Answers: Jane invited Susan/Susan invited Jane.
+71. Sam took French classes from Adam, because he was [eager/known] to speak it fluently. Who was [eager/known] to speak French fluently? 
+(KB: If person A take classes from person B, person B teaches person A. If person B teaches person A, person A knows less than person B.  If person A knows less than person B, person A is eager to know something and person B is known to know something. Speak french fluently is knowing something. )
+Answers: Sam/Adam.
+72. The path to the lake was blocked, so we couldn't [reach/use] it. What couldn't we [reach/use]? 
+(KB: Path is used to reach somewhere. If path to somewhere is blocked, path can’t be used and somewhere can’t be reached.)
+Answers: The lake/the path.
+73. The sun was covered by a thick cloud all morning, but luckily, by the time the picnic started, it was [gone/out]. What was [gone/out]?
+(KB:  
+Answers: The cloud/the sun.
+74. We went to the lake, because a shark had been seen at the ocean beach, so it was a [dangerous/safer] place to swim. Which was a [dangerous/safer] place to swim? 
+(KB: If something dangerous is at place A, place A is dangerous.Shark is a dangerous thing.) 
+Answers: The beach/the lake.
+75. Sam tried to paint a picture of shepherds with sheep, but they ended up looking more like [dogs/golfers]. What looked like [dogs/golfers]? 
+(KB: If thing A looks like thing B, thing A has the same shape with thing B. Shepherd and golfers are same specie. Sheep and dogs are the same specie. Sheep and shepherd are not same specie. If thing A and thing B are same species, thing A has the same shape with thing B.
+Answers:the sheep/the shepherds.
+Comment: It may be objected that this can be solved using the distance in the semantic hierarchy rather than reasoning about the actual visual appearance. Example 137 below avoids that objection, but is perhaps more difficult for the human reader. In any case, a program that reasons that similar looking objects are apt to be close in the semantic hierarchy is, I would say, solving the problem in a perfectly reasonable way. A program that reasons ignores the "looks like" relation and just reasons, "The referent of an anaphora is likely to be close in a semantic hierarchy to some nearby word in the sentence" is not solving the problem in a reasonable way, and is employing a fragile heuristic that is easily broken by rearranging the sentence. For example, if we reword the above "Sam tried to paint a picture of shepherds with sheep, but they ended up looking to Wilma more like [dogs/golfers]" where this heuristic will in all cases look for a referent semantically close to "Wilma".
+
+76. Mary tucked her daughter Anne into bed, so that she could [sleep/work]. Who is going to [sleep/work]? 
+(KB: If person A tucks person B into bed, person B could sleep. If person A sleeps, person A can’t work.)
+Answers: Anne/Mary.
+77. Fred and Alice had very warm down coats, but they were not [enough/prepared] for the cold in Alaska. Who or what were not [enough/prepared] for the cold? 
+(KB: 
+Answers: The coats/Fred and Alice.
+78. Thomson visited Cooper's grave in 1765. At that date he had been [dead/travelling] for five years. Who had been [dead/travelling] for five years? 
+(KB: If person A visit somewhere, person A might travel. If person A has grave, person A might be dead.)
+Answers: Cooper/Thomson
+79. Jackson was greatly influenced by Arnold, though he lived two centuries [earlier/later]. Who lived [earlier/later]?
+(KB: If person A is influenced by person B, person A lived later and person B lived earlier.) 
+Answers: Arnold/Jackson.
+80. Tom's daughter Eva is engaged to Dr. Stewart, who is his partner. The two [doctors/lovers] have known one another for ten years. Which two people have known one another for ten years? 
+(KB: If person A is engaged to person B, person A and person B are two lovers. If person A is person B’s partner, person A’s profession is the same with person B’s.)
+Answers: Tom and Dr. Stewart / Eva and Dr. Stewart. 
+Comment: Winograd schema in the broad sense, since there is no ambiguous pronoun.
+81. I can't cut that tree down with that axe; it is too [thick/small]. What is too [thick/small]? 
+(KB: If thing B is thick or thing C is small, somebody can’t cut thing B down with thing C.)
+Answers: The tree/the axe.
+82. The foxes are getting in at night and attacking the chickens. I shall have to [guard/kill] them. What do I have to [guard/kill]? 
+(KB: If animal A attacks animal B, animal A is dangerous and animal B is in danger. If animal A is dangerous, person C should kill animal A. If animal A is in danger, person C should guard animal A.)
+Answers: The chickens/the foxes.
+83. The foxes are getting in at night and attacking the chickens. They have gotten very [bold/nervous]. What has gotten [bold/nervous]? 
+(KB: If animal A attacks animal B, animal A is bold and animal B is nervous.) 
+Answers: The foxes/the chickens.
+84. Fred covered his eyes with his hands, because the wind was blowing sand around. He [opened/lowered] them when the wind stopped. What did Fred [open/lower]? 
+(KB: If person A covers thing B with thing C and thing C is in lower position than thing B, thing B is closed and thing C is raised up. Hands is in lower position than eyes. If thing A is closed, person A can open thing A. If thing A is raised up, person A can lower thing A.)
+Answers: His eyes/his hands.
+85. The actress used to be named Terpsichore, but she changed it to Tina a few years ago, because she figured it was [easier/too hard] to pronounce. Which name was [easier/too hard] to pronounce? 
+(KB: If name A is easier to pronounce than name B, sb change name A to name B. If name A is easier to pronounce than name B, name B is harder to pronounce than name A.)
+Answers: Tina/Terpsichore.
+Comment: This question can be answered without seeing the text, just seeing the question and the choice of possible answers. I don't see that this is a defect, but it is certainly an anomaly.
+86. Fred watched TV while George went out to buy groceries. After an hour he got [up/back]. Who got [up/back]? 
+(KB: If person A go out to buy groceries, person A is out. If person A is out, person A could get back. If person A watches TV, he might sit down. If person A might sit down, he could get up.)
+Answers: Fred/George.
+87. Fred was supposed to run the dishwasher, but he put it off, because he wanted to watch TV. But the show turned out to be boring, so he changed his mind and turned it [on/off]. What did Fred turn [on/off]? 
+(KB: If thing A is on, thing A could be turned off. If thing A is off, thing A could be turned on. If person A watches thing B, thing B is on. If person A puts off thing B, thing B is off.) 
+Answers: The dishwasher/the television.
+88. Fred is the only man still alive who remembers my great-grandfather. He [is/was] a remarkable man. Who [is/was] a remarkable man? 
+(KB:
+Answers: Fred/my great-grandfather.
+89. Fred is the only man alive who still remembers my father as an infant. When Fred first saw my father, he was twelve [years/months] old. Who was twelve [years/months] old? 
+(KB: If person A is an infant, his age is less than three years. Twelve years is not less than three years. Twelve months is equal to one year. One year is less than three years.)
+Answers: Fred/my father.
+90. In July, Kamtchatka declared war on Yakutsk. Since Yakutsk's army was much better equipped and ten times larger, they were [victorious/defeated] within weeks. Who was [victorious/defeated] 
+(KB: If region A is stronger,  region A wins. If region A wins, region A is victorious and  not defeated. If region A is better, region A is stronger.)
+Answers: Yakutsk/Kamchatka. 
+Comment: Winograd schema in the broad sense, since with "defeated" there is no plural to serve as referent of "they".
+91. Elizabeth moved her company from Sparta to Troy to save money on taxes; the taxes are much [higher/lower] there. Where are the taxes [higher/lower]? (如何表示出to）
+(KB: If person A moves from place B to place C to do sth, person A do sth in place C. If place C might has lower taxes and place B has higher taxes , person A can save money in place C. If person A save money in place C, person A do sth in place C.)
+Answers: In Sparta/In Troy 
+Comment: Winograd schema in the broad sense, since the ambiguous word is not a pronon.
+92. Esther figures that she will save shipping costs if she builds her factory in Springfield instead of Franklin, because [most/none] of her customers live there. In which town do [most/none] of Esther's customers live? 
+(KB: 
+Answers: Springfield/Franklin. 
+Comment: Winograd schema in the broad sense, since the ambiguous word is not a pronon.
+93. Look! There is a [shark/minnow] swimming right below that duck! It had better get away to safety fast! What needs to get away to safety? 
+(KB:
+Answer Pair A: The shark/The duck. 
+Answer Pair B: The minnow/the duck.
+Comment: The pair of possible answers depends on the choice of words, since the special and alternate words are possible referents. This also occurs in schema #142.
+
+94. There are too many deer in the park, so the park service brought in a small pack of wolves. The population should [increase/decrease] over the next few years. Which population will [increase/decrease]? 
+(KB: If animal A’s prey is animal B, animal A’s population should increase and animal B should decrease. Wolves’s prey is deer.)
+Answers: The wolves/the deer. 
+Comment:Winograd schema in the broad sense, since there is no ambiguous pronoun.
+95. Archaeologists have concluded that humans lived in Laputa 20,000 years ago. They hunted for [deer/evidence] on the river banks. Who hunted for [deer/evidence]? (将答案中的实体与陈述句中的实体一一对应起来。)
+(KB: If person A has concluded sth, person A hunts for evidence. If person A lives many years ago, person A is ancient. If person A is an ancient, person A hunts for animals. If person A hunts for deer, person A hunts for animals.)
+Answers: The prehistoric humans/the archaeologists.
+96. The scientists are studying three species of fish that have recently been found living in the Indian Ocean. They [appeared/began] two years ago. Who or what [appeared/began] two years ago? 
+(KB:If thing A has been found living in some place, thing A might appear some years ago. If thing A is studying sth, thing A might begin some years ago.)
+Answers: The fish/the scientists.
+97. The journalists interviewed the stars of the new movie. They were very [cooperative/persistent], so the interview lasted for a long time. Who was [cooperative/persistent]? 
+(KB: If person A interview person B, person B might be cooperative and person A might be persistent.)
+Answers: The stars/the journalists
+98. The police arrested all of the gang members. They were trying to [run/stop] the drug trade in the neighborhood. Who was trying to [run/stop] the drug trade? 
+(KB: The police is good man. The gang members is bad man. Good man do good things. Bad man do bad things. Run the drug trade is to do bad things. Stop drug trade is to do good things.)
+Answers: The gang/the police.
+Comment: Hopefully the reader is not too cynical.
+99. I put the cake away in the refrigerator. It has a lot of [butter/leftovers] in it. What has a lot of [butter/leftovers]? 
+(KB: Cake has butter. Refrigerator has leftovers)
+Answers: The cake/the refrigerator.
+100. Sam broke both his ankles and he's walking with crutches. But a month or so from now they should be [better/unnecessary]. What should be [better/unnecessary]? 
+(KB: If thing A is broken, thing A is bad. If thing A is a tool, thing A is necessary. If thing A is at state B and after long time, thing A is not at state B. Crutches is a tool. If person A break thing B, thing B is broken.)
+Answers: The ankles/the crutches.
+101. When the sponsors of the bill got to the town hall, they were surprised to find that the room was full of opponents. They were very much in the [majority/minority]. Who were in the [majority/minority]? 
+(KB: If there is full of person A, person A is in the majority.)
+Answers: The opponents /the sponsors.
+102. Everyone really loved the oatmeal cookies; only a few people liked the chocolate chip cookies. Next time, we should make [more/fewer] of them. Which cookie should we make [more/fewer] of, next time?
+(KB: If more people like thing A, thing A should be make more. If less people like thing B, thing B should be make fewer. Everyone loves thing A, everyone likes thing A. Everyone likes thing A, more people likes thing A.  A few people likes thing A, less people likes thing A.)
+Answers: The oatmeal cookies/the chocolate chip.
+103. We had hoped to place copies of our newsletter on all the chairs in the auditorium, but there were simply [not enough / too many] of them. There are [too many/not enough] of what? 
+(KB: If thing A is all, thing A is too many.)
+Answers: chairs/copies of the newsletter.
+104. I stuck a pin through a carrot. When I pulled the pin out, it [left/had] a hole. What [left/had] a hole? 
+(KB: If person A sticks thing A through thing B, thing A might left a hole and thing B might have a hole.)
+Answers: The pin/the carrot. Note: You might think this is Googlable, but in fact, ``pin left a hole" finds two results and ``pin leaves a hole" finds 66, whereas ``pin has a hole" has 11,800 (because of equipment pins, not sewing pins). The phrase "carrot has a hole" has 2 results and "carrot left a hole" has none. (8/17/10)
+105. I couldn't find a spoon, so I tried using a pen to stir my coffee. But that turned out to be a bad idea, because it got full of [ink/coffee]. What got full of [ink/coffee]? 
+(KB: Pen’s content is ink. Coffee’s content is coffee. If person A use thing B to stir thing C, thing B might get full of  thing C’s content and thing C might get full of thing B’s content.)
+Answers:The coffee/the pen.
+Comment: The statistical associations give the backward answer here: ``ink'' is associated with ``pen'' and ``coffee'' is associated with ``coffee''. Of course, a contestant could use a backward rule here: Since the challenge designers have excluded examples where statistics give the right answer, if you find a statistical relation, guess that the answer runs opposite to it. But that seems very risky.
+
+106. Steve follows Fred's example in everything. He [admires/influences] him hugely. Who [admires/influences] whom? 
+(KB: If person A admires person B, person A might follow person B. If person A follow person B, person B influences person A.)
+Answers: Steve admires Fred/Fred influences Steve.
+107. The table won't fit through the doorway because it is too [wide/narrow]. What is too [wide/narrow]? 
+(KB: If thing A is too wide and thing B is too narrow, thing A can’t fit through thing B.)
+Answers: The table/the doorway.
+108. Grace was happy to trade me her sweater for my jacket. She thinks it looks [great/dowdy] on her. What looks [great/dowdy] on Grace? 
+(KB: If person A trades thing B for thing C, person A likes thing C and person A doesn’t like thing B. If person A thinks thing B looks great, person A likes thing B. If person A thinks thing C looks dowdy, person A doesn’t like thing C.)
+Answers: The jacket/the sweater.
+109. Bill thinks that calling attention to himself was rude [to/of] Bert. Who called attention to himself? 
+(KB: 
+Answers: Bill/Bert. 
+Comment: Winograd schema in the broad sense. The essential issue is the subject of "calling" which is not a pronoun.
+110. John [hired/hired himself out to] Bill to take care of him. Who is taking care of whom? 
+(KB: If person A hires person B to take care of him, person B takes care of person A.
+Answers: Bill is taking care of John/John is taking care of Bill. 
+Comment: Winograd schema in the broad sense. The essential issue is the subject of "taking care" which is not a pronoun.
+111. John [promised/ordered] Bill to leave, so an hour later he left. Who left? 
+(KB: If person A promise person B to do thing A, person A will do thing A. If person A order person B to do thing A, person B will do thing A.)
+Answers: John/Bill.
+112. Sam Goodman's biography of the Spartan general Xenophanes conveys a vivid sense of the difficulties he faced in his [childhood/research]. Who faced difficulties? 
+(KB: 
+Answers: Xenophanes/Sam.
+Comment: It is quite possible that "biography" is correlated with "research". But even if that correlation is detected, there is another non-trivial step to realize that the research is associated with the author rather than the subject of the biography.
+
+113. Emma's mother had died long ago, and her [place/education] had been [taken/managed] by an excellent woman as governess. Whose [place/education] had been [taken/managed]? 
+(KB: If person A dies, person A’s place might be taken.)
+Answers: Emma's mother/Emma.
+Comment: The first version is adapted from a sentence in the second paragraph of Jane Austen's Emma. The original is
+
+Her mother had died too long ago for her to have more than an indistinct remembrance of her caresses; and her place had been taken by an excellent woman as governess, who had fallen little short of a mother in affection.
+Note that the original presents two further difficult disambiguation problems, with the second and third "her"'s in the sentence. Winograd schema in the broad sense, since two separated words are replaced.
+114. Jane knocked on Susan's door but she did not [answer/get an answer]. Who did not [answer/get an answer]? 
+(KB: If person A knocks on person B’s door, person A might not get an answer and person B might not answer.)
+Answers: Susan/Jane
+Comment: Simplified version of #69. Like #69, it relies on textual coherence for disambiguation; it is, after all, equally true that Jane did not answer, and that Susan did not get an answer.
+
+115. Joe paid the detective after he [received/delivered] the final report on the case. Who [received/delivered] the final report? 
+(KB: If person A is a detective, person A might delivers report and somebody might receive report from person A.)
+Answers: Joe/the detective.
+116. Beth didn't get angry with Sally, who had cut her off, because she stopped and [counted to ten/apologized]. Who [counted to ten/apologized]? 
+(KB: If person A doesn’t get angry with person B, person B might apologize or person A might calm down. If person A counts to ten, person A might calm down.)
+Answers: Beth/Sally
+117. Jim signaled the barman and gestured toward his [empty glass/bathroom key]. Whose [empty glass/bathroom key]? 
+(KB: If person A signals waiters, person A might be a customer. Barman is a waiter. If person A is a customer, person A might has an empty glass. If person A is a waiter, person A might has a bathroom key.
+Answers: Jim/the barman.
+118. Dan took the rear seat while Bill claimed the front because his "Dibs!" was [quicker/slow]. Whose "Dibs" was [quicker/slow]? 
+(KB:
+Answers: Bill/Dan
+119. Tom said "Check" to Ralph as he [took/moved] his bishop. Whose bishop did Tom [take/move]? 
+(KB: If  person A has a bishop, person A might say “Check” to somebody. If person A has a bishop, person A might moves the bishop or somebody might take the bishop.)
+Answers: Ralph's/Tom's
+120. As Andrea in the crop duster passed over Susan, she could see the landing [strip/gear]. Who could see the landing [strip/gear]? 
+(KB: If person A is in the airplane, person A could see the landing strip. If a airplane is passed over person A , person A could see the landing gear. Crop duster is an airplane.)
+Answers: Andrea/Susan
+121. Tom gave Ralph a lift to school so he wouldn't have to [walk/drive alone]. Who wouldn't have to [walk/drive alone]? 
+(If person A gives person B a lift to someplace, person A is a driver and person B might not have to walk. If person A is a driver, person A might not drive alone.)
+Answers: Ralph/Tom
+122. Bill passed the half-empty plate to John because he was [full/hungry]. Who was [full/hungry]? 
+(KB: If person A pass a non-empty plate to person B, person A is full and person B is hungry. Half-empty plate is a non-empty plate.)
+Answers: Bill/John
+123. Bill passed the gameboy to John because his turn was [over/next]. Whose turn was [over/next]? 
+(KB: If person A passes gameboy to person B, person A’s turn is over and person B’s turn is next.)
+Answers: Bill/John
+124. The man lifted the boy onto his [bunk bed/shoulders]. Whose [bunk bed/shoulders]? 
+(KB: If person A lift person B onto bed, the bed belongs to person B. If person A lift person B onto shoulders, shoulders belong to person A.)
+Answers: The boy's/the man's.
+125. [Patting/Stretching] her back, the woman smiled at the girl. Whose back did the woman [pat/stretch]? 
+(KB: 
+Answers: The girl's/the woman's
+126. Billy cried because Toby wouldn't [share/accept] his toy. Who owned the toy? 
+(KB: If person A does not shares his thing B, person A owns thing B. If person A does not accept thing B, person A does not own thing B. )
+Answers: Toby/Billy
+127. Lily spoke to Donna, breaking her [concentration/silence]. Whose [concentration/silence]? 
+(KB: If person A speaks to person B, person A’s silence is broken and person B’s concentration is broken.)
+Answers: Donna/ Lily
+128. When Tommy dropped his ice cream, Timmy giggled, so father gave him a [stern/sympathetic] look. Who got the look from father? 
+(KB: If person A drop sth, person A is unfortunate. If person A is unfortunate and person B smiles, somebody might give person A a sympathetic look and person B is annoying. If person A is annoying, somebody might give person A a stem look. If person A giggles, person A smiles. )
+Answers: Timmy/Tommy
+129. As Ollie carried Tommy up the long winding steps, his legs [dangled/ached]. Whose legs [dangled/ached]? 
+(KB: If person A’s legs are floating, person A’s legs are dangled. If person A’s legs are weight-bearing, person A’s legs are ached. If person A carries person B up, person B’s legs are floating and person A’s legs are weight-bearing,
+Answers: Tommy/Ollie
+130. The father carried the sleeping boy in his [arms/bassinet]. Whose [arms/bassinet]? 
+(KB: If person A is a baby, person A has a bassinet. If person A carries a baby in his arms,  
+Answers: The father/the boy 
+Comment: The concern has been raised that there may be a statistical association between "sleeping boy" and "bassinet".
+131. The woman held the girl against her [chest/will]. Whose [chest/will]? 
+(KB: If person A holds person B, person B might reject. If person B is against his will, person B is rejecting. If person A holds person B against her chest, chest belongs to person A.)
+Answers: The woman's/the girl's
+132. Pam's parents came home and found her having sex with her boyfriend, Paul. They were [embarrassed/furious] about it. Who were [embarrassed/furious]? 
+(KB: If person A found person B doing sth embarrassing, person A might be furious and person B might be embarrassed. If person A is having sex, person A is doing sth embarrassing.)
+Answers: Pam and Paul/Pam's parents.
+133. Dr. Adams informed Kate that she had [cancer/retired] and presented several options for future treatment. Who had [cancer/retired]? (要解析出Dr.)
+(KB: If person A inform person B sth and person A is a doctor, person B might have illness or person A might have retired.
+Answers: Kate/Dr. Adams
+134. Dan had to stop Bill from toying with the injured bird. He is very [compassionate/cruel]. Who is [compassionate/cruel]? 
+(KB: If person A stop person B doing sth crucial, person A is compassionate and person B is cruel. Toying with the injured bird is sth crucial.)
+Answers: Dan/Bill
+135. George got free tickets to the play, but he gave them to Eric [because/even though] he was [particularly/not particularly] eager to see it. Who [was / was not] eager to see the play? 
+(KB: 
+Answers: 
+"because" & "particularly": Eric. 
+"because" & "not particularly": George 
+"even though" & "particularly": George 
+"even though" & "not particularly": Eric 
+Comment: The format here is non-standard; this is a cross-over, like a two-way light switch. I am a little doubtful about the intelligibility of "even though" with "not particularly", but the rest seem fine to me. David Bender points out that the difficulty in that case may be due to the fact that it is hard to find a motivation for George. Winograd schema in the broad sense.
+136. Jane gave Joan candy because she [was/wasn't] hungry. Who [was/wasn't] hungry? 
+(KB: If person A gives person B food, person A is not hungry and person B is hungry. Candy is food)
+Answers: Joan/Jane.
+Comment: From the interesting collection, Linguistic Problems and Complexities . Similar to the previous example, but more elegant wording.
+
+137. I tried to paint a picture of an orchard, with lemons in the lemon trees, but they came out looking more like [light bulbs / telephone poles]. What looked like [light bulbs / telephone poles]? 
+(KB: If thing A looks like thing B, thing A have the same shape with thing B. Light bulb’s shape is round. Lemon’s shape is round. Lemon tree’s shape is cylindrical. Telephone pole’s shape is cylindrical. )
+Answers: The lemons / the trees
+Comment: Similar to example 75 above, but not solvable by closeness in a semantic hierarchy. However, I am not entirely confident how easy this disambiguation is for the human reader.
+
+138. James asked Robert for a favor but he [refused/was refused]. Who [refused/was refused]? 
+(KB: If person A ask person B for a favor, person A may be refused or person B may refuse.)
+Answers: Robert/James
+139. Kirilov ceded the presidency to Shatov because he was [more/less] popular. Who was [more/less] popular? 
+(KB: If person A cedes sth to person B, person A lose sth and person B get sth. If person A is less popular, person A lose sth. If person B is more popular, person B get sth.)
+Answers: Shatov/Kirilov
+Comment: In (Rahman and Ng, 2012), this example is given with the names Medvedev and Putin. I have changed the names, because with the real names, one can solve the problem by Googling to see which politician is actually more popular.
+
+140. Emma did not pass the ball to Janie although she [was open/saw that she was open]. Who [was open/saw that the other player was open]? 
+(KB:  
+Answers: Janie/Emma
+Comment: Modified from example IV, table 1 in (Rahman and Ng, 2012). The original text is "Emma did not pass the ball to Janie although she [was open/should have]''; however, with ``should have'' this can be disambiguated on syntactic grounds.
+
+141. Joe saw his brother skiing on TV last night but the fool didn't [recognize him/have a coat on] Who is the fool? 
+	(KB: If person A sees person B and person A might not recognize person B, person A is a fool. If person A do sth in low temperature and person A doesn’t have a coat on, person A is a fool. Skiing on TV is doing sth in low temperature.) 
+Answers: Joe/Joe's brother. 
+Comment: From (Lenat 2008). Winograd schema in the broad sense. (The ambiguity is in the noun "fool", not in a pronoun.)
+142. I put the [heavy book/butterfly wing] on the table and it broke. What broke? 
+(KB: If somebody puts thing A on thing B and thing A is heavy, thing B might break.  If somebody puts thing A on thing B and thing A is fragile, thing A might break.Butterfly wing is fragile. Heavy book is heavy.)
+Answer Pair A: The table/The book Answer Pair B: The butterfly wing/The table
+Comment: From (Winograd, 1971). Thanks to Charlie Ortiz for finding this. As in schema #93, the answer pair depends on the choice of words.
+143. Madonna fired her trainer because she [slept with/couldn't stand] her boyfriend. Who [slept with/couldn't stand] whose boyfriend? 
+(KB: 
+Answer: The trainer slept with Madonna's boyfriend / Madonna couldn't stand the trainer's boyfriend.
+Comment: Non-standard form. The first variant, with "slept with", is slightly modified from a headline in People magazine. Note that for both sentences there are four possible answers: [Madonna, trainer] x [Madonna's/trainer's boyfriend]. Note also that the correct interpretation in the first sentence runs counter to default constraints on sleeping with people; by default, one sleeps with one's own boyfriend and not with other people's boyfriends.
+
+144. Carol believed that Rebecca [suspected / regretted] that she had stolen the watch. Who is suspected of stealing the watch? / Who stole the watch? 
+(KB: If person A suspect somebody do sth, somebody might be suspected of doing sth. If person A regrets somebody do sth, person A might doing sth.) 
+Answer: Carol / Rebecca
+145. This book introduced Shakespeare to [Ovid/Goethe]; it was a major influence on his writing. Whose writing was influenced? 
+(KB: 
+Answer: Shakespeare/Goethe 
+Comment: A little too recondite
+146. This book introduced Shakespeare to [Ovid/Goethe]; it was a fine selection of his writing. A fine selection of whose writing? 
+(KB: 
+Answer: Ovid/ Shakespeare 
+147. Alice looked for her friend Jade in the crowd. Since she always [has good luck/wears a red turban], Alice spotted her quickly. Who always [has good luck/wears a red turban] 
+(KB: If  person A has good luck or person B is obvious, person A spots person B quickly. If person A wears a red turban,  person A is obvious.)
+Answer: Alice/Jade
+148. During a game of tag, Ethan [chased/ran from] Luke because he was "it". Who was "it"?
+ (KB: 
+Answer: Ethan/Luke
+149. At the Loebner competition the judges couldn't figure out which respondents were the chatbots because they were so [advanced/stupid]. Who were so [advanced/stupid]?
+ (KB: If  person A is stupid, person A couldn’t figure out sth .)
+Answer: (the chatbots/the judges)

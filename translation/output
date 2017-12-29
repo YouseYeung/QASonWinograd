@@ -1,0 +1,78 @@
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: The city councilmen refused the demonstrators a permit because they feared violence. Who feared violence. {
+    Tokens: [the, city, councilmen, refused, the, demonstrators, a, permit, because, they, feared, violence, ., who, feared, violence, .]
+    Lemmatized tokens: [the, city, councilmen, refuse, the, demonstrator, a, permit, because, they, fear, violence, ., who, fear, violence, .]
+    POS tags: [DT, NN, NN, VBD, DT, NNS, DT, NN, IN, PRP, VBD, NN, ., WP, VBD, NN, .]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [det->0, compound->1], [nsubj->2, dobj->5, advcl->10, punct->12], [], [det->4], [], [det->6], [], [], [dep->7, mark->8, nsubj->9, dobj->11], [], [], [], [dobj->15, punct->16, nsubj->13], [], []]
+  }
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: If person A fears violence and person B advocates violence , person A might refuse person B a permit. {
+    Tokens: [if, person, a, fears, violence, and, person, b, advocates, violence, ,, person, a, might, refuse, person, b, a, permit, .]
+    Lemmatized tokens: [if, person, a, fear, violence, and, person, b, advocate, violence, ,, person, a, might, refuse, person, b, a, permit, .]
+    POS tags: [IN, NN, DT, NNS, NN, CC, NN, NN, NNS, NN, ,, NN, DT, VBD-AUX, VB, NN, NN, DT, NN, .]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [case->0], [], [], [det->2, compound->3, cc->5, conj:and->9], [], [], [], [], [compound->6, compound->7, compound->8, punct->10, appos->11], [], [dep->12], [], [], [iobj->16, nmod:if->1, dobj->18, punct->19, nsubj->4, nsubj->9, aux->13], [], [compound->15], [], [det->17], []]
+  }
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: The trophy doesn't fit into the brown suitcase because it's too small. What is too small. {
+    Tokens: [the, trophy, does, n't, fit, into, the, brown, suitcase, because, it, 's, too, small, ., what, is, too, small, .]
+    Lemmatized tokens: [the, trophy, do, not, fit, into, the, brown, suitcase, because, it, be, too, small, ., what, be, too, small, .]
+    POS tags: [DT, NN, VBD-AUX, RB, VB, IN, DT, JJ, NN, IN, PRP, VBZ, RB, JJ, ., WP, VBD-AUX, RB, JJ, .]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [det->0], [], [], [nsubj->1, aux->2, neg->3, nmod:into->8, advcl->13, punct->14], [], [], [], [case->5, det->6, amod->7], [], [], [], [], [mark->9, nsubj->10, cop->11, advmod->12], [], [], [], [], [advmod->17, punct->19, nsubj->15, cop->16], []]
+  }
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: If thing A is big and thing B is small, thing A doesn’t fit into thing B. {
+    Tokens: [if, thing, a, is, big, and, thing, b, is, small, ,, thing, a, does, n't, fit, into, thing, b.]
+    Lemmatized tokens: [if, thing, a, be, big, and, thing, b, be, small, ,, thing, a, do, not, fit, into, thing, B.]
+    POS tags: [IN, NN, DT, VBD-AUX, JJ, CC, NN, NN, VBD-AUX, JJ, ,, NN, DT, VBD-AUX, RB, VB, IN, NN, NNP]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [dep->2, acl:relcl->7], [], [], [cc->5, conj:and->6], [], [], [cop->3, amod->4, amod->6], [], [mark->0, nsubj->1, cop->8, punct->10, dep->11], [], [acl:relcl->15, dep->12], [], [], [], [nmod:into->18, aux->13, neg->14], [], [], [case->16, compound->17]]
+  }
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: Joan made sure to thank Susan for all the help she had given. Who had given help. {
+    Tokens: [joan, made, sure, to, thank, susan, for, all, the, help, she, had, given, ., who, had, given, help, .]
+    Lemmatized tokens: [Joan, make, sure, to, thank, Susan, for, all, the, help, she, have, give, ., who, have, give, help, .]
+    POS tags: [NNP, VBD, JJ, TO, VB, NNP, IN, PDT, DT, NN, PRP, VBD-AUX, VBN, ., WP, VBD-AUX, VBN, NN, .]
+    NER tags: [PERSON, O, O, O, O, PERSON, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [nsubj->0, xcomp->2, punct->13], [xcomp->4], [], [mark->3, dobj->5], [nmod:for->9], [], [], [], [case->6, det:predet->7, det->8, acl:relcl->12], [], [], [nsubj->10, aux->11], [], [], [], [dobj->17, punct->18, nsubj->14, aux->15], [], []]
+  }
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: If B gives help to A or A receives help from B, person A thanks person B. If person B gives help to person A, person A receives help from person B. {
+    Tokens: [if, b, gives, help, to, a, or, a, receives, help, from, b, ,, person, a, thanks, person, b, ., if, person, b, gives, help, to, person, a, ,, person, a, receives, help, from, person, b.]
+    Lemmatized tokens: [if, b, give, help, to, a, or, a, receive, help, from, b, ,, person, a, thanks, person, b, ., if, person, b, give, help, to, person, a, ,, person, a, receive, help, from, person, B.]
+    POS tags: [IN, NN, VBZ, NN, TO, DT, CC, DT, VBZ, NN, IN, NN, ,, NN, DT, NNS, NN, NN, ., IN, NN, NN, VBZ, NN, TO, NN, NN, ,, NN, DT, VBZ, NN, IN, NN, NNP]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [mark->0, nsubj->1, dobj->3], [dep->4, dep->5, dep->7], [], [cc->6, conj:or->7], [], [], [csubj->2, punct->18, dobj->9, nmod:from->11], [], [], [case->10, punct->12, appos->13], [], [dep->17], [], [], [], [compound->15, compound->16, det->14], [], [], [], [compound->20], [nsubj->21, ccomp->30, mark->19], [nmod:to->26], [], [], [case->24, compound->25, punct->27, appos->28], [], [dep->29], [], [nsubj->23, dobj->31, nmod:from->34], [], [], [], [case->32, compound->33]]
+  }
