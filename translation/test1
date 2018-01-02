@@ -1,0 +1,64 @@
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: The trophy doesn't fit into the brown suitcase because it's too small. {
+    Tokens: [the, trophy, does, n't, fit, into, the, brown, suitcase, because, it, 's, too, small, .]
+    Lemmatized tokens: [the, trophy, do, not, fit, into, the, brown, suitcase, because, it, be, too, small, .]
+    POS tags: [DT, NN, VBD-AUX, RB, VB, IN, DT, JJ, NN, IN, PRP, VBZ, RB, JJ, .]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [det->0], [], [], [nsubj->1, aux->2, neg->3, nmod:into->8, advcl->13, punct->14], [], [], [], [case->5, det->6, amod->7], [], [], [], [], [mark->9, nsubj->10, cop->11, advmod->12], []]
+  }
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: The trophy doesn't fit into the brown suitcase because it's too large. {
+    Tokens: [the, trophy, does, n't, fit, into, the, brown, suitcase, because, it, 's, too, large, .]
+    Lemmatized tokens: [the, trophy, do, not, fit, into, the, brown, suitcase, because, it, be, too, large, .]
+    POS tags: [DT, NN, VBD-AUX, RB, VB, IN, DT, JJ, NN, IN, PRP, VBZ, RB, JJ, .]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [det->0], [], [], [nsubj->1, aux->2, neg->3, nmod:into->8, advcl->13, punct->14], [], [], [], [case->5, det->6, amod->7], [], [], [], [], [mark->9, nsubj->10, cop->11, advmod->12], []]
+  }
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: What is too small {
+    Tokens: [what, is, too, small]
+    Lemmatized tokens: [what, be, too, small]
+    POS tags: [WP, VBD-AUX, RB, JJ]
+    NER tags: [O, O, O, O]
+    NER values: [null, null, null, null]
+    Dependency children: [[], [], [], [nsubj->0, cop->1, advmod->2]]
+  }
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: What is too large {
+    Tokens: [what, is, too, large]
+    Lemmatized tokens: [what, be, too, large]
+    POS tags: [WP, VBD-AUX, RB, JJ]
+    NER tags: [O, O, O, O]
+    NER values: [null, null, null, null]
+    Dependency children: [[], [], [], [nsubj->0, cop->1, advmod->2]]
+  }
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: If thing A is big and thing B is small, thing A doesn’t fit into thing B. {
+    Tokens: [if, thing, a, is, big, and, thing, b, is, small, ,, thing, a, does, n't, fit, into, thing, b.]
+    Lemmatized tokens: [if, thing, a, be, big, and, thing, b, be, small, ,, thing, a, do, not, fit, into, thing, B.]
+    POS tags: [IN, NN, DT, VBD-AUX, JJ, CC, NN, NN, VBD-AUX, JJ, ,, NN, DT, VBD-AUX, RB, VB, IN, NN, NNP]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [dep->2, acl:relcl->7], [], [], [cc->5, conj:and->6], [], [], [cop->3, amod->4, amod->6], [], [mark->0, nsubj->1, cop->8, punct->10, dep->11], [], [acl:relcl->15, dep->12], [], [], [], [nmod:into->18, aux->13, neg->14], [], [], [case->16, compound->17]]
+  }

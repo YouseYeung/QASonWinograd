@@ -1,0 +1,5 @@
+(declare-sort thing)
+(declare-const trophy thing)
+(declare-const brown thing)
+(assert (not (= trophy brown))
+(assert (forall ((x thing)) (or (= x trophy) (= x brown) )))

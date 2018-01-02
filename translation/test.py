@@ -5,7 +5,7 @@ url = 'http://youse-thinkstation-e31:8400/sempre?q='
 print url
 
 fileName = "formatWSC"
-outputFileName = "output"
+outputFileName = "output2"
 ofp = open(outputFileName,'w')
 with open(fileName, 'r') as f:
     startSymbol = "<pre>"
@@ -13,7 +13,7 @@ with open(fileName, 'r') as f:
     while True:
         i = 0
         end = False
-        while i < 2:
+        while i < 1:
             oneLineContent = f.readline()
             if not oneLineContent:
                 end = True
