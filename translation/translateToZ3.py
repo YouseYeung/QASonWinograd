@@ -120,14 +120,72 @@ class translater(object):
             i += 1
         return relatedVerbs
 
-                
-    def translateIntoZ3(self):
+
+    #True for person, False for thing
+    def addDeclareSort(self, valList, thingOrPerson, outputStr):
         declareSort = "(declare-sort "                           # need 1 )
         declareConst = "(declare-const "                         # need 1 )
-        declareRel = "(declare-rel )"                            # need 1 )
+        if not thingOrPerson:
+            outputStr += declareSort + "thing" + ")\n"
+            for val in valList:
+                outputStr += declareConst + val + " thing" + ")\n"
+        else:
+            outputStr += declareSort + "person" + ")\n"
+            for val in valList:
+                outputStr += declareConst + val + " person" + ")\n"
+
+        return outputStr
+
+    def addRules_EntityNotEqual(self, valList, outputStr):
         objectNotEqual = "(assert (not (= "                      # need 2 )
-        objectThingRange = "(assert (forall ((x thing)) (or "    # need 3 )
-        objectPersonRange = "(assert (forall ((x person)) (or "  # need 3 )
+        length = len(valList)
+        i, j = 0, 1
+        while i < length:
+            while j < length:
+                outputStr += objectNotEqual + valList[i] + ' ' + valList[j] + '))\n'
+                j += 1
+            i += 1
+
+        return outputStr
+
+    def addRules_EntityRange(self, valList, thingOrPerson, outputStr):
+        objectThingRange = "(assert (forall ((x thing)) "         # need 3 )
+        objectPersonRange = "(assert (forall ((x person)) "       # need 3 )
+        length = len(valList)
+        if length < 1:
+            return outputStr
+        else:
+            if length == 1:
+                if thingOrPerson:
+                    return outputStr + objectPersonRange + "(= x " + valList[0] + ")))\n"
+                else:
+                    return outputStr + objectThingRange + "(= x " + valList[0] + ")))\n"
+            else:
+                if thingOrPerson:
+                    outputStr += objectPersonRange + "(or "
+                    for thing in valList:
+                        outputStr += '(= x ' + thing + ') '
+                else:
+                    outputStr += objectThingRange +  "(or "
+                    for person in valList:
+                        outputStr += '(= x ' + person + ') '
+                outputStr += ')))\n'
+        return outputStr
+
+    def addDeclareRel(self, valList, outputStr):
+        declareRel = "(declare-rel "                            # need 1 )
+        for verb, relatedNouns in valList.items():
+            outputStr += declareRel + verb + " ("
+            for noun in relatedNouns:
+                if noun[1]:
+                    outputStr += "person "
+                else:
+                    outputStr += "thing "
+            outputStr += "))\n"
+
+        return outputStr
+
+    def translateIntoZ3(self):
         candidateAnswer_thing = []
         candidateAnswer_person = []
         verbs = []
@@ -136,16 +194,16 @@ class translater(object):
         description = self.description
         children = description["Dependency children:"]
         tokens = description["Lemmatized tokens:"]
-        verbs_dict = self.findPersonNoun_Verbs()
+        verbs_nouns = self.findPersonNoun_Verbs()
         i = 0
         for word in tokens:
             #finding nouns
-            if word in verbs_dict.keys():
+            if word in verbs_nouns.keys():
                 relatedNounsIndex = self.findNounsRelatedToVerbs(children[i])
                 j = 0
                 for index in relatedNounsIndex:
                     noun = tokens[index]
-                    personOrNot = verbs_dict[word][j][1]
+                    personOrNot = verbs_nouns[word][j][1]
                     if personOrNot:
                         candidateAnswer_person.append(noun)
                     else:
@@ -153,54 +211,14 @@ class translater(object):
                     j += 1
             i += 1
 
-        print(candidateAnswer_thing)
-        print(candidateAnswer_person)
-        return
-        #adding declare
-        if candidateAnswer_thing != []:
-            output += declareSort + "thing" + ")\n"
-            for val in candidateAnswer_thing:
-                output += declareConst + val + " thing" + ")\n"
-        if candidateAnswer_person != []:
-            output += declareSort + "person" + ")\n"
-            for val in candidateAnswer_person:
-                output += declareConst + val + " person" + ")\n"
-
-        
-        #adding rules
-        #rule_one objects are not the same
-        i = 0
-        j = 1
-        length = len(candidateAnswer_thing)
-        while i < length:
-            while j < length:
-                output += objectNotEqual + candidateAnswer_thing[i] + ' ' + candidateAnswer_thing[j] + '))\n'
-                j += 1
-            i += 1
-      
-        i = 0
-        j = 1
-        length = len(candidateAnswer_person)
-        while i < length:
-            while j < length:
-                output += objectNotEqual + candidateAnswer_person[i] + ' ' + candidateAnswer_person[j] + '))\n'
-                j += 1
-            i += 1
-        
-        
-        #rule_two objects can only be the one that appear in the sentences
-        if candidateAnswer_thing != []:
-            output += objectThingRange
-            for thing in candidateAnswer_thing:
-                output += '(= x ' + thing + ') '
-            output += ')))\n'
-
-        if candidateAnswer_person != []:
-            output += objectPersonRange
-            for person in candidateAnswer_person:
-                output += '(= x ' + person + ')'
-            output += ')))\n'
-        self.output = output
+        output = self.addDeclareSort(candidateAnswer_thing, False, output)
+        output = self.addDeclareSort(candidateAnswer_person, True, output)
+        output = self.addRules_EntityNotEqual(candidateAnswer_thing, output)
+        output = self.addRules_EntityNotEqual(candidateAnswer_person, output)
+        output = self.addRules_EntityRange(candidateAnswer_thing, False, output)
+        output = self.addRules_EntityRange(candidateAnswer_person, True, output)
+        output = self.addDeclareRel(verbs_nouns, output)
+        print output
 
     def writeIntoFile(self, fileName):
         with open(fileName, 'w') as f:
