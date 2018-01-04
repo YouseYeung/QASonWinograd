@@ -94,6 +94,10 @@ class translater(object):
         return res
 
     #finding if there exists a person noun, if there exists, find the related verbs.
+    #return value: [number, list], number for verb's index, list for verb's related nouns
+    #list = [number, boolean, boolean], number for noun's index, 
+    #the first boolean for the symbol marking if the noun a person or not, True for person, False for thing
+    #the second boolean for the symbol marking if the noun is a variable or a constant
     def findPersonNoun_Verbs (self):
         kb = self.kb
         tokens = kb["Lemmatized tokens:"]
@@ -111,11 +115,13 @@ class translater(object):
                 for index in relatedNounsIndex:
                     noun = tokens[index]
                     if noun == 'somebody' or tokens[index - 1] == 'person':
-                        relatedNoun.append([index, True])  # True = person
+                        relatedNoun.append([index, True, True]) 
+                    elif noun == 'something' or tokens[index - 1] == 'thing':
+                        relatedNoun.append([index, False, True])
                     else:
-                        relatedNoun.append([index, False]) # False = thing
+                        relatedNoun.append([index, False, False])
                 
-                relatedVerbs[verb] = relatedNoun
+                relatedVerbs[verb] = [i, relatedNoun]
 
             i += 1
         return relatedVerbs
@@ -139,9 +145,11 @@ class translater(object):
     def addRules_EntityNotEqual(self, valList, outputStr):
         objectNotEqual = "(assert (not (= "                      # need 2 )
         length = len(valList)
-        i, j = 0, 1
+        i = 0
         while i < length:
+            j = i + 1
             while j < length:
+            	print (valList[i], valList[j])
                 outputStr += objectNotEqual + valList[i] + ' ' + valList[j] + '))\n'
                 j += 1
             i += 1
@@ -176,7 +184,7 @@ class translater(object):
         declareRel = "(declare-rel "                            # need 1 )
         for verb, relatedNouns in valList.items():
             outputStr += declareRel + verb + " ("
-            for noun in relatedNouns:
+            for noun in relatedNouns[1]:
                 if noun[1]:
                     outputStr += "person "
                 else:
@@ -184,6 +192,85 @@ class translater(object):
             outputStr += "))\n"
 
         return outputStr
+
+    def addRules_ClosedReasonAssumption(self, verbs, outputStr):
+        #(assert (forall ((x person) (y person)) (=> (not (= x y))
+        # (=> (and (fear x vlc) (advocate y vlc)) (refuse x y)))))
+        #(assert (forall ((x person) (y person)) (=> (not (= x y))
+        # (=> (refuse x y) (and (fear x vlc) (advocate y vlc))))))
+        print verbs
+        headString = "(assert (forall "
+        andEntailmentString = "and"
+        orEntailmentString = "or"
+        kb = self.kb
+        tokens = kb["Lemmatized tokens:"]
+        antecedent = []
+        secedent = []
+        findThen = False
+        for word in tokens:
+            if findThen:
+                if word in verbs.keys():
+                    secedent.append(word)
+            else:
+                if word in verbs.keys():
+                    antecedent.append(word)
+                elif word == 'then':
+                    findThen = True
+        
+        #parsing antecedent
+        outputStr += headString
+        #determine the verb is with one entity or many entities
+        #determine the verb is with another verb or alone
+        #nounMap used to map "person B" to a, or "person C" to b
+        #pronouns used to get a, b, c, and so on
+        nounMap = {}
+        pronouns = []
+        for i in range(26):
+            pronouns.append(chr(ord('a') + i))
+
+        length = len(antecedent)
+        numsOfPronoun = 0
+        preVerb = antecedent[0]
+        #remaining work: 蕴含式子的翻译
+        #only one verb
+        if length == 1:
+            nouns = verbs[preVerb][1]
+            nums = len(nouns)
+            declareNounString = ""
+            for i in range(nums):
+                #nouns[i][2] is a boolean value, if it is true, this noun is a variable, else it is a constant
+                if nouns[i][2]:
+                    #true for person
+                    if nouns[i][1]:
+                        declareNounString += "(" + pronouns[i] + " person) "
+                    #false for thing
+                    else:
+                        declareNounString += "(" + pronouns[i] + " thing) "
+            outputStr += "(" + declareNounString + ") "
+        #two or more verbs
+        else:
+            declareNounString = ""
+            number = 0
+            for verb in antecedent:
+                nouns = verbs[preVerb][1]
+                nums = len(nouns)
+                for i in range(nums):
+                    #nouns[i][2] is a boolean value, if it is true, this noun is a variable, else it is a constant
+                    if nouns[i][2]:
+                        if nouns[i][1]:
+                            declareNounString += "(" + pronouns[number] + " person) "
+                        #false for thing
+                        else:
+                            declareNounString += "(" + pronouns[number] + " thing) "
+                        number += 1
+            outputStr += "(" + declareNounString + ") "
+
+        #parsing secedent
+
+        print antecedent
+        print secedent
+        return outputStr
+
 
     def translateIntoZ3(self):
         candidateAnswer_thing = []
@@ -203,7 +290,7 @@ class translater(object):
                 j = 0
                 for index in relatedNounsIndex:
                     noun = tokens[index]
-                    personOrNot = verbs_nouns[word][j][1]
+                    personOrNot = verbs_nouns[word][1][j][1]
                     if personOrNot:
                         candidateAnswer_person.append(noun)
                     else:
@@ -213,12 +300,13 @@ class translater(object):
 
         output = self.addDeclareSort(candidateAnswer_thing, False, output)
         output = self.addDeclareSort(candidateAnswer_person, True, output)
+        output = self.addDeclareRel(verbs_nouns, output)
         output = self.addRules_EntityNotEqual(candidateAnswer_thing, output)
         output = self.addRules_EntityNotEqual(candidateAnswer_person, output)
         output = self.addRules_EntityRange(candidateAnswer_thing, False, output)
         output = self.addRules_EntityRange(candidateAnswer_person, True, output)
-        output = self.addDeclareRel(verbs_nouns, output)
-        print output
+        output = self.addRules_ClosedReasonAssumption(verbs_nouns, output)
+        self.output = output
 
     def writeIntoFile(self, fileName):
         with open(fileName, 'w') as f:
@@ -228,6 +316,6 @@ test = translater()
 test.load("test1")
 test.findPersonNoun_Verbs()
 test.translateIntoZ3()
-#test.writeIntoFile("test1_output")
+test.writeIntoFile("test1_output")
 
 
