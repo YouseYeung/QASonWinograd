@@ -15,8 +15,9 @@
 (assert (= (small trophy) (not (small suitcase))))
 (assert (= (big trophy) (not (big suitcase))))
 
-;(assert (not (=> (not_fit_into trophy suitcase) (big trophy))))
-(assert (not (=> (not_fit_into trophy suitcase) (small suitcase))))
+(assert (not_fit_into trophy suitcase))
+(assert (not (small trophy)))
+;(assert (not (=> (not_fit_into trophy suitcase) (small suitcase))))
 
 
 (check-sat)

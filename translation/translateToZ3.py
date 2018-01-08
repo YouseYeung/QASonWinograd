@@ -13,6 +13,7 @@ class translater(object):
         self.description = {}
         self.question = {}
         self.kb = {}
+        self.context = []
         self.output = ""
 
     def load(self, fileName):
@@ -23,6 +24,9 @@ class translater(object):
                 content = f.readline()
                 if not content:
                     break
+                if content.find("Example:") != -1:
+                    self.context.append(content[len("Example: "):-3])
+                    continue
 
                 #one \n marking for the end of one data in one question
                 if content == '\n' and lastLine != '\n':
@@ -38,10 +42,10 @@ class translater(object):
                 #two \n marking for the end of one question
                 if content == '\n' and lastLine == '\n':
                     self.translateIntoZ3()
-                    self.writeIntoFile("test1_output")
                     self.kb = {}
                     self.question = {}
                     self.description = {}
+                    self.context = []
 
                 for symbol in self.parsingSymbol:
                     index = content.find(symbol)
@@ -421,7 +425,83 @@ class translater(object):
                     falseSentence = "(and " + falseSentence + ")"
 
                 outputStr += headString + trueSentence + falseSentence + '))\n'
+
         return outputStr
+    
+    def addDescription(self, outputStr):
+        verbNouns = self.findPersonNoun_Verbs(self.description)
+        answerTokens = self.question["Lemmatized tokens:"]
+        descriptionTokens = self.description["Lemmatized tokens:"]
+        headString = "(assert ("
+        for verbName, nouns in verbNouns.items():
+            if verbName not in answerTokens:
+                outputStr += headString + verbName + ' '
+                for noun in nouns[1]:
+                    nounIndex = noun[0]
+                    nounName = descriptionTokens[nounIndex]
+                    outputStr += nounName + ' '
+                outputStr += '))\n'
+
+        
+        return outputStr
+
+
+    def reasoning(self, personNouns, thingNouns, outputStr):
+        question = self.question
+        tokens = question["Lemmatized tokens:"]
+        tags = question["POS tags:"]
+        verb = ""
+        i = 0
+        for tag in tags:
+            if "VB" in tag and "AUX" not in tag:
+                verb = tokens[i]
+            i += 1
+
+        headString = "(assert (not "
+        nounList = []
+        #person answer
+        if "who" in tokens or "whom" in tokens:
+            nounList = personNouns
+        #thing answer
+        else:
+            nounList = thingNouns
+
+        length = len(nounList)
+        i = 0
+        verbNouns = self.findPersonNoun_Verbs(question)
+        answer = ""
+        for verbName, nouns in verbNouns.items():
+            addingNouns = []
+            #find the noun that is variable
+            for noun in nouns[1]:
+                nounIndex = noun[0]
+                tag = tags[nounIndex]
+                if tag == "WP":
+                    addingNouns.append("WP")
+                else:
+                    addingNouns.append(tokens[nounIndex])
+            i = 0
+            for noun in nounList:
+                i += 1
+                verbSentence = "(" + verbName
+                for symbol in addingNouns:
+                    if symbol == "WP":
+                        verbSentence += " " + noun
+                    else:
+                        verbSentence += " " + symbol
+                self.output = outputStr + headString + verbSentence + ')))\n'
+                self.output += "(check-sat)\n"
+                fileName = "testOutput_" + str(i)
+                self.writeIntoFile(fileName)
+                #execute command line verification and get the output
+                #the end char is  '\n', delete it
+                var = os.popen("z3 " +  fileName).read()[:-1]
+                print ("verification result:" + noun + " " + var)
+                if str(var) == "unsat":
+                    answer = noun
+        return answer
+                
+
 
     def translateIntoZ3(self):
         candidateAnswer_thing = []
@@ -472,7 +552,13 @@ class translater(object):
         output = self.addRules_EntityRange(candidateAnswer_person, True, output)
         output = self.addRules_ClosedReasonAssumption(verbs_nouns, output)
         output = self.addRules_OnlyOneAnswer(candidateAnswer_person, candidateAnswer_thing, output)
-        self.output = output + "(check-sat)\n"
+        output = self.addDescription(output)
+        print ("Description" + self.context[0])
+        print ("Added KB" + self.context[1])
+        print ("Question" + self.context[2])
+        answer = self.reasoning(candidateAnswer_person, candidateAnswer_thing, output)
+        print ("Answer is " + answer)
+
 
     def writeIntoFile(self, fileName):
         with open(fileName, 'w') as f:
