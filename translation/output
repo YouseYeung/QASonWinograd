@@ -9,7 +9,7 @@
     POS tags: [DT, NN, NN, VBD, DT, NNS, DT, NN, IN, PRP, VBD, NN, .]
     NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O]
     NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [det->0, compound->1], [nsubj->2, dobj->5, advcl->10, punct->12], [], [det->4], [], [det->6], [], [], [dep->7, mark->8, nsubj->9, dobj->11], [], []]
+    Dependency children: [[], [], [det->0, compound->1], [nsubj->2, dobj->5, iobj->7, advcl->10, punct->12], [], [det->4], [], [det->6], [], [], [dep->7, mark->8, nsubj->9, dobj->11], [], []]
   }
 
   Parser.parse: parse {
@@ -49,7 +49,7 @@
     POS tags: [DT, NN, NN, VBD, DT, NNS, DT, NN, IN, PRP, VBD, NN, .]
     NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O]
     NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [det->0, compound->1], [nsubj->2, dobj->5, advcl->10, punct->12], [], [det->4], [], [det->6], [], [], [dep->7, mark->8, nsubj->9, dobj->11], [], []]
+    Dependency children: [[], [], [det->0, compound->1], [nsubj->2, dobj->5, iobj->7, advcl->10, punct->12], [], [det->4], [], [det->6], [], [], [dep->7, mark->8, nsubj->9, dobj->11], [], []]
   }
 
   Parser.parse: parse {
