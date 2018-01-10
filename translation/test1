@@ -1,38 +1,38 @@
- Parser.parse: parse {
+  Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: The trophy doesn't fit into the brown suitcase because it's too small. {
-    Tokens: [the, trophy, does, n't, fit, into, the, brown, suitcase, because, it, 's, too, small, .]
-    Lemmatized tokens: [the, trophy, do, not, fit, into, the, brown, suitcase, because, it, be, too, small, .]
-    POS tags: [DT, NN, VBD-AUX, RB, VB, IN, DT, JJ, NN, IN, PRP, VBZ, RB, JJ, .]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [det->0], [], [], [nsubj->1, aux->2, neg->3, nmod:into->8, advcl->13, punct->14], [], [], [], [case->5, det->6, amod->7], [], [], [], [], [mark->9, nsubj->10, cop->11, advmod->12], []]
+  Example: The city councilmen refused the demonstrators a permit, because they feared violence. {
+    Tokens: [the, city, councilmen, refused, the, demonstrators, a, permit, ,, because, they, feared, violence, .]
+    Lemmatized tokens: [the, city, councilmen, refuse, the, demonstrator, a, permit, ,, because, they, fear, violence, .]
+    POS tags: [DT, NN, NN, VBD, DT, NNS, DT, NN, ,, IN, PRP, VBD, NN, .]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [det->0, compound->1], [nsubj->2, xcomp->7, punct->8, advcl->11, punct->13], [], [det->4], [], [nsubj->5, det->6], [], [], [], [mark->9, nsubj->10, dobj->12], [], []]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If thing B is big and thing C is small, then thing B doesn’t fit into thing C{
-    Tokens: [if, thing, b, is, big, and, thing, c, is, small, ,, then, thing, b, does, n't, fit, into, thing, c]
-    Lemmatized tokens: [if, thing, b, be, big, and, thing, c, be, small, ,, then, thing, b, do, not, fit, into, thing, c]
-    POS tags: [IN, NN, NN, VBD-AUX, JJ, CC, NN, NN, VBD-AUX, JJ, ,, RB, NN, NN, VBD-AUX, RB, VB, IN, NN, NNP]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, cop->3, cc->5, conj:and->9], [], [], [compound->6], [], [parataxis->16, nsubj->7, cop->8, punct->10], [], [], [], [compound->12], [], [], [neg->15, nmod:into->19, advmod->11, nsubj->13, aux->14], [], [], [case->17, compound->18]]
+  Example: If person B does fear violence, and person C does advocate violence, then person B might refuse person C a permit. {
+    Tokens: [if, person, b, does, fear, violence, ,, and, person, c, does, advocate, violence, ,, then, person, b, might, refuse, person, c, a, permit, .]
+    Lemmatized tokens: [if, person, b, do, fear, violence, ,, and, person, c, do, advocate, violence, ,, then, person, b, might, refuse, person, c, a, permit, .]
+    POS tags: [IN, NN, NN, VBD-AUX, VB, NN, ,, CC, NN, NN, VBD-AUX, VB, NN, ,, RB, NN, NN, VBD-AUX, VB, NN, NN, DT, NN, .]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, aux->3, dobj->5, punct->6, cc->7, conj:and->11], [], [], [], [], [compound->8], [], [nsubj->9, aux->10, dobj->12], [], [], [], [], [compound->15, advmod->14], [], [nsubj->16, aux->17, advcl->4, iobj->20, dobj->22, punct->23, advcl->11, punct->13], [], [compound->19], [], [det->21], []]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: What is too small {
-    Tokens: [what, is, too, small]
-    Lemmatized tokens: [what, be, too, small]
-    POS tags: [WP, VBD-AUX, RB, JJ]
-    NER tags: [O, O, O, O]
-    NER values: [null, null, null, null]
-    Dependency children: [[], [], [], [nsubj->0, cop->1, advmod->2]]
+  Example: Who feared violence {
+    Tokens: [who, feared, violence]
+    Lemmatized tokens: [who, fear, violence]
+    POS tags: [WP, VBD, NN]
+    NER tags: [O, O, O]
+    NER values: [null, null, null]
+    Dependency children: [[], [nsubj->0, dobj->2], []]
   }

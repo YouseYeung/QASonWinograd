@@ -88,15 +88,21 @@ class translater(object):
 
                 lastLine = content
     #return the relation nouns' index
-    def findNounsRelatedToVerbs(self, children):
+    #children are all words' child, child is the specific word's child
+    def findNounsRelatedToVerbs(self, children, child):
         res = []
-        relatedWords = children[1:-1].split(',')
+        relatedWords = child[1:-1].split(',')
         for rep in relatedWords:
-            index = {'subj':rep.find('subj'), 'iobj':rep.find('iobj'), 'dobj':rep.find('dobj'), 'nmod':rep.find('nmod')}
+            index = {'subj':rep.find('subj'), 'iobj':rep.find('iobj'), 'dobj':rep.find('dobj'), 'nmod':rep.find('nmod'), 'xcomp':rep.find('xcomp')}
             for typeOfNoun, index in index.items():
                 if index != -1:
                     indexStart = rep.find('->') + len('->')
                     index = int(rep[indexStart:])
+                    #xcomp is complement for verb, so we have to get more nouns in xcomp word.
+                    if typeOfNoun == 'xcomp':
+                        additiveNounsIndex = self.findNounsRelatedToVerbs(children, children[index])
+                        for i in additiveNounsIndex:
+                            res.append(i)
                     res.append(index)
         return res
 
@@ -117,9 +123,14 @@ class translater(object):
             verb = ""
             if (tags[i].find("VB") != -1 and tags[i].find("AUX") == -1) or tags[i] == "JJ":
                 verb = tokens[i]
+                wordStart = children[i].find("nmod:")
+                if wordStart != -1:
+                    wordStart += len("nmod:")
+                    wordEnd = children[i][wordStart:].find("->")
+                    verb += '_' + children[i][wordStart:wordStart + wordEnd]
             if verb != "":
                 relatedNoun = []
-                relatedNounsIndex = self.findNounsRelatedToVerbs(children[i])
+                relatedNounsIndex = self.findNounsRelatedToVerbs(children, children[i])
                 for index in relatedNounsIndex:
                     noun = tokens[index]
                     if noun == 'somebody' or tokens[index - 1] == 'person':
@@ -189,9 +200,9 @@ class translater(object):
                 outputStr += ')))\n'
         return outputStr
 
-    def addDeclareRel(self, valList, outputStr):
+    def addDeclareRel(self, verbs_nouns, outputStr):
         declareRel = "(declare-rel "                            # need 1 )
-        for verb, relatedNouns in valList.items():
+        for verb, relatedNouns in verbs_nouns.items():
             outputStr += declareRel + verb + " ("
             for noun in relatedNouns[1]:
                 if noun[1]:
@@ -202,8 +213,25 @@ class translater(object):
 
         return outputStr
 
-    def addRules_ClosedReasonAssumption(self, verbs, outputStr):
+    def addRules_ClosedReasonAssumption(self, verbs_nouns, outputStr):
         kb = self.kb
+        tokens = kb["Lemmatized tokens:"]
+        tags = kb["POS tags:"]
+        children = kb["Dependency children:"]
+        length = len(tags)
+        index = 0
+        for i in range(length):
+            if tokens[i] == '.':
+                tempKB = {}
+                tempKB["Lemmatized tokens:"] = tokens[index:i]
+                tempKB["POS tags:"] = tags[index:i]
+                tempKB["Dependency children:"] = children[index:i]
+                index = i + 1
+                outputStr = self.addOneEntailmentSentence(tempKB, verbs_nouns, outputStr)
+
+        return outputStr
+
+    def addOneEntailmentSentence(self, kb, verbs_nouns, outputStr):
         tokens = kb["Lemmatized tokens:"]
         children = kb["Dependency children:"]
         tokensToIndexMap = {}
@@ -212,16 +240,24 @@ class translater(object):
             tokensToIndexMap[token] = i
             i += 1
 
-        antecedent = []
-        secedent = []
+        antecedent = {}
+        secedent = {}
         findThen = False
+
+        #find tokens in verbs_nouns, verbName in verbs_nouns has been combined with jieci, so we have to recover the name of verb
+        verbToken = {}
+        for combinedVerbName, item in verbs_nouns.items():
+            verbIndex = item[0]
+            originalVerbName = tokens[verbIndex]
+            verbToken[originalVerbName] = combinedVerbName
+
         for word in tokens:
             if findThen:
-                if word in verbs.keys():
-                    secedent.append(word)
+                if word in verbToken.keys():
+                    secedent[word] = verbToken[word]
             else:
-                if word in verbs.keys():
-                    antecedent.append(word)
+                if word in verbToken.keys():
+                    antecedent[word] = verbToken[word]
                 elif word == 'then':
                     findThen = True
         #parsing antecedent
@@ -232,6 +268,8 @@ class translater(object):
         pronouns = []
         for i in range(26):
             pronouns.append(chr(ord('a') + i))
+
+        #antecedent is a dict, map original verb name to combined verb name
         def addSentence(antecedent, secedent):
             outputStr = ""
             nounsMap = {}
@@ -245,8 +283,8 @@ class translater(object):
             declareNounString = ""
             number = 0
             #---adding variables declaration
-            for verbName in antecedent:
-                nouns = verbs[verbName][1]
+            for originalVerbName, combinedVerbName in antecedent.items():
+                nouns = verbs_nouns[combinedVerbName][1]
                 nums = len(nouns)
                 for i in range(nums):
                     #nouns[i][2] is a boolean value, if it is true, this noun is a variable, else it is a constant
@@ -304,9 +342,10 @@ class translater(object):
             realitySentence = "(=> "
             def addingReality(verbsInSentence):
                 realitySentence = ""
-                for verbName in verbsInSentence:
-                    if verbName not in addedVerbs:
-                        child = children[tokensToIndexMap[verbName]]
+                for originalVerbName, combinedVerbName in verbsInSentence.items():
+                    verbIndex = tokensToIndexMap[originalVerbName]
+                    if verbIndex not in addedVerbs:
+                        child = children[tokensToIndexMap[originalVerbName]]
                         index = child.find("conj:")
                         anotherVerbName = ""
                         relation = ""
@@ -326,14 +365,16 @@ class translater(object):
                                     break
                             anotherVerbIndex = int(anotherVerbIndex)
                             anotherVerbName = tokens[anotherVerbIndex]
-                            addedVerbs.append(verbName)
-                            addedVerbs.append(anotherVerbName)
+                            addedVerbs.append(tokensToIndexMap[anotherVerbName])
+                            addedVerbs.append(tokensToIndexMap[originalVerbName])
+                            #transform original verb name into combined verb name
+                            anotherVerbName = verbsInSentence[anotherVerbName]
 
                         #---adding sentence for verbs
                         def addVerbSentence(verb):
                             if verb == "":
                                 return ""
-                            nouns = verbs[verb][1]
+                            nouns = verbs_nouns[verb][1]
                             verbStr = "(" + verb + " "
                             for noun in nouns:
                                 #noun[2] is true, then the noun is a var
@@ -356,7 +397,7 @@ class translater(object):
                                     verbStr += tokens[noun[0]]
                             return verbStr + ') '
 
-                        realitySentence += addVerbSentence(verbName)
+                        realitySentence += addVerbSentence(combinedVerbName)
                         realitySentence += addVerbSentence(anotherVerbName)
                         if relation != "":
                             realitySentence += ") "
@@ -368,6 +409,7 @@ class translater(object):
                 realitySentence += ')'
             
             #---adding closed reason assumption
+
 
             return outputStr + realitySentence + '))\n'
 
@@ -389,8 +431,8 @@ class translater(object):
 
         length = len(nounList)
         i = 0
-        verbNouns = self.findVerbsNouns(question)
-        for verbName, nouns in verbNouns.items():
+        verb_nouns = self.findVerbsNouns(question)
+        for verbName, nouns in verb_nouns.items():
             verbSentence = "(" + verbName + " "
             addingNouns = []
             #find the noun that is variable
@@ -431,11 +473,11 @@ class translater(object):
         return outputStr
     
     def addDescription(self, outputStr):
-        verbNouns = self.findVerbsNouns(self.description)
+        verb_nouns = self.findVerbsNouns(self.description)
         answerTokens = self.question["Lemmatized tokens:"]
         descriptionTokens = self.description["Lemmatized tokens:"]
         headString = "(assert ("
-        for verbName, nouns in verbNouns.items():
+        for verbName, nouns in verb_nouns.items():
             if verbName not in answerTokens:
                 outputStr += headString + verbName + ' '
                 for noun in nouns[1]:
@@ -470,9 +512,9 @@ class translater(object):
 
         length = len(nounList)
         i = 0
-        verbNouns = self.findVerbsNouns(question)
+        verbs_nouns = self.findVerbsNouns(question)
         answer = ""
-        for verbName, nouns in verbNouns.items():
+        for verbName, nouns in verbs_nouns.items():
             addingNouns = []
             #find the noun that is variable
             for noun in nouns[1]:
@@ -516,14 +558,23 @@ class translater(object):
         tokens = description["Lemmatized tokens:"]
         verbs_nouns = self.findVerbsNouns(self.kb)
         i = 0
+        #find tokens in verbs_nouns, verbName in verbs_nouns has been combined with jieci, so we have to recover the name of verb
+        verbTokens = {}
+        kbTokens = self.kb["Lemmatized tokens:"]
+        for combinedVerbName, item in verbs_nouns.items():
+            verbIndex = item[0]
+            originalVerbName = kbTokens[verbIndex]
+            verbTokens[originalVerbName] = combinedVerbName
+
         for word in tokens:
             #finding nouns
-            if word in verbs_nouns.keys():
-                relatedNounsIndex = self.findNounsRelatedToVerbs(children[i])
+            if word in verbTokens:
+                relatedNounsIndex = self.findNounsRelatedToVerbs(children, children[i])
                 j = 0
                 for index in relatedNounsIndex:
                     noun = tokens[index]
-                    personOrNot = verbs_nouns[word][1][j][1]
+                    combinedVerbName = verbTokens[word]
+                    personOrNot = verbs_nouns[combinedVerbName][1][j][1]
                     if personOrNot:
                         candidateAnswer_person.append(noun)
                     else:
