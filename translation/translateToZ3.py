@@ -23,6 +23,10 @@ class translater(object):
             while True:
                 content = f.readline()
                 if not content:
+                    #reach the end of wsc problems, then add the parsing result into question and then translate.
+                    if self.parsingResult != {}:
+                        self.question = self.parsingResult
+                        self.translateIntoZ3()
                     break
                 if content.find("Example:") != -1:
                     self.context.append(content[len("Example: "):-3])
@@ -91,7 +95,7 @@ class translater(object):
             index = {'subj':rep.find('subj'), 'iobj':rep.find('iobj'), 'dobj':rep.find('dobj'), 'nmod':rep.find('nmod')}
             for typeOfNoun, index in index.items():
                 if index != -1:
-                    indexStart = index + len(typeOfNoun + '->')
+                    indexStart = rep.find('->') + len('->')
                     index = int(rep[indexStart:])
                     res.append(index)
         return res
@@ -101,17 +105,19 @@ class translater(object):
     #list = [number, boolean, boolean], number for noun's index, 
     #the first boolean for the symbol marking if the noun a person or not, True for person, False for thing
     #the second boolean for the symbol marking if the noun is a variable or a constant
-    def findPersonNoun_Verbs (self, kb):
-        tokens = kb["Lemmatized tokens:"]
-        tags = kb["POS tags:"]
-        children = kb["Dependency children:"]
+    def findVerbsNouns (self, semanticTree):
+        tokens = semanticTree["Lemmatized tokens:"]
+        tags = semanticTree["POS tags:"]
+        children = semanticTree["Dependency children:"]
         length = len(tokens)
         i = 0
         relatedVerbs = {}
         while i < length:
             #find verbs and neglect auxiliary verbs
-            if tags[i].find("VB") != -1 and tags[i].find("AUX") == -1:
+            verb = ""
+            if (tags[i].find("VB") != -1 and tags[i].find("AUX") == -1) or tags[i] == "JJ":
                 verb = tokens[i]
+            if verb != "":
                 relatedNoun = []
                 relatedNounsIndex = self.findNounsRelatedToVerbs(children[i])
                 for index in relatedNounsIndex:
@@ -121,13 +127,15 @@ class translater(object):
                     elif noun == 'something' or tokens[index - 1] == 'thing':
                         relatedNoun.append([index, False, True])
                     else:
-                        relatedNoun.append([index, False, False])
-                
-                relatedVerbs[verb] = [i, relatedNoun]
+                        relatedNoun.append([index, False, False])                
+                #if the verb has related nouns, then add it into the return results
+                if relatedNoun != []:
+                    #sort the related nouns by their index
+                    relatedNoun = sorted(relatedNoun, key = lambda x:x[0], reverse = False)
+                    relatedVerbs[verb] = [i, relatedNoun]
 
             i += 1
         return relatedVerbs
-
 
     #True for person, False for thing
     def addDeclareSort(self, valList, thingOrPerson, outputStr):
@@ -283,7 +291,7 @@ class translater(object):
             if thingLength >= 2:
                 for i in range(thingLength):
                     for j in range(i + 1, thingLength):
-                        valNotEqualStr += "( not (= " + thinsg[i] + ' ' + things[j] + ') '
+                        valNotEqualStr += "( not (= " + things[i] + ' ' + things[j] + ') '
                         notEqualPairs += 1
             #if there exists more than one not equal pair, we should add 'and' to connect them
             if notEqualPairs >= 2:
@@ -369,12 +377,6 @@ class translater(object):
         question = self.question
         tokens = question["Lemmatized tokens:"]
         tags = question["POS tags:"]
-        verb = ""
-        i = 0
-        for tag in tags:
-            if "VB" in tag and "AUX" not in tag:
-                verb = tokens[i]
-            i += 1
 
         headString = "(assert (= "
         nounList = []
@@ -387,7 +389,7 @@ class translater(object):
 
         length = len(nounList)
         i = 0
-        verbNouns = self.findPersonNoun_Verbs(question)
+        verbNouns = self.findVerbsNouns(question)
         for verbName, nouns in verbNouns.items():
             verbSentence = "(" + verbName + " "
             addingNouns = []
@@ -402,7 +404,7 @@ class translater(object):
 
             #substitue the variable noun with the candidate answer noun
             for i in range(length):
-                trueSentence = "(" + verb
+                trueSentence = "(" + verbName
                 for symbol in addingNouns:
                     if symbol == "WP":
                         trueSentence += " " + nounList[i]
@@ -413,7 +415,7 @@ class translater(object):
                 falseSentence = ""
                 for j in range(length):
                     if i != j:
-                        falseSentence += "(not (" + verb
+                        falseSentence += "(not (" + verbName
                         for symbol in addingNouns:
                             if symbol == "WP":
                                 falseSentence += " " + nounList[j]
@@ -429,7 +431,7 @@ class translater(object):
         return outputStr
     
     def addDescription(self, outputStr):
-        verbNouns = self.findPersonNoun_Verbs(self.description)
+        verbNouns = self.findVerbsNouns(self.description)
         answerTokens = self.question["Lemmatized tokens:"]
         descriptionTokens = self.description["Lemmatized tokens:"]
         headString = "(assert ("
@@ -468,7 +470,7 @@ class translater(object):
 
         length = len(nounList)
         i = 0
-        verbNouns = self.findPersonNoun_Verbs(question)
+        verbNouns = self.findVerbsNouns(question)
         answer = ""
         for verbName, nouns in verbNouns.items():
             addingNouns = []
@@ -512,7 +514,7 @@ class translater(object):
         description = self.description
         children = description["Dependency children:"]
         tokens = description["Lemmatized tokens:"]
-        verbs_nouns = self.findPersonNoun_Verbs(self.kb)
+        verbs_nouns = self.findVerbsNouns(self.kb)
         i = 0
         for word in tokens:
             #finding nouns
@@ -553,12 +555,12 @@ class translater(object):
         output = self.addRules_ClosedReasonAssumption(verbs_nouns, output)
         output = self.addRules_OnlyOneAnswer(candidateAnswer_person, candidateAnswer_thing, output)
         output = self.addDescription(output)
+        self.output = output
         print ("Description" + self.context[0])
         print ("Added KB" + self.context[1])
         print ("Question" + self.context[2])
         answer = self.reasoning(candidateAnswer_person, candidateAnswer_thing, output)
-        print ("Answer is " + answer)
-
+        #print ("Answer is " + answer)
 
     def writeIntoFile(self, fileName):
         with open(fileName, 'w') as f:
@@ -566,3 +568,4 @@ class translater(object):
 
 test = translater()
 test.load("test1")
+test.writeIntoFile("test1_output")
