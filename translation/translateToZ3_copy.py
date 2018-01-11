@@ -108,8 +108,7 @@ class translater(object):
         return res
 
     #finding if there exists a person noun, if there exists, find the related verbs.
-    #return value: {number : {string, string, list}, 
-    #number for verb's index, frist string for verb's original name(fit), second string for combined name(fit_into), list for verb's related nouns
+    #return value: [number, list], number for verb's index, list for verb's related nouns
     #list = [number, boolean, boolean], number for noun's index, 
     #the first boolean for the symbol marking if the noun a person or not, True for person, False for thing
     #the second boolean for the symbol marking if the noun is a variable or a constant
@@ -125,12 +124,11 @@ class translater(object):
             verb = ""
             if (tags[i].find("VB") != -1 and tags[i].find("AUX") == -1) or tags[i] == "JJ":
                 verb = tokens[i]
-                prep = ""
                 wordStart = children[i].find("nmod:")
                 if wordStart != -1:
                     wordStart += len("nmod:")
                     wordEnd = children[i][wordStart:].find("->")
-                    prep = children[i][wordStart:wordStart + wordEnd]
+                    verb += '_' + children[i][wordStart:wordStart + wordEnd]
             if verb != "":
                 relatedNoun = []
                 relatedNounsIndex = self.findNounsRelatedToVerbs(children, children[i])
@@ -146,69 +144,68 @@ class translater(object):
                 if relatedNoun != []:
                     #sort the related nouns by their index
                     relatedNoun = sorted(relatedNoun, key = lambda x:x[0], reverse = False)
-                    relatedVerbs[i] = {"originalVerbName":verb, "combinedVerbName":verb + prep, "relatedNouns":relatedNoun}
+                    relatedVerbs[verb] = [i, relatedNoun]
 
             i += 1
         return relatedVerbs
 
     #True for person, False for thing
-    def addDeclareSort(self, nounList, thingOrPerson, outputStr):
+    def addDeclareSort(self, valList, thingOrPerson, outputStr):
         declareSort = "(declare-sort "                           # need 1 )
         declareConst = "(declare-const "                         # need 1 )
         if not thingOrPerson:
             outputStr += declareSort + "thing" + ")\n"
-            for val in nounList:
+            for val in valList:
                 outputStr += declareConst + val + " thing" + ")\n"
         else:
             outputStr += declareSort + "person" + ")\n"
-            for val in nounList:
+            for val in valList:
                 outputStr += declareConst + val + " person" + ")\n"
 
         return outputStr
 
-    def addRules_EntityNotEqual(self, nounList, outputStr):
+    def addRules_EntityNotEqual(self, valList, outputStr):
         objectNotEqual = "(assert (not (= "                      # need 2 )
-        length = len(nounList)
+        length = len(valList)
         i = 0
         while i < length:
             j = i + 1
             while j < length:
-                outputStr += objectNotEqual + nounList[i] + ' ' + nounList[j] + ')))\n'
+                outputStr += objectNotEqual + valList[i] + ' ' + valList[j] + ')))\n'
                 j += 1
             i += 1
 
         return outputStr
 
-    def addRules_EntityRange(self, nounList, thingOrPerson, outputStr):
+    def addRules_EntityRange(self, valList, thingOrPerson, outputStr):
         objectThingRange = "(assert (forall ((x thing)) "         # need 3 )
         objectPersonRange = "(assert (forall ((x person)) "       # need 3 )
-        length = len(nounList)
+        length = len(valList)
         if length < 1:
             return outputStr
         else:
             if length == 1:
                 if thingOrPerson:
-                    return outputStr + objectPersonRange + "(= x " + nounList[0] + ")))\n"
+                    return outputStr + objectPersonRange + "(= x " + valList[0] + ")))\n"
                 else:
-                    return outputStr + objectThingRange + "(= x " + nounList[0] + ")))\n"
+                    return outputStr + objectThingRange + "(= x " + valList[0] + ")))\n"
             else:
                 if thingOrPerson:
                     outputStr += objectPersonRange + "(or "
-                    for thing in nounList:
+                    for thing in valList:
                         outputStr += '(= x ' + thing + ') '
                 else:
                     outputStr += objectThingRange +  "(or "
-                    for person in nounList:
+                    for person in valList:
                         outputStr += '(= x ' + person + ') '
                 outputStr += ')))\n'
         return outputStr
 
-    #verbInfo: {number : {string, string, list}
-    def addDeclareRel(self, verbInfo, outputStr):
+    def addDeclareRel(self, verbs_nouns, outputStr):
         declareRel = "(declare-rel "                            # need 1 )
-        for verbIndex, relatedInfo in verbInfo.items():
-            outputStr += declareRel + relatedInfo["combinedVerbName"] + " ("
-            for noun in relatedInfo["relatedNouns"]:
+        for verb, relatedNouns in verbs_nouns.items():
+            outputStr += declareRel + verb + " ("
+            for noun in relatedNouns[1]:
                 if noun[1]:
                     outputStr += "person "
                 else:
@@ -516,12 +513,12 @@ class translater(object):
 
         length = len(nounList)
         i = 0
-        verbs = self.findVerbsNouns(question)
+        verbs_nouns = self.findVerbsNouns(question)
         answer = ""
-        for verbIndex, verbInfo in verbs.items():
+        for verbName, nouns in verbs_nouns.items():
             addingNouns = []
             #find the noun that is variable
-            for noun in verbInfo["relatedNouns"]:
+            for noun in nouns[1]:
                 nounIndex = noun[0]
                 tag = tags[nounIndex]
                 if tag == "WP":
@@ -531,7 +528,7 @@ class translater(object):
             i = 0
             for noun in nounList:
                 i += 1
-                verbSentence = "(" + verbInfo["combinedVerbName"]
+                verbSentence = "(" + verbName
                 for symbol in addingNouns:
                     if symbol == "WP":
                         verbSentence += " " + noun
@@ -560,30 +557,34 @@ class translater(object):
         description = self.description
         children = description["Dependency children:"]
         tokens = description["Lemmatized tokens:"]
-        verbs = self.findVerbsNouns(self.kb)
+        verbs_nouns = self.findVerbsNouns(self.kb)
         i = 0
+        #find tokens in verbs_nouns, verbName in verbs_nouns has been combined with jieci, so we have to recover the name of verb
         verbTokens = {}
-        for verbIndex, info in verbs.items():
-            verbTokens[info["originalVerbName"]] = verbIndex 
-        #find nouns in the description
+        kbTokens = self.kb["Lemmatized tokens:"]
+        for combinedVerbName, item in verbs_nouns.items():
+            verbIndex = item[0]
+            originalVerbName = kbTokens[verbIndex]
+            verbTokens[originalVerbName] = combinedVerbName
+
         for word in tokens:
             #finding nouns
-            if word in verbTokens.keys():
+            if word in verbTokens:
                 relatedNounsIndex = self.findNounsRelatedToVerbs(children, children[i])
                 j = 0
                 for index in relatedNounsIndex:
                     noun = tokens[index]
-                    verbIndex = verbTokens[word]
-                    personOrNot = verbs[verbIndex]["relatedNouns"][j][1]
+                    combinedVerbName = verbTokens[word]
+                    personOrNot = verbs_nouns[combinedVerbName][1][j][1]
                     if personOrNot:
                         candidateAnswer_person.append(noun)
                     else:
                         candidateAnswer_thing.append(noun)
                     j += 1
             i += 1
-        #find nouns in the kb
-        for verbIndex, verbInfo in verbs.items():
-            for noun in verbInfo["relatedNouns"]:
+
+        for _, nouns in verbs_nouns.items():
+            for noun in nouns[1]:
                 nounIndex = noun[0]
                 nounName = self.kb['Lemmatized tokens:'][nounIndex]
                 #if noun is not a variable
@@ -598,14 +599,14 @@ class translater(object):
 
         output = self.addDeclareSort(candidateAnswer_thing, False, output)
         output = self.addDeclareSort(candidateAnswer_person, True, output)
-        output = self.addDeclareRel(verbs, output)
+        output = self.addDeclareRel(verbs_nouns, output)
         output = self.addRules_EntityNotEqual(candidateAnswer_thing, output)
         output = self.addRules_EntityNotEqual(candidateAnswer_person, output)
         output = self.addRules_EntityRange(candidateAnswer_thing, False, output)
         output = self.addRules_EntityRange(candidateAnswer_person, True, output)
-        #output = self.addRules_ClosedReasonAssumption(verbs_nouns, output)
-        #output = self.addRules_OnlyOneAnswer(candidateAnswer_person, candidateAnswer_thing, output)
-        #output = self.addDescription(output)
+        output = self.addRules_ClosedReasonAssumption(verbs_nouns, output)
+        output = self.addRules_OnlyOneAnswer(candidateAnswer_person, candidateAnswer_thing, output)
+        output = self.addDescription(output)
         self.output = output
         print ("Description" + self.context[0])
         print ("Added KB" + self.context[1])
