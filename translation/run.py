@@ -5,7 +5,7 @@ url = 'http://youse-thinkstation-e31:8400/sempre?q='
 print url
 
 fileName = "formatWSC"
-outputFileName = "output2"
+outputFileName = "output"
 ofp = open(outputFileName,'w')
 with open(fileName, 'r') as f:
     startSymbol = "<pre>"
@@ -13,9 +13,10 @@ with open(fileName, 'r') as f:
     while True:
         i = 0
         end = False
-        while i < 1:
-            oneLineContent = f.readline()
-            if not oneLineContent:
+        while i < 3:
+            oneLineContent= f.readline()
+            contentList = [oneLineContent]
+            if oneLineContent == "":
                 end = True
                 break
             index = oneLineContent.find('?')
@@ -24,10 +25,14 @@ with open(fileName, 'r') as f:
             if oneLineContent == '\n':
                 ofp.write('\n')
                 continue
-            content = requests.get(url + oneLineContent).content
-            startPos = content.find(startSymbol)
-            endPos = content.find(endSymbol)
-            ofp.write(content[startPos + 5:endPos])
+            if i == 1:
+                contentList = oneLineContent.split('. ')
+            for content in contentList:
+                content = content.strip()
+                content = requests.get(url + content).content
+                startPos = content.find(startSymbol)
+                endPos = content.find(endSymbol)
+                ofp.write(content[startPos + 5:endPos])
             i += 1
         if end:
             break
