@@ -2,37 +2,37 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: Paul tried to call George on the phone, but he wasn't successful. {
-    Tokens: [paul, tried, to, call, george, on, the, phone, ,, but, he, was, n't, successful, .]
-    Lemmatized tokens: [Paul, try, to, call, George, on, the, phone, ,, but, he, be, not, successful, .]
-    POS tags: [NNP, VBD, TO, VB, NNP, IN, DT, NN, ,, CC, PRP, VBD-AUX, RB, JJ, .]
-    NER tags: [PERSON, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [nsubj->0, xcomp->3, punct->8, cc->9, conj:but->13, punct->14], [], [mark->2, dobj->4], [nmod:on->7], [], [], [case->5, det->6], [], [], [], [], [], [nsubj->10, cop->11, neg->12], []]
+  Example: The man couldn't lift his son because he was so weak. {
+    Tokens: [the, man, could, n't, lift, his, son, because, he, was, so, weak, .]
+    Lemmatized tokens: [the, man, could, not, lift, he, son, because, he, be, so, weak, .]
+    POS tags: [DT, NN, VBD-AUX, RB, VB, PRP$, NN, IN, PRP, VBD-AUX, RB, JJ, .]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [det->0], [], [], [nsubj->1, aux->2, neg->3, dobj->6, advcl->11, punct->12], [], [nmod:poss->5], [], [], [], [], [mark->7, nsubj->8, cop->9, advmod->10], []]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B does try to call person C , then person B might be not successful and person C might be not available. {
-    Tokens: [if, person, b, does, try, to, call, person, c, ,, then, person, b, might, be, not, successful, and, person, c, might, be, not, available, .]
-    Lemmatized tokens: [if, person, b, do, try, to, call, person, c, ,, then, person, b, might, be, not, successful, and, person, c, might, be, not, available, .]
-    POS tags: [IN, NN, NN, VBD-AUX, VB, TO, VB, NN, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, RB, JJ, CC, NN, NN, VBD-AUX, VBD-AUX, RB, JJ, .]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, aux->3, xcomp->6], [], [mark->5, dobj->8], [], [compound->7], [], [], [], [compound->11], [], [], [], [neg->15, cc->17, advcl->4, conj:and->23, punct->24, punct->9, advmod->10, nsubj->12, aux->13, cop->14], [], [], [compound->18], [], [], [], [nsubj->19, aux->20, cop->21, neg->22], []]
+  Example: If person B is weak, and person C is heavy, then person B couldn’t lift person C . {
+    Tokens: [if, person, b, is, weak, ,, and, person, c, is, heavy, ,, then, person, b, could, n't, lift, person, c, .]
+    Lemmatized tokens: [if, person, b, be, weak, ,, and, person, c, be, heavy, ,, then, person, b, could, not, lift, person, c, .]
+    POS tags: [IN, NN, NN, VBD-AUX, JJ, ,, CC, NN, NN, VBD-AUX, JJ, ,, RB, NN, NN, VBD-AUX, RB, VB, NN, NN, .]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, cop->3, punct->5, cc->6, conj:and->10], [], [], [], [compound->7], [], [nsubj->8, cop->9], [], [], [], [advmod->12, compound->13], [], [], [aux->15, neg->16, dobj->19, advcl->4, punct->20, advcl->10, punct->11, nsubj->14], [], [compound->18], []]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: Who was not successful {
-    Tokens: [who, was, not, successful]
-    Lemmatized tokens: [who, be, not, successful]
-    POS tags: [WP, VBD-AUX, RB, JJ]
-    NER tags: [O, O, O, O]
-    NER values: [null, null, null, null]
-    Dependency children: [[], [], [], [nsubj->0, cop->1, neg->2]]
+  Example: Who was weak {
+    Tokens: [who, was, weak]
+    Lemmatized tokens: [who, be, weak]
+    POS tags: [WP, VBD-AUX, JJ]
+    NER tags: [O, O, O]
+    NER values: [null, null, null]
+    Dependency children: [[], [], [nsubj->0, cop->1]]
   }

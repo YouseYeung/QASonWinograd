@@ -130,6 +130,12 @@ class translater(object):
             #find verbs and neglect auxiliary verbs
             verb = ""
             if (tags[i].find("VB") != -1 and tags[i].find("AUX") == -1) or tags[i] == "JJ":
+                #judge whether there exists a "be" before JJ
+                if tags[i] == "JJ":
+                    #if there exists no "be", pass this JJ
+                    if children[i].find("cop") == -1:
+                        i += 1
+                        continue
                 verb = tokens[i]
                 prep = ""
                 #combine verb and prep to get a combination form of verb
@@ -264,7 +270,6 @@ class translater(object):
 
     def addRules_ClosedReasonAssumption(self, kbList, verbList, outputStr):
         for i in range(len(kbList)):
-            print verbList
             outputStr = self.addOneEntailmentSentence(kbList[i], verbList[i], outputStr)
         return outputStr
 
@@ -621,12 +626,17 @@ class translater(object):
             for verbIndex, info in verbs.items():
                 verbTokens[info["originalVerbName"]] = verbIndex 
             #find nouns in the description
+            descriptionVerbInfo = self.findVerbsNouns(self.description)
+            verbNameToIndexMap = {}
+            for index, info in descriptionVerbInfo.items():
+                verbNameToIndexMap[info["originalVerbName"]] = index
             for word in tokens:
                 #finding nouns
                 if word in verbTokens.keys():
-                    relatedNounsIndex = self.findNounsRelatedToVerbs(tags, children, children[i])
+                    relatedNouns = descriptionVerbInfo[verbNameToIndexMap[word]]["relatedNouns"]
                     j = 0
-                    for index in relatedNounsIndex:
+                    for nounInfo in relatedNouns:
+                        index = nounInfo[0]
                         noun = tokens[index]
                         verbIndex = verbTokens[word]
                         personOrNot = verbs[verbIndex]["relatedNouns"][j][1]
