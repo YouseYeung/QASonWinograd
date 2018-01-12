@@ -90,7 +90,7 @@ class translater(object):
                 lastLine = content
     #return the relation nouns' index
     #children are all words' child, child is the specific word's child
-    def findNounsRelatedToVerbs(self, children, child):
+    def findNounsRelatedToVerbs(self, tags, children, child):
         res = []
         relatedWords = child[1:-1].split(',')
         for rep in relatedWords:
@@ -102,10 +102,14 @@ class translater(object):
                     index = int(rep[indexStart:])
                     #xcomp is complement for verb, so we have to get more nouns in xcomp word.
                     if _type == 'xcomp':
-                        additiveNounsIndex = self.findNounsRelatedToVerbs(children, children[index])
-                        for i in additiveNounsIndex:
-                            res.append(i)
-                    res.append(index)
+                        #if complement is a noun
+                        if ("NN" in tags[index] or "PRP" in tags[index]):
+                            additiveNounsIndex = self.findNounsRelatedToVerbs(tags, children, children[index])
+                            for i in additiveNounsIndex:
+                                res.append(i)
+                            res.append(index)
+                    else:
+                        res.append(index)
         return res
 
     #finding if there exists a person noun, if there exists, find the related verbs.
@@ -121,7 +125,7 @@ class translater(object):
         length = len(tokens)
         i = 0
         relatedVerbs = {}
-        addedVerb = []
+        addedVerbIndex = []
         while i < length:
             #find verbs and neglect auxiliary verbs
             verb = ""
@@ -135,9 +139,9 @@ class translater(object):
                     wordEnd = children[i][wordStart:].find("->")
                     prep = '_' + children[i][wordStart:wordStart + wordEnd]
 
-            if verb != "" and verb not in addedVerb:
+            if verb != "" and i not in addedVerbIndex:
                 relatedNoun = []
-                relatedNounsIndex = self.findNounsRelatedToVerbs(children, children[i])
+                relatedNounsIndex = self.findNounsRelatedToVerbs(tags, children, children[i])
                 for index in relatedNounsIndex:
                     noun = tokens[index]
                     if noun == 'somebody' or tokens[index - 1] == 'person':
@@ -151,20 +155,24 @@ class translater(object):
                     #sort the related nouns by their index
                     relatedNoun = sorted(relatedNoun, key = lambda x:x[0], reverse = False)
                     relatedVerbs[i] = {"originalVerbName":verb, "combinedVerbName":verb + prep, "relatedNouns":relatedNoun}
-                addedVerb.append(verb)
+                addedVerbIndex.append(i)
                 
                 #combination of verb and verb, such as make sure to do, want to do, try to do
                 combinedVerbIndexStart = children[i].find("xcomp")
                 if combinedVerbIndexStart != -1:
-                    child = children[i][1:-1].split(',')
+                    verbChildren = children[i][1:-1].split(',')
                     combinedVerbName = ""
                     nsubj = relatedNoun[0]
                     relatedNoun = [nsubj]
-                    for child in children[i]:
+                    for child in verbChildren:
                         if "xcomp" in child:
                             index = child.find('->') + len('->')
                             combinedVerbIndex = int(child[index:])
-                            relatedNounsIndex = self.findNounsRelatedToVerbs(chilren, children[index])
+                            #if complement is not a verb then break
+                            if "VB" not in tags[combinedVerbIndex]:
+                                break
+                            combinedVerbName = tokens[combinedVerbIndex]
+                            relatedNounsIndex = self.findNounsRelatedToVerbs(tags, children, children[combinedVerbIndex])
                             for index in relatedNounsIndex:
                                 if noun == 'somebody' or tokens[index - 1] == 'person':
                                     relatedNoun.append([index, True, True])
@@ -176,8 +184,8 @@ class translater(object):
                             if relatedNoun != []:
                                 #sort the related nouns by their index
                                 relatedNoun = sorted(relatedNoun, key = lambda x:x[0], reverse = False)
-                                relatedVerbs[i] = {"originalVerbName":verb, "combinedVerbName":verb + prep, "relatedNouns":relatedNoun}
-
+                                relatedVerbs[combinedVerbIndex] = {"originalVerbName":combinedVerbName, "combinedVerbName":combinedVerbName, "relatedNouns":relatedNoun}
+                            addedVerbIndex.append(combinedVerbIndex)
             i += 1
         return relatedVerbs
 
@@ -256,6 +264,7 @@ class translater(object):
 
     def addRules_ClosedReasonAssumption(self, kbList, verbList, outputStr):
         for i in range(len(kbList)):
+            print verbList
             outputStr = self.addOneEntailmentSentence(kbList[i], verbList[i], outputStr)
         return outputStr
 
@@ -378,8 +387,12 @@ class translater(object):
             #here, it is a list containing verbs' index
             def addingReality(verbsInSentence):
                 realitySentence = ""
+                #counts there exists how many verbs
+                verbCounts = 0
                 for verbIndex in verbsInSentence:
                     if verbIndex not in addedVerbs:
+                        verbCounts += 1
+                        hasOneVerb = True
                         originalVerbName = verbs_nouns[verbIndex]["originalVerbName"]
                         child = children[tokensToIndexMap[originalVerbName]]
                         index = child.find("conj:")
@@ -438,6 +451,8 @@ class translater(object):
                         if relation != "":
                             realitySentence += ") "
 
+                if verbCounts > 1:
+                    realitySentence = "(and " + realitySentence + ") "
                 return realitySentence
 
             realitySentence += addingReality(antecedent) + addingReality(secedent) + ')'
@@ -597,6 +612,7 @@ class translater(object):
         description = self.description
         children = description["Dependency children:"]
         tokens = description["Lemmatized tokens:"]
+        tags = description["POS tags:"]
         for kb in self.kbList:
             verbs = self.findVerbsNouns(kb)
             all_kb_verbs.append(verbs)
@@ -608,7 +624,7 @@ class translater(object):
             for word in tokens:
                 #finding nouns
                 if word in verbTokens.keys():
-                    relatedNounsIndex = self.findNounsRelatedToVerbs(children, children[i])
+                    relatedNounsIndex = self.findNounsRelatedToVerbs(tags, children, children[i])
                     j = 0
                     for index in relatedNounsIndex:
                         noun = tokens[index]
@@ -638,7 +654,7 @@ class translater(object):
                             else:
                                 if nounName not in candidateAnswer_thing:
                                     candidateAnswer_thing.append(nounName)
-        print candidateAnswer_person
+
         output = self.addDeclareSort(candidateAnswer_thing, False, output)
         output = self.addDeclareSort(candidateAnswer_person, True, output)
         output = self.addDeclareRel(all_kb_verbs, output)

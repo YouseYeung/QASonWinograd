@@ -53,4 +53,5 @@ original值可用于tokens中的检索，combined值可用于转化为z3语言
 I want to eat apple
 I try to call you.
 
-这样的情况下，eat和call都有一个mark children去指向to的索引，可以根据索引-1来找到want和try动词，继而找到它的主语。
+这样的情况下，eat和call都有一个mark children去指向to的索引，
+可以根据动词的children中是否含有xcomp且xcomp指向动词来判断该动词是否跟另外动词共同组合成一个动词词组。
