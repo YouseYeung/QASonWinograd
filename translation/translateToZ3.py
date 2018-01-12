@@ -121,18 +121,21 @@ class translater(object):
         length = len(tokens)
         i = 0
         relatedVerbs = {}
+        addedVerb = []
         while i < length:
             #find verbs and neglect auxiliary verbs
             verb = ""
             if (tags[i].find("VB") != -1 and tags[i].find("AUX") == -1) or tags[i] == "JJ":
                 verb = tokens[i]
                 prep = ""
+                #combine verb and prep to get a combination form of verb
                 wordStart = children[i].find("nmod:")
                 if wordStart != -1:
                     wordStart += len("nmod:")
                     wordEnd = children[i][wordStart:].find("->")
                     prep = '_' + children[i][wordStart:wordStart + wordEnd]
-            if verb != "":
+
+            if verb != "" and verb not in addedVerb:
                 relatedNoun = []
                 relatedNounsIndex = self.findNounsRelatedToVerbs(children, children[i])
                 for index in relatedNounsIndex:
@@ -148,6 +151,32 @@ class translater(object):
                     #sort the related nouns by their index
                     relatedNoun = sorted(relatedNoun, key = lambda x:x[0], reverse = False)
                     relatedVerbs[i] = {"originalVerbName":verb, "combinedVerbName":verb + prep, "relatedNouns":relatedNoun}
+                addedVerb.append(verb)
+                
+                #combination of verb and verb, such as make sure to do, want to do, try to do
+                combinedVerbIndexStart = children[i].find("xcomp")
+                if combinedVerbIndexStart != -1:
+                    child = children[i][1:-1].split(',')
+                    combinedVerbName = ""
+                    nsubj = relatedNoun[0]
+                    relatedNoun = [nsubj]
+                    for child in children[i]:
+                        if "xcomp" in child:
+                            index = child.find('->') + len('->')
+                            combinedVerbIndex = int(child[index:])
+                            relatedNounsIndex = self.findNounsRelatedToVerbs(chilren, children[index])
+                            for index in relatedNounsIndex:
+                                if noun == 'somebody' or tokens[index - 1] == 'person':
+                                    relatedNoun.append([index, True, True])
+                                elif noun == 'something' or tokens[index - 1] == 'thing':
+                                    relatedNoun.append([index, False, True])
+                                else:
+                                    relatedNoun.append([index, False, False])                
+                            #if the verb has related nouns, then add it into the return results
+                            if relatedNoun != []:
+                                #sort the related nouns by their index
+                                relatedNoun = sorted(relatedNoun, key = lambda x:x[0], reverse = False)
+                                relatedVerbs[i] = {"originalVerbName":verb, "combinedVerbName":verb + prep, "relatedNouns":relatedNoun}
 
             i += 1
         return relatedVerbs

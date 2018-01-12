@@ -48,3 +48,9 @@ CHILDREN：
 **动词介词的组合方法
 用一个original表示原动词，一个combined表示组合后的动词，
 original值可用于tokens中的检索，combined值可用于转化为z3语言
+
+**两个动词组合为一个动词词组的情况
+I want to eat apple
+I try to call you.
+
+这样的情况下，eat和call都有一个mark children去指向to的索引，可以根据索引-1来找到want和try动词，继而找到它的主语。
