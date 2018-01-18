@@ -7,6 +7,9 @@ print url
 fileName = "formatWSC"
 outputFileName = "output"
 ofp = open(outputFileName,'w')
+
+keywords = ["but", "because", "then"]
+
 with open(fileName, 'r') as f:
     startSymbol = "<pre>"
     endSymbol = "</pre>"
@@ -29,6 +32,22 @@ with open(fileName, 'r') as f:
                 contentList = oneLineContent.split('. ')
             for content in contentList:
                 content = content.strip()
+                for word in keywords:
+                    indexList = []
+                    index = content.find(word)
+                    #keyword is not in the front of the sentence
+                    if index != -1 and index != 0:
+                        changed = True
+                        if index - 1 > 0:
+                            if content[index - 1] == ',':
+                                changed = False
+                        if index - 2 > 0:
+                            if content[index - 2] == ',':
+                                changed = False
+                        if changed:
+                            content = content[:index] + ',' + content[index:]
+
+
                 content = requests.get(url + content).content
                 startPos = content.find(startSymbol)
                 endPos = content.find(endSymbol)

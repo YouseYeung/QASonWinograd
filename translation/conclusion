@@ -6,6 +6,10 @@ POS TAGS：
 CHILDREN：
 动词与介词搭配：XCOMP，AUX
 
+**连词从句问题：
+在句子中引入连词将两个句子合为一个句子会导致sempre解析结果不准确，因此在对句子做解析前，我们需要
+找到but和because关键字，并在but和because关键字前加入','以拆开两个句子。
+
 **thing B 和 thing C的问题
 如果C或者B后面有标点符号，则要将标点符号与之用空格隔开，不然sempre会解析C.为一个名词
 
@@ -54,6 +58,8 @@ CHILDREN：
 **动词介词的组合方法
 用一个original表示原动词，一个combined表示组合后的动词，
 original值可用于tokens中的检索，combined值可用于转化为z3语言
+
+对于动词介词组合，还需要生成一个不带有介词的版本。
 
 **两个动词组合为一个动词词组的情况
 I want to eat apple

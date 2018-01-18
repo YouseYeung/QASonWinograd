@@ -14,7 +14,10 @@ class translater(object):
         self.question = {}
         self.kbList = []
         self.context = []
+        self.addedVerbs = []
         self.output = ""
+        #z3 keywords, these words can not be declared as a rel, we have to add '_' in front of the word.
+        self.keywords = ["repeat", "assert", "declare"]
 
     def load(self, fileName):
         with open(fileName, 'r') as f:
@@ -50,6 +53,7 @@ class translater(object):
                     self.question = {}
                     self.description = {}
                     self.context = []
+                    self.addedVerbs = []
                     beginMark = False
 
                 for symbol in self.parsingSymbol:
@@ -267,6 +271,7 @@ class translater(object):
         for verbInfo in all_kb_verbs:
             for verbIndex, relatedInfo in verbInfo.items():
                 combinedVerbName =  relatedInfo["combinedVerbName"]
+                originalVerbName = relatedInfo["originalVerbName"]
                 if combinedVerbName not in addedVerbName:
                     outputStr += declareRel + combinedVerbName + " ("
                     for noun in relatedInfo["relatedNouns"]:
@@ -275,8 +280,22 @@ class translater(object):
                         else:
                             outputStr += "thing "
                     outputStr += "))\n"
-                addedVerbName.append(combinedVerbName)
-
+                    addedVerbName.append(combinedVerbName)
+                    #add all declared verbs into list addedverb
+                    self.addedVerbs.append(combinedVerbName)
+                #to get a form without prep
+                if combinedVerbName != originalVerbName:
+                    if originalVerbName not in addedVerbName:
+                        outputStr += declareRel + originalVerbName + " ("
+                        #remove last parameter
+                        for noun in relatedInfo["relatedNouns"][:-1]:
+                            if noun[1]:
+                                outputStr += "person "
+                            else:
+                                outputStr += "thing "
+                        outputStr += "))\n"
+                    addedVerbName.append(originalVerbName)
+                    self.addedVerbs.append(originalVerbName)
         return outputStr
 
     def addRules_ClosedReasonAssumption(self, kbList, verbList, outputStr):
@@ -371,12 +390,13 @@ class translater(object):
                         number += 1
 
             outputStr += "(" + declareNounString + ") "
-            outputStr += "(=> "
             #---adding variable not equal
             personLength = len(persons)
             thingLength = len(things)
             valNotEqualStr = ""
             notEqualPairs = 0
+            if personLength >= 2 or thingLength >= 2:
+                outputStr += "(=> "
             if personLength >= 2:
                 for i in range(personLength):
                     for j in range(i + 1, personLength):
@@ -482,6 +502,44 @@ class translater(object):
 
         return outputStr + addSentence(antecedent, secedent) + addSentence(secedent, antecedent)
 
+    def addPrepVerbToVerbEntailment(self, outputStr):
+        addedVerbs = []
+        for kb in self.kbList:
+            headString = "(assert (forall ("
+            tokens = kb["Lemmatized tokens:"]
+            verbs = self.findVerbsNouns(kb)
+            for verbIndex, verbInfo in verbs.items():
+                combinedVerbName = verbInfo["combinedVerbName"]
+                originalVerbName = verbInfo["originalVerbName"]
+                number = 0
+                if combinedVerbName != originalVerbName and originalVerbName not in addedVerbs:
+                    addedVerbs.append(originalVerbName)
+                    outputStr += headString
+                    nouns = verbInfo["relatedNouns"]
+                    combinedVerbString = "(" + combinedVerbName + " "
+                    originalVerbString = "(" + originalVerbName + " "
+                    for noun in nouns:
+                        if noun[2]:
+                            pronoun = chr(ord('a') + number)
+                            combinedVerbString += pronoun + " "
+                            if number != len(nouns) - 1:
+                                originalVerbString += pronoun + " "
+                            outputStr += "(" + pronoun + " "
+                            if noun[1]:
+                                outputStr += "person) "
+                            else:
+                                outputStr += "thing) "
+                        else:
+                            combinedVerbString += tokens[noun[0]] + " "
+                            if number != len(nouns) - 1:
+                                originalVerbString += tokens[noun[0]]
+                        number += 1
+                    outputStr += ") "
+                    combinedVerbString += ") "
+                    originalVerbString += ")"
+                    outputStr += "(=> " + combinedVerbString + originalVerbString + ")))\n"
+        return outputStr
+
     def addRules_OnlyOneAnswer(self, personNouns, thingNouns, outputStr):
         question = self.question
         tokens = question["Lemmatized tokens:"]
@@ -501,6 +559,9 @@ class translater(object):
         verb_nouns = self.findVerbsNouns(question)
         for verbIndex, verbInfo in verb_nouns.items():
             verbName = verbInfo["combinedVerbName"]
+            #if verb has not been declared, then pass this verb
+            if verbName not in self.addedVerbs:
+                continue
             nouns = verbInfo["relatedNouns"]
             verbSentence = "(" + verbName + " "
             addingNouns = []
@@ -587,6 +648,9 @@ class translater(object):
         verbs = self.findVerbsNouns(question)
         answer = ""
         for verbIndex, verbInfo in verbs.items():
+            verbName = tokens[verbIndex]
+            if verbName not in self.addedVerbs:
+                continue
             addingNouns = []
             #find the noun that is variable
             for noun in verbInfo["relatedNouns"]:
@@ -618,8 +682,24 @@ class translater(object):
         return answer
                 
 
+    def checkKeyWordsInTokens(self, context):
+        tokens = context["Lemmatized tokens:"]
+        nokeywordTokens = tokens
+        i = 0
+        for token in tokens:
+            if token in self.keywords:
+                nokeywordTokens[i] = "_" + token
+            i += 1
+
+        return nokeywordTokens
+
 
     def translateIntoZ3(self):
+        self.description["Lemmatized tokens:"] = self.checkKeyWordsInTokens(self.description)
+        for i in range(len(self.kbList)):
+            self.kbList[i]["Lemmatized tokens:"] = self.checkKeyWordsInTokens(self.kbList[i])
+        self.question["Lemmatized tokens:"] = self.checkKeyWordsInTokens(self.question)
+        
         all_thing_names = []
         all_person_names = []
         candidateAnswer_thing = []
@@ -688,6 +768,7 @@ class translater(object):
         output = self.addRules_EntityRange(all_thing_names, False, output)
         output = self.addRules_EntityRange(all_person_names, True, output)
         output = self.addRules_ClosedReasonAssumption(self.kbList, all_kb_verbs, output)
+        output = self.addPrepVerbToVerbEntailment(output)
         output = self.addRules_OnlyOneAnswer(candidateAnswer_person, candidateAnswer_thing, output)
         output = self.addDescription(output)
         self.output = output
