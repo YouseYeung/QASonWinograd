@@ -174,9 +174,20 @@ class translater(object):
                         if "xcomp" in child:
                             index = child.find('->') + len('->')
                             combinedVerbIndex = int(child[index:])
-                            #if complement is not a verb then break
+                            #if complement is not a verb
                             if "VB" not in tags[combinedVerbIndex]:
-                                break
+                                #address condition such as "make sure to do" 
+                                if "xcomp" in children[combinedVerbIndex]:
+                                    start = children[combinedVerbIndex].find('xcomp') + len('xcomp->')
+                                    index = ""
+                                    for c in children[combinedVerbIndex][start:]:
+                                        if c != ',' and c != ']':
+                                            index += c
+                                        else:
+                                            break
+                                    combinedVerbIndex = int(index)
+                                else:
+                                    break
                             combinedVerbName = tokens[combinedVerbIndex]
                             relatedNounsIndex = self.findNounsRelatedToVerbs(tags, children, children[combinedVerbIndex])
                             for index in relatedNounsIndex:
@@ -326,10 +337,10 @@ class translater(object):
             declareNounString = ""
             number = 0
             #---adding variables declaration
+            addedVariable = []
             for index in antecedent:
                 verbInfo = verbs_nouns[index]
                 nouns = verbInfo["relatedNouns"]
-                addedVariable = []
                 nums = len(nouns)
                 for i in range(nums):
                     #nouns[i][2] is a boolean value, if it is true, this noun is a variable, else it is a constant
@@ -448,7 +459,7 @@ class translater(object):
                                     varName = nounsMap[nounName]
                                     verbStr += varName + ' '
                                 else:
-                                    verbStr += tokens[noun[0]]
+                                    verbStr += tokens[noun[0]] + ' '
                             return verbStr + ') '
 
                         realitySentence += addVerbSentence(verbIndex)
@@ -609,6 +620,8 @@ class translater(object):
 
 
     def translateIntoZ3(self):
+        all_thing_names = []
+        all_person_names = []
         candidateAnswer_thing = []
         candidateAnswer_person = []
         all_kb_verbs = []
@@ -641,11 +654,16 @@ class translater(object):
                         verbIndex = verbTokens[word]
                         personOrNot = verbs[verbIndex]["relatedNouns"][j][1]
                         if personOrNot:
-                            if noun not in candidateAnswer_person:
-                                candidateAnswer_person.append(noun)
+                            if noun not in all_person_names:
+                                #if noun is not a PRP, add it into candidateAnswer
+                                if tags[index] != "PRP":
+                                    candidateAnswer_person.append(noun)
+                                all_person_names.append(noun)
                         else:
-                            if noun not in candidateAnswer_thing:
-                                candidateAnswer_thing.append(noun)
+                            if noun not in all_thing_names:
+                                if tags[index] != "PRP":
+                                    candidateAnswer_thing.append(noun)
+                                all_thing_names.append(noun)
                         j += 1
                 i += 1
             #find nouns in the kb
@@ -656,22 +674,19 @@ class translater(object):
                     #if noun is not a variable
                     if not noun[2]:
                         #if noun has not been added into candidate:
-                        if nounName not in candidateAnswer_person and nounName not in candidateAnswer_thing:
+                        if nounName not in all_thing_names and nounName not in all_person_names:
                             #if noun is a person
                             if noun[1]:
-                                if nounName not in candidateAnswer_person:
-                                    candidateAnswer_person.append(nounName)
+                                all_person_names.append(nounNme)
                             else:
-                                if nounName not in candidateAnswer_thing:
-                                    candidateAnswer_thing.append(nounName)
-
-        output = self.addDeclareSort(candidateAnswer_thing, False, output)
-        output = self.addDeclareSort(candidateAnswer_person, True, output)
+                                all_thing_names.append(nounName)
+        output = self.addDeclareSort(all_thing_names, False, output)
+        output = self.addDeclareSort(all_person_names, True, output)
         output = self.addDeclareRel(all_kb_verbs, output)
-        output = self.addRules_EntityNotEqual(candidateAnswer_thing, output)
-        output = self.addRules_EntityNotEqual(candidateAnswer_person, output)
-        output = self.addRules_EntityRange(candidateAnswer_thing, False, output)
-        output = self.addRules_EntityRange(candidateAnswer_person, True, output)
+        output = self.addRules_EntityNotEqual(all_thing_names, output)
+        output = self.addRules_EntityNotEqual(all_person_names, output)
+        output = self.addRules_EntityRange(all_thing_names, False, output)
+        output = self.addRules_EntityRange(all_person_names, True, output)
         output = self.addRules_ClosedReasonAssumption(self.kbList, all_kb_verbs, output)
         output = self.addRules_OnlyOneAnswer(candidateAnswer_person, candidateAnswer_thing, output)
         output = self.addDescription(output)
