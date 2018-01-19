@@ -98,16 +98,16 @@ class translater(object):
         res = []
         relatedWords = child[1:-1].split(',')
         for rep in relatedWords:
-            typeOfNoun = ['subj', 'iobj', 'dobj', 'nmod', 'xcomp']
+            typeOfNoun = ['subj', 'iobj', 'dobj', 'nmod', 'xcomp', 'advmod']
             for _type in typeOfNoun:
                 index = rep.find(_type)
                 if index != -1:
                     indexStart = rep.find('->') + len('->')
                     index = int(rep[indexStart:])
                     #xcomp is complement for verb, so we have to get more nouns in xcomp word.
-                    if _type == 'xcomp':
-                        #if complement is a noun
-                        if ("NN" in tags[index] or "PRP" in tags[index]):
+                    if _type == 'xcomp' or _type == 'advmod':
+                        #if complement is a noun or advmod directed to a noun
+                        if (_type == 'xcomp' and "NN" in tags[index] or "PRP" in tags[index]) or (_type == 'advmod' and tags[index] == "IN"):
                             additiveNounsIndex = self.findNounsRelatedToVerbs(tags, children, children[index])
                             for i in additiveNounsIndex:
                                 res.append(i)
@@ -137,17 +137,24 @@ class translater(object):
                 #judge whether there exists a "be" before JJ
                 if tags[i] == "JJ":
                     #if there exists no "be", pass this JJ
-                    if children[i].find("cop") == -1:
+                    if children[i].find("cop") == -1 and children[i].find("auxpass") == -1:
                         i += 1
                         continue
                 verb = tokens[i]
                 prep = ""
+                adv = ""
                 #combine verb and prep to get a combination form of verb
                 wordStart = children[i].find("nmod:")
                 if wordStart != -1:
                     wordStart += len("nmod:")
                     wordEnd = children[i][wordStart:].find("->")
                     prep = '_' + children[i][wordStart:wordStart + wordEnd]
+                #combine verb and adv to get a combination form of the verb
+                wordStart = children[i].find("advmod")
+                if wordStart != -1:
+                    wordStart += len("advmod:")
+                    wordEnd = children[i][wordStart:].find("->")
+                    adv = '_' + children[i][wordStart:wordStart + wordEnd]
 
             if verb != "" and i not in addedVerbIndex:
                 relatedNoun = []
@@ -164,7 +171,7 @@ class translater(object):
                 if relatedNoun != []:
                     #sort the related nouns by their index
                     relatedNoun = sorted(relatedNoun, key = lambda x:x[0], reverse = False)
-                    relatedVerbs[i] = {"originalVerbName":verb, "combinedVerbName":verb + prep, "relatedNouns":relatedNoun}
+                    relatedVerbs[i] = {"originalVerbName":verb, "combinedVerbName":verb + prep + adv, "relatedNouns":relatedNoun}
                 addedVerbIndex.append(i)
                 
                 #combination of verb and verb, such as make sure to do, want to do, try to do
@@ -355,6 +362,7 @@ class translater(object):
             things = []
             declareNounString = ""
             number = 0
+
             #---adding variables declaration
             addedVariable = []
             for index in antecedent:
@@ -760,6 +768,8 @@ class translater(object):
                                 all_person_names.append(nounNme)
                             else:
                                 all_thing_names.append(nounName)
+
+        print all_kb_verbs
         output = self.addDeclareSort(all_thing_names, False, output)
         output = self.addDeclareSort(all_person_names, True, output)
         output = self.addDeclareRel(all_kb_verbs, output)

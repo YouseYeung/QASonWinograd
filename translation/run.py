@@ -8,7 +8,7 @@ fileName = "formatWSC"
 outputFileName = "output"
 ofp = open(outputFileName,'w')
 
-keywords = ["but", "because", "then"]
+keywords = ["but", "because", "then", "although"]
 
 with open(fileName, 'r') as f:
     startSymbol = "<pre>"

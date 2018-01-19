@@ -1,0 +1,98 @@
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: John couldn't see the stage with Billy in front of him ,because he is so short. {
+    Tokens: [john, could, n't, see, the, stage, with, billy, in, front, of, him, ,, because, he, is, so, short, .]
+    Lemmatized tokens: [John, could, not, see, the, stage, with, Billy, in, front, of, he, ,, because, he, be, so, short, .]
+    POS tags: [NNP, VBD-AUX, RB, VB, DT, NN, IN, NNP, IN, NN, IN, PRP, ,, IN, PRP, VBD-AUX, RB, JJ, .]
+    NER tags: [PERSON, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [], [nsubj->0, aux->1, advcl->17, neg->2, punct->18, dobj->5, nmod:in_front_of->11, punct->12], [], [det->4, nmod:with->7], [], [case->6], [mwe->9, mwe->10], [], [], [case->8], [], [], [], [], [], [cop->15, advmod->16, mark->13, nsubj->14], []]
+  }
+
+
+因为有in front of的存在，所以see动词关联了三个名词，但这个是不对的。
+
+
+存在量词。
+名词跟名词and连接。
+
+
+
+**特殊用例
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: The sculpture rolled off the shelf ,because it wasn't level. {
+    Tokens: [the, sculpture, rolled, off, the, shelf, ,, because, it, was, n't, level, .]
+    Lemmatized tokens: [the, sculpture, roll, off, the, shelf, ,, because, it, be, not, level, .]
+    POS tags: [DT, NN, VBD, RP, DT, NN, ,, IN, PRP, VBD-AUX, RB, NN, .]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [det->0], [nsubj->1, compound:prt->3, dobj->5, punct->6, advcl->11, punct->12], [], [], [det->4], [], [], [], [], [], [mark->7, nsubj->8, cop->9, neg->10], []]
+  }
+
+把level当作名词。
+
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: If person B studies hard, then person B does better than person C, and person C does worse than person B. {
+    Tokens: [if, person, b, studies, hard, ,, then, person, b, does, better, than, person, c, ,, and, person, c, does, worse, than, person, b.]
+    Lemmatized tokens: [if, person, b, study, hard, ,, then, person, b, do, better, than, person, c, ,, and, person, c, do, worse, than, person, B.]
+    POS tags: [IN, NN, NN, NNS, RB, ,, RB, NN, NN, VBD-AUX, JJR, IN, NN, NN, ,, CC, NN, NN, VBD-AUX, JJR, IN, NN, NNP]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [], [compound->1, compound->2, advmod->4], [], [], [], [], [advmod->6, compound->7], [cc->15, mark->0, conj:and->18, nsubj->3, punct->5, nsubj->8, dobj->10, nmod:than->13, punct->14], [], [], [], [case->11, compound->12], [], [], [], [compound->16], [nsubj->17, xcomp->19], [nmod:than->22], [], [], [case->20, compound->21]]
+  }
+
+带有than的比较级如何处理
+
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: the toaster he had bought from him didn't work {
+    Tokens: [the, toaster, he, had, bought, from, him, did, n't, work]
+    Lemmatized tokens: [the, toaster, he, have, buy, from, he, do, not, work]
+    POS tags: [DT, NN, PRP, VBD-AUX, VBN, IN, PRP, VBD-AUX, RB, VB]
+    NER tags: [O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [det->0, acl:relcl->4], [], [], [nsubj->2, aux->3, nmod:from->6], [], [case->5], [], [], [nsubj->1, aux->7, neg->8]]
+  }
+宾语从句的处理：relcl表示作为那个词的宾语
+
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: I did something bad to you {
+    Tokens: [i, did, something, bad, to, you]
+    Lemmatized tokens: [I, do, something, bad, to, you]
+    POS tags: [PRP, VBD-AUX, NN, JJ, TO, PRP]
+    NER tags: [O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null]
+    Dependency children: [[], [nsubj->0, dobj->2, nmod:to->5], [amod->3], [], [], [case->4]]
+  }
+do something adj.  使用amod联系起来
+
+
+若有形容词修饰名词，需要把形容词和名词合并为一个名词
+名词：
+全称名词
+存在名词
+复合名词
+形容词+名词
+
+动词：
+否定形式
+介词
+副词
+动词动词
+be动词 + 形容词

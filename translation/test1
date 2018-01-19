@@ -1,64 +1,38 @@
-  Parser.parse: parse {
+Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: The large ball crashed right through the table ,because it was made of styrofoam. {
-    Tokens: [the, large, ball, crashed, right, through, the, table, ,, because, it, was, made, of, styrofoam, .]
-    Lemmatized tokens: [the, large, ball, crash, right, through, the, table, ,, because, it, be, make, of, styrofoam, .]
-    POS tags: [DT, JJ, NN, VBD, RB, IN, DT, NN, ,, IN, PRP, VBD-AUX, VBN, IN, NN, .]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [det->0, amod->1], [punct->15, nsubj->2, advmod->4, nmod:through->7, punct->8, advcl->12], [], [], [], [case->5, det->6], [], [], [], [], [mark->9, nsubjpass->10, auxpass->11, nmod:of->14], [], [case->13], []]
-  }
-
-  Parser.parse: parse {
-    Parser.ensureExecuted 
-  }
-  Parser.setEvaluation: 0 candidates 
-  Example: If thing B is solid, and thing C is fragile, then thing B can crash right through thing C {
-    Tokens: [if, thing, b, is, solid, ,, and, thing, c, is, fragile, ,, then, thing, b, can, crash, right, through, thing, c]
-    Lemmatized tokens: [if, thing, b, be, solid, ,, and, thing, c, be, fragile, ,, then, thing, b, can, crash, right, through, thing, c]
-    POS tags: [IN, NN, NN, VBD-AUX, JJ, ,, CC, NN, NN, VBD-AUX, JJ, ,, RB, NN, NN, VBD-AUX, VB, RB, IN, NN, NN]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [mark->0, parataxis->16, nsubj->2, cop->3, punct->5, cc->6, conj:and->10, punct->11], [], [], [], [compound->7], [], [nsubj->8, cop->9], [], [], [], [compound->13], [], [aux->15, advmod->17, nmod:through->20, advmod->12, nsubj->14], [], [], [], [case->18, compound->19]]
-  }
-
-  Parser.parse: parse {
-    Parser.ensureExecuted 
-  }
-  Parser.setEvaluation: 0 candidates 
-  Example: If thing B is made of steel, then thing B is solid {
-    Tokens: [if, thing, b, is, made, of, steel, ,, then, thing, b, is, solid]
-    Lemmatized tokens: [if, thing, b, be, make, of, steel, ,, then, thing, b, be, solid]
-    POS tags: [IN, NN, NN, VBD-AUX, VBN, IN, NN, ,, RB, NN, NN, VBD-AUX, JJ]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [mark->0, nsubjpass->2, auxpass->3, nmod:of->6, punct->7, parataxis->12], [], [case->5], [], [], [], [compound->9], [], [advmod->8, nsubj->10, cop->11]]
-  }
-
-  Parser.parse: parse {
-    Parser.ensureExecuted 
-  }
-  Parser.setEvaluation: 0 candidates 
-  Example: If thing B is made of styrofoam, then thing B is fragile. {
-    Tokens: [if, thing, b, is, made, of, styrofoam, ,, then, thing, b, is, fragile, .]
-    Lemmatized tokens: [if, thing, b, be, make, of, styrofoam, ,, then, thing, b, be, fragile, .]
-    POS tags: [IN, NN, NN, VBD-AUX, VBN, IN, NN, ,, RB, NN, NN, VBD-AUX, JJ, .]
+  Example: The city councilmen refused the demonstrators a permit, because they feared violence. {
+    Tokens: [the, city, councilmen, refused, the, demonstrators, a, permit, ,, because, they, feared, violence, .]
+    Lemmatized tokens: [the, city, councilmen, refuse, the, demonstrator, a, permit, ,, because, they, fear, violence, .]
+    POS tags: [DT, NN, NN, VBD, DT, NNS, DT, NN, ,, IN, PRP, VBD, NN, .]
     NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O]
     NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [mark->0, nsubjpass->2, auxpass->3, nmod:of->6], [], [case->5], [], [], [], [advmod->8, compound->9], [], [advcl->4, punct->7, nsubj->10, cop->11, punct->13], []]
+    Dependency children: [[], [], [det->0, compound->1], [nsubj->2, xcomp->7, punct->8, advcl->11, punct->13], [], [det->4], [], [nsubj->5, det->6], [], [], [], [mark->9, nsubj->10, dobj->12], [], []]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: What was made of styrofoam {
-    Tokens: [what, was, made, of, styrofoam]
-    Lemmatized tokens: [what, be, make, of, styrofoam]
-    POS tags: [WP, VBD-AUX, VBN, IN, NN]
-    NER tags: [O, O, O, O, O]
-    NER values: [null, null, null, null, null]
-    Dependency children: [[], [], [nsubjpass->0, auxpass->1, nmod:of->4], [], [case->3]]
+  Example: If person B does fear violence, and person C does advocate violence, then person B might refuse person C a permit. {
+    Tokens: [if, person, b, does, fear, violence, ,, and, person, c, does, advocate, violence, ,, then, person, b, might, refuse, person, c, a, permit, .]
+    Lemmatized tokens: [if, person, b, do, fear, violence, ,, and, person, c, do, advocate, violence, ,, then, person, b, might, refuse, person, c, a, permit, .]
+    POS tags: [IN, NN, NN, VBD-AUX, VB, NN, ,, CC, NN, NN, VBD-AUX, VB, NN, ,, RB, NN, NN, VBD-AUX, VB, NN, NN, DT, NN, .]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, aux->3, dobj->5, punct->6, cc->7, conj:and->11], [], [], [], [], [compound->8], [], [nsubj->9, aux->10, dobj->12], [], [], [], [], [compound->15, advmod->14], [], [nsubj->16, aux->17, advcl->4, iobj->20, dobj->22, punct->23, advcl->11, punct->13], [], [compound->19], [], [det->21], []]
+  }
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: Who feared violence {
+    Tokens: [who, feared, violence]
+    Lemmatized tokens: [who, fear, violence]
+    POS tags: [WP, VBD, NN]
+    NER tags: [O, O, O]
+    NER values: [null, null, null]
+    Dependency children: [[], [nsubj->0, dobj->2], []]
   }
