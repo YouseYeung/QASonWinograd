@@ -96,3 +96,18 @@ do something adj.  使用amod联系起来
 副词
 动词动词
 be动词 + 形容词
+
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: Jane knocked on Susan's door, but there was no answer. She was out. {
+    Tokens: [jane, knocked, on, susan, 's, door, ,, but, there, was, no, answer, ., she, was, out, .]
+    Lemmatized tokens: [Jane, knock, on, Susan, 's, door, ,, but, there, be, no, answer, ., she, be, out, .]
+    POS tags: [NNP, VBD, IN, NNP, POS, NN, ,, CC, EX, VBD-AUX, DT, NN, ., PRP, VBD-AUX, RB, .]
+    NER tags: [PERSON, O, O, PERSON, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [nsubj->0, nmod:on->5, punct->6, cc->7, conj:but->9, punct->12], [], [case->4], [], [case->2, nmod:poss->3], [], [], [], [expl->8, nsubj->11], [], [neg->10], [], [], [advmod->15, punct->16, nsubj->13], [], []]
+  }
+ 怎么得到Susan这个人呢？
