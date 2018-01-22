@@ -98,6 +98,21 @@ do something adj.  使用amod联系起来
 be动词 + 形容词
 
 
+``
+somebody 跟 he 对应
+something 跟 it 对应
+``
+
+``
+sth is sth => (assert (= sth sth))
+sth is adj => (assert (adj sth))
+``
+
+''
+doing something strange 这样的句子中的something不需要转换，把doing something strange直接当作一个动词词组即可。
+''
+
+
   Parser.parse: parse {
     Parser.ensureExecuted 
   }

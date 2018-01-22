@@ -158,6 +158,7 @@ class translater(object):
 
     #library: dict. It is descrption, kb or question
     def findVerbsAndItsRelatedNouns(self, library):
+        existVar = ["somebody", "something", "sth", "sb", "he", "it"]
         tokens = library["Lemmatized tokens:"]
         tags = library["POS tags:"]
         children = library["Dependency children:"]
@@ -202,7 +203,7 @@ class translater(object):
                     nounInfo = {"index":index}
                     nounName = tokens[index]
                     #determine if noun name is a variable?
-                    if len(nounName) == 1 or nounName == "something" or nounName == "somebody" or nounName == "sth" or nounName == "sb":
+                    if len(nounName) == 1 or nounName in existVar:
                         lastWordIndex = index - 1
                         nounInfo["sort"] = tokens[lastWordIndex]
                         nounInfo["var"] = True
@@ -217,7 +218,7 @@ class translater(object):
                 #combination of verb and verb, such as make sure to do, want to do, try to do
                 combinedindexStart = children[i].find("xcomp")
                 if combinedindexStart != -1:
-                    nsubjIndex = verbs[i]["relatedNouns"][0]["index"]
+                    nsubj = verbs[i]["relatedNouns"][0]
                     index = self.findIndexBySymbol(children[i], "xcomp")
                     #if complement is not a verb
                     if "VB" not in tags[index]:
@@ -229,8 +230,9 @@ class translater(object):
                     if index in addedVerbsIndex:
                         continue
                     combinedVerbName = tokens[index]
+                    verbs[index] = {"originalVerbName":combinedVerbName, "combinedVerbName":combinedVerbName}
+                    verbs[index]["relatedNouns"] = [nsubj]
                     relatedNounsIndex = self.findRelatedNouns(library, index)
-                    relatedNounsIndex.append(nsubjIndex)
                     for ii in relatedNounsIndex:
                         nounInfo = {"index":ii}
                         nounName = tokens[ii]
@@ -243,7 +245,7 @@ class translater(object):
                             nounInfo["sort"] = "thing"
                             nounInfo["var"] = False
                         verbs[index]["relatedNouns"].append(nounInfo)
-                    verbs[index]["relatedNouns"] = sorted(verbs[index]["relatedNouns"], key = lambda x : x[0], reverse = False)
+                    verbs[index]["relatedNouns"] = sorted(verbs[index]["relatedNouns"], key = lambda x : x["index"], reverse = False)
                     addedVerbsIndex.append(index)
         return verbs
 
@@ -284,7 +286,7 @@ class translater(object):
             else:
                 res += "(assert (forall " + "((x " + sort + ")) "      # need 3 )
                 if length == 1:
-                    res += "(x = " + nounList[0] + ")))\n"
+                    res += "(= x " + nounList[0] + ")))\n"
                 else:
                     res += "(or "
                     for noun in nounList:
@@ -294,28 +296,25 @@ class translater(object):
 
     def addDeclareRel(self, verbs):
         declareRel = "(declare-rel "                            # need 1 )
-        addedVerbName = {}
         res = ""
         for index, info in verbs.items():
             combinedVerbName =  info["combinedVerbName"]
             originalVerbName = info["originalVerbName"]
-            if not addedVerbName.has_key(combinedVerbName):
+            if combinedVerbName not in self.addedVerbs:
                 res += declareRel + combinedVerbName + " ("
                 for noun in info["relatedNouns"]:
                     res += noun["sort"] + " "
                 res += "))\n"
-                addedVerbName[combinedVerbName] = True
                 #add all declared verbs into list addedverb
                 self.addedVerbs.append(combinedVerbName)
             #to get a form without prep
             if combinedVerbName != originalVerbName:
-                if not addedVerbName.has_key(originalVerbName):
+                if originalVerbName not in self.addedVerbs:
                     res += declareRel + originalVerbName + " ("
                     #remove last parameter
                     noun = info["relatedNouns"][0]
                     res += noun["sort"] + " "
                     res += "))\n"
-                addedVerbName[originalVerbName] = True
                 self.addedVerbs.append(originalVerbName)
         return res
 
@@ -346,18 +345,207 @@ class translater(object):
                         else:
                             combinedVerbString += tokens[noun["index"]] + " "
                             if number != len(nouns) - 1:
-                                originalVerbString += tokens[noun["index"]]
+                                originalVerbString += tokens[noun["index"]] + " "
                         number += 1
                     res += ") "
                     combinedVerbString += ") "
                     originalVerbString += ")"
                     res += "(=> " + combinedVerbString + originalVerbString + ")))\n"
         return res
+    def getAntecedentAndSecedent(self, tokens):
+        length = len(tokens)
+        sepIndex = -1
+        for i in range(length):
+            if tokens[i] == "then":
+                sepIndex = i
+                break
+        return sepIndex
+
+    def getCompleteNounNameByIndex(self, nounIndex, relatedNounsMap, tokens):
+        nounName = tokens[nounIndex]
+        if relatedNounsMap.has_key(nounIndex):
+            relatedNounsIndex = relatedNounsMap[nounIndex]
+            for i in relatedNounsIndex:
+                if i < nounIndex:
+                    nounName = tokens[i] + "_" + nounName
+                else:
+                    nounName += "_" + tokens[i]
+        return nounName
+
+    #Add reality : sth is noun, sth is adj, sth is doing sth.
+    def addReality_IS_Relation(self, library, verbs, outputStr):
+        res = ""
+        headString = "(assert ("
+        tokens = library["Lemmatized tokens:"]
+        tags = library["POS tags:"]
+        children = library["Dependency children:"]
+        sepIndex, i = -1, 0
+        for tag in tags:
+            if tag == "VBD-AUX":
+                sepIndex = i
+                break
+            i += 1
+        i = 0
+        completeNouns = self.findCompleteNouns(library)
+        #sth is doing sth, sth is adj.
+        if verbs != {}:
+            for index, info in verbs.items():
+                verbName = info["combinedVerbName"]
+                if verbName not in self.addedVerbs:
+                    verbName = info["originalVerbName"]
+                    if verbName not in self.addedVerbs:
+                        continue
+                nouns = info["relatedNouns"]
+                res += headString + verbName + " "
+                for noun in nouns:
+                    nounIndex = noun["index"]
+                    nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens)
+                    res += nounName + " "
+                res += "))\n"
+        #sth is sth
+        else:
+            subjIndex, objIndex = -1, -1
+            subjName, objName = "", ""
+            i = sepIndex - 1
+            while i >= 0:
+                if "NN" in tags[i]:
+                    subjIndex = i
+                    break
+                i -= 1
+            i = sepIndex + 1
+            while i < len(tags):
+                if "NN" in tags[i]:
+                    objIndex = i
+                    break
+                i += 1
+            subjName = self.getCompleteNounNameByIndex(subjIndex, completeNouns, tokens)
+            objName = self.getCompleteNounNameByIndex(objIndex, completeNouns, tokens)
+            res += headString + "= " + subjName + " " + objName + "))\n"
+            #revision of the rule of the inequality of entities
+            entityNotEqualStr1 = "(assert (not (= " + subjName + " " + objName + ")))\n"
+            entityNotEqualStr2 = "(assert (not (= " + objName + " " + subjName + ")))\n"
+            index = outputStr.find(entityNotEqualStr1)
+            if index != -1:
+                outputStr = outputStr[:index] + outputStr[index + len(entityNotEqualStr1):]
+            index = outputStr.find(entityNotEqualStr2)
+            if index != -1:
+                outputStr = outputStr[:index] + outputStr[index + len(entityNotEqualStr2):]
+        return outputStr + res
+
+    def findAnswerPredicate(self):
+        print self.question
+        question = self.question
+        verbs = self.findVerbsAndItsRelatedNouns(question)
+        combinedName = ""
+        originalName = ""
+        for index, info in verbs.items():
+            combinedName = info["combinedVerbName"]
+            originalName = info["originalVerbName"]
+        return originalName, combinedName
+
+    def findTypeOfEntailment(self, antecedent, secedent):
+        type_AB1, type_AB2, type_ABC1 = "A>B", "A=B", "A>B^C,B>A,C>A;A>BVC,B>A,C>A"
+        type_ABC2 = "AvB>C, C>A, C>B"
+        orgAnsPreName, comAnsPreName = self.findAnswerPredicate()
+        #answer predicate in antecedent
+        if orgAnsPreName in antecedent or comAnsPreName in antecedent:
+            if "and" in secedent or "or" in secedent:
+                return type_ABC1
+            elif "or" in antecedent:
+                return type_ABC2
+            else:
+                return type_AB2
+        #answer predicate in secedent
+        elif orgAnsPreName in secedent or comAnsPreName in secedent:
+            if "or" in secedent:
+                return type_ABC1
+            else:
+                return type_AB1
+
+
+    def addReality_Entailment(self, library, verbs, sepIndex, outputStr):
+        tokens = library["Lemmatized tokens:"]
+        tags = library["POS tags:"]
+        children = library["Dependency children:"]
+        antecedent = tokens[:sepIndex]
+        secedent = tokens[sepIndex + 1:]
+        entailmentType = self.findTypeOfEntailment(antecedent, secedent)
+        type_AB1, type_AB2, type_ABC1 = "A>B", "A=B", "A>B^C,B>A,C>A;A>BVC,B>A,C>A"
+        outputStr += self.addVariableDeclare(library, verbs)
+        outputStr += self.addEntailment(library, verbs, entailmentType, sepIndex)
+        return outputStr 
+    
+    def addVariableDeclare(self, library, verbs):
+        headString = "(assert (forall ("
+        tokens = library["Lemmatized tokens:"]
+        tags = library["POS tags:"]
+        children = library["Dependency children:"]
+        pronouns = []
+        existVar = ["somebody", "something", "sth", "sb", "he", "it"]
+        for i in range(26):
+            pronouns.append(chr(ord('a') + i))
+        numOfPronoun = 0
+        pronoun_name_Map ={}
+        addedPronoun = []
+        sortNameMap = {}
+        completeNouns = self.findCompleteNouns(library)
+        for index, info in verbs.items():
+            nouns = info["relatedNouns"]
+            for noun in nouns:
+                nounIndex = noun["index"]
+                nounName = tokens[index]
+                sort = noun["sort"]
+                if nounName not in existVar and noun["var"]:
+                    nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens)
+                    if not pronoun_name_Map.has_key(nounName):
+                        pronoun = pronouns[numOfPronoun]
+                        addedPronoun.append(pronoun)
+                        pronoun_name_Map[nounName] = pronoun
+                        headString += "(" + pronoun + " " + sort + ") " 
+                        if sortNameMap.has_key(sort):
+                            sortNameMap[sort].append(pronoun)
+                        else:
+                            sortNameMap[sort] = [pronoun]
+                        numOfPronoun += 1
+        notEqualPairs = 0
+        entityNotEqualString = ""
+        for sort, names in sortNameMap.items():
+            length = len(names)
+            print sort, names
+            if length > 1:
+                for i in range(length):
+                    for j in range(i + 1, length):
+                        entityNotEqualString += "(not (= " + names[i] + " " + names[j] + ")) "
+                notEqualPairs += 1
+        if notEqualPairs > 1:
+            entityNotEqualString += "(=> (and " + entityNotEqualString + ") "
+        elif notEqualPairs == 1:
+            entityNotEqualString = "(=> " + entityNotEqualString
+        return headString + entityNotEqualString + ")\n"
+
+    def addEntailment(self, library, verbs, entailmentType, sepIndex):
+        tokens = library["Lemmatized tokens:"]
+        tags = library["POS tags:"]
+        children = library["Dependency children:"]
+        return ""
+
+    def addPossesionReality(self):
+       return "" 
+
+
+    def addRules_ClosedReasonAssumption(self, library, verbs, outputStr):
+        tokens = library["Lemmatized tokens:"]
+        sepIndex  = self.getAntecedentAndSecedent(tokens)
+        if sepIndex == -1:
+            return self.addReality_IS_Relation(library, verbs, outputStr)
+        else:
+            return self.addReality_Entailment(library, verbs, sepIndex, outputStr)
 
     def translateToZ3(self):
         description = self.description
         kbList = self.kbList
         allVerbs = []
+        nounSortMap = {}
         for kb in kbList:
             kbVerbs = self.findVerbsAndItsRelatedNouns(kb)
             allVerbs.append(kbVerbs)
@@ -365,7 +553,6 @@ class translater(object):
             combinedVerbNameToIndexMap = {}
             originalVerbNameToIndexMap = {}
             #{SortName: [noun1, noun2, ...]}
-            nounSortMap = {}
             completeNouns = self.findCompleteNouns(kb)
             descriptionVerbs = self.findVerbsAndItsRelatedNouns(description)
             #find nouns in kb
@@ -377,14 +564,7 @@ class translater(object):
                     if not noun["var"]:
                         sort = noun["sort"]
                         index = noun["index"]
-                        nounName = tokens[index]
-                        if completeNouns.has_key(index):
-                            relatedNounsList = completeNouns[index]
-                            for i in relatedNounsList:
-                                if i < index:
-                                    nounName = tokens[i] + "_" + nounName
-                                else:
-                                    nounName += "_" + tokens[i]
+                        nounName = self.getCompleteNounNameByIndex(index, completeNouns, tokens)
                         if nounSortMap.has_key(sort):
                             if nounName not in nounSortMap[sort]:
                                 nounSortMap[sort].append(nounName)
@@ -409,30 +589,41 @@ class translater(object):
                     nouns = info["relatedNouns"]
                     kbinfo = kbVerbs[kbindex]
                     kbNounsInfo = kbinfo["relatedNouns"]
+                    length = len(kbNounsInfo)
                     i = 0
                     for noun in nouns:
                         nounIndex = noun["index"]
                         nounName = tokens[nounIndex]
-                        sort = kbNounsInfo[i]["sort"]
-                        if completeNouns.has_key(nounIndex):
-                            for i in completeNouns[nounIndex]:
-                                if i < index:
-                                    nounName = tokens[i] + "_" + nounName
-                                else:
-                                    nounName += "_" + tokens[i]
+                        if i < length:
+                            sort = kbNounsInfo[i]["sort"]
+                        else:
+                            print "[ERROR]: Wrong number of predicate's parameter"
+                            sort = nouns[i]["sort"]
+                        nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens)
                         if nounSortMap.has_key(sort):
                             if nounName not in nounSortMap[sort]:
                                 nounSortMap[sort].append(nounName)
                         else:
                             nounSortMap[sort] = [nounName]
-
+                        i += 1
 
         res = ""
         res += self.addDeclareSort(nounSortMap)
         res += self.addRules_EntityNotEqual(nounSortMap)
         res += self.addRules_EntityRange(nounSortMap)
+        
+        verbLength = 0
         for verbs in allVerbs:
+            verbLength += 1
             res += self.addDeclareRel(verbs)
+        i = 0
+        for kb in kbList:
+            if i >= verbLength:
+                verbs = {}
+            else:
+                verbs = allVerbs[i]
+            res = self.addRules_ClosedReasonAssumption(kb, verbs, res)
+            i += 1
         res += self.addPrepVerbToVerbEntailment()
         return res
 

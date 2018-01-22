@@ -15,11 +15,11 @@ If thing B is big and thing C is small, then thing B doesn’t fit into thing C 
 What is too large?
 
 Joan made sure to thank Susan for all the help she had given.
-If person C does give help to person B , or person B does receive help from person C , then person B might make sure to thank person C . If person C does give help to person B , then person B does receive help from person C . If person C does receive help from person B, then person C does receive help.
+If person C does give help to person B , or person B does receive help from person C , then person B might make sure to thank person C. If person C does give help to person B , then person B does receive help from person C . If person C does receive help from person B, then person C does receive help.
 Who had given help?
 
 Joan made sure to thank Susan for all the help she had received.
-If person C does give help to person B , or person B does receive help from person C , then person B might make sure to thank person C . If person C does give help to person B , then person B does receive help from person C . If person C does receive help from person B, then person C does receive help.
+If person C does give help to person B , or person B does receive help from person C , then person B might make sure to thank person C. If person C does give help to person B , then person B does receive help from person C . If person C does receive help from person B, then person C does receive help.
 Who had received help?
 
 Paul tried to call George on the phone, but he wasn't successful.
@@ -205,11 +205,11 @@ If person B explains something to person C, then person B might not convince per
 Who did not understand whom?
 
 Susan knew that Ann's son had been in a car accident, so she told her about it.
-If person B knows something, then person B might tell sth to somebody. If person B tells person C something, then person C knows sth.
+If person B knows something, then person B might tell it to somebody. If person B tells person C something, then person C knows it.
 Who told the other about the accident?
 
 Susan knew that Ann's son had been in a car accident, because she told her about it.
-If person B knows something, then person B might tell sth to somebody. If person B tells person C something, then person C knows something.
+If person B knows something, then person B might tell it to somebody. If person B tells person C something, then person C knows it.
 Who told the other about the accident?
 
 Joe's uncle can still beat him at tennis, even though he is 30 years older.
@@ -221,11 +221,11 @@ If person B is younger than person C, then person B can beat person C. If person
 Who is younger?
 
 The police left the house and went into the garage, where they found the murder weapon.
-If person B did something in thing C, then person B might leave thing C after person B did something.
+If person B did something in thing C, then person B might leave thing C after person B did it.
 Where did they find the murder weapon?
 
 The police left the house and went into the garage, after they found the murder weapon.
-If person B did something in place C, then person B might leave place C after person B did something.
+If person B did something in place C, then person B might leave place C after person B did it.
 Where did they find the murder weapon?
 
 The painting in Mark's living room shows an oak tree. It is to the right of the bookcase.
@@ -269,11 +269,11 @@ If thing B is between somebody and thing C, then he can’t see thing C and he c
 What can't I see around?
 
 They broadcast an announcement, but a subway came into the station and I couldn't hear it.
-If somebody broadcast sth, then another might not hear it. If there exists a loud, another one might not hear over it. If a subway comes, there exists a loud.
+If somebody broadcast sth, then somebody might not hear it. If there exists a loud, then somebody might not hear over a load. If a subway comes, there exists a loud.
 What couldn't I hear?
 
 They broadcast an announcement, but a subway came into the station and I couldn't hear over it.
-If somebody broadcast sth, another might not hear it. If there exists a loud, another one might not hear over it. If a subway comes, there exists a loud.
+If somebody broadcast sth, then somebody might not hear it. If there exists a loud, then somebody might not hear over a loud. If a subway comes, there exists a loud.
 What couldn't I hear over?
 
 In the middle of the outdoor concert, the rain started falling, and it continued until 10.
@@ -409,11 +409,11 @@ If thing B eats thing C, then thing B is hungry and thing C is tasty.
 What was hungry?
 
 I was trying to open the lock with the key, but someone had filled the keyhole with chewing gum, and I couldn't get it in.
-If somebody tries to open the lock with the thing B, then somebody might not get the thing B in. If somebody fills the keyhole with thing C, then thing C is in the keyhole. If thing C is in the keyhole, then somebody might not get thing C out.
+If somebody tries to open the lock with the thing B, then he might not get the thing B in. If somebody fills the keyhole with thing C, then thing C is in the keyhole. If thing C is in the keyhole, then somebody might not get thing C out.
 What couldn't I get in?
 
 I was trying to open the lock with the key, but someone had filled the keyhole with chewing gum, and I couldn't get it out.
-If somebody tries to open the lock with the thing B, then somebody might not get the thing B in. If somebody fills the keyhole with thing C, then thing C is in the keyhole. If thing C is in the keyhole, then somebody might not get thing C out.
+If somebody tries to open the lock with the thing B, then he might not get the thing B in. If somebody fills the keyhole with thing C, then thing C is in the keyhole. If thing C is in the keyhole, then somebody might not get thing C out.
 What couldn't I get out?
 
 The dog chased the cat, which ran up a tree. It waited at the top.
@@ -481,11 +481,11 @@ If person B tells person C lies, then person B should be truthful and person C s
 Who should have been more skeptical?
 
 Joe has sold his house and bought a new one a few miles away. He will be moving out of it on Thursday.
-If somebody sells his house B and buys a house C, then somebody might move out of house B and move into house C.
+If somebody sells his house B and buys a house C, then he might move out of house B and move into house C.
 Which house will he be moving out of?
 
 Joe has sold his house and bought a new one a few miles away. He will be moving into it on Thursday.
-If somebody sells his house B and buys a house C, then somebody might move out of house B and move into house C.
+If somebody sells his house B and buys a house C, then he might move out of house B and move into house C.
 Which house will he be moving into?
 
 Many people start to read Paul's books and can't put them down. They are gripped because Paul writes so well.
@@ -497,11 +497,11 @@ If person B reads thing C, then person B might be gripped or thing C might be po
 Who or what are popular?
 
 Mary took out her flute and played one of her favorite pieces. She has loved it since she was a child.
-If thing B is somebody’s favorite, then somebody loves thing B. If somebody takes out thing B, then somebody has thing B.
+If thing B is somebody’s favorite, then he loves thing B. If somebody takes out thing B, then he has thing B.
 What has Mary loved since she was a child?
 
 Mary took out her flute and played one of her favorite pieces. She has had it since she was a child.
-If thing B is somebody’s favorite, then somebody loves thing B. If somebody takes out thing B, then somebody has thing B.
+If thing B is somebody’s favorite, then he loves thing B. If somebody takes out thing B, then he has thing B.
 What has Mary had since she was a child?
 
 Sam pulled up a chair to the piano, but it was broken, so he had to stand instead.
@@ -873,11 +873,11 @@ If person B hires person C to take care of him, then person C takes care of pers
 Who is taking care of whom?
 
 John promised Bill to leave, so an hour later he left.
-If person B promise person C to do something, then person B will do something. If person B order person C to do something, then person C will do something. If somebody leave, somebody is to do something.
+If person B promise person C to do something, then person B will do it. If person B order person C to do something, then person C will do it. If somebody leave, he is to do something.
 Who left?
 
 John ordered Bill to leave, so an hour later he left.
-If person B promise person C to do something, then person B will do something. If person B order person C to do something, then person C will do something. If somebody leave, somebody is to do something.
+If person B promise person C to do something, then person B will do it. If person B order person C to do something, then person C will do it. If somebody leave, he is to do something.
 Who left?
 
 Sam Goodman's biography of the Spartan general Xenophanes conveys a vivid sense of the difficulties he faced in his childhood.
@@ -1025,86 +1025,87 @@ If person B’s legs are floating, then person B’s legs are dangled. If person
 Whose legs ached?
 
 The father carried the sleeping boy in his arms.
-If person B is sleep, person C might carry person B in person C’s arms. If person B is a kid, person B might has a bassinet. If person B is a boy, person B is a kid.
+If person B is sleep, then person C might carry person B in person C’s arms. If person B is a kid, then person B might has a bassinet. If person B is a boy, then person B is a kid.
 Whose arms?
 
 The father carried the sleeping boy in his bassinet.
-If person B is sleep, person C might carry person B in person C’s arms. If person B is a kid, person B might has a bassinet. If person B is a boy, person B is a kid.
+If person B is sleep, then person C might carry person B in person C’s arms. If person B is a kid, then person B might has a bassinet. If person B is a boy, then person B is a kid.
 Whose bassinet?
 
 The woman held the girl against her chest.
-If person B holds person C, person C might reject. If person C is against his will, person C is rejecting. If person B holds person C against her chest, chest belongs to person B.
+If person B holds person C, then person C might reject. If person C is against his will, then person C is rejecting. If person B holds person C against her chest, then chest belongs to person B.
 Whose chest?
 
 The woman held the girl against her will.
-If person B holds person C, person C might reject. If person C is against his will, person C is rejecting. If person B holds person C against her chest, chest belongs to person B.
+If person B holds person C, then person C might reject. If person C is against his will, then person C is rejecting. If person B holds person C against her chest, then chest belongs to person B.
 Whose will?
 
 Pam's parents came home and found her having sex with her boyfriend, Paul. They were embarrassed about it.
-If person B found person C doing sth embarrassing, person B might be furious and person C might be embarrassed. If person B is having sex, person B is doing sth embarrassing.
+If person B found person C doing sth embarrassing, then person B might be furious and person C might be embarrassed. If person B is having sex, then person B is doing sth embarrassing.
 Who were embarrassed?
 
 Pam's parents came home and found her having sex with her boyfriend, Paul. They were furious about it.
-If person B found person C doing sth embarrassing, person B might be furious and person C might be embarrassed. If person B is having sex, person B is doing sth embarrassing.
+If person B found person C doing sth embarrassing, then person B might be furious and person C might be embarrassed. If person B is having sex, then person B is doing sth embarrassing.
 Who were furious?
 
 Dr. Adams informed Kate that she had cancer and presented several options for future treatment.
-If person B inform person C sth and person B is a doctor, person C might have illness or person B might have retired.
+If person B inform person C sth and person B is a doctor, then person C might have illness or person B might have retired.
 Who had cancer?
 
-Dr. Adams informed Kate that she had retired and presented several options for future treatment. If person B inform person C sth and person B is a doctor, person C might have illness or person B might have retired.
+Dr. Adams informed Kate that she had retired and presented several options for future treatment. 
+If person B inform person C sth and person B is a doctor, then person C might have illness or person B might have retired.
 Who had retired?
 
 Dan had to stop Bill from toying with the injured bird. He is very compassionate.
-If person B stop person C doing sth crucial, person B is compassionate and person C is cruel. Toying with the injured bird is sth crucial.
+If person B stop person C from doing sth crucial, then person B is compassionate and person C is cruel. If somebody toys with the injured bird, then he is doing sth crucial.
 Who is compassionate?
 
 Dan had to stop Bill from toying with the injured bird. He is very cruel.
-If person B stop person C doing sth crucial, person B is compassionate and person C is cruel. Toying with the injured bird is sth crucial.
+If person B stop person C from doing sth crucial, then person B is compassionate and person C is cruel. If somebody toys with the injured bird, then he is doing sth crucial.
 Who is cruel?
 
 George got free tickets to the play, but he gave them to Eric because he was [particularly/not particularly] eager to see it.
-If person B gives the tickets to person C, person B is not particularly eager to see sth and person C is particularly eager to see sth.
-Who was  eager to see the play?
+If person B gives the tickets to person C, then person B is not particularly eager to see sth and person C is particularly eager to see sth.
+Who was eager to see the play?
 
 George got free tickets to the play, but he gave them to Eric even though he was [particularly/not particularly] eager to see it.
-If person B gives the tickets to person C, person B is not particularly eager to see sth and person C is particularly eager to see sth.
+If person B gives the tickets to person C, then person B is not particularly eager to see sth and person C is particularly eager to see sth.
 Who  was not eager to see the play?
 
 Jane gave Joan candy because she was hungry.
-If person B gives person C food, person B is not hungry and person C is hungry. Candy is food.
+If person B gives person C food, then person B is not hungry and person C is hungry. Candy is food.
 Who was hungry?
 
 Jane gave Joan candy because she wasn't hungry.
-If person B gives person C food, person B is not hungry and person C is hungry. Candy is food.
+If person B gives person C food, then person B is not hungry and person C is hungry. Candy is food.
 Who wasn't hungry?
 
 I tried to paint a picture of an orchard, with lemons in the lemon trees, but they came out looking more like light bulbs .
-If thing B looks like thing C, thing B have the same shape with thing C. Light bulb’s shape is round. Lemon’s shape is round. Lemon tree’s shape is cylindrical. Telephone pole’s shape is cylindrical.
+If thing B looks like thing C, then thing B have the same shape with thing C. Light bulb’s shape is round. Lemon’s shape is round. Lemon tree’s shape is cylindrical. Telephone pole’s shape is cylindrical.
 What looked like light bulbs ?
 
 I tried to paint a picture of an orchard, with lemons in the lemon trees, but they came out looking more like  telephone poles.
-If thing B looks like thing C, thing B have the same shape with thing C. Light bulb’s shape is round. Lemon’s shape is round. Lemon tree’s shape is cylindrical. Telephone pole’s shape is cylindrical.
+If thing B looks like thing C, then thing B have the same shape with thing C. Light bulb’s shape is round. Lemon’s shape is round. Lemon tree’s shape is cylindrical. Telephone pole’s shape is cylindrical.
 What looked like  telephone poles?
 
 James asked Robert for a favor but he refused.
-If person B ask person C for a favor, person B may be refused or person C may refuse.
+If person B ask person C for a favor, then person B may be refused or person C may refuse.
 Who refused?
 
 James asked Robert for a favor but he was refused.
-If person B ask person C for a favor, person B may be refused or person C may refuse.
+If person B ask person C for a favor, then person B may be refused or person C may refuse.
 Who was refused?
 
 Kirilov ceded the presidency to Shatov because he was more popular.
-If person B cedes sth to person C, person B lose sth and person C get sth. If person B is less popular, person B lose sth. If person C is more popular, person C get sth.
+If person B cedes sth to person C, then person B lose sth and person C get sth. If person B is less popular, then person B lose sth. If person C is more popular, then person C get sth.
 Who was more popular?
 
 Kirilov ceded the presidency to Shatov because he was less popular.
-If person B cedes sth to person C, person B lose sth and person C get sth. If person B is less popular, person B lose sth. If person C is more popular, person C get sth.
+If person B cedes sth to person C, then person B lose sth and person C get sth. If person B is less popular, then person B lose sth. If person C is more popular, then person C get sth.
 Who was less popular?
 
 Emma did not pass the ball to Janie although she was open.
-If person B is open, somebody migth pass the ball to person B.If person B sees that person C is open, person B might pass the ball to person C.
+If person B is open, then somebody migth pass the ball to person B. If person B sees that person C is open, then person B might pass the ball to person C.
 Who was open?
 
 Emma did not pass the ball to Janie although she saw that she was open.
@@ -1120,11 +1121,11 @@ If person B sees person C and person B might not recognize person C, person B is
 Who is the fool?
 
 I put the heavy book on the table and it broke.
-If somebody puts thing B on thing C and thing B is heavy, thing C might break.  If somebody puts thing B on thing C and thing B is fragile, thing B might break.Butterfly wing is fragile. Heavy book is heavy.
+If somebody puts thing B on thing C and thing B is heavy, then thing C might break. If somebody puts thing B on thing C and thing B is fragile, then thing B might break.Butterfly wing is fragile. Heavy book is heavy.
 What broke?
 
 I put the butterfly wing on the table and it broke.
-If somebody puts thing B on thing C and thing B is heavy, thing C might break.  If somebody puts thing B on thing C and thing B is fragile, thing B might break.Butterfly wing is fragile. Heavy book is heavy.
+If somebody puts thing B on thing C and thing B is heavy, then thing C might break. If somebody puts thing B on thing C and thing B is fragile, then thing B might break.Butterfly wing is fragile. Heavy book is heavy.
 What broke?
 
 Madonna fired her trainer because she slept with her boyfriend.
@@ -1135,21 +1136,20 @@ Madonna fired her trainer because she couldn't stand her boyfriend.
 Who couldn't stand whose boyfriend?
 Who slept with whose boyfriend?
 
-
 Carol believed that Rebecca suspected  that she had stolen the watch.
-If person B suspect somebody do sth, somebody might be suspected of doing sth. If person B regrets somebody do sth, person B might doing sth.
+If person B suspect that somebody do sth, then he might be suspected of doing it. If person B regrets that somebody do sth, person B might doing it.
 Who is suspected of stealing the watch? / Who stole the watch?
 
 Carol believed that Rebecca  regretted that she had stolen the watch.
-If person B suspect somebody do sth, somebody might be suspected of doing sth. If person B regrets somebody do sth, person B might doing sth.
+If person B suspect that somebody do sth, then he might be suspected of doing it. If person B regrets that somebody do sth, person B might doing it.
 Who is suspected of stealing the watch? / Who stole the watch?
 
 This book introduced Shakespeare to Ovid; it was a major influence on his writing.
-If person B is born before person C, person C’s writing might be influenced. Ovid is born before Shakespeare. Shakespeare is born before Goethe.
+If person B is born before person C, then person C’s writing might be influenced. Ovid is born before Shakespeare. Shakespeare is born before Goethe.
 Whose writing was influenced?
 
 This book introduced Shakespeare to Goethe; it was a major influence on his writing.
-If person B is born before person C, person C’s writing might be influenced. Ovid is born before Shakespeare. Shakespeare is born before Goethe.
+If person B is born before person C, then person C’s writing might be influenced. Ovid is born before Shakespeare. Shakespeare is born before Goethe.
 Whose writing was influenced?
 
 This book introduced Shakespeare to Ovid; it was a fine selection of his writing.
@@ -1160,18 +1160,17 @@ Fine selection of whose writing?
 
 
 Alice looked for her friend Jade in the crowd. Since she always has good luck, Alice spotted her quickly.
-If  person B has good luck or person C is obvious, person B spots person C quickly. If person B wears a red turban,  person B is obvious.
+If  person B has good luck or person C is obvious, then person B spots person C quickly. If person B wears a red turban, then person B is obvious.
 Who always has good luck?
 
 Alice looked for her friend Jade in the crowd. Since she always wears a red turban, Alice spotted her quickly.
-If  person B has good luck or person C is obvious, person B spots person C quickly. If person B wears a red turban,  person B is obvious.
+If  person B has good luck or person C is obvious, then person B spots person C quickly. If person B wears a red turban, then person B is obvious.
 Who always wears a red turban?
 
 During a game of tag, Ethan chased Luke because he was "it".
-During a game of tag, if person B is a 'it', person B might chase somebody and somebody might run from person B.
+During a game of tag, if person B is a 'it',  then person B might chase somebody and somebody might run from person B.
 Who was "it"?
 
 During a game of tag, Ethan ran from Luke because he was "it".
-During a game of tag, if person B is a 'it', person B might chase somebody and somebody might run from person B.
+During a game of tag, if person B is a 'it',  then person B might chase somebody and somebody might run from person B.
 Who was "it"?
-

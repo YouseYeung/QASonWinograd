@@ -45,9 +45,12 @@ with open(fileName, 'r') as f:
                             if content[index - 2] == ',':
                                 changed = False
                         if changed:
-                            content = content[:index] + ',' + content[index:]
+                            content = content[:index] + '.' + content[index:]
 
-
+                content.strip()
+                if content != "":
+                    if content[-1] == '.':
+                        content = content[:-1].strip()
                 content = requests.get(url + content).content
                 startPos = content.find(startSymbol)
                 endPos = content.find(endSymbol)
