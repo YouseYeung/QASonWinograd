@@ -433,7 +433,6 @@ class translater(object):
         return outputStr + res
 
     def findAnswerPredicate(self):
-        print self.question
         question = self.question
         verbs = self.findVerbsAndItsRelatedNouns(question)
         combinedName = ""
@@ -471,10 +470,12 @@ class translater(object):
         secedent = tokens[sepIndex + 1:]
         entailmentType = self.findTypeOfEntailment(antecedent, secedent)
         type_AB1, type_AB2, type_ABC1 = "A>B", "A=B", "A>B^C,B>A,C>A;A>BVC,B>A,C>A"
-        outputStr += self.addVariableDeclare(library, verbs)
-        outputStr += self.addEntailment(library, verbs, entailmentType, sepIndex)
-        return outputStr 
-    
+        declareVarString, pronoun_name_Map = self.addVariableDeclare(library, verbs)
+        outputStr += declareVarString
+        outputStr += self.addEntailment(library, verbs, entailmentType, sepIndex, pronoun_name_Map)
+        return outputStr
+
+    #return string and pronoun_name map
     def addVariableDeclare(self, library, verbs):
         headString = "(assert (forall ("
         tokens = library["Lemmatized tokens:"]
@@ -511,7 +512,6 @@ class translater(object):
         entityNotEqualString = ""
         for sort, names in sortNameMap.items():
             length = len(names)
-            print sort, names
             if length > 1:
                 for i in range(length):
                     for j in range(i + 1, length):
@@ -521,13 +521,86 @@ class translater(object):
             entityNotEqualString += "(=> (and " + entityNotEqualString + ") "
         elif notEqualPairs == 1:
             entityNotEqualString = "(=> " + entityNotEqualString
-        return headString + entityNotEqualString + ")\n"
+        return headString + entityNotEqualString, pronoun_name_Map
 
-    def addEntailment(self, library, verbs, entailmentType, sepIndex):
+    def addEntailment(self, library, verbs, entailmentType, sepIndex, pronoun_name_Map):
         tokens = library["Lemmatized tokens:"]
         tags = library["POS tags:"]
         children = library["Dependency children:"]
-        return ""
+        type_AB1, type_AB2, type_ABC1 = "A>B", "A=B", "A>B^C,B>A,C>A;A>BVC,B>A,C>A"
+        antecedent = []
+        secedent = []
+        addedVerbsIndex = []        
+        antecedentString = ""
+        secedentString = ""
+        for index, info in verbs.items():
+            if index < sepIndex:
+                antecedent.append([index, info])
+            else:
+                secedent.append([index, info])
+
+        addedVerbsNum = 0
+        #assure that verb occurs in order to get the right relation between verbs, such as conj:and, conj:or
+        antecedent = sorted(antecedent, key = lambda x : x[0])
+        secedent = sorted(secedent, key = lambda x : x[0])
+        for verb in antecedent:
+            newString = self.addRealityForOneVerb(library, {verb[0]:verb[1]}, verbs, pronoun_name_Map, addedVerbsIndex)
+            if newString != "":
+                antecedentString += newString + " "
+                addedVerbsNum += 1
+        if addedVerbsNum > 1:
+            antecedentString = "(and " + antecedentString + ")"
+        addedVerbsNum = 0
+        for verb in secedent:
+            newString = self.addRealityForOneVerb(library, {verb[0]:verb[1]}, verbs, pronoun_name_Map, addedVerbsIndex) 
+            if newString != "":
+                secedentString += newString + " "
+                addedVerbsNum += 1
+        if addedVerbsNum > 1:
+            secedentString = "(and " + secedentString + ")"
+        
+        return "(=> " + antecedentString + " " + secedentString + "))))\n"
+
+    def addRealityForOneVerb(self, library, theVerb, allVerbs, pronoun_name_Map, addedVerbsIndex):
+        headString = ""
+        tokens = library["Lemmatized tokens:"]
+        tags = library["POS tags:"]
+        children = library["Dependency children:"]
+        completeNouns = self.findCompleteNouns(library)
+        for index, info in theVerb.items():
+            if index in addedVerbsIndex:
+                continue
+            nouns = info["relatedNouns"]
+            verbName = info["combinedVerbName"]
+            headString += "(" + verbName
+            for noun in nouns:
+                nounIndex = noun["index"]
+                nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens)
+                isVar = noun["var"]
+                if isVar:
+                    if pronoun_name_Map.has_key(nounName):
+                        headString += " " + pronoun_name_Map[nounName]
+                    else:
+                        print "[ERROR]: incorrect variable name:", nounName
+                else:
+                    headString += " " + nounName
+            headString += ")"
+            addedVerbsIndex.append(index)
+
+            child = children[index]
+            index = child.find("conj:")
+            if index != -1:
+                indexStart = index + len("conj:")
+                indexEnd = child[indexStart:].find("->") + indexStart
+                relation = child[indexStart:indexEnd]
+                verbIndex = self.findIndexBySymbol(child, "conj:")
+                if allVerbs.has_key(verbIndex):
+                    if relation == "and" or relation == "or":
+                        headString = "(" + relation + " " + headString + " " + self.addRealityForOneVerb(library, {verbIndex:allVerbs[verbIndex]}, allVerbs, pronoun_name_Map, addedVerbsIndex) + ")"
+                else:
+                    print "[ERROR]: Verb name and its related verb's index doesn't not exist:", verbName, verbIndex
+
+        return headString
 
     def addPossesionReality(self):
        return "" 
