@@ -8,7 +8,8 @@ fileName = "formatWSC"
 outputFileName = "output"
 ofp = open(outputFileName,'w')
 
-keywords = ["but", "because", "then", "although"]
+keywords = [" but ", " because ", " then ", " although "]
+keywords2 = [ " and ", " or "]
 
 with open(fileName, 'r') as f:
     startSymbol = "<pre>"
@@ -46,7 +47,20 @@ with open(fileName, 'r') as f:
                                 changed = False
                         if changed:
                             content = content[:index] + '.' + content[index:]
-
+                for word in keywords2:
+                    indexList = []
+                    index = content.find(word)
+                    #keyword is not in the front of the sentence
+                    if index != -1 and index != 0:
+                        changed = True
+                        if index - 1 > 0:
+                            if content[index - 1] == ',':
+                                changed = False
+                        if index - 2 > 0:
+                            if content[index - 2] == ',':
+                                changed = False
+                        if changed:
+                            content = content[:index] + ',' + content[index:]
                 content.strip()
                 if content != "":
                     if content[-1] == '.':

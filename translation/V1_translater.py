@@ -14,8 +14,10 @@ class translater(object):
         self.kbList = []
         self.context = []
         self.addedVerbs = []
+        self.existVars = ["somebody", "something", "sth", "sb", "he", "it"]
         #z3 keywords, these words can not be declared as a rel, we have to add '_' in front of the word.
         self.keywords = ["repeat", "assert", "declare"]
+        self.outputStr = ""
 
     def load(self, fileName):
         with open(fileName, 'r') as f:
@@ -142,7 +144,7 @@ class translater(object):
             i = self.findIndexBySymbol(children[index], _type)
             if i != -1:
                 #add the word if it is a noun
-                if "NN" in tags[i] or "PRP" in tags[i]:
+                if "NN" in tags[i] or "PRP" in tags[i] or "WP" in tags[i]:
                     relatedNounsIndex.append(i)
                 #find more nouns in its related word's children
                 if (_type == 'xcomp' and ("NN" in tags[i] or "PRP" in tags[i])) or (_type == 'advmod' and tags[i] == "IN"):
@@ -158,7 +160,7 @@ class translater(object):
 
     #library: dict. It is descrption, kb or question
     def findVerbsAndItsRelatedNouns(self, library):
-        existVar = ["somebody", "something", "sth", "sb", "he", "it"]
+        existVars = self.existVars
         tokens = library["Lemmatized tokens:"]
         tags = library["POS tags:"]
         children = library["Dependency children:"]
@@ -203,10 +205,23 @@ class translater(object):
                     nounInfo = {"index":index}
                     nounName = tokens[index]
                     #determine if noun name is a variable?
-                    if len(nounName) == 1 or nounName in existVar:
+                    if len(nounName) == 1:
                         lastWordIndex = index - 1
                         nounInfo["sort"] = tokens[lastWordIndex]
                         nounInfo["var"] = True
+                    elif nounName in existVars:
+                        if nounName == "somebody" or nounName == "sb":
+                            nounInfo["sort"] = "person"
+                            nounInfo["var"] = True
+                        elif nounName == "something" or nounName == "sth":
+                            nounInfo["sort"] = "thing"
+                            nounInfo["var"] = True
+                    elif tags[index] == "WP":
+                        if nounName == "who" or nounName == "whom":
+                            nounInfo["sort"] = "person"
+                        else:
+                            nounInfo["sort"] = "thing"
+                        nounInfo["var"] = False
                     else:
                         nounInfo["sort"] = "thing"
                         nounInfo["var"] = False
@@ -312,8 +327,8 @@ class translater(object):
                 if originalVerbName not in self.addedVerbs:
                     res += declareRel + originalVerbName + " ("
                     #remove last parameter
-                    noun = info["relatedNouns"][0]
-                    res += noun["sort"] + " "
+                    for noun in info["relatedNouns"][:-1]:
+                        res += noun["sort"] + " "
                     res += "))\n"
                 self.addedVerbs.append(originalVerbName)
         return res
@@ -461,7 +476,7 @@ class translater(object):
             else:
                 return type_AB1
 
-
+        return type_AB2
     def addReality_Entailment(self, library, verbs, sepIndex, outputStr):
         tokens = library["Lemmatized tokens:"]
         tags = library["POS tags:"]
@@ -470,9 +485,7 @@ class translater(object):
         secedent = tokens[sepIndex + 1:]
         entailmentType = self.findTypeOfEntailment(antecedent, secedent)
         type_AB1, type_AB2, type_ABC1 = "A>B", "A=B", "A>B^C,B>A,C>A;A>BVC,B>A,C>A"
-        declareVarString, pronoun_name_Map = self.addVariableDeclare(library, verbs)
-        outputStr += declareVarString
-        outputStr += self.addEntailment(library, verbs, entailmentType, sepIndex, pronoun_name_Map)
+        outputStr += self.addEntailment(library, verbs, entailmentType, sepIndex)
         return outputStr
 
     #return string and pronoun_name map
@@ -482,7 +495,7 @@ class translater(object):
         tags = library["POS tags:"]
         children = library["Dependency children:"]
         pronouns = []
-        existVar = ["somebody", "something", "sth", "sb", "he", "it"]
+        existVars = self.existVars
         for i in range(26):
             pronouns.append(chr(ord('a') + i))
         numOfPronoun = 0
@@ -494,20 +507,29 @@ class translater(object):
             nouns = info["relatedNouns"]
             for noun in nouns:
                 nounIndex = noun["index"]
-                nounName = tokens[index]
+                nounName = tokens[nounIndex]
                 sort = noun["sort"]
-                if nounName not in existVar and noun["var"]:
-                    nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens)
-                    if not pronoun_name_Map.has_key(nounName):
-                        pronoun = pronouns[numOfPronoun]
-                        addedPronoun.append(pronoun)
-                        pronoun_name_Map[nounName] = pronoun
-                        headString += "(" + pronoun + " " + sort + ") " 
-                        if sortNameMap.has_key(sort):
-                            sortNameMap[sort].append(pronoun)
-                        else:
-                            sortNameMap[sort] = [pronoun]
+                if noun["var"]:
+                    if nounName not in existVars:
+                        nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens)
+                        if not pronoun_name_Map.has_key(nounName):
+                            pronoun = pronouns[numOfPronoun]
+                            addedPronoun.append(pronoun)
+                            pronoun_name_Map[nounName] = pronoun
+                            headString += "(" + pronoun + " " + sort + ") " 
+                            if sortNameMap.has_key(sort):
+                                sortNameMap[sort].append(pronoun)
+                            else:
+                                sortNameMap[sort] = [pronoun]
+                            numOfPronoun += 1
+                    else:
+                        pronoun_name_Map[nounName] = pronouns[numOfPronoun]
+                        if nounName == "somebody" or nounName == "sb":
+                            pronoun_name_Map["he"] = pronouns[numOfPronoun]
+                        elif nounName == "something" or nounName == "sth":
+                            pronoun_name_Map["it"] = pronouns[numOfPronoun]
                         numOfPronoun += 1
+        headString += ") "
         notEqualPairs = 0
         entityNotEqualString = ""
         for sort, names in sortNameMap.items():
@@ -523,11 +545,12 @@ class translater(object):
             entityNotEqualString = "(=> " + entityNotEqualString
         return headString + entityNotEqualString, pronoun_name_Map
 
-    def addEntailment(self, library, verbs, entailmentType, sepIndex, pronoun_name_Map):
+    def addEntailment(self, library, verbs, entailmentType, sepIndex):
         tokens = library["Lemmatized tokens:"]
         tags = library["POS tags:"]
         children = library["Dependency children:"]
-        type_AB1, type_AB2, type_ABC1 = "A>B", "A=B", "A>B^C,B>A,C>A;A>BVC,B>A,C>A"
+        type_AB1, type_AB2, type_ABC1 = "A>B", "A=B", "A>B^C,B>A,C>A;A>BVC,B>A,C>A" 
+        type_ABC2 = "AvB>C, C>A, C>B"
         antecedent = []
         secedent = []
         addedVerbsIndex = []        
@@ -539,27 +562,91 @@ class translater(object):
             else:
                 secedent.append([index, info])
 
-        addedVerbsNum = 0
-        #assure that verb occurs in order to get the right relation between verbs, such as conj:and, conj:or
         antecedent = sorted(antecedent, key = lambda x : x[0])
         secedent = sorted(secedent, key = lambda x : x[0])
-        for verb in antecedent:
-            newString = self.addRealityForOneVerb(library, {verb[0]:verb[1]}, verbs, pronoun_name_Map, addedVerbsIndex)
-            if newString != "":
-                antecedentString += newString + " "
-                addedVerbsNum += 1
-        if addedVerbsNum > 1:
-            antecedentString = "(and " + antecedentString + ")"
-        addedVerbsNum = 0
-        for verb in secedent:
-            newString = self.addRealityForOneVerb(library, {verb[0]:verb[1]}, verbs, pronoun_name_Map, addedVerbsIndex) 
-            if newString != "":
-                secedentString += newString + " "
-                addedVerbsNum += 1
-        if addedVerbsNum > 1:
-            secedentString = "(and " + secedentString + ")"
-        
-        return "(=> " + antecedentString + " " + secedentString + "))))\n"
+        def addRealityByAntAndSec(antecedent, secedent):
+            newVerbs = {}
+            for verb in antecedent:
+                newVerbs[verb[0]] = verb[1]
+            for verb in secedent:
+                newVerbs[verb[0]] = verb[1]
+
+            declareString, pronoun_name_Map = self.addVariableDeclare(library, newVerbs)
+            addedVerbsNum = 0
+            #assure that verb occurs in order to get the right relation between verbs, such as conj:and, conj:or
+            antecedentString = ""
+            secedentString = ""
+            for verb in antecedent:
+                newString = self.addRealityForOneVerb(library, {verb[0]:verb[1]}, verbs, pronoun_name_Map, addedVerbsIndex)
+                if newString != "":
+                    antecedentString += newString + " "
+                    addedVerbsNum += 1
+            if addedVerbsNum > 1:
+                antecedentString = "(and " + antecedentString + ")"
+            addedVerbsNum = 0
+            for verb in secedent:
+                newString = self.addRealityForOneVerb(library, {verb[0]:verb[1]}, verbs, pronoun_name_Map, addedVerbsIndex) 
+                if newString != "":
+                    secedentString += newString + " "
+                    addedVerbsNum += 1
+            if addedVerbsNum > 1:
+                secedentString = "(and " + secedentString + ")"
+            return declareString, antecedentString + " " + secedentString + "))))\n"
+
+        if type_AB1 == entailmentType:
+            res = ""
+            declareString, realityString = addRealityByAntAndSec(antecedent, secedent)
+            res = declareString + "(=> " + realityString
+            return res
+        elif type_AB2 == entailmentType:
+            declareString, realityString = addRealityByAntAndSec(antecedent, secedent)
+            return declareString + "(= " + realityString
+
+        elif type_ABC1 == entailmentType:
+            res = ""
+            declareString, realityString = addRealityByAntAndSec(antecedent, secedent)
+            res = declareString + "(=> " + realityString
+            for verb in secedent:
+                addedVerbsIndex = []
+                declareString, realityString = addRealityByAntAndSec([verb], antecedent)
+                res += declareString + "(=> " + realityString
+            return res
+        elif type_ABC2 == entailmentType:
+            res = ""
+            declareString, realityString = addRealityByAntAndSec(antecedent, secedent)
+            res = declareString + "(=> " + realityString
+            for verb in antecedent:
+                addedVerbsIndex = []
+                declareString, realityString = addRealityByAntAndSec(secedent, [verb])
+                res += declareString + "(=> " + realityString
+            return res
+
+    def addExistVarDeclaration(self, token, addedExist, pronoun_name_Map):
+        headString = ""
+        if "somebody" == token:
+            headString = "(exist ((" + pronoun_name_Map["somebody"] + " person)"
+            addedExist = True
+        if "sb" == token:
+            if addedExist:
+                headString += " (" + pronoun_name_Map["sb"] + " person)"
+            else:
+                headString = "(exist ((" + pronoun_name_Map["sb"] + " person)"
+                addedExist = True
+        if "something" == token:
+            if addedExist:
+                headString += " (" + pronoun_name_Map["something"] + " thing)"
+            else:
+                headString = "(exist ((" + pronoun_name_Map["something"] + " thing)"
+                addedExist = True
+        if "sth" == token:
+            if addedExist:
+                headString += " (" + pronoun_name_Map["sth"] + " thing)"
+            else:
+                headString = "(exist ((" + pronoun_name_Map["sth"] + " thing)"
+                addedExist = True
+        if addedExist:
+            headString += ") "
+        return headString
 
     def addRealityForOneVerb(self, library, theVerb, allVerbs, pronoun_name_Map, addedVerbsIndex):
         headString = ""
@@ -567,6 +654,7 @@ class translater(object):
         tags = library["POS tags:"]
         children = library["Dependency children:"]
         completeNouns = self.findCompleteNouns(library)
+        addedNounName = []
         for index, info in theVerb.items():
             if index in addedVerbsIndex:
                 continue
@@ -576,6 +664,7 @@ class translater(object):
             for noun in nouns:
                 nounIndex = noun["index"]
                 nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens)
+                addedNounName.append(nounName)
                 isVar = noun["var"]
                 if isVar:
                     if pronoun_name_Map.has_key(nounName):
@@ -599,8 +688,16 @@ class translater(object):
                         headString = "(" + relation + " " + headString + " " + self.addRealityForOneVerb(library, {verbIndex:allVerbs[verbIndex]}, allVerbs, pronoun_name_Map, addedVerbsIndex) + ")"
                 else:
                     print "[ERROR]: Verb name and its related verb's index doesn't not exist:", verbName, verbIndex
-
-        return headString
+        
+        existDeclareString = ""
+        addedExist = False
+        for nounName in addedNounName:
+            #neglect "he" and "it"
+            if nounName in self.existVars[:-2]:
+                existDeclareString = self.addExistVarDeclaration(nounName, addedExist, pronoun_name_Map)
+                addedExist = True
+        
+        return existDeclareString + headString
 
     def addPossesionReality(self):
        return "" 
@@ -613,6 +710,165 @@ class translater(object):
             return self.addReality_IS_Relation(library, verbs, outputStr)
         else:
             return self.addReality_Entailment(library, verbs, sepIndex, outputStr)
+
+    def addRules_OnlyOneAnswer(self, nounSortMap):
+        question = self.question
+        tokens = question["Lemmatized tokens:"]
+        tags = question["POS tags:"]
+        headString = "(assert (= "
+        res = ""
+        nounList = []
+        if "who" in tokens or "whom" in tokens:
+            if nounSortMap.has_key("person"):
+                nounList = nounSortMap["person"]
+        else:
+            if nounSortMap.has_key("thing"):
+                nounList = nounSortMap["thing"]
+
+        verbs = self.findVerbsAndItsRelatedNouns(question)
+        for index, info in verbs.items():
+            verbName = info["combinedVerbName"]
+            if verbName not in self.addedVerbs:
+                continue
+            nouns = info["relatedNouns"]
+            verbSentence = "(" + verbName + " "
+            addingNouns = []
+            #determine if the noun is an variable
+            for noun in nouns:
+                nounIndex = noun["index"]
+                tag = tags[nounIndex]
+                if tag == "WP":
+                    addingNouns.append(tag)
+                else:
+                    addingNouns.append(tokens[nounIndex])
+            #substitue the variable noun with the candidate answer noun
+            def findAllAnswerSentence(addingNouns, nounList, sentences, string):
+                if nounList == [] or addingNouns == []:
+                    if string not in sentences:
+                        sentences.append(string)
+                    return
+                i = 0
+                for symbol in addingNouns:
+                    if symbol == "WP":
+                        j = 0
+                        for noun in nounList:
+                            string = noun + " "
+                            newNounList = nounList[:j]
+                            newNounList[0:0] = nounList[j + 1:]
+                            findAllAnswerSentence(addingNouns[i + 1:], newNounList[:], sentences, string)
+                            j += 1
+                    else:
+                        string += symbol + " "
+                    i += 1
+                if string not in sentences:
+                    sentences.append(string)
+            
+            string = ""
+            sentences = []
+            findAllAnswerSentence(addingNouns, nounList[:], sentences, string)
+            i, length = 0, len(sentences)
+            for i in range(length):
+                trueSentence = verbSentence + sentences[i] + ") "
+                falseSentence = ""
+                completeSen = ""
+                for j in range(length):
+                    if i != j:
+                        falseSentence += "(not " + verbSentence + sentences[j] + ")) "
+                if length > 2:
+                    falseSentence = "(and " + falseSentence
+                res += headString + trueSentence + falseSentence + ")))\n"
+        return res
+
+    def addDescription(self):
+        verbs = self.findVerbsAndItsRelatedNouns(self.description)
+        answerTokens = self.question["Lemmatized tokens:"]
+        descriptionTokens = self.description["Lemmatized tokens:"]
+        headString = "(assert ("
+        res = ""
+        completeNouns = self.findCompleteNouns(self.description)
+        for index, info in verbs.items():
+            originalVerbName = info["originalVerbName"]
+            combinedVerbName = info["combinedVerbName"]
+            if originalVerbName not in answerTokens:
+                verbName = ""
+                if combinedVerbName in self.addedVerbs:
+                    verbName = combinedVerbName
+                elif originalVerbName in self.addedVerbs:
+                    verbName = originalVerbName
+                else:
+                    continue
+                res += headString + verbName + ' '
+                nouns = info["relatedNouns"]
+                for noun in nouns:
+                    nounIndex = noun["index"]
+                    nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, descriptionTokens)
+                    res += nounName + ' '
+                res += '))\n'
+
+        
+        return res
+
+    def reasoning(self, nounSortMap, outputStr):
+        question = self.question
+        tokens = question["Lemmatized tokens:"]
+        tags = question["POS tags:"]
+        verb = ""
+        i = 0
+        for tag in tags:
+            if "VB" in tag and "AUX" not in tag:
+                verb = tokens[i]
+            i += 1
+
+        headString = "(assert (not "
+        nounList = []
+        #person answer
+        if "who" in tokens or "whom" in tokens:
+            nounList = nounSortMap["person"]
+        #thing answer
+        else:
+            nounList = nounSortMap["thing"]
+
+        length = len(nounList)
+        i = 0
+        verbs = self.findVerbsAndItsRelatedNouns(question)
+        answer = ""
+        for index, info in verbs.items():
+            verbName = info["combinedVerbName"]
+            if verbName not in self.addedVerbs:
+                verbName = info["originalVerbName"]
+                if verbName not in self.addedVerbs:
+                    continue
+            addingNouns = []
+            #find the noun that is variable
+            for noun in info["relatedNouns"]:
+                nounIndex = noun["index"]
+                tag = tags[nounIndex]
+                if tag == "WP":
+                    addingNouns.append("WP")
+                else:
+                    addingNouns.append(tokens[nounIndex])
+            i = 0
+            for noun in nounList:
+                i += 1
+                verbSentence = "(" + verbName
+                for symbol in addingNouns:
+                    if symbol == "WP":
+                        verbSentence += " " + noun
+                    else:
+                        verbSentence += " " + symbol
+                self.outputStr = outputStr + headString + verbSentence + ')))\n'
+                self.outputStr += "(check-sat)\n"
+                fileName = "testOutput_" + str(i)
+                self.writeIntoFile(fileName)
+                #execute command line verification and get the output
+                #the end char is  '\n', delete it
+                var = os.popen("z3 " +  fileName).read()[:-1]
+                print ("verification result:" + noun + " " + var)
+                if str(var) == "unsat":
+                    answer = noun
+                    break
+        print "Answer:", answer
+        return answer
 
     def translateToZ3(self):
         description = self.description
@@ -698,15 +954,23 @@ class translater(object):
             res = self.addRules_ClosedReasonAssumption(kb, verbs, res)
             i += 1
         res += self.addPrepVerbToVerbEntailment()
-        return res
-
-
+        res += self.addRules_OnlyOneAnswer(nounSortMap)
+        res += self.addDescription()
+        if len(self.context) == 3:
+            print "Description:", self.context[0]
+            print "Knowledge:", self.context[1]
+            print "Quesstion:", self.context[2]
+        self.reasoning(nounSortMap, res)
+    
+    def writeIntoFile(self, fileName):
+        with open(fileName, 'w') as f:
+            f.write(self.outputStr)
 
 
 def main():
     t = translater()
     t.load("test1")
-    print t.translateToZ3()
+    t.translateToZ3()
 
 if __name__ == '__main__':
     main()
