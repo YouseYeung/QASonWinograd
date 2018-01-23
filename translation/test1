@@ -2,37 +2,37 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: The lawyer asked the witness a question, but he was reluctant to answer it {
-    Tokens: [the, lawyer, asked, the, witness, a, question, ,, but, he, was, reluctant, to, answer, it]
-    Lemmatized tokens: [the, lawyer, ask, the, witness, a, question, ,, but, he, be, reluctant, to, answer, it]
-    POS tags: [DT, NN, VBD, DT, NN, DT, NN, ,, CC, PRP, VBD-AUX, JJ, TO, VB, PRP]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [det->0], [nsubj->1, xcomp->6, punct->7, cc->8, conj:but->11], [], [det->3], [], [nsubj->4, det->5], [], [], [], [], [nsubj->9, cop->10, xcomp->13], [], [mark->12, dobj->14], []]
+  Example: James asked Robert for a favor. but he refused {
+    Tokens: [james, asked, robert, for, a, favor, ., but, he, refused]
+    Lemmatized tokens: [James, ask, Robert, for, a, favor, ., but, he, refuse]
+    POS tags: [NNP, VBD, NNP, IN, DT, NN, ., CC, PRP, VBD]
+    NER tags: [PERSON, O, PERSON, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [nsubj->0, dobj->2, punct->6], [nmod:for->5], [], [], [case->3, det->4], [], [], [], [cc->7, nsubj->8]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B does ask person C a question, then person B might not repeat the question again, and person C might not answer the question {
-    Tokens: [if, person, b, does, ask, person, c, a, question, ,, then, person, b, might, not, repeat, the, question, again, ,, and, person, c, might, not, answer, the, question]
-    Lemmatized tokens: [if, person, b, do, ask, person, c, a, question, ,, then, person, b, might, not, repeat, the, question, again, ,, and, person, c, might, not, answer, the, question]
-    POS tags: [IN, NN, NN, VBD-AUX, VB, NN, NN, DT, NN, ,, RB, NN, NN, VBD-AUX, RB, VB, DT, NN, RB, ,, CC, NN, NN, VBD-AUX, RB, VB, DT, NN]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, aux->3, xcomp->8], [], [compound->5], [], [nsubj->6, det->7], [], [], [], [advmod->10, compound->11], [], [], [dobj->17, advmod->18, punct->19, advcl->4, cc->20, punct->9, conj:and->25, nsubj->12, aux->13, neg->14], [], [det->16], [], [], [], [], [compound->21], [], [], [nsubj->22, aux->23, neg->24, dobj->27], [], [det->26]]
+  Example: If person B ask person C for a favor, then person B may be refused, or person C may refuse {
+    Tokens: [if, person, b, ask, person, c, for, a, favor, ,, then, person, b, may, be, refused, ,, or, person, c, may, refuse]
+    Lemmatized tokens: [if, person, b, ask, person, c, for, a, favor, ,, then, person, b, may, be, refuse, ,, or, person, c, may, refuse]
+    POS tags: [IN, NN, NN, VB, NN, NN, IN, DT, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, VBN, ,, CC, NN, NN, VBD-AUX, VB]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [mark->0, nsubj->2, dobj->5, nmod:for->8], [], [compound->4], [], [], [case->6, det->7], [], [], [], [advmod->10, compound->11], [], [], [punct->16, cc->17, advcl->3, conj:or->21, punct->9, nsubjpass->12, aux->13, auxpass->14], [], [], [], [compound->18], [], [nsubj->19, aux->20]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: Who was reluctant to answer the question {
-    Tokens: [who, was, reluctant, to, answer, the, question]
-    Lemmatized tokens: [who, be, reluctant, to, answer, the, question]
-    POS tags: [WP, VBD-AUX, JJ, TO, VB, DT, NN]
-    NER tags: [O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null]
-    Dependency children: [[], [], [nsubj->0, cop->1, xcomp->4], [], [mark->3, dobj->6], [], [det->5]]
+  Example: Who refused {
+    Tokens: [who, refused]
+    Lemmatized tokens: [who, refuse]
+    POS tags: [WP, VBD]
+    NER tags: [O, O]
+    NER values: [null, null]
+    Dependency children: [[], [nsubj->0]]
   }

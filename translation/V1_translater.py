@@ -346,10 +346,12 @@ class translater(object):
                 number = 0
                 if combinedVerbName != originalVerbName and not addedVerbs.has_key(originalVerbName):
                     addedVerbs[originalVerbName] = True
-                    res += headString
                     nouns = info["relatedNouns"]
+                    if len(nouns) < 2:
+                        continue
                     combinedVerbString = "(" + combinedVerbName + " "
                     originalVerbString = "(" + originalVerbName + " "
+                    res += headString
                     for noun in nouns:
                         if noun["var"]:
                             pronoun = chr(ord('a') + number)
@@ -365,7 +367,7 @@ class translater(object):
                     res += ") "
                     combinedVerbString += ") "
                     originalVerbString += ")"
-                    res += "(=> " + combinedVerbString + originalVerbString + ")))\n"
+                    res += "(= " + combinedVerbString + originalVerbString + ")))\n"
         return res
     def getAntecedentAndSecedent(self, tokens):
         length = len(tokens)
@@ -591,7 +593,11 @@ class translater(object):
                     addedVerbsNum += 1
             if addedVerbsNum > 1:
                 secedentString = "(and " + secedentString + ")"
-            return declareString, antecedentString + " " + secedentString + "))))\n"
+            variableNum = len(pronoun_name_Map.keys())
+            rightBracket = ""
+            if variableNum > 1:
+                rightBracket = ")"
+            return declareString, antecedentString + " " + secedentString + ")))" + rightBracket + "\n"
 
         if type_AB1 == entailmentType:
             res = ""
@@ -956,10 +962,13 @@ class translater(object):
         res += self.addPrepVerbToVerbEntailment()
         res += self.addRules_OnlyOneAnswer(nounSortMap)
         res += self.addDescription()
-        if len(self.context) == 3:
+        if len(self.context) >= 3:
             print "Description:", self.context[0]
-            print "Knowledge:", self.context[1]
-            print "Quesstion:", self.context[2]
+            print "Knowledge:",
+            for kb in self.context[1:-1]:
+                print kb,
+            print ""
+            print "Quesstion:", self.context[-1]
         self.reasoning(nounSortMap, res)
     
     def writeIntoFile(self, fileName):
