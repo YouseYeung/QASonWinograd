@@ -2,37 +2,37 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: James asked Robert for a favor. but he refused {
-    Tokens: [james, asked, robert, for, a, favor, ., but, he, refused]
-    Lemmatized tokens: [James, ask, Robert, for, a, favor, ., but, he, refuse]
-    POS tags: [NNP, VBD, NNP, IN, DT, NN, ., CC, PRP, VBD]
-    NER tags: [PERSON, O, PERSON, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [nsubj->0, dobj->2, punct->6], [nmod:for->5], [], [], [case->3, det->4], [], [], [], [cc->7, nsubj->8]]
+  Example: I poured water from the bottle into the cup until it was full {
+    Tokens: [i, poured, water, from, the, bottle, into, the, cup, until, it, was, full]
+    Lemmatized tokens: [I, pour, water, from, the, bottle, into, the, cup, until, it, be, full]
+    POS tags: [PRP, VBD, NN, IN, DT, NN, IN, DT, NN, IN, PRP, VBD-AUX, JJ]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [nsubj->0, dobj->2, nmod:from->5, nmod:into->8, advcl->12], [], [], [], [case->3, det->4], [], [], [case->6, det->7], [], [], [], [mark->9, nsubj->10, cop->11]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B ask person C for a favor, then person B may be refused, or person C may refuse {
-    Tokens: [if, person, b, ask, person, c, for, a, favor, ,, then, person, b, may, be, refused, ,, or, person, c, may, refuse]
-    Lemmatized tokens: [if, person, b, ask, person, c, for, a, favor, ,, then, person, b, may, be, refuse, ,, or, person, c, may, refuse]
-    POS tags: [IN, NN, NN, VB, NN, NN, IN, DT, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, VBN, ,, CC, NN, NN, VBD-AUX, VB]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [mark->0, nsubj->2, dobj->5, nmod:for->8], [], [compound->4], [], [], [case->6, det->7], [], [], [], [advmod->10, compound->11], [], [], [punct->16, cc->17, advcl->3, conj:or->21, punct->9, nsubjpass->12, aux->13, auxpass->14], [], [], [], [compound->18], [], [nsubj->19, aux->20]]
+  Example: If somebody pours something from thing B into thing C, then thing B will be empty, and thing C will be full {
+    Tokens: [if, somebody, pours, something, from, thing, b, into, thing, c, ,, then, thing, b, will, be, empty, ,, and, thing, c, will, be, full]
+    Lemmatized tokens: [if, somebody, pour, something, from, thing, b, into, thing, c, ,, then, thing, b, will, be, empty, ,, and, thing, c, will, be, full]
+    POS tags: [IN, NN, VBZ, NN, IN, NN, NN, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, JJ, ,, CC, NN, NN, VBD-AUX, VBD-AUX, JJ]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [mark->0, nsubj->1, dobj->3, nmod:into->9], [nmod:from->6], [], [], [case->4, compound->5], [], [], [case->7, compound->8], [], [], [], [advmod->11, compound->12], [], [], [cop->15, punct->17, advcl->2, cc->18, conj:and->23, punct->10, nsubj->13, aux->14], [], [], [], [compound->19], [], [], [nsubj->20, aux->21, cop->22]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: Who refused {
-    Tokens: [who, refused]
-    Lemmatized tokens: [who, refuse]
-    POS tags: [WP, VBD]
-    NER tags: [O, O]
-    NER values: [null, null]
-    Dependency children: [[], [nsubj->0]]
+  Example: What was full {
+    Tokens: [what, was, full]
+    Lemmatized tokens: [what, be, full]
+    POS tags: [WP, VBD-AUX, JJ]
+    NER tags: [O, O, O]
+    NER values: [null, null, null]
+    Dependency children: [[], [], [nsubj->0, cop->1]]
   }

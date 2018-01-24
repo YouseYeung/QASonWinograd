@@ -1,0 +1,22 @@
+完成程度：
+总体上大概完成了60道题的正确验证。
+因为今天早上还在补充代码，所以还没来得及对新代码进行所有问题的验证。
+
+遇到的问题：
+1. sempre将本应该是形容词的词解析为名词。
+The sculpture rolled off the shelf because it wasn't level.
+If thing B isn’t anchored, or thing C isn’t level, then thing B runs off thing C .
+What wasn't level?
+
+2. 同位语名词问题
+Frank felt vindicated when his longtime rival Bill revealed that he was the winner of the competition.
+If person C and person B is rival, and person C is the winner of the competition, then person C will feel vindicated and person B will feel crushed.
+Who was the winner of the competition?
+
+
+
+3. 名词指代问题
+Although they ran at about the same speed, Sue beat Sally because she had such a good start.
+If person B has a good start, and person C has bad start, and person B and person C ran at about the same speed, then person B might beat person C. If person B and person C ran at about the same speed, then person C and person B might run at about the same speed.
+Who had a good start?
+
