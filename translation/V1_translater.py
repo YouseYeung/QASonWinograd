@@ -345,6 +345,7 @@ class translater(object):
             headString = "(assert (forall ("
             tokens = kb["Lemmatized tokens:"]
             verbs = self.findVerbsAndItsRelatedNouns(kb)
+            completeNouns = self.findCompleteNouns(kb)
             for index, info in verbs.items():
                 combinedVerbName = info["combinedVerbName"]
                 originalVerbName = info["originalVerbName"]
@@ -363,7 +364,7 @@ class translater(object):
                             addedNouns += pronoun + " "
                             nounDeclareString += "(" + pronoun + " " + noun["sort"] + ") "
                         else:
-                            addedNouns += tokens[noun["index"]] + " "
+                            addedNouns += self.getCompleteNounNameByIndex(noun["index"], completeNouns, tokens, True) + " "
                         if number != len(nouns):
                             lessParaPredicateString.append(originalVerbString + addedNouns + ")")
                         number += 1
@@ -814,18 +815,8 @@ class translater(object):
                         res += "(posses_tt " + pronoun_name_Map[subjName] + " " + objName + ")"   
                 #subjname is a constant
                 else:
-                    for sort, nouns in pronoun_name_Map.items():
-                        subjSort = ""
-                        for noun in nouns:
-                            if noun == subjName:
-                                subjSort = sort
-                                break
-                        if subjSort != "":
-                            if subjSort == "person":
-                                res += "(posses_pt "+ subjName + " " + objName + ")"
-                            else:
-                                res += "(posses_tt " + subjName + " " + objName + ")"   
-                            break
+                    res += "(posses_pt "+ subjName + "_p " + objName + ") "
+                    res += "(posses_tt " + subjName + "_t " + objName + ") "   
         return res
 
     def addRules_ClosedReasonAssumption(self, library, verbs, outputStr):
@@ -935,11 +926,13 @@ class translater(object):
                     res += nounName + ' '
                 res += ') '
                 number += 1
-        for posStr in possesionStrs:
-            res += " " + posStr
+        if possesionStrs != []:
+            number += 1
+            for posStr in possesionStrs:
+                res += " " + posStr
 
-        if number > 2:
-            res = headString + "(and " + res + ")\n"
+        if number >= 2:
+            res = headString + "and " + "(" + res + "))\n"
         else:
             res = headString + res + ")\n"
         
@@ -1077,8 +1070,8 @@ class translater(object):
                         else:
                             print "[ERROR]: Wrong number of predicate's parameter"
                             sort = nouns[i]["sort"]
-                        nounName1 = self.getCompleteNounNameByIndex(index, completeNouns, tokens, False)
-                        nounName2 = self.getCompleteNounNameByIndex(index, completeNouns, tokens, True)
+                        nounName1 = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, False)
+                        nounName2 = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, True)
                         if nounSortMap.has_key(sort):
                             if nounName1 not in nounSortMap[sort]:
                                 nounSortMap[sort].append(nounName1)
@@ -1089,6 +1082,22 @@ class translater(object):
                                 nounSortMap[sort] = [nounName1]
                             else:
                                 nounSortMap[sort] = [nounName1, nounName2]
+                        #add possesion noun into the sort map
+                        nameList1 = nounName1.split("_")
+                        nameList2 = nounName2.split("_")
+                        possesionName = ""
+                        for name in nameList1:
+                            if name not in nameList2:
+                                possesionName += name + "_"
+                        if possesionName != "":
+                            #constant noun name + _p presenting person noun, _t presenting thing noun
+                            possesionName += "p"
+                            if possesionName not in nounSortMap["person"]:
+                                nounSortMap["person"].append(possesionName)
+                            possesionName = possesionName[:-1] + "t"
+                            if possesionName not in nounSortMap["thing"]:
+                                nounSortMap["thing"].append(possesionName)
+                        
                         i += 1
 
         res = ""
