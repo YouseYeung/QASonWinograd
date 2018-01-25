@@ -322,15 +322,22 @@ class translater(object):
                 res += "))\n"
                 #add all declared verbs into list addedverb
                 self.addedVerbs.append(combinedVerbName)
-            #to get a form without prep
+            
+            #descending grade for verbs to get predicates with less parameter
+            number = 1
+            nouns = ""
             if combinedVerbName != originalVerbName:
                 if originalVerbName not in self.addedVerbs:
-                    res += declareRel + originalVerbName + " ("
                     #remove last parameter
                     for noun in info["relatedNouns"][:-1]:
-                        res += noun["sort"] + " "
-                    res += "))\n"
-                self.addedVerbs.append(originalVerbName)
+                        lessPredicateVerbName = originalVerbName + "_" + str(number)
+                        if lessPredicateVerbName in self.addedVerbs:
+                            continue
+                        res += declareRel + lessPredicateVerbName + " ("
+                        nouns += noun["sort"] + " "
+                        res += nouns + "))\n"
+                        self.addedVerbs.append(lessPredicateVerbName)
+                        number += 1
         return res
 
     def addPrepVerbToVerbEntailment(self):
@@ -343,31 +350,30 @@ class translater(object):
             for index, info in verbs.items():
                 combinedVerbName = info["combinedVerbName"]
                 originalVerbName = info["originalVerbName"]
-                number = 0
                 if combinedVerbName != originalVerbName and not addedVerbs.has_key(originalVerbName):
                     addedVerbs[originalVerbName] = True
                     nouns = info["relatedNouns"]
-                    if len(nouns) < 2:
-                        continue
+                    number = 1
                     combinedVerbString = "(" + combinedVerbName + " "
-                    originalVerbString = "(" + originalVerbName + " "
-                    res += headString
+                    lessParaPredicateString = []
+                    addedNouns = ""
+                    nounDeclareString = ""
                     for noun in nouns:
+                        originalVerbString = "(" + originalVerbName + "_" + str(number) + " "
                         if noun["var"]:
                             pronoun = chr(ord('a') + number)
-                            combinedVerbString += pronoun + " "
-                            if number != len(nouns) - 1:
-                                originalVerbString += pronoun + " "
-                            res += "(" + pronoun + " " + noun["sort"] + ") "
+                            addedNouns += pronoun + " "
+                            nounDeclareString += "(" + pronoun + " " + noun["sort"] + ") "
                         else:
-                            combinedVerbString += tokens[noun["index"]] + " "
-                            if number != len(nouns) - 1:
-                                originalVerbString += tokens[noun["index"]] + " "
+                            addedNouns += tokens[noun["index"]] + " "
+                        if number != len(nouns):
+                            lessParaPredicateString.append(originalVerbString + addedNouns + ")")
                         number += 1
-                    res += ") "
-                    combinedVerbString += ") "
-                    originalVerbString += ")"
-                    res += "(= " + combinedVerbString + originalVerbString + ")))\n"
+                    combinedVerbString += addedNouns + ") "
+                    nounDeclareString += ") "
+                    for string in lessParaPredicateString:
+                        res += headString + nounDeclareString + "(= " + combinedVerbString + string + ")))\n"
+                    print lessParaPredicateString
         return res
     def getAntecedentAndSecedent(self, tokens):
         length = len(tokens)
@@ -840,13 +846,19 @@ class translater(object):
         answer = ""
         for index, info in verbs.items():
             verbName = info["combinedVerbName"]
+            nouns = info["relatedNouns"]
+            length = len(nouns)
             if verbName not in self.addedVerbs:
-                verbName = info["originalVerbName"]
-                if verbName not in self.addedVerbs:
-                    continue
+                number = length
+                for i in range(length - 1):
+                    lessParaVerbName = verbName + "_" + str(number)
+                    if lessParaVerbName in self.addedVerbs:
+                        verbName = lessParaVerbName
+                        break
+                    number -= 1
             addingNouns = []
             #find the noun that is variable
-            for noun in info["relatedNouns"]:
+            for noun in nouns:
                 nounIndex = noun["index"]
                 tag = tags[nounIndex]
                 if tag == "WP":
