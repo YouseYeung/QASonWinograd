@@ -11,6 +11,10 @@ ofp = open(outputFileName,'w')
 keywords = [" but ", " because ", " then ", " although "]
 keywords2 = [ " and ", " or "]
 
+pronoun = ["he", "He", "she", "She", "it", "It", "they", "They", ]
+
+def removingPronouns(s):
+
 with open(fileName, 'r') as f:
     startSymbol = "<pre>"
     endSymbol = "</pre>"
