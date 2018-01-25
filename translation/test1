@@ -2,6 +2,7 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
+<<<<<<< HEAD
   Example: Susan knows all about Ann's personal problems. because she is nosy {
     Tokens: [susan, knows, all, about, ann, 's, personal, problems, ., because, she, is, nosy]
     Lemmatized tokens: [Susan, know, all, about, Ann, 's, personal, problem, ., because, she, be, nosy]
@@ -9,12 +10,22 @@
     NER tags: [PERSON, O, O, O, PERSON, O, O, O, O, O, O, O, O]
     NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null]
     Dependency children: [[], [nsubj->0, dobj->2, punct->8], [nmod:about->7], [], [case->5], [], [], [case->3, nmod:poss->4, amod->6], [], [], [], [], [cop->11, mark->9, nsubj->10]]
+=======
+  Example: I poured water from the bottle into the cup until it was full {
+    Tokens: [i, poured, water, from, the, bottle, into, the, cup, until, it, was, full]
+    Lemmatized tokens: [I, pour, water, from, the, bottle, into, the, cup, until, it, be, full]
+    POS tags: [PRP, VBD, NN, IN, DT, NN, IN, DT, NN, IN, PRP, VBD-AUX, JJ]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [nsubj->0, dobj->2, nmod:from->5, nmod:into->8, advcl->12], [], [], [], [case->3, det->4], [], [], [case->6, det->7], [], [], [], [mark->9, nsubj->10, cop->11]]
+>>>>>>> fc72ca9f687ee0a2829db6ee3b35e88bf90c2b8e
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
+<<<<<<< HEAD
   Example: If person B is nosy, then person B will know about somebody’s personal problems. If person B is indiscreet, then somebody will know about person B’s personal problems {
     Tokens: [if, person, b, is, nosy, ,, then, person, b, will, know, about, somebody, 's, personal, problems, ., if, person, b, is, indiscreet, ,, then, somebody, will, know, about, person, b, 's, personal, problems]
     Lemmatized tokens: [if, person, b, be, nosy, ,, then, person, b, will, know, about, somebody, 's, personal, problem, ., if, person, b, be, indiscreet, ,, then, somebody, will, know, about, person, b, 's, personal, problem]
@@ -22,17 +33,36 @@
     NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
     NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
     Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, cop->3], [], [], [], [advmod->6, compound->7], [], [nmod:about->15, punct->16, advcl->4, punct->5, nsubj->8, aux->9], [], [case->13], [], [], [case->11, nmod:poss->12, amod->14], [], [], [], [compound->18], [], [nsubj->19, cop->20, mark->17], [], [], [advmod->23], [], [advcl->21, punct->22, nsubj->24, aux->25, nmod:about->32], [], [], [compound->28, case->30], [], [], [case->27, nmod:poss->29, amod->31]]
+=======
+  Example: If somebody pours something from thing B into thing C, then thing B will be empty, and thing C will be full {
+    Tokens: [if, somebody, pours, something, from, thing, b, into, thing, c, ,, then, thing, b, will, be, empty, ,, and, thing, c, will, be, full]
+    Lemmatized tokens: [if, somebody, pour, something, from, thing, b, into, thing, c, ,, then, thing, b, will, be, empty, ,, and, thing, c, will, be, full]
+    POS tags: [IN, NN, VBZ, NN, IN, NN, NN, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, JJ, ,, CC, NN, NN, VBD-AUX, VBD-AUX, JJ]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [mark->0, nsubj->1, dobj->3, nmod:into->9], [nmod:from->6], [], [], [case->4, compound->5], [], [], [case->7, compound->8], [], [], [], [advmod->11, compound->12], [], [], [cop->15, punct->17, advcl->2, cc->18, conj:and->23, punct->10, nsubj->13, aux->14], [], [], [], [compound->19], [], [], [nsubj->20, aux->21, cop->22]]
+>>>>>>> fc72ca9f687ee0a2829db6ee3b35e88bf90c2b8e
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
+<<<<<<< HEAD
   Example: Who is nosy {
     Tokens: [who, is, nosy]
     Lemmatized tokens: [who, be, nosy]
+=======
+  Example: What was full {
+    Tokens: [what, was, full]
+    Lemmatized tokens: [what, be, full]
+>>>>>>> fc72ca9f687ee0a2829db6ee3b35e88bf90c2b8e
     POS tags: [WP, VBD-AUX, JJ]
     NER tags: [O, O, O]
     NER values: [null, null, null]
     Dependency children: [[], [], [nsubj->0, cop->1]]
+<<<<<<< HEAD
   }
+=======
+  }
+>>>>>>> fc72ca9f687ee0a2829db6ee3b35e88bf90c2b8e
