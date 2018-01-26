@@ -14,6 +14,7 @@ keywords2 = [ " and ", " or "]
 pronoun = ["he", "He", "she", "She", "it", "It", "they", "They", ]
 
 def removingPronouns(s):
+    return ""
 
 with open(fileName, 'r') as f:
     startSymbol = "<pre>"

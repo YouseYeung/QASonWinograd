@@ -2,50 +2,37 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: Susan knows about Ann's personal problems. because she is nosy {
-    Tokens: [susan, knows, about, ann, 's, personal, problems, ., because, she, is, nosy]
-    Lemmatized tokens: [Susan, know, about, Ann, 's, personal, problem, ., because, she, be, nosy]
-    POS tags: [NNP, VBZ, IN, NNP, POS, JJ, NNS, ., IN, PRP, VBD-AUX, JJ]
-    NER tags: [PERSON, O, O, PERSON, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [nsubj->0, nmod:about->6, punct->7], [], [case->4], [], [], [case->2, nmod:poss->3, amod->5], [], [], [], [], [cop->10, mark->8, nsubj->9]]
+  Example: The firemen arrived after the police. because they were coming from so far away {
+    Tokens: [the, firemen, arrived, after, the, police, ., because, they, were, coming, from, so, far, away]
+    Lemmatized tokens: [the, fireman, arrive, after, the, police, ., because, they, be, come, from, so, far, away]
+    POS tags: [DT, NNS, VBD, IN, DT, NN, ., IN, PRP, VBD-AUX, VBG, IN, RB, RB, RB]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [det->0], [nsubj->1, nmod:after->5, punct->6], [], [], [case->3, det->4], [], [], [], [], [aux->9, advcl:from->14, mark->7, nsubj->8], [], [], [advmod->12], [case->11, advmod->13]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B is nosy, then person B will know about somebody’s personal problems. {
-    Tokens: [if, person, b, is, nosy, ,, then, person, b, will, know, about, somebody, 's, personal, problems, .]
-    Lemmatized tokens: [if, person, b, be, nosy, ,, then, person, b, will, know, about, somebody, 's, personal, problem, .]
-    POS tags: [IN, NN, NN, VBD-AUX, JJ, ,, RB, NN, NN, VBD-AUX, VB, IN, NN, POS, JJ, NNS, .]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, cop->3], [], [], [], [advmod->6, compound->7], [], [nmod:about->15, punct->16, advcl->4, punct->5, nsubj->8, aux->9], [], [case->13], [], [], [case->11, nmod:poss->12, amod->14], []]
+  Example: If person B does come from far away, then person B does arrive after person C, and person C does arrive before person B {
+    Tokens: [if, person, b, does, come, from, far, away, ,, then, person, b, does, arrive, after, person, c, ,, and, person, c, does, arrive, before, person, b]
+    Lemmatized tokens: [if, person, b, do, come, from, far, away, ,, then, person, b, do, arrive, after, person, c, ,, and, person, c, do, arrive, before, person, b]
+    POS tags: [IN, NN, NN, VBD-AUX, VB, IN, RB, RB, ,, RB, NN, NN, VBD-AUX, VB, IN, NN, NN, ,, CC, NN, NN, VBD-AUX, VB, IN, NN, NN]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, aux->3, advcl:from->7], [], [], [case->5, advmod->6], [], [], [], [advmod->9, compound->10], [], [nmod:after->16, punct->17, cc->18, advcl->4, conj:and->22, punct->8, nsubj->11, aux->12], [], [], [compound->15, case->14], [], [], [], [compound->19], [], [nsubj->20, aux->21, nmod:before->25], [], [], [case->23, compound->24]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B is indiscreet, then somebody will know about person B’s personal problems {
-    Tokens: [if, person, b, is, indiscreet, ,, then, somebody, will, know, about, person, b, 's, personal, problems]
-    Lemmatized tokens: [if, person, b, be, indiscreet, ,, then, somebody, will, know, about, person, b, 's, personal, problem]
-    POS tags: [IN, NN, NN, VBD-AUX, JJ, ,, RB, NN, VBD-AUX, VB, IN, NN, NN, POS, JJ, NNS]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, cop->3], [], [], [advmod->6], [], [nmod:about->15, advcl->4, punct->5, nsubj->7, aux->8], [], [], [compound->11, case->13], [], [], [case->10, nmod:poss->12, amod->14]]
-  }
-
-  Parser.parse: parse {
-    Parser.ensureExecuted 
-  }
-  Parser.setEvaluation: 0 candidates 
-  Example: Who is nosy {
-    Tokens: [who, is, nosy]
-    Lemmatized tokens: [who, be, nosy]
-    POS tags: [WP, VBD-AUX, JJ]
-    NER tags: [O, O, O]
-    NER values: [null, null, null]
-    Dependency children: [[], [], [nsubj->0, cop->1]]
+  Example: Who came from far away {
+    Tokens: [who, came, from, far, away]
+    Lemmatized tokens: [who, come, from, far, away]
+    POS tags: [WP, VBD, IN, RB, RB]
+    NER tags: [O, O, O, O, O]
+    NER values: [null, null, null, null, null]
+    Dependency children: [[], [nsubj->0, advcl:from->4], [], [], [case->2, advmod->3]]
   }

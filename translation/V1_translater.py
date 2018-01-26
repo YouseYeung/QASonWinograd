@@ -166,18 +166,30 @@ class translater(object):
         verbs = {}
         addedVerbsIndex = []
         i = -1
+        tagLength = len(tags)
         for tag in tags:
             i += 1
             child = children[i]
             originalVerbName = tokens[i]
             if originalVerbName in self.keywords:
-                originalVerbName += "_"
-            combinedVerbName = tokens[i]
-
+                originalVerbName = "_" + originalVerbName
+            combinedVerbName = originalVerbName
             #every form of verb as a binary or more parameter predciate
-            if i not in addedVerbsIndex and (("VB" in tag and "AUX" not in tag) or "JJ" in tag or "RB" in tag):
+            if i not in addedVerbsIndex and ("VB" in tag or "JJ" in tag or "RB" in tag or "NN" in tag):
+                #determine whether a vbd-aux has to be added as a verb.
+                #do better than => add it.
+                #does study good => negelect it
+                #is good, => negelect it
+                if tag == "VBD-AUX":
+                    #if it is "be"
+                    if tokens[i] == "be":
+                        continue
+                    #if it is does + vb
+                    if i + 1 < tagLength:
+                        if "VB" in tags[i + 1]:
+                            continue
                 #be + adj as an unary predicate, be + adv
-                if tag == "JJ" or tag == "RB":
+                if "JJ" in tag or"RB" in tag or "NN" in tag:
                     if child.find("cop") == -1 and child.find("auxpass") == -1:
                         continue
                 #combine prep or adv to get the combined form of verb.
@@ -186,6 +198,12 @@ class translater(object):
                     advName = tokens[index]
                     if advName != "then":
                         combinedVerbName += "_" + advName
+                index = self.findIndexBySymbol(child, "xcomp")
+                if index != -1 and (tags[index] == "JJ" or tags[index] == "RB"):
+                    advName = tokens[index]
+                    if advName != "then":
+                        combinedVerbName += "_" + advName
+
                 indexStart = child.find("nmod")
                 if indexStart != -1:
                     indexEnd = child[indexStart:].find("->") + indexStart
@@ -371,7 +389,7 @@ class translater(object):
                     combinedVerbString += addedNouns + ") "
                     nounDeclareString += ") "
                     for string in lessParaPredicateString:
-                        res += headString + nounDeclareString + "(= " + combinedVerbString + string + ")))\n"
+                        res += headString + nounDeclareString + "(=> " + combinedVerbString + string + ")))\n"
         return res
     def getAntecedentAndSecedent(self, tokens):
         length = len(tokens)
@@ -485,7 +503,6 @@ class translater(object):
                 return type_ABC1
             else:
                 return type_AB1
-
         return type_AB2
     def addReality_Entailment(self, library, verbs, sepIndex, outputStr):
         tokens = library["Lemmatized tokens:"]
@@ -603,13 +620,13 @@ class translater(object):
 
         antecedent = sorted(antecedent, key = lambda x : x[0])
         secedent = sorted(secedent, key = lambda x : x[0])
-        def addRealityByAntAndSec(antecedent, secedent):
+        def addRealityByAntAndSec(antecedent, secedent, verbs):
             newVerbs = {}
             for verb in antecedent:
                 newVerbs[verb[0]] = verb[1]
             for verb in secedent:
                 newVerbs[verb[0]] = verb[1]
-
+            
             declareString, pronoun_name_Map = self.addVariableDeclare(library, newVerbs)
             addedVerbsNum = 0
             #assure that verb occurs in order to get the right relation between verbs, such as conj:and, conj:or
@@ -638,29 +655,40 @@ class translater(object):
 
         if type_AB1 == entailmentType:
             res = ""
-            declareString, realityString = addRealityByAntAndSec(antecedent, secedent)
+            declareString, realityString = addRealityByAntAndSec(antecedent, secedent, verbs)
             res = declareString + "(=> " + realityString
             return res
         elif type_AB2 == entailmentType:
-            declareString, realityString = addRealityByAntAndSec(antecedent, secedent)
+            declareString, realityString = addRealityByAntAndSec(antecedent, secedent, verbs)
             return declareString + "(= " + realityString
 
         elif type_ABC1 == entailmentType:
             res = ""
-            declareString, realityString = addRealityByAntAndSec(antecedent, secedent)
+            declareString, realityString = addRealityByAntAndSec(antecedent, secedent, verbs)
             res = declareString + "(=> " + realityString
+            #revision of the all verbs
+            newVerbs = {}
+            for verb in antecedent:
+                newVerbs[verb[0]] = verb[1]
             for verb in secedent:
                 addedVerbsIndex = []
-                declareString, realityString = addRealityByAntAndSec([verb], antecedent)
+                tempVerbs = newVerbs
+                tempVerbs[verb[0]] = verb[1]
+                declareString, realityString = addRealityByAntAndSec([verb], antecedent, tempVerbs)
                 res += declareString + "(=> " + realityString
             return res
         elif type_ABC2 == entailmentType:
             res = ""
-            declareString, realityString = addRealityByAntAndSec(antecedent, secedent)
+            declareString, realityString = addRealityByAntAndSec(antecedent, secedent, verbs)
             res = declareString + "(=> " + realityString
+            newVerbs = {}
+            for verb in secedent:
+                newVerbs[verb[0]] = verb[1]
             for verb in antecedent:
                 addedVerbsIndex = []
-                declareString, realityString = addRealityByAntAndSec(secedent, [verb])
+                tempVerbs = newVerbs
+                tempVerbs[verb[0]] = verb[1]
+                declareString, realityString = addRealityByAntAndSec(secedent[:], [verb], tempVerbs)
                 res += declareString + "(=> " + realityString
             return res
 
@@ -899,7 +927,7 @@ class translater(object):
         verbs = self.findVerbsAndItsRelatedNouns(self.description)
         answerTokens = self.question["Lemmatized tokens:"]
         descriptionTokens = self.description["Lemmatized tokens:"]
-        headString = "(assert ("
+        headString = "(assert "
         res = ""
         completeNouns = self.findCompleteNouns(self.description)
         number = 0
@@ -915,7 +943,7 @@ class translater(object):
                     verbName = originalVerbName
                 else:
                     continue
-                res += verbName + ' '
+                res += '(' + verbName + ' '
                 nouns = info["relatedNouns"]
                 for noun in nouns:
                     nounIndex = noun["index"]
@@ -932,7 +960,7 @@ class translater(object):
                 res += " " + posStr
 
         if number >= 2:
-            res = headString + "and " + "(" + res + "))\n"
+            res = headString + "(and " + res + "))\n"
         else:
             res = headString + res + ")\n"
         
@@ -968,12 +996,18 @@ class translater(object):
             length = len(nouns)
             if verbName not in self.addedVerbs:
                 number = length
+                verbName = info["originalVerbName"]
+                if verbName in self.keywords:
+                    verbName = "_" + verbName
                 for i in range(length - 1):
                     lessParaVerbName = verbName + "_" + str(number)
                     if lessParaVerbName in self.addedVerbs:
                         verbName = lessParaVerbName
                         break
                     number -= 1
+            if verbName not in self.addedVerbs:
+                print "[ERROR]: verb name:[" + verbName + "] not exists"
+                continue
             addingNouns = []
             #find the noun that is variable
             for noun in nouns:
@@ -1092,10 +1126,10 @@ class translater(object):
                         if possesionName != "":
                             #constant noun name + _p presenting person noun, _t presenting thing noun
                             possesionName += "p"
-                            if possesionName not in nounSortMap["person"]:
+                            if nounSortMap.has_key("person") and possesionName not in nounSortMap["person"]:
                                 nounSortMap["person"].append(possesionName)
                             possesionName = possesionName[:-1] + "t"
-                            if possesionName not in nounSortMap["thing"]:
+                            if nounSortMap.has_key("thing") and possesionName not in nounSortMap["thing"]:
                                 nounSortMap["thing"].append(possesionName)
                         
                         i += 1
