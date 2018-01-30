@@ -1,38 +1,38 @@
-  Parser.parse: parse {
+ Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: The firemen arrived after the police. because they were coming from so far away {
-    Tokens: [the, firemen, arrived, after, the, police, ., because, they, were, coming, from, so, far, away]
-    Lemmatized tokens: [the, fireman, arrive, after, the, police, ., because, they, be, come, from, so, far, away]
-    POS tags: [DT, NNS, VBD, IN, DT, NN, ., IN, PRP, VBD-AUX, VBG, IN, RB, RB, RB]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [det->0], [nsubj->1, nmod:after->5, punct->6], [], [], [case->3, det->4], [], [], [], [], [aux->9, advcl:from->14, mark->7, nsubj->8], [], [], [advmod->12], [case->11, advmod->13]]
+  Example: Sid explained his theory to Mark. but he couldn't convince him {
+    Tokens: [sid, explained, his, theory, to, mark, ., but, he, could, n't, convince, him]
+    Lemmatized tokens: [Sid, explain, he, theory, to, mark, ., but, he, could, not, convince, he]
+    POS tags: [NNP, VBD, PRP$, NN, TO, NN, ., CC, PRP, VBD-AUX, RB, VB, PRP]
+    NER tags: [PERSON, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [nsubj->0, dobj->3, nmod:to->5, punct->6], [], [nmod:poss->2], [], [case->4], [], [], [], [], [], [aux->9, neg->10, dobj->12, cc->7, nsubj->8], []]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B does come from far away, then person B does arrive after person C, and person C does arrive before person B {
-    Tokens: [if, person, b, does, come, from, far, away, ,, then, person, b, does, arrive, after, person, c, ,, and, person, c, does, arrive, before, person, b]
-    Lemmatized tokens: [if, person, b, do, come, from, far, away, ,, then, person, b, do, arrive, after, person, c, ,, and, person, c, do, arrive, before, person, b]
-    POS tags: [IN, NN, NN, VBD-AUX, VB, IN, RB, RB, ,, RB, NN, NN, VBD-AUX, VB, IN, NN, NN, ,, CC, NN, NN, VBD-AUX, VB, IN, NN, NN]
+  Example: If person B explains something to person C, then person B might not convince person C, and person C might not understand person B {
+    Tokens: [if, person, b, explains, something, to, person, c, ,, then, person, b, might, not, convince, person, c, ,, and, person, c, might, not, understand, person, b]
+    Lemmatized tokens: [if, person, b, explain, something, to, person, c, ,, then, person, b, might, not, convince, person, c, ,, and, person, c, might, not, understand, person, b]
+    POS tags: [IN, NN, NN, VBZ, NN, TO, NN, NN, ,, RB, NN, NN, VBD-AUX, RB, VB, NN, NN, ,, CC, NN, NN, VBD-AUX, RB, VB, NN, NN]
     NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
     NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, aux->3, advcl:from->7], [], [], [case->5, advmod->6], [], [], [], [advmod->9, compound->10], [], [nmod:after->16, punct->17, cc->18, advcl->4, conj:and->22, punct->8, nsubj->11, aux->12], [], [], [compound->15, case->14], [], [], [], [compound->19], [], [nsubj->20, aux->21, nmod:before->25], [], [], [case->23, compound->24]]
+    Dependency children: [[], [], [compound->1], [mark->0, nsubj->2, dobj->4, nmod:to->7], [], [], [], [case->5, compound->6], [], [], [], [advmod->9, compound->10], [], [], [dobj->16, punct->17, cc->18, advcl->3, conj:and->23, punct->8, nsubj->11, aux->12, neg->13], [], [compound->15], [], [], [], [compound->19], [], [], [nsubj->20, aux->21, neg->22, dobj->25], [], [compound->24]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: Who came from far away {
-    Tokens: [who, came, from, far, away]
-    Lemmatized tokens: [who, come, from, far, away]
-    POS tags: [WP, VBD, IN, RB, RB]
+  Example: Who did not convince whom {
+    Tokens: [who, did, not, convince, whom]
+    Lemmatized tokens: [who, do, not, convince, whom]
+    POS tags: [WP, VBD-AUX, RB, VB, WP]
     NER tags: [O, O, O, O, O]
     NER values: [null, null, null, null, null]
-    Dependency children: [[], [nsubj->0, advcl:from->4], [], [], [case->2, advmod->3]]
+    Dependency children: [[], [], [], [nsubj->0, aux->1, neg->2, dobj->4], []]
   }

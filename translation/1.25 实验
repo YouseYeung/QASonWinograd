@@ -1,2 +1,15 @@
 在翻译Kb的过程中，查找是否有所有格出现，如出现则将涉及到所有格的动词添加到possesionVerbs中。
 翻译description的过程中，如果出现了possesionVerb中的动词，则将其涉及到的名词转化为所有格形式，否则就不当作所有格形式。
+
+删除对代词的答案验证：it, he, she, they等等
+
+对于a v b -> c，其中a，b是答案谓词的例子，
+删掉a v b -> c，只保留c -> a, c -> b，若留下a v b -> c，则当变量有两个以上时，推理结果会出错。
+
+引入了更多的疑问助词标签
+
+对于But和although：
+不能单纯取反来做
+
+Pete envies Martin although he is very successful.
+Emma did not pass the ball to Janie although she was open.

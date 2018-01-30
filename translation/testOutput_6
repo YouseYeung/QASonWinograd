@@ -37,5 +37,5 @@
 (assert (= (not_convince mark Sid ) (and (not (not_convince Sid he_p )) (not (not_convince Sid mark )) (not (not_convince he_p mark )) (not (not_convince he_p Sid )) (not (not_convince mark he_p )) )))
 (assert (= (not_convince mark he_p ) (and (not (not_convince Sid he_p )) (not (not_convince Sid mark )) (not (not_convince he_p mark )) (not (not_convince he_p Sid )) (not (not_convince mark Sid )) )))
 (assert (explain_to Sid he_theory mark ) )
-(assert (not (not_convince mark Sid )))
+(assert (not (not_convince mark he_p )))
 (check-sat)
