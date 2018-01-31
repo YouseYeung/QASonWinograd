@@ -1,38 +1,38 @@
- Parser.parse: parse {
+  Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: Sid explained his theory to Mark. but he couldn't convince him {
-    Tokens: [sid, explained, his, theory, to, mark, ., but, he, could, n't, convince, him]
-    Lemmatized tokens: [Sid, explain, he, theory, to, mark, ., but, he, could, not, convince, he]
-    POS tags: [NNP, VBD, PRP$, NN, TO, NN, ., CC, PRP, VBD-AUX, RB, VB, PRP]
-    NER tags: [PERSON, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [nsubj->0, dobj->3, nmod:to->5, punct->6], [], [nmod:poss->2], [], [case->4], [], [], [], [], [], [aux->9, neg->10, dobj->12, cc->7, nsubj->8], []]
+  Example: The drain is clogged with hair {
+    Tokens: [the, drain, is, clogged, with, hair]
+    Lemmatized tokens: [the, drain, be, clog, with, hair]
+    POS tags: [DT, NN, VBD-AUX, VBN, IN, NN]
+    NER tags: [O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null]
+    Dependency children: [[], [det->0], [], [nsubjpass->1, auxpass->2, nmod:with->5], [], [case->4]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B explains something to person C, then person B might not convince person C, and person C might not understand person B {
-    Tokens: [if, person, b, explains, something, to, person, c, ,, then, person, b, might, not, convince, person, c, ,, and, person, c, might, not, understand, person, b]
-    Lemmatized tokens: [if, person, b, explain, something, to, person, c, ,, then, person, b, might, not, convince, person, c, ,, and, person, c, might, not, understand, person, b]
-    POS tags: [IN, NN, NN, VBZ, NN, TO, NN, NN, ,, RB, NN, NN, VBD-AUX, RB, VB, NN, NN, ,, CC, NN, NN, VBD-AUX, RB, VB, NN, NN]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [mark->0, nsubj->2, dobj->4, nmod:to->7], [], [], [], [case->5, compound->6], [], [], [], [advmod->9, compound->10], [], [], [dobj->16, punct->17, cc->18, advcl->3, conj:and->23, punct->8, nsubj->11, aux->12, neg->13], [], [compound->15], [], [], [], [compound->19], [], [], [nsubj->20, aux->21, neg->22, dobj->25], [], [compound->24]]
+  Example: If thing B is clogged with thing C, then thing B must be cleaned, and thing C must be removed {
+    Tokens: [if, thing, b, is, clogged, with, thing, c, ,, then, thing, b, must, be, cleaned, ,, and, thing, c, must, be, removed]
+    Lemmatized tokens: [if, thing, b, be, clog, with, thing, c, ,, then, thing, b, must, be, clean, ,, and, thing, c, must, be, remove]
+    POS tags: [IN, NN, NN, VBD-AUX, VBN, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, VBN, ,, CC, NN, NN, VBD-AUX, VBD-AUX, VBN]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [], [mark->0, nsubjpass->2, auxpass->3, nmod:with->7], [], [], [case->5, compound->6], [], [], [], [advmod->9, compound->10], [], [], [punct->15, cc->16, advcl->4, conj:and->21, punct->8, nsubjpass->11, aux->12, auxpass->13], [], [], [], [compound->17], [], [], [nsubjpass->18, aux->19, auxpass->20]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: Who did not convince whom {
-    Tokens: [who, did, not, convince, whom]
-    Lemmatized tokens: [who, do, not, convince, whom]
-    POS tags: [WP, VBD-AUX, RB, VB, WP]
+  Example: What has to be removed {
+    Tokens: [what, has, to, be, removed]
+    Lemmatized tokens: [what, have, to, be, remove]
+    POS tags: [WDT, VBD-AUX, TO, VBD-AUX, VBN]
     NER tags: [O, O, O, O, O]
     NER values: [null, null, null, null, null]
-    Dependency children: [[], [], [], [nsubj->0, aux->1, neg->2, dobj->4], []]
+    Dependency children: [[], [nsubj->0, xcomp->4], [], [], [mark->2, auxpass->3]]
   }

@@ -450,6 +450,12 @@ class translater(object):
                         nounName += "_" + tokens[i]
         return nounName
 
+    def addReality_OneVerb(self, library, verbs, outputStr):
+        res = ""
+        declareStr, pronoun_name_Map = self.addDeclareRel(verbs)
+        res = declareStr + self.addRealityForOneVerb(library, verbs, verbs, pronoun_name_Map, []) + ")))\n"
+        return outputStr + res
+
     #Add reality : sth is noun, sth is adj, sth is doing sth.
     def addReality_IS_Relation(self, library, verbs, outputStr):
         res = ""
@@ -891,7 +897,10 @@ class translater(object):
         tokens = library["Lemmatized tokens:"]
         sepIndex  = self.getAntecedentAndSecedent(tokens)
         if sepIndex == -1:
-            return self.addReality_IS_Relation(library, verbs, outputStr)
+            if "be" in tokens:
+                return self.addReality_IS_Relation(library, verbs, outputStr)
+            else:
+                return self.addReality_OneVerb(library, verbs, outputStr)
         else:
             return self.addReality_Entailment(library, verbs, sepIndex, outputStr)
 

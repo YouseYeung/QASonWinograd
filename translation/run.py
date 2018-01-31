@@ -33,7 +33,8 @@ with open(fileName, 'r') as f:
                 oneLineContent = oneLineContent[:index] + oneLineContent[index + 1:]
             if oneLineContent == '\n':
                 ofp.write('\n')
-                continue
+                i += 1
+                break
             if i == 1:
                 contentList = oneLineContent.split('. ')
             for content in contentList:
