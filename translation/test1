@@ -1,38 +1,38 @@
-  Parser.parse: parse {
+ Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: The drain is clogged with hair {
-    Tokens: [the, drain, is, clogged, with, hair]
-    Lemmatized tokens: [the, drain, be, clog, with, hair]
-    POS tags: [DT, NN, VBD-AUX, VBN, IN, NN]
-    NER tags: [O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null]
-    Dependency children: [[], [det->0], [], [nsubjpass->1, auxpass->2, nmod:with->5], [], [case->4]]
+  Example: I took the water bottle out of the backpack so that it would be lighter {
+    Tokens: [i, took, the, water, bottle, out, of, the, backpack, so, that, it, would, be, lighter]
+    Lemmatized tokens: [I, take, the, water, bottle, out, of, the, backpack, so, that, it, would, be, lighter]
+    POS tags: [PRP, VBD, DT, NN, NN, IN, IN, DT, NN, IN, IN, PRP, VBD-AUX, VBD-AUX, JJR]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [nsubj->0, dobj->4, nmod:out_of->8, advcl->14], [], [], [det->2, compound->3], [mwe->6], [], [], [case->5, det->7], [mwe->10], [], [], [], [], [mark->9, nsubj->11, aux->12, cop->13]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If thing B is clogged with thing C, then thing B must be cleaned, and thing C must be removed {
-    Tokens: [if, thing, b, is, clogged, with, thing, c, ,, then, thing, b, must, be, cleaned, ,, and, thing, c, must, be, removed]
-    Lemmatized tokens: [if, thing, b, be, clog, with, thing, c, ,, then, thing, b, must, be, clean, ,, and, thing, c, must, be, remove]
-    POS tags: [IN, NN, NN, VBD-AUX, VBN, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, VBN, ,, CC, NN, NN, VBD-AUX, VBD-AUX, VBN]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [mark->0, nsubjpass->2, auxpass->3, nmod:with->7], [], [], [case->5, compound->6], [], [], [], [advmod->9, compound->10], [], [], [punct->15, cc->16, advcl->4, conj:and->21, punct->8, nsubjpass->11, aux->12, auxpass->13], [], [], [], [compound->17], [], [], [nsubjpass->18, aux->19, auxpass->20]]
+  Example: If somebody takes thing B out of thing C, then thing C will be lighter, and thing B will be handy {
+    Tokens: [if, somebody, takes, thing, b, out, of, thing, c, ,, then, thing, c, will, be, lighter, ,, and, thing, b, will, be, handy]
+    Lemmatized tokens: [if, somebody, take, thing, b, out, of, thing, c, ,, then, thing, c, will, be, lighter, ,, and, thing, b, will, be, handy]
+    POS tags: [IN, NN, VBZ, NN, NN, IN, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, JJR, ,, CC, NN, NN, VBD-AUX, VBD-AUX, JJ]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [mark->0, nsubj->1, dobj->4, nmod:out_of->8], [], [compound->3], [mwe->6], [], [], [case->5, compound->7], [], [], [], [advmod->10, compound->11], [], [], [punct->16, cc->17, advcl->2, conj:and->22, punct->9, nsubj->12, aux->13, cop->14], [], [], [], [compound->18], [], [], [nsubj->19, aux->20, cop->21]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: What has to be removed {
-    Tokens: [what, has, to, be, removed]
-    Lemmatized tokens: [what, have, to, be, remove]
-    POS tags: [WDT, VBD-AUX, TO, VBD-AUX, VBN]
-    NER tags: [O, O, O, O, O]
-    NER values: [null, null, null, null, null]
-    Dependency children: [[], [nsubj->0, xcomp->4], [], [], [mark->2, auxpass->3]]
+  Example: What would be lighter {
+    Tokens: [what, would, be, lighter]
+    Lemmatized tokens: [what, would, be, lighter]
+    POS tags: [WP, VBD-AUX, VBD-AUX, JJR]
+    NER tags: [O, O, O, O]
+    NER values: [null, null, null, null]
+    Dependency children: [[], [], [], [nsubj->0, aux->1, cop->2]]
   }

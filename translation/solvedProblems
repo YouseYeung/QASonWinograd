@@ -1,2 +1,2 @@
-solved problems:1, 2, 3, 4, 5, 6, 8, 11(at the top => reach the top), 13, 16, 18, 19, 32, 
-unsolved: 7 (long time rival), 10(with sb in front of),  12(they => sue and sally), 14(pronoun), 15(parsing error), 17(noun clause), 20(although), 21(upside down), 27(so, because)
+solved problems:1, 2, 3, 4, 5, 6, 8, 11(at the top => reach the top), 13, 16, 18, 19, 22, 23(punish is parsed correctly), 25, 26, 32, 37, 39, 40
+unsolved: 7 (long time rival), 10(with sb in front of),  12(they => sue and sally), 14(pronoun), 15(parsing error), 17(noun clause), 20(although), 21(question predicate parsing wrong), 23(rescue is parsed as noun), 24(from into, nouns number wrong), 27(so, because), 28(even thouhgh), 29(place), 30(be in a room), 31(somebody), 33(math), 34(what can't i see), 35(exists a loud), 38(because, but)

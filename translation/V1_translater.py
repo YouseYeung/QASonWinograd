@@ -20,7 +20,7 @@ class translater(object):
         self.parsingSymbol = ['Tokens:', 'Lemmatized tokens:', 'POS tags:', 'NER tags:', 'NER values:', 'Dependency children:']
         self.keywords = ["repeat", "assert", "declare"]
         self.existVars = ["somebody", "something", "sth", "sb", "he", "it"]
-        self.pronounList = ["it", "he", "she", "they", "I", "you", "It", "He", "She", "They", "You"]
+        self.pronounList = ["it", "he", "she", "they", "I", "we", "you", "It", "He", "She", "They", "You", "We"]
         self.questionAnswerTags = ["WP", "WDT", "WRB", "WP$"]
         self.reverseKeywords = ["but", "although"]
 
@@ -145,7 +145,7 @@ class translater(object):
         tags = library["POS tags:"]
         children = library["Dependency children:"]
         verbChildren = children[index][1:-1].split(',')
-        typeOfNoun = ['subj', 'iobj', 'dobj', 'nmod', 'xcomp', 'advmod']
+        typeOfNoun = ['subj', 'iobj', 'dobj', 'nmod', 'xcomp', 'advmod', 'advcl']
         relatedNounsIndex = []
         for _type in typeOfNoun:
             i = self.findIndexBySymbol(children[index], _type)
@@ -154,7 +154,7 @@ class translater(object):
                 if "NN" in tags[i] or "PRP" in tags[i] or tags[i] in self.questionAnswerTags:
                     relatedNounsIndex.append(i)
                 #find more nouns in its related word's children
-                if (_type == 'xcomp' and ("NN" in tags[i] or "PRP" in tags[i])) or (_type == 'advmod' and tags[i] == "IN"):
+                if (_type == "xcomp" and ("NN" in tags[i] or "PRP" in tags[i])) or (_type == "advmod" and tags[i] == "IN") or (_type == "dobj" and children[i].find("nmod") != -1) or (_type == "advcl" and children[i].find("obj") != -1 and i > index and children[i].find("mark") != -1):
                     additiveNounsIndex = self.findRelatedNouns(library, i)
                     for ii in additiveNounsIndex:
                         relatedNounsIndex.append(ii)
@@ -241,6 +241,7 @@ class translater(object):
                 
                 relatedNounsIndex = self.findRelatedNouns(library, i)
                 verbs[i]["relatedNouns"] = []
+                unsortedNouns = []
                 for index in relatedNounsIndex:
                     nounInfo = {"index":index}
                     nounName = tokens[index]
@@ -250,10 +251,10 @@ class translater(object):
                         nounInfo["sort"] = tokens[lastWordIndex]
                         nounInfo["var"] = True
                     elif nounName in existVars:
-                        if nounName == "somebody" or nounName == "sb":
+                        if nounName == "somebody" or nounName == "sb" or nounName == "he":
                             nounInfo["sort"] = "person"
                             nounInfo["var"] = True
-                        elif nounName == "something" or nounName == "sth":
+                        elif nounName == "something" or nounName == "sth" or nounName == "it":
                             nounInfo["sort"] = "thing"
                             nounInfo["var"] = True
                     elif tags[index] in self.questionAnswerTags:
@@ -265,9 +266,16 @@ class translater(object):
                     else:
                         nounInfo["sort"] = "thing"
                         nounInfo["var"] = False
-                    verbs[i]["relatedNouns"].append(nounInfo)
+                    unsortedNouns.append(nounInfo)
 
-                verbs[i]["relatedNouns"] = sorted(verbs[i]["relatedNouns"], key = lambda x : x["index"], reverse = False)
+                #sort all nouns except the subject noun, it is because subject noun is always the first noun name.
+                
+                if unsortedNouns != []:
+                    sortedNouns = sorted(unsortedNouns[1:], key = lambda x : x["index"], reverse = False)
+                    verbs[i]["relatedNouns"].append(unsortedNouns[0])
+                    for noun in sortedNouns:
+                        verbs[i]["relatedNouns"].append(noun)
+
                 addedVerbsIndex.append(i)
 
                 #combination of verb and verb, such as make sure to do, want to do, try to do, has to do
@@ -311,7 +319,7 @@ class translater(object):
         declareConst = "(declare-const "                         # need 1 )
         res = ""
         addedName = {}
-        for sortName, nouns in nounSortMap.items():
+        for sortName, nouns in nounSortMap.iteritems():
             res += declareSort + sortName + ")\n"
             for name in nouns:
                 if not addedName.has_key(name):
@@ -322,7 +330,7 @@ class translater(object):
     def addRules_EntityNotEqual(self, nounSortMap):
         objectNotEqual = "(assert (not (= "                      # need 2 )
         res = ""
-        for index, nouns in nounSortMap.items():
+        for index, nouns in nounSortMap.iteritems():
             i = 0
             length = len(nouns)
             while i < length:
@@ -334,7 +342,7 @@ class translater(object):
         return res
     def addRules_EntityRange(self, nounSortMap):
         res = ""
-        for sort, nounList in nounSortMap.items():
+        for sort, nounList in nounSortMap.iteritems():
             length = len(nounList)
             if length < 1:
                 continue
@@ -352,7 +360,7 @@ class translater(object):
     def addDeclareRel(self, verbs):
         declareRel = "(declare-rel "                            # need 1 )
         res = ""
-        for index, info in verbs.items():
+        for index, info in verbs.iteritems():
             combinedVerbName =  info["combinedVerbName"]
             originalVerbName = info["originalVerbName"]
             if combinedVerbName not in self.addedVerbs:
@@ -368,8 +376,7 @@ class translater(object):
             nouns = ""
             if combinedVerbName != originalVerbName:
                 if originalVerbName not in self.addedVerbs:
-                    #remove last parameter
-                    for noun in info["relatedNouns"][:-1]:
+                    for noun in info["relatedNouns"]:
                         lessPredicateVerbName = originalVerbName + "_" + str(number)
                         if lessPredicateVerbName in self.addedVerbs:
                             continue
@@ -399,7 +406,7 @@ class translater(object):
             tokens = kb["Lemmatized tokens:"]
             verbs = self.findVerbsAndItsRelatedNouns(kb)
             completeNouns = self.findCompleteNouns(kb)
-            for index, info in verbs.items():
+            for index, info in verbs.iteritems():
                 combinedVerbName = info["combinedVerbName"]
                 originalVerbName = info["originalVerbName"]
                 if combinedVerbName != originalVerbName and not addedVerbs.has_key(originalVerbName):
@@ -410,6 +417,7 @@ class translater(object):
                     lessParaPredicateString = []
                     addedNouns = ""
                     nounDeclareString = ""
+                    length = len(nouns)
                     for noun in nouns:
                         originalVerbString = "(" + originalVerbName + "_" + str(number) + " "
                         if noun["var"]:
@@ -418,13 +426,17 @@ class translater(object):
                             nounDeclareString += "(" + pronoun + " " + noun["sort"] + ") "
                         else:
                             addedNouns += self.getCompleteNounNameByIndex(noun["index"], completeNouns, tokens, True) + " "
-                        if number != len(nouns):
-                            lessParaPredicateString.append(originalVerbString + addedNouns + ")")
+                        lessParaPredicateString.append(originalVerbString + addedNouns + ")")
                         number += 1
                     combinedVerbString += addedNouns + ") "
                     nounDeclareString += ") "
+                    entailmentTypeStr = "(=> "
+                    number = 1
                     for string in lessParaPredicateString:
-                        res += headString + nounDeclareString + "(=> " + combinedVerbString + string + ")))\n"
+                        if number == length:
+                            entailmentTypeStr = "(= "
+                        res += headString + nounDeclareString + entailmentTypeStr + combinedVerbString + string + ")))\n"
+                        number += 1
         return res
     def getAntecedentAndSecedent(self, tokens):
         length = len(tokens)
@@ -451,10 +463,10 @@ class translater(object):
         return nounName
 
     def addReality_OneVerb(self, library, verbs, outputStr):
-        res = ""
-        declareStr, pronoun_name_Map = self.addDeclareRel(verbs)
-        res = declareStr + self.addRealityForOneVerb(library, verbs, verbs, pronoun_name_Map, []) + ")))\n"
-        return outputStr + res
+        res = "(assert "
+        declareVarStr, pronoun_name_Map = self.addVariableDeclare(library, verbs)
+        res += self.addRealityForOneVerb(library, verbs, verbs, pronoun_name_Map, [])
+        return outputStr + res + ")\n"
 
     #Add reality : sth is noun, sth is adj, sth is doing sth.
     def addReality_IS_Relation(self, library, verbs, outputStr):
@@ -473,7 +485,7 @@ class translater(object):
         completeNouns = self.findCompleteNouns(library)
         #sth is doing sth, sth is adj.
         if verbs != {}:
-            for index, info in verbs.items():
+            for index, info in verbs.iteritems():
                 verbName = info["combinedVerbName"]
                 if verbName not in self.addedVerbs:
                     verbName = info["originalVerbName"]
@@ -521,7 +533,7 @@ class translater(object):
         verbs = self.findVerbsAndItsRelatedNouns(question)
         combinedName = ""
         originalName = ""
-        for index, info in verbs.items():
+        for index, info in verbs.iteritems():
             combinedName = info["combinedVerbName"]
             originalName = info["originalVerbName"]
         return originalName, combinedName
@@ -558,6 +570,7 @@ class translater(object):
 
     #return string and pronoun_name map
     def addVariableDeclare(self, library, verbs):
+        res = ""
         headString = "(assert (forall ("
         tokens = library["Lemmatized tokens:"]
         tags = library["POS tags:"]
@@ -571,7 +584,7 @@ class translater(object):
         addedPronoun = []
         sortNameMap = {}
         completeNouns = self.findCompleteNouns(library)
-        for index, info in verbs.items():
+        for index, info in verbs.iteritems():
             nouns = info["relatedNouns"]
             for noun in nouns:
                 nounIndex = noun["index"]
@@ -584,7 +597,7 @@ class translater(object):
                             pronoun = pronouns[numOfPronoun]
                             addedPronoun.append(pronoun)
                             pronoun_name_Map[nounName] = pronoun
-                            headString += "(" + pronoun + " " + sort + ") " 
+                            res += "(" + pronoun + " " + sort + ") " 
                             if sortNameMap.has_key(sort):
                                 sortNameMap[sort].append(pronoun)
                             else:
@@ -626,10 +639,11 @@ class translater(object):
                                     elif compoundNoun == "thing":
                                         numOfPronoun += 1
                                         pronoun_name_Map[compoundNounName] = pronoun
-        headString += ") "
+        if res == "":
+            return "(assert (", pronoun_name_Map
         notEqualPairs = 0
         entityNotEqualString = ""
-        for sort, names in sortNameMap.items():
+        for sort, names in sortNameMap.iteritems():
             length = len(names)
             if length > 1:
                 for i in range(length):
@@ -640,7 +654,7 @@ class translater(object):
             entityNotEqualString += "(=> (and " + entityNotEqualString + ") "
         elif notEqualPairs == 1:
             entityNotEqualString = "(=> " + entityNotEqualString
-        return headString + entityNotEqualString, pronoun_name_Map
+        return headString + res + ") " + entityNotEqualString, pronoun_name_Map
 
     def addEntailment(self, library, verbs, entailmentType, sepIndex):
         tokens = library["Lemmatized tokens:"]
@@ -653,7 +667,7 @@ class translater(object):
         addedVerbsIndex = []        
         antecedentString = ""
         secedentString = ""
-        for index, info in verbs.items():
+        for index, info in verbs.iteritems():
             if index < sepIndex:
                 antecedent.append([index, info])
             else:
@@ -680,6 +694,7 @@ class translater(object):
                     addedVerbsNum += 1
             if addedVerbsNum > 1:
                 antecedentString = "(and " + antecedentString + ")"
+            
             addedVerbsNum = 0
             for verb in secedent:
                 newString = self.addRealityForOneVerb(library, {verb[0]:verb[1]}, verbs, pronoun_name_Map, addedVerbsIndex) 
@@ -688,9 +703,11 @@ class translater(object):
                     addedVerbsNum += 1
             if addedVerbsNum > 1:
                 secedentString = "(and " + secedentString + ")"
-            variableNum = len(pronoun_name_Map.keys())
+            
+            #determine if there exists entity not equal string
+            #if exists add one more right bracket
             rightBracket = ""
-            if variableNum > 1:
+            if declareString.find("(not (=") != -1:
                 rightBracket = ")"
             return declareString, antecedentString + " " + secedentString + ")))" + rightBracket + "\n"
 
@@ -771,7 +788,7 @@ class translater(object):
         children = library["Dependency children:"]
         completeNouns = self.findCompleteNouns(library)
         addedNounName = []
-        for index, info in theVerb.items():
+        for index, info in theVerb.iteritems():
             if index in addedVerbsIndex:
                 continue
             nouns = info["relatedNouns"]
@@ -833,7 +850,7 @@ class translater(object):
         for nounName in addedNounName:
             #neglect "he" and "it"
             if nounName in self.existVars[:-2]:
-                existDeclareString = self.addExistVarDeclaration(nounName, addedExist, pronoun_name_Map)
+                existDeclareString += self.addExistVarDeclaration(nounName, addedExist, pronoun_name_Map)
                 addedExist = True
         if addedExist:
             existDeclareString += ") "
@@ -907,7 +924,7 @@ class translater(object):
     def addRules_NegativeFormEntailment(self, library, verbs, outputStr):
         addedVerbs = []
         res = ""
-        for index, info in verbs.items():
+        for index, info in verbs.iteritems():
             combinedVerbName = info["combinedVerbName"]
             if "not" in combinedVerbName and combinedVerbName not in addedVerbs:
                 addedVerbs.append(combinedVerbName)
@@ -916,8 +933,19 @@ class translater(object):
                 newVerb = {}
                 newVerb[index] = {"combinedVerbName": newVerbName, "originalVerbName": newVerbName, "relatedNouns": info["relatedNouns"]}
                 varStr, pronoun_name_Map = self.addVariableDeclare(library, newVerb)
-                res += varStr + "(= (not " + self.addRealityForOneVerb(library, newVerb, newVerb, pronoun_name_Map, []) + ")"
-                res += " " + self.addRealityForOneVerb(library, {index:info}, {index:info}, pronoun_name_Map, []) + "))))\n"
+                realitySentece = self.addRealityForOneVerb(library, newVerb, newVerb, pronoun_name_Map, [])
+                verbNameStart = realitySentece.find(newVerbName)
+                if verbNameStart == -1:
+                    continue
+                negSentence = "(not (" + combinedVerbName + realitySentece[verbNameStart + len(newVerbName):]
+                rightBracket = ""
+                if varStr.find("(not (=") != -1:
+                    rightBracket = ")"
+                if realitySentece.find("exists") != -1:
+                    realitySentece = realitySentece[:verbNameStart - 2] + " (= (" + realitySentece[verbNameStart:-2]
+                    res += varStr + realitySentece + " " +  negSentence + rightBracket + ")))))\n"
+                else:
+                    res += varStr + "(= " + realitySentece + " " + negSentence + rightBracket + "))))\n"
         return outputStr + res
 
     #substitue the variable noun with the candidate answer noun
@@ -936,8 +964,7 @@ class translater(object):
                 end = len(noun) + 1
                 j += 1
         else:
-            string += symbol + " "
-
+            self.findAllAnswerSentence(addingNouns[1:], nounList, sentences, string + symbol + " ")
 
     def addRules_OnlyOneAnswer(self, nounSortMap):
         question = self.question
@@ -954,7 +981,7 @@ class translater(object):
                 nounList = nounSortMap["thing"]
 
         verbs = self.findVerbsAndItsRelatedNouns(question)
-        for index, info in verbs.items():
+        for index, info in verbs.iteritems():
             verbName = info["combinedVerbName"]
             if verbName not in self.addedVerbs:
                 continue
@@ -991,8 +1018,8 @@ class translater(object):
                 res += headString + trueSentence + falseSentence + "))\n"
         return res
 
-    def addDescription(self, nounSortMap):
-        verbs = self.findVerbsAndItsRelatedNouns(self.description)
+    def addDescription(self, library, nounSortMap):
+        verbs = self.findVerbsAndItsRelatedNouns(library)
         answerTokens = self.question["Lemmatized tokens:"]
         descriptionTokens = self.description["Lemmatized tokens:"]
         headString = "(assert "
@@ -1000,19 +1027,25 @@ class translater(object):
         completeNouns = self.findCompleteNouns(self.description)
         number = 0
         possesionStrs = []
-        for index, info in verbs.items():
+        for index, info in verbs.iteritems():
             originalVerbName = info["originalVerbName"]
             combinedVerbName = info["combinedVerbName"]
             if originalVerbName not in answerTokens:
                 verbName = ""
+                nouns = info["relatedNouns"]
                 if combinedVerbName in self.addedVerbs:
                     verbName = combinedVerbName
                 elif originalVerbName in self.addedVerbs:
                     verbName = originalVerbName
                 else:
+                    length = len(nouns)
+                    for i in range(length,0,-1):
+                        verbName = originalVerbName + "_" + str(i)
+                        if verbName in self.addedVerbs:
+                            break
+                if verbName == "":
                     continue
                 res += '(' + verbName + ' '
-                nouns = info["relatedNouns"]
                 for noun in nouns:
                     nounIndex = noun["index"]
                     nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, descriptionTokens, False)
@@ -1029,7 +1062,7 @@ class translater(object):
 
         if number >= 2:
             res = headString + "(and " + res + "))\n"
-        else:
+        elif number >= 1:
             res = headString + res + ")\n"
         
         return res
@@ -1058,7 +1091,7 @@ class translater(object):
         i = 0
         verbs = self.findVerbsAndItsRelatedNouns(question)
         answer = ""
-        for index, info in verbs.items():
+        for index, info in verbs.iteritems():
             verbName = info["combinedVerbName"]
             nouns = info["relatedNouns"]
             length = len(nouns)
@@ -1067,7 +1100,7 @@ class translater(object):
                 verbName = info["originalVerbName"]
                 if verbName in self.keywords:
                     verbName = "_" + verbName
-                for _ in range(length - 1):
+                for _ in range(length):
                     lessParaVerbName = verbName + "_" + str(number)
                     if lessParaVerbName in self.addedVerbs:
                         verbName = lessParaVerbName
@@ -1096,11 +1129,18 @@ class translater(object):
                 #execute command line verification and get the output
                 #the end char is  '\n', delete it
                 var = os.popen("z3 " +  fileName).read()[:-1]
-                print ("verification result:" + "(" + verbName + " " + verbSentence + ") " + var)
+                print ("verification result:" + " (" + verbName + " " + verbSentence + ") " + var)
                 if str(var) == "unsat":
+                    answer = verbSentence
+                    break
+        if answer == "":
+            print "Guessing :"
+            for noun in nounList:
+                print noun
+                if noun not in self.pronounList:
                     answer = noun
                     break
-        print "Answer:", answer
+        print "Answer :", answer
         return answer
 
     def translateToZ3(self):
@@ -1112,7 +1152,7 @@ class translater(object):
         descriptionVerbs = self.findVerbsAndItsRelatedNouns(description)
         questionVerbs = self.findVerbsAndItsRelatedNouns(question)
         questionVerbNames = []
-        for index, info in questionVerbs.items():
+        for index, info in questionVerbs.iteritems():
             questionVerbNames.append(info["combinedVerbName"])
             questionVerbNames.append(info["originalVerbName"])
         self.questionVerbNames = questionVerbNames
@@ -1125,7 +1165,7 @@ class translater(object):
             #{SortName: [noun1, noun2, ...]}
             completeNouns = self.findCompleteNouns(kb)
             #find nouns in kb
-            for index, info in kbVerbs.items():
+            for index, info in kbVerbs.iteritems():
                 nouns = info["relatedNouns"]
                 combinedVerbNameToIndexMap[info["combinedVerbName"]] = index
                 originalVerbNameToIndexMap[info["originalVerbName"]] = index
@@ -1149,11 +1189,8 @@ class translater(object):
             #find nouns in description
             tokens = description["Lemmatized tokens:"]
             completeNouns = self.findCompleteNouns(description)
-            for index, info in descriptionVerbs.items():
+            for index, info in descriptionVerbs.iteritems():
                 verbName = info["combinedVerbName"]
-                #if the name of verb is the question verb, pass it
-                if verbName in questionVerbNames:
-                    continue
                 kbindex = -1
                 #firstly, use combine name to get verb's info
                 if combinedVerbNameToIndexMap.has_key(verbName):
@@ -1161,8 +1198,6 @@ class translater(object):
                 #if not exists, use original name
                 else:
                     verbName = info["originalVerbName"]
-                    if verbName in questionVerbNames:
-                        continue
                     if originalVerbNameToIndexMap.has_key(verbName):
                         kbindex = originalVerbNameToIndexMap[verbName]
                 if kbindex != -1:
@@ -1231,14 +1266,14 @@ class translater(object):
 
         res += self.addPrepVerbToVerbEntailment()
         res += self.addRules_OnlyOneAnswer(nounSortMap)
-        res += self.addDescription(nounSortMap)
+        res += self.addDescription(self.description, nounSortMap)
         if len(self.context) >= 3:
-            print "Description:", self.context[0]
-            print "Knowledge:",
+            print "Description", self.context[0]
+            print "Knowledge",
             for kb in self.context[1:-1]:
                 print kb,
             print ""
-            print "Quesstion:", self.context[-1]
+            print "Quesstion", self.context[-1]
         self.reasoning(nounSortMap, res)
 
     def writeIntoFile(self, fileName):

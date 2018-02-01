@@ -15,3 +15,13 @@ Pete envies Martin although he is very successful.
 Emma did not pass the ball to Janie although she was open.
 
 解决了问题谓词可能包含多个变量的问题
+
+对于动词降级：
+sb. beat sb. at sth.
+完整动词为beat_at sb sb sth
+降级为beat_at sb sb sth => beat_1 sb,（可用于问句中的动词匹配）
+beat_at sb sb sth => beat_2 sb sb,（可用于问句中的动词匹配）
+beat_at sb sb sth = beat_3 sb sb sth.（可用于陈述句中的动词匹配）
+
+对动词关联的名词进行排序时，不对主语进行排序，因为主语总是第一个名词。
+陈述句和疑问句的主语宾语顺序会颠倒
