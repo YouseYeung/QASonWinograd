@@ -338,11 +338,11 @@ If person B helps person C and person C acts as though it never happened, then p
 Who is ungrateful?
 
 Bob was playing cards with Adam and was way ahead. If Adam hadn't had a sudden run of good luck, he would have won.
-If person B is way head and person C doesn’t have a sudden run of good luck, then person B wins and person C loses.
+If person B is way head and person C doesn’t have a sudden run of good luck, then person B will win and person C will lose.
 Who would have won?
 
 Bob was playing cards with Adam and was way ahead. If Adam hadn't had a sudden run of good luck, he would have lost.
-If person B is way head and person C doesn’t have a sudden run of good luck, then person B wins and person C loses.
+If person B is way head and person C doesn’t have a sudden run of good luck, then person B will win and person C will lose.
 Who would have lost?
 
 Adam can't leave work here until Bob arrives to replace him. If Bob had left home for work on time, he would be here by this time.
@@ -370,7 +370,7 @@ If thing B is hot, then thing B would move to thing C and place C is cooler. If 
 What was cooler?
 
 The cat was lying by the mouse hole waiting for the mouse, but it was too cautious.
-If thing B is waiting for its prey, then thing B might be impatient or its prey might be cautious. Mouse is cat’s prey.
+If thing B is waiting for thing C and thing C is the prey of thing B, then thing B might be impatient or its prey might be cautious. Mouse is the prey of cat.
 What was too cautious?
 
 The cat was lying by the mouse hole waiting for the mouse, but it was too impatient.

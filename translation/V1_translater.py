@@ -18,7 +18,7 @@ class translater(object):
         self.possesionVerbs = []
         self.questionVerbNames = []
         self.parsingSymbol = ['Tokens:', 'Lemmatized tokens:', 'POS tags:', 'NER tags:', 'NER values:', 'Dependency children:']
-        self.keywords = ["repeat", "assert", "declare"]
+        self.z3_keywords = ["repeat", "assert", "declare", "map"]
         self.existVars = ["somebody", "something", "sth", "sb", "he", "it"]
         self.pronounList = ["it", "he", "she", "they", "I", "we", "you", "It", "He", "She", "They", "You", "We"]
         self.questionAnswerTags = ["WP", "WDT", "WRB", "WP$"]
@@ -176,8 +176,6 @@ class translater(object):
             i += 1
             child = children[i]
             originalVerbName = tokens[i]
-            if originalVerbName in self.keywords:
-                originalVerbName = "_" + originalVerbName
             combinedVerbName = originalVerbName
             #every form of verb as a binary or more parameter predciate
             if i not in addedVerbsIndex and ("VB" in tag or "JJ" in tag or "RB" in tag or "NN" in tag):
@@ -320,10 +318,14 @@ class translater(object):
         res = ""
         addedName = {}
         for sortName, nouns in nounSortMap.iteritems():
-            res += declareSort + sortName + ")\n"
+            newLine = declareSort + sortName
+            newLine = self.bracketCheck(newLine) + '\n'
+            res += newLine
             for name in nouns:
                 if not addedName.has_key(name):
-                    res += declareConst + name + ' ' + sortName + ")\n"
+                    newLine = declareConst + name + ' ' + sortName
+                    newLine = self.bracketCheck(newLine) + '\n'
+                    res += newLine
                     addedName[name] = True
 
         return res
@@ -336,7 +338,9 @@ class translater(object):
             while i < length:
                 j = i + 1
                 while j < length:
-                   res += objectNotEqual + nouns[i] + ' ' + nouns[j] + ')))\n'
+                   newLine = objectNotEqual + nouns[i] + ' ' + nouns[j]
+                   newLine = self.bracketCheck(newLine) + '\n'
+                   res += newLine
                    j += 1
                 i += 1
         return res
@@ -435,7 +439,9 @@ class translater(object):
                     for string in lessParaPredicateString:
                         if number == length:
                             entailmentTypeStr = "(= "
-                        res += headString + nounDeclareString + entailmentTypeStr + combinedVerbString + string + ")))\n"
+                        newLine = headString + nounDeclareString + entailmentTypeStr + combinedVerbString + string
+                        newLine = self.bracketCheck(newLine) + '\n'
+                        res += newLine
                         number += 1
         return res
     def getAntecedentAndSecedent(self, tokens):
@@ -466,7 +472,8 @@ class translater(object):
         res = "(assert "
         declareVarStr, pronoun_name_Map = self.addVariableDeclare(library, verbs)
         res += self.addRealityForOneVerb(library, verbs, verbs, pronoun_name_Map, [])
-        return outputStr + res + ")\n"
+        res = self.bracketCheck(res) + '\n'
+        return outputStr + res
 
     #Add reality : sth is noun, sth is adj, sth is doing sth.
     def addReality_IS_Relation(self, library, verbs, outputStr):
@@ -943,9 +950,13 @@ class translater(object):
                     rightBracket = ")"
                 if realitySentece.find("exists") != -1:
                     realitySentece = realitySentece[:verbNameStart - 2] + " (= (" + realitySentece[verbNameStart:-2]
-                    res += varStr + realitySentece + " " +  negSentence + rightBracket + ")))))\n"
+                    newLine = varStr + realitySentece + " " +  negSentence + rightBracket
+                    newLine = self.bracketCheck(newLine) + '\n'
+                    res += newLine
                 else:
-                    res += varStr + "(= " + realitySentece + " " + negSentence + rightBracket + "))))\n"
+                    newLine = varStr + "(= " + realitySentece + " " + negSentence + rightBracket
+                    newLine = self.bracketCheck(newLine) + '\n'
+                    res += newLine
         return outputStr + res
 
     #substitue the variable noun with the candidate answer noun
@@ -1040,8 +1051,9 @@ class translater(object):
                 else:
                     length = len(nouns)
                     for i in range(length,0,-1):
-                        verbName = originalVerbName + "_" + str(i)
-                        if verbName in self.addedVerbs:
+                        tempVerbName = originalVerbName + "_" + str(i)
+                        if tempVerbName in self.addedVerbs:
+                            verbName = tempVerbName
                             break
                 if verbName == "":
                     continue
@@ -1084,8 +1096,8 @@ class translater(object):
         if "who" in tokens or "whom" in tokens:
             nounList = nounSortMap["person"]
         #thing answer
-        else:
-            nounList = nounSortMap["thing"]
+        if "what" in tokens:
+            nounList.extend(nounSortMap["thing"])
 
         length = len(nounList)
         i = 0
@@ -1098,8 +1110,6 @@ class translater(object):
             if verbName not in self.addedVerbs:
                 number = length
                 verbName = info["originalVerbName"]
-                if verbName in self.keywords:
-                    verbName = "_" + verbName
                 for _ in range(length):
                     lessParaVerbName = verbName + "_" + str(number)
                     if lessParaVerbName in self.addedVerbs:
@@ -1144,6 +1154,7 @@ class translater(object):
         return answer
 
     def translateToZ3(self):
+        self.z3keywordCheck()
         description = self.description
         kbList = self.kbList
         question = self.question
@@ -1280,6 +1291,36 @@ class translater(object):
         with open(fileName, 'w') as f:
             f.write(self.outputStr)
 
+    def z3keywordCheck(self):
+        i = 0
+        for token in self.question["Lemmatized tokens:"]:
+            if token in self.z3_keywords:
+                self.question["Lemmatized tokens:"][i] = "_" + token
+            i += 1
+        i = 0
+        for token in self.description["Lemmatized tokens:"]:
+            if token in self.z3_keywords:
+                self.description["Lemmatized tokens:"][i] = "_" + token
+            i += 1
+
+        for i in range(len(self.kbList)):
+            j = 0
+            for token in self.kbList[i]["Lemmatized tokens:"]:
+                if token in self.z3_keywords:
+                    self.kbList[i]["Lemmatized tokens:"][j] = "_" + token
+                j += 1
+
+    def bracketCheck(self, string):
+        num = 0
+        for c in string:
+            if c == "(":
+                num += 1
+            elif c == ")":
+                num -= 1
+        for i in range(num):
+            string += ")"
+
+        return string
 
 def main():
     t = translater()

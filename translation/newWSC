@@ -393,8 +393,7 @@ Who was behaving strangely?
 If person B stop person C doing sth normal, then person B behaves so strangely. If person B doing sth strange, then person B behaves so strangely. If person B is chatting, then person B is doing sth normal. If person B is barking , then person B is doing sth strange.
 Who was behaving strangely?
 
-51.
-I saw Jim yelling at some guy in a military uniform with a huge red beard. I don't know who he was, but he looked very unhappy.
+51.I saw Jim yelling at some guy in a military uniform with a huge red beard. I don't know who he was, but he looked very unhappy.
 Who looked very unhappy?
 
 51.I saw Jim yelling at some guy in a military uniform with a huge red beard. I don't know why he was, but he looked very unhappy.
@@ -449,11 +448,11 @@ If person B hear person C and person C is making noise, then person B might be a
 Who was annoying?
 
 58.John was jogging through the park when he saw a man juggling watermelons. He was very impressed.
-If person B sees person C doing something, then person B might be impressed and person C might be impressive.
+If person B sees person C juggling watermelons, then person B might be impressed and person C might be impressive.
 Who was impressed?
 
 58.John was jogging through the park when he saw a man juggling watermelons. He was very impressive.
-If person B sees person C doing something, then person B might be impressed and person C might be impressive.
+If person B sees person C juggling watermelons, then person B might be impressed and person C might be impressive.
 Who was impressive?
 
 59.Bob collapsed on the sidewalk. Soon he saw Carl coming to help. He was very ill.
@@ -481,11 +480,11 @@ If person B tells person C lies, then person B should be truthful and person C s
 Who should have been more skeptical?
 
 62.Joe has sold his house and bought a new one a few miles away. He will be moving out of it on Thursday.
-If somebody sells his house B and buys a house C, then he might move out of house B and move into house C.
+If somebody sells thing B and buys thing C, then he might move out of thing B and move into thing C.
 Which house will he be moving out of?
 
 62.Joe has sold his house and bought a new one a few miles away. He will be moving into it on Thursday.
-If somebody sells his house B and buys a house C, then he might move out of house B and move into house C.
+If somebody sells thing B and buys thing C, then he might move out of thing B and move into thing C.
 Which house will he be moving into?
 
 63.Many people start to read Paul's books and can't put them down. They are gripped because Paul writes so well.
@@ -513,19 +512,19 @@ If chair is broken, then somebody has to stand. If instrument is broken, then so
 What was broken?
 
 66.Since it was raining, I carried the newspaper over my backpack to keep it dry.
-If somebody carries thing B over thing C, then thing B is over thing C. If somebody carries thing B in thing C, then thing C is over thing B. When it is rainy and thing B is over thing C, then thing C is dry.
+If somebody carries thing B over thing C, then thing B is over thing C. If somebody carries thing B in thing C, then thing C is over thing B. When it is raining and thing B is over thing C, then somebody try to keep thing C dry.
 What was I trying to keep dry?
 
 66.Since it was raining, I carried the newspaper in my backpack to keep it dry.
-If somebody carries thing B over thing C, then thing B is over thing C. If somebody carries thing B in thing C, then thing C is over thing B. When it is rainy and thing B is over thing C, then thing C is dry.
+If somebody carries thing B over thing C, then thing B is over thing C. If somebody carries thing B in thing C, then thing C is over thing B. When it is raining and thing B is over thing C, then somebody try to keep thing C dry.
 What was I trying to keep dry?
 
 67.Sara borrowed the book from the library because she needs it for an article she is working on. She reads it when she gets home from work.
-If person B borrows a book, then person B can read the book and person B can not write the book.    If person B is working on thing C, then person B might write thing C.
+If person B borrows a book, then person B can read the book and person B can not write the book. If person B is working on thing C, then person B might write thing C.
 What does Sara read when she gets home from work?
 
 67.Sara borrowed the book from the library because she needs it for an article she is working on. She writes it when she gets home from work.
-If person B borrows a book, then person B can read the book and person B can not write the book.    If person B is working on thing C, then person B might write thing C.
+If person B borrows a book, then person B can read the book and person B can not write the book. If person B is working on thing C, then person B might write thing C.
 What does Sara write when she gets home from work?
 
 68.This morning, Joey built a sand castle on the beach, and put a toy flag in the highest tower, but this afternoon a breeze knocked it down.
