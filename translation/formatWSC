@@ -641,11 +641,11 @@ If thing C is thick or thing D is small, then somebody can’t cut thing C down 
 What is too small?
 
 The foxes are getting in at night and attacking the chickens. I shall have to guard them.
-If thing B attacks animal C, then thing B is dangerous and thing C is in danger. If thing B is dangerous, then person D should kill thing B. If thing B is in danger, person D should guard thing B.
+If thing B attacks thing C, then thing B is dangerous and thing C is in danger. If thing B is dangerous, then person D should kill thing B. If thing B is in danger, person D should guard thing B.
 What do I have to guard?
 
 The foxes are getting in at night and attacking the chickens. I shall have to kill them.
-If thing B attacks animal C, then thing B is dangerous and thing C is in danger. If thing B is dangerous, then person D should kill thing B. If thing B is in danger, person D should guard thing B.
+If thing B attacks thing C, then thing B is dangerous and thing C is in danger. If thing B is dangerous, then person D should kill thing B. If thing B is in danger, person D should guard thing B.
 What do I have to kill?
 
 The foxes are getting in at night and attacking the chickens. They have gotten very bold.
@@ -761,11 +761,11 @@ If thing B has been found living in something, then thing B might appear some ye
 Who or what began two years ago?
 
 The journalists interviewed the stars of the new movie. They were very cooperative, so the interview lasted for a long time.
-If person B interview person C, then person C might be cooperative and person B might be persistent.
+If person B interviewed person C and the interview lasted for a long time, then person C might be cooperative and person B might be persistent.
 Who was cooperative?
 
 The journalists interviewed the stars of the new movie. They were very persistent, so the interview lasted for a long time.
-If person B interview person C, then person C might be cooperative and person B might be persistent.
+If person B interviewed person C and the interview lasted for a long time, then person C might be cooperative and person B might be persistent.
 Who was persistent?
 
 The police arrested all of the gang members. They were trying to run the drug trade in the neighborhood.
@@ -833,11 +833,11 @@ Pen’s content is ink. Coffee’s content is coffee. If person B use thing C to
 What got full of coffee?
 
 Steve follows Fred's example in everything. He admires him hugely.
-If person B admires person C, then person B might follow person C. If person B follow person C, then person C influences person B.
+If person B admires person C, then person B might follow person C's example. If person B follow person C, then person C influences person B.
 Who admires whom?
 
 Steve follows Fred's example in everything. He influences him hugely.
-If person B admires person C, then person B might follow person C. If person B follow person C, then person C influences person B.
+If person B admires person C, then person B might follow person C's example. If person B follow person C, then person C influences person B.
 Who influences whom?
 
 The table won't fit through the doorway because it is too wide.
@@ -913,11 +913,11 @@ person B.
 Who delivered the final report?
 
 Beth didn't get angry with Sally, who had cut her off, because she stopped and counted to ten.
-If person B doesn’t get angry with person C, then person C might apologize or person B might calm down. If person B counts to ten, then person B might calm down.
+If person C does apologize or person B does calm down, then person B might not get angry with person C. If person B counts to ten, then person B might calm down.
 Who counted to ten?
 
 Beth didn't get angry with Sally, who had cut her off, because she stopped and apologized.
-If person B doesn’t get angry with person C, then person C might apologize or person B might calm down. If person B counts to ten, then person B might calm down.
+If person C does apologize or person B does calm down, then person B might not get angry with person C. If person B counts to ten, then person B might calm down.
 Who apologized?
 
 Jim signaled the barman and gestured toward his empty glass.

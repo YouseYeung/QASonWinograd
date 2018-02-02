@@ -2,63 +2,37 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: Since it was raining, I carried the newspaper over my backpack to keep it dry {
-    Tokens: [since, it, was, raining, ,, i, carried, the, newspaper, over, my, backpack, to, keep, it, dry]
-    Lemmatized tokens: [since, it, be, rain, ,, I, carry, the, newspaper, over, my, backpack, to, keep, it, dry]
-    POS tags: [IN, PRP, VBD-AUX, VBG, ,, PRP, VBD, DT, NN, IN, PRP$, NN, TO, VB, PRP, JJ]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [], [mark->0, nsubj->1, aux->2], [], [], [advcl->3, punct->4, nsubj->5, dobj->8, nmod:over->11], [], [det->7], [], [], [case->9, nmod:poss->10, acl->13], [], [xcomp->15, mark->12], [], [nsubj->14]]
+  Example: I poured water from the bottle into the cup until it was full {
+    Tokens: [i, poured, water, from, the, bottle, into, the, cup, until, it, was, full]
+    Lemmatized tokens: [I, pour, water, from, the, bottle, into, the, cup, until, it, be, full]
+    POS tags: [PRP, VBD, NN, IN, DT, NN, IN, DT, NN, IN, PRP, VBD-AUX, JJ]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [nsubj->0, dobj->2, nmod:from->5, nmod:into->8, advcl->12], [], [], [], [case->3, det->4], [], [], [case->6, det->7], [], [], [], [mark->9, nsubj->10, cop->11]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If somebody carries thing B over thing C, then thing B is over thing C {
-    Tokens: [if, somebody, carries, thing, b, over, thing, c, ,, then, thing, b, is, over, thing, c]
-    Lemmatized tokens: [if, somebody, carry, thing, b, over, thing, c, ,, then, thing, b, be, over, thing, c]
-    POS tags: [IN, NN, VBZ, NN, NN, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, IN, NN, NN]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [parataxis->15, mark->0, nsubj->1, dobj->4, punct->8], [], [compound->3, nmod:over->7], [], [], [case->5, compound->6], [], [], [], [compound->10], [], [], [], [advmod->9, nsubj->11, cop->12, case->13, compound->14]]
+  Example: If somebody pours something from thing B into thing C, then thing B will be empty, and thing C will be full {
+    Tokens: [if, somebody, pours, something, from, thing, b, into, thing, c, ,, then, thing, b, will, be, empty, ,, and, thing, c, will, be, full]
+    Lemmatized tokens: [if, somebody, pour, something, from, thing, b, into, thing, c, ,, then, thing, b, will, be, empty, ,, and, thing, c, will, be, full]
+    POS tags: [IN, NN, VBZ, NN, IN, NN, NN, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, JJ, ,, CC, NN, NN, VBD-AUX, VBD-AUX, JJ]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [mark->0, nsubj->1, dobj->3, nmod:into->9], [nmod:from->6], [], [], [case->4, compound->5], [], [], [case->7, compound->8], [], [], [], [advmod->11, compound->12], [], [], [cop->15, punct->17, advcl->2, cc->18, conj:and->23, punct->10, nsubj->13, aux->14], [], [], [], [compound->19], [], [], [nsubj->20, aux->21, cop->22]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If somebody carries thing B in thing C, then thing C is over thing B {
-    Tokens: [if, somebody, carries, thing, b, in, thing, c, ,, then, thing, c, is, over, thing, b]
-    Lemmatized tokens: [if, somebody, carry, thing, b, in, thing, c, ,, then, thing, c, be, over, thing, b]
-    POS tags: [IN, NN, VBZ, NN, NN, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, IN, NN, NN]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [parataxis->15, mark->0, nsubj->1, dobj->4, punct->8], [], [compound->3, nmod:in->7], [], [], [case->5, compound->6], [], [], [], [compound->10], [], [], [], [advmod->9, nsubj->11, cop->12, case->13, compound->14]]
-  }
-
-  Parser.parse: parse {
-    Parser.ensureExecuted 
-  }
-  Parser.setEvaluation: 0 candidates 
-  Example: When it is rainy, and thing B is over thing C, then thing C is dry {
-    Tokens: [when, it, is, rainy, ,, and, thing, b, is, over, thing, c, ,, then, thing, c, is, dry]
-    Lemmatized tokens: [when, it, be, rainy, ,, and, thing, b, be, over, thing, c, ,, then, thing, c, be, dry]
-    POS tags: [WRB, PRP, VBD-AUX, JJ, ,, CC, NN, NN, VBD-AUX, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, JJ]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [], [advmod->0, nsubj->1, cop->2, punct->4, cc->5, conj:and->11], [], [], [], [compound->6], [], [], [], [parataxis->17, nsubj->7, cop->8, case->9, compound->10, punct->12], [], [], [], [compound->14], [], [nsubj->15, cop->16, advmod->13]]
-  }
-
-  Parser.parse: parse {
-    Parser.ensureExecuted 
-  }
-  Parser.setEvaluation: 0 candidates 
-  Example: What was I trying to keep dry {
-    Tokens: [what, was, i, trying, to, keep, dry]
-    Lemmatized tokens: [what, be, I, try, to, keep, dry]
-    POS tags: [WP, VBD-AUX, PRP, VBG, TO, VB, JJ]
-    NER tags: [O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null]
-    Dependency children: [[], [], [], [aux->1, nsubj->2, xcomp->5], [], [dobj->0, mark->4, xcomp->6], []]
+  Example: What was full {
+    Tokens: [what, was, full]
+    Lemmatized tokens: [what, be, full]
+    POS tags: [WP, VBD-AUX, JJ]
+    NER tags: [O, O, O]
+    NER values: [null, null, null]
+    Dependency children: [[], [], [nsubj->0, cop->1]]
   }

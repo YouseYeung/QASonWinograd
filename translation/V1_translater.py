@@ -148,16 +148,28 @@ class translater(object):
         typeOfNoun = ['subj', 'iobj', 'dobj', 'nmod', 'xcomp', 'advmod', 'advcl']
         relatedNounsIndex = []
         for _type in typeOfNoun:
-            i = self.findIndexBySymbol(children[index], _type)
-            if i != -1:
-                #add the word if it is a noun
-                if "NN" in tags[i] or "PRP" in tags[i] or tags[i] in self.questionAnswerTags:
-                    relatedNounsIndex.append(i)
-                #find more nouns in its related word's children
-                if (_type == "xcomp" and ("NN" in tags[i] or "PRP" in tags[i])) or (_type == "advmod" and tags[i] == "IN") or (_type == "dobj" and children[i].find("nmod") != -1) or (_type == "advcl" and children[i].find("obj") != -1 and i > index and children[i].find("mark") != -1):
-                    additiveNounsIndex = self.findRelatedNouns(library, i)
-                    for ii in additiveNounsIndex:
-                        relatedNounsIndex.append(ii)
+            indexStart = 0
+            verbChild = children[index]
+            length = len(_type)
+            while True:
+                print verbChild, indexStart, 
+                temp = verbChild[indexStart:].find(_type)
+                if temp == -1:
+                    break
+                print _type, indexStart
+                indexStart += temp + length
+                i = self.findIndexBySymbol(verbChild, _type)
+                if i != -1:
+                    nounChild = children[i]
+                    tag = tags[i]
+                    #add the word if it is a noun
+                    if "NN" in tag or "PRP" in tag or tag in self.questionAnswerTags:
+                        relatedNounsIndex.append(i)
+                    #find more nouns in its related word's children
+                    if (_type == "xcomp" and ("NN" in tag or "PRP" in tag)) or (_type == "advmod" and tag == "IN") or (_type == "dobj" and nounChild.find("nmod") != -1) or (_type == "advcl" and nounChild.find("obj") != -1 and i > index and nounChild.find("mark") != -1):
+                        additiveNounsIndex = self.findRelatedNouns(library, i)
+                        for ii in additiveNounsIndex:
+                            relatedNounsIndex.append(ii)
 
         return relatedNounsIndex
 

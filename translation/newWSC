@@ -807,11 +807,11 @@ Which cookie should we make more of, next time?
 If more people like thing B, then thing B should be make more. If less people like thing C, then thing C should be make fewer. Everyone loves thing B, everyone likes thing B. Everyone likes thing B, more people likes thing B. A few people likes thing B, then less people likes thing B.
 Which cookie should we make fewer of, next time?
 
-103.We had hoped to place copies of our newsletter on all the chairs in the auditorium, but there were simply not enough  of them.
+103.We had hoped to place copies of our newsletter on all the chairs in the auditorium, but there were simply not enough of them.
 If thing B is all, then thing B is too many.
 There are too many of what?
 
-103.We had hoped to place copies of our newsletter on all the chairs in the auditorium, but there were simply  too many of them.
+103.We had hoped to place copies of our newsletter on all the chairs in the auditorium, but there were simply too many of them.
 If thing B is all, then thing B is too many.
 There are not enough of what?
 
@@ -901,22 +901,21 @@ Who did not answer?
 If person B knocks on person C’s door, then person B might not get an answer and person C might not answer.
 Who did not get an answer?
 
-115.
-Joe paid the detective after he received the final report on the case.
-If person B is a detective, then person B might delivers report and somebody might receive report from person B.
+115.Joe paid the detective after he received the final report on the case.
+If person B is a detective, then person B might deliver report and somebody might receive report from person B.
 Who received the final report?
 
 115.Joe paid the detective after he delivered the final report on the case.
-If person B is a detective, then person B might delivers report and somebody might receive report from person B.
+If person B is a detective, then person B might deliver report and somebody might receive report from person B.
 person B.
 Who delivered the final report?
 
 116.Beth didn't get angry with Sally, who had cut her off, because she stopped and counted to ten.
-If person B doesn’t get angry with person C, then person C might apologize or person B might calm down. If person B counts to ten, then person B might calm down.
+If person C does apologize or person B does calm down, then person B might not get angry with person C. If person B counts to ten, then person B might calm down.
 Who counted to ten?
 
 116.Beth didn't get angry with Sally, who had cut her off, because she stopped and apologized.
-If person B doesn’t get angry with person C, then person C might apologize or person B might calm down. If person B counts to ten, then person B might calm down.
+If person C does apologize or person B does calm down, then person B might not get angry with person C. If person B counts to ten, then person B might calm down.
 Who apologized?
 
 117.Jim signaled the barman and gestured toward his empty glass.
