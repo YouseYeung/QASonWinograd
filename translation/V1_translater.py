@@ -15,7 +15,7 @@ class translater(object):
         self.addedVerbs = []
         #z3 keywords, these words can not be declared as a rel, we have to add '_' in front of the word.
         self.outputStr = ""
-        self.possesionVerbs = []
+        self.possessionVerbs = []
         self.questionVerbNames = []
         self.parsingSymbol = ['Tokens:', 'Lemmatized tokens:', 'POS tags:', 'NER tags:', 'NER values:', 'Dependency children:']
         self.z3_keywords = ["repeat", "assert", "declare", "map"]
@@ -58,7 +58,7 @@ class translater(object):
                     self.description = {}
                     self.context = []
                     self.addedVerbs = []
-                    self.possesionVerbs = []
+                    self.possessionVerbs = []
                     self.questionVerbNames = []
                     beginMark = False
 
@@ -152,13 +152,11 @@ class translater(object):
             verbChild = children[index]
             length = len(_type)
             while True:
-                print verbChild, indexStart, 
                 temp = verbChild[indexStart:].find(_type)
                 if temp == -1:
                     break
-                print _type, indexStart
+                i = self.findIndexBySymbol(verbChild[indexStart:], _type)
                 indexStart += temp + length
-                i = self.findIndexBySymbol(verbChild, _type)
                 if i != -1:
                     nounChild = children[i]
                     tag = tags[i]
@@ -465,15 +463,15 @@ class translater(object):
                 break
         return sepIndex
 
-    def getCompleteNounNameByIndex(self, nounIndex, relatedNounsMap, tokens, possesionSymbol):
+    def getCompleteNounNameByIndex(self, nounIndex, relatedNounsMap, tokens, possessionSymbol):
         nounName = tokens[nounIndex]
         if relatedNounsMap.has_key(nounIndex):
             relatedNounsIndex = relatedNounsMap[nounIndex]
             for info in relatedNounsIndex:
                 i = info["index"]
                 tag = info["tag"]
-                #if it doesn't have to add possesion noun, then neglect it
-                if not possesionSymbol or tag != "nmod:poss":
+                #if it doesn't have to add possession noun, then neglect it
+                if not possessionSymbol or tag != "nmod:poss":
                     if i < nounIndex:
                         nounName = tokens[i] + "_" + nounName
                     else:
@@ -630,7 +628,7 @@ class translater(object):
                             pronoun_name_Map["it"] = pronouns[numOfPronoun]
                         numOfPronoun += 1
                 else:
-                    #address the condition of possesion
+                    #address the condition of possession
                     child = children[nounIndex]
                     i = child.find("nmod:poss")
                     if i != -1:
@@ -813,23 +811,23 @@ class translater(object):
             nouns = info["relatedNouns"]
             verbName = info["combinedVerbName"]
             headString += "(" + verbName
-            possesionStrs = []
+            possessionStrs = []
             for noun in nouns:
                 nounIndex = noun["index"]
                 nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, False)
-                posStr = self.addPossesionReality(library, nounIndex, pronoun_name_Map)
+                posStr = self.addpossessionReality(library, nounIndex, pronoun_name_Map)
                 if posStr != "":
-                    possesionStrs.append(posStr)
+                    possessionStrs.append(posStr)
                     nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, True)
-                    possesionName = ""
+                    possessionName = ""
                     child = children[nounIndex]
                     index = self.findIndexBySymbol(child, "nmod:poss")
-                    possesionName = tokens[index]
-                    #if the verb is related to a possesion noun, then add it into the list
-                    self.possesionVerbs.append(verbName)
-                    self.possesionVerbs.append(info["originalVerbName"])
-                    if possesionName not in addedNounName:
-                        addedNounName.append(possesionName)
+                    possessionName = tokens[index]
+                    #if the verb is related to a possession noun, then add it into the list
+                    self.possessionVerbs.append(verbName)
+                    self.possessionVerbs.append(info["originalVerbName"])
+                    if possessionName not in addedNounName:
+                        addedNounName.append(possessionName)
 
                 addedNounName.append(nounName)
                 isVar = noun["var"]
@@ -856,10 +854,10 @@ class translater(object):
                 else:
                     print "[ERROR]: Verb name and its related verb's index doesn't not exist:", verbName, verbIndex
         
-            #add possesion reality
-            if possesionStrs != []:
+            #add possession reality
+            if possessionStrs != []:
                 headString = "(and " + headString
-                for posStr in possesionStrs:
+                for posStr in possessionStrs:
                     headString += " " + posStr + " "
                 headString += ")"
 
@@ -877,7 +875,7 @@ class translater(object):
         else:
             return headString
 
-    def addDeclareRel_Possesion(self, library):
+    def addDeclareRel_possession(self, library):
         children = library["Dependency children:"]
         headString = "(declare-rel "
         res = ""
@@ -889,13 +887,13 @@ class translater(object):
                 paraTags = ["tt", "pt"]
                 tagNounMap = {"t" : "thing", "p": "person"}
                 for pTag in paraTags:
-                    verbName = "posses" + "_" + pTag
+                    verbName = "possess" + "_" + pTag
                     if verbName not in self.addedVerbs:
                         res += headString + verbName + " (" + tagNounMap[pTag[0]] + " " + tagNounMap[pTag[1]] + "))\n"       
                         self.addedVerbs.append(verbName)
         return res
 
-    def addPossesionReality(self, library, index, pronoun_name_Map):
+    def addpossessionReality(self, library, index, pronoun_name_Map):
         children = library["Dependency children:"]
         child = children[index]
         res = ""
@@ -910,9 +908,9 @@ class translater(object):
             subjName = self.getCompleteNounNameByIndex(subjIndex, completeNouns, tokens, False)
             #subjname is a variable
             if subjName == "somebody" or subjName == "his":
-                res += "(posses_pt " + pronoun_name_Map[subjName] + " " + objName + ")"
+                res += "(possess_pt " + pronoun_name_Map[subjName] + " " + objName + ")"
             elif subjName == "something" or subjName == "its":
-                res += "(posses_tt " + pronoun_name_Map[subjName] + " " + objName + ")"
+                res += "(possess_tt " + pronoun_name_Map[subjName] + " " + objName + ")"
             else:
                 subjChild = children[subjIndex]
                 i = subjChild.find("compound")
@@ -920,13 +918,13 @@ class translater(object):
                     compoundIndex = self.findIndexBySymbol(subjChild, "compound")
                     compoundNoun = tokens[compoundIndex]
                     if compoundNoun == "person":
-                        res += "(posses_pt " + pronoun_name_Map[subjName] + " " + objName + ")"
+                        res += "(possess_pt " + pronoun_name_Map[subjName] + " " + objName + ")"
                     else:
-                        res += "(posses_tt " + pronoun_name_Map[subjName] + " " + objName + ")"   
+                        res += "(possess_tt " + pronoun_name_Map[subjName] + " " + objName + ")"   
                 #subjname is a constant
                 else:
-                    res += "(posses_pt "+ subjName + "_p " + objName + ") "
-                    res += "(posses_tt " + subjName + "_t " + objName + ") "   
+                    res += "(possess_pt "+ subjName + "_p " + objName + ") "
+                    res += "(possess_tt " + subjName + "_t " + objName + ") "   
         return res
 
     def addRules_ClosedReasonAssumption(self, library, verbs, outputStr):
@@ -1049,7 +1047,7 @@ class translater(object):
         res = ""
         completeNouns = self.findCompleteNouns(self.description)
         number = 0
-        possesionStrs = []
+        possessionStrs = []
         for index, info in verbs.iteritems():
             originalVerbName = info["originalVerbName"]
             combinedVerbName = info["combinedVerbName"]
@@ -1073,15 +1071,15 @@ class translater(object):
                 for noun in nouns:
                     nounIndex = noun["index"]
                     nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, descriptionTokens, False)
-                    if verbName in self.possesionVerbs:
+                    if verbName in self.possessionVerbs:
                         nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, descriptionTokens, True)
-                        possesionStrs.append(self.addPossesionReality(self.description, nounIndex, nounSortMap))
+                        possessionStrs.append(self.addpossessionReality(self.description, nounIndex, nounSortMap))
                     res += nounName + ' '
                 res += ') '
                 number += 1
-        if possesionStrs != []:
+        if possessionStrs != []:
             number += 1
-            for posStr in possesionStrs:
+            for posStr in possessionStrs:
                 res += " " + posStr
 
         if number >= 2:
@@ -1105,16 +1103,44 @@ class translater(object):
         headString = "(assert (not "
         nounList = []
         #person answer
-        if "who" in tokens or "whom" in tokens:
+        if "who" in tokens or "whom" in tokens or "whose" in tokens:
             nounList = nounSortMap["person"]
         #thing answer
         if "what" in tokens:
             nounList.extend(nounSortMap["thing"])
 
+        #deal with possesion question
+        possessionStr = ""
+        possessionSentences = []
+        if "whose" in tokens:
+            i = 0
+            completeNouns = self.findCompleteNouns(question)
+            for child in children:
+                if child.find("poss") != -1:
+                    nounName = self.getCompleteNounNameByIndex(i, completeNouns, tokens, False)
+                    if nounName in nounSortMap["thing"]:
+                        possessionStr = "(" + "possess_t" + " WP " + nounName
+                    elif nounName in nounSortMap["person"]:
+                        possessionStr = "(" + "possess_p" + " WP " + nounName
+                    else:
+                        nounName = tokens[i]
+                        if nounName in nounSortMap["thing"]:
+                            possessionStr = "(" + "possess_t" + " WP " + nounName + ")"
+                        elif nounName in nounSortMap["person"]:
+                            possessionStr = "(" + "possess_p" + " WP " + nounName + ")"
+                    break
+                i += 1
+            if possessionStr != "":
+                index = possesionStr.find("WP")
+                for noun in nounList:
+                    if noun not in self.pronounList:
+                        possessionSentences.append(possessionStr[:index] + noun + possesionStr[index + 2:])
+
         length = len(nounList)
         i = 0
         verbs = self.findVerbsAndItsRelatedNouns(question)
         answer = ""
+        verbSentencesList = []
         for index, info in verbs.iteritems():
             verbName = info["combinedVerbName"]
             nouns = info["relatedNouns"]
@@ -1142,23 +1168,75 @@ class translater(object):
                     addingNouns.append(tokens[nounIndex])
             sentences = []
             self.findAllAnswerSentence(addingNouns, nounList, sentences, "")
-            for verbSentence in sentences:
-                i += 1
-                self.outputStr = outputStr + headString + "(" + verbName + " " + verbSentence + ')))\n'
+            verbSentencesList.append([verbName, sentences])
+            i += 1
+                
+        i = 1
+        #whose
+        if possessionSentences != []:
+            for posSentence in possessionSentences:
+                stnNumber = 1
+                tempStr = posSentence
+                for verbName, verbSentences in verbSentencesList:
+                    if verbSentences != []:
+                        tempStr += " " + "(" + verbName + " " + verbSentences[0] + ")"
+                        stnNumber += 1
+                if stnNumber > 1:
+                    tempStr = "(and " + tempStr + ")"
+                self.outputStr = outputStr + headString + tempStr + "))\n"
                 self.outputStr += "(check-sat)\n"
-                fileName = "testOutput_" + str(i)
+                fileName = str(i) + "_output"
                 self.writeIntoFile(fileName)
                 #execute command line verification and get the output
                 #the end char is  '\n', delete it
                 var = os.popen("z3 " +  fileName).read()[:-1]
-                print ("verification result:" + " (" + verbName + " " + verbSentence + ") " + var)
+                print ("verification result:" + " " + tempStr + " : " + var)
+                i += 1
                 if str(var) == "unsat":
-                    answer = verbSentence
+                    answer = tempStr
+                    break
+        #who or what
+        else:
+            def getAnswerSentence(sentenceList, string, completeSentences):
+                if sentenceList == []:
+                    if string != "":
+                        completeSentences.append(string)
+                    return
+                for sentence in sentenceList[0][1]:
+                    verbName = sentenceList[0][0]
+                    temp = string + " " + "(" + verbName + " " + sentence + ")"
+                    if len(sentenceList) == 1:
+                        completeSentences.append(temp)
+                    else:
+                        getAnswerSentence(sentenceList[1:], temp, completeSentences)
+
+            answers = []
+            getAnswerSentence(verbSentencesList, "", answers)
+            verbNum = len(verbSentencesList)
+            i = 1
+            for answerSentence in answers:
+                temp = ""
+                if verbNum > 1:
+                    temp = headString + "(and " + answerSentence
+                    temp = self.bracketCheck(temp) + "\n"
+                else:
+                    temp += headString + answerSentence
+                    temp = self.bracketCheck(temp) + "\n"
+                self.outputStr = outputStr + temp + "(check-sat)\n"
+                fileName = str(i) +  "_output"
+                
+                self.writeIntoFile(fileName)
+                #execute command line verification and get the output
+                #the end char is  '\n', delete it
+                var = os.popen("z3 " +  fileName).read()[:-1]
+                print ("verification result:" + " " + answerSentence + " : " + var)
+                i += 1
+                if str(var) == "unsat":
+                    answer = answerSentence
                     break
         if answer == "":
             print "Guessing :"
             for noun in nounList:
-                print noun
                 if noun not in self.pronounList:
                     answer = noun
                     break
@@ -1249,21 +1327,21 @@ class translater(object):
                                 nounSortMap[sort] = [nounName1]
                             else:
                                 nounSortMap[sort] = [nounName1, nounName2]
-                        #add possesion noun into the sort map
+                        #add possession noun into the sort map
                         nameList1 = nounName1.split("_")
                         nameList2 = nounName2.split("_")
-                        possesionName = ""
+                        possessionName = ""
                         for name in nameList1:
                             if name not in nameList2:
-                                possesionName += name + "_"
-                        if possesionName != "":
+                                possessionName += name + "_"
+                        if possessionName != "":
                             #constant noun name + _p presenting person noun, _t presenting thing noun
-                            possesionName += "p"
-                            if nounSortMap.has_key("person") and possesionName not in nounSortMap["person"]:
-                                nounSortMap["person"].append(possesionName)
-                            possesionName = possesionName[:-1] + "t"
-                            if nounSortMap.has_key("thing") and possesionName not in nounSortMap["thing"]:
-                                nounSortMap["thing"].append(possesionName)
+                            possessionName += "p"
+                            if nounSortMap.has_key("person") and possessionName not in nounSortMap["person"]:
+                                nounSortMap["person"].append(possessionName)
+                            possessionName = possessionName[:-1] + "t"
+                            if nounSortMap.has_key("thing") and possessionName not in nounSortMap["thing"]:
+                                nounSortMap["thing"].append(possessionName)
                         
                         i += 1
 
@@ -1272,13 +1350,16 @@ class translater(object):
         res += self.addRules_EntityNotEqual(nounSortMap)
         res += self.addRules_EntityRange(nounSortMap)
         
+        #add rel declaration
         verbLength = 0
         for verbs in allVerbs:
             verbLength += 1
             res += self.addDeclareRel(verbs)
+        self.addDeclareRel_possession(self.description)
+        self.addDeclareRel_possession(self.question)
         i = 0
         for kb in kbList:
-            res += self.addDeclareRel_Possesion(kb)
+            res += self.addDeclareRel_possession(kb)
             if i >= verbLength:
                 verbs = {}
             else:
@@ -1287,6 +1368,7 @@ class translater(object):
             res = self.addRules_NegativeFormEntailment(kb, verbs, res)
             i += 1
 
+        #add entailment
         res += self.addPrepVerbToVerbEntailment()
         res += self.addRules_OnlyOneAnswer(nounSortMap)
         res += self.addDescription(self.description, nounSortMap)
@@ -1296,7 +1378,7 @@ class translater(object):
             for kb in self.context[1:-1]:
                 print kb,
             print ""
-            print "Quesstion", self.context[-1]
+            print "Queseion", self.context[-1]
         self.reasoning(nounSortMap, res)
 
     def writeIntoFile(self, fileName):

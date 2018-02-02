@@ -4011,13 +4011,13 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B is way head, and person C doesn’t have a sudden run of good luck, then person B wins and person C loses {
-    Tokens: [if, person, b, is, way, head, ,, and, person, c, does, n't, have, a, sudden, run, of, good, luck, ,, then, person, b, wins, and, person, c, loses]
-    Lemmatized tokens: [if, person, b, be, way, head, ,, and, person, c, do, not, have, a, sudden, run, of, good, luck, ,, then, person, b, win, and, person, c, lose]
-    POS tags: [IN, NN, NN, VBD-AUX, NN, NN, ,, CC, NN, NN, VBD-AUX, RB, VBD-AUX, DT, JJ, NN, IN, JJ, NN, ,, RB, NN, NN, NNS, CC, NN, NN, VBZ]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [], [mark->0, nsubj->2, cop->3, compound->4, punct->6, cc->7, conj:and->12], [], [], [], [compound->8], [], [], [dobj->15, nsubj->9, aux->10, neg->11], [], [], [nmod:of->18, det->13, amod->14], [], [], [case->16, amod->17], [], [], [], [], [advmod->20, compound->21, compound->22, cc->24, conj:and->26], [], [], [compound->25], [punct->19, advcl->5, nsubj->23, nsubj->26, advcl->12]]
+  Example: If person B is way head, and person C doesn’t have a sudden run of good luck, then person B will win and person C will lose {
+    Tokens: [if, person, b, is, way, head, ,, and, person, c, does, n't, have, a, sudden, run, of, good, luck, ,, then, person, b, will, win, and, person, c, will, lose]
+    Lemmatized tokens: [if, person, b, be, way, head, ,, and, person, c, do, not, have, a, sudden, run, of, good, luck, ,, then, person, b, will, win, and, person, c, will, lose]
+    POS tags: [IN, NN, NN, VBD-AUX, NN, NN, ,, CC, NN, NN, VBD-AUX, RB, VBD-AUX, DT, JJ, NN, IN, JJ, NN, ,, RB, NN, NN, VBD-AUX, VB, CC, NN, NN, VBD-AUX, VB]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [], [], [mark->0, nsubj->2, cop->3, punct->19, compound->4, punct->6, cc->7, parataxis->24, cc->25, conj:and->12, conj:and->29], [], [], [], [compound->8], [], [], [dobj->15, nsubj->9, aux->10, neg->11], [], [], [nmod:of->18, det->13, amod->14], [], [], [case->16, amod->17], [], [], [], [compound->21], [], [advmod->20, nsubj->22, aux->23], [], [], [compound->26], [], [nsubj->27, aux->28]]
   }
 
   Parser.parse: parse {
@@ -4051,13 +4051,13 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B is way head, and person C doesn’t have a sudden run of good luck, then person B wins and person C loses {
-    Tokens: [if, person, b, is, way, head, ,, and, person, c, does, n't, have, a, sudden, run, of, good, luck, ,, then, person, b, wins, and, person, c, loses]
-    Lemmatized tokens: [if, person, b, be, way, head, ,, and, person, c, do, not, have, a, sudden, run, of, good, luck, ,, then, person, b, win, and, person, c, lose]
-    POS tags: [IN, NN, NN, VBD-AUX, NN, NN, ,, CC, NN, NN, VBD-AUX, RB, VBD-AUX, DT, JJ, NN, IN, JJ, NN, ,, RB, NN, NN, NNS, CC, NN, NN, VBZ]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [], [mark->0, nsubj->2, cop->3, compound->4, punct->6, cc->7, conj:and->12], [], [], [], [compound->8], [], [], [dobj->15, nsubj->9, aux->10, neg->11], [], [], [nmod:of->18, det->13, amod->14], [], [], [case->16, amod->17], [], [], [], [], [advmod->20, compound->21, compound->22, cc->24, conj:and->26], [], [], [compound->25], [punct->19, advcl->5, nsubj->23, nsubj->26, advcl->12]]
+  Example: If person B is way head, and person C doesn’t have a sudden run of good luck, then person B will win and person C will lose {
+    Tokens: [if, person, b, is, way, head, ,, and, person, c, does, n't, have, a, sudden, run, of, good, luck, ,, then, person, b, will, win, and, person, c, will, lose]
+    Lemmatized tokens: [if, person, b, be, way, head, ,, and, person, c, do, not, have, a, sudden, run, of, good, luck, ,, then, person, b, will, win, and, person, c, will, lose]
+    POS tags: [IN, NN, NN, VBD-AUX, NN, NN, ,, CC, NN, NN, VBD-AUX, RB, VBD-AUX, DT, JJ, NN, IN, JJ, NN, ,, RB, NN, NN, VBD-AUX, VB, CC, NN, NN, VBD-AUX, VB]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [], [], [mark->0, nsubj->2, cop->3, punct->19, compound->4, punct->6, cc->7, parataxis->24, cc->25, conj:and->12, conj:and->29], [], [], [], [compound->8], [], [], [dobj->15, nsubj->9, aux->10, neg->11], [], [], [nmod:of->18, det->13, amod->14], [], [], [case->16, amod->17], [], [], [], [compound->21], [], [advmod->20, nsubj->22, aux->23], [], [], [compound->26], [], [nsubj->27, aux->28]]
   }
 
   Parser.parse: parse {
@@ -4461,26 +4461,26 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If thing B is waiting for its prey, then thing B might be impatient, or its prey might be cautious {
-    Tokens: [if, thing, b, is, waiting, for, its, prey, ,, then, thing, b, might, be, impatient, ,, or, its, prey, might, be, cautious]
-    Lemmatized tokens: [if, thing, b, be, wait, for, its, prey, ,, then, thing, b, might, be, impatient, ,, or, its, prey, might, be, cautious]
-    POS tags: [IN, NN, NN, VBD-AUX, VBG, IN, PRP$, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, JJ, ,, CC, PRP$, NN, VBD-AUX, VBD-AUX, JJ]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, aux->3, nmod:for->7], [], [], [case->5, nmod:poss->6], [], [], [], [advmod->9, compound->10], [], [], [punct->15, cc->16, advcl->4, conj:or->21, punct->8, nsubj->11, aux->12, cop->13], [], [], [], [nmod:poss->17], [], [], [nsubj->18, aux->19, cop->20]]
+  Example: If thing B is waiting for thing C, and thing C is the prey of thing B, then thing B might be impatient, or its prey might be cautious {
+    Tokens: [if, thing, b, is, waiting, for, thing, c, ,, and, thing, c, is, the, prey, of, thing, b, ,, then, thing, b, might, be, impatient, ,, or, its, prey, might, be, cautious]
+    Lemmatized tokens: [if, thing, b, be, wait, for, thing, c, ,, and, thing, c, be, the, prey, of, thing, b, ,, then, thing, b, might, be, impatient, ,, or, its, prey, might, be, cautious]
+    POS tags: [IN, NN, NN, VBD-AUX, VBG, IN, NN, NN, ,, CC, NN, NN, VBD-AUX, DT, NN, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, JJ, ,, CC, PRP$, NN, VBD-AUX, VBD-AUX, JJ]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, aux->3, nmod:for->7], [], [], [case->5, compound->6], [], [], [], [compound->10], [], [], [nmod:of->17, punct->18, punct->8, cc->9, nsubj->11, cop->12, det->13], [], [], [case->15, compound->16], [], [], [], [compound->20], [], [], [conj:or->31, advmod->19, advcl->4, nsubj->21, aux->22, cop->23, punct->25, cc->26, dep->14], [], [], [], [nmod:poss->27], [], [], [nsubj->28, aux->29, cop->30]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: Mouse is cat’s prey {
-    Tokens: [mouse, is, cat, 's, prey]
-    Lemmatized tokens: [mouse, be, cat, 's, prey]
-    POS tags: [NN, VBD-AUX, NN, POS, NN]
-    NER tags: [O, O, O, O, O]
-    NER values: [null, null, null, null, null]
-    Dependency children: [[], [], [case->3], [], [nsubj->0, cop->1, nmod:poss->2]]
+  Example: Mouse is the prey of cat {
+    Tokens: [mouse, is, the, prey, of, cat]
+    Lemmatized tokens: [mouse, be, the, prey, of, cat]
+    POS tags: [NN, VBD-AUX, DT, NN, IN, NN]
+    NER tags: [O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null]
+    Dependency children: [[], [], [], [nsubj->0, cop->1, det->2, nmod:of->5], [], [case->4]]
   }
 
   Parser.parse: parse {
@@ -8144,9 +8144,9 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If thing B attacks animal C, then thing B is dangerous, and thing C is in danger {
-    Tokens: [if, thing, b, attacks, animal, c, ,, then, thing, b, is, dangerous, ,, and, thing, c, is, in, danger]
-    Lemmatized tokens: [if, thing, b, attack, animal, c, ,, then, thing, b, be, dangerous, ,, and, thing, c, be, in, danger]
+  Example: If thing B attacks thing C, then thing B is dangerous, and thing C is in danger {
+    Tokens: [if, thing, b, attacks, thing, c, ,, then, thing, b, is, dangerous, ,, and, thing, c, is, in, danger]
+    Lemmatized tokens: [if, thing, b, attack, thing, c, ,, then, thing, b, be, dangerous, ,, and, thing, c, be, in, danger]
     POS tags: [IN, NN, NN, NNS, NN, NN, ,, RB, NN, NN, VBD-AUX, JJ, ,, CC, NN, NN, VBD-AUX, IN, NN]
     NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
     NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
@@ -8210,9 +8210,9 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If thing B attacks animal C, then thing B is dangerous, and thing C is in danger {
-    Tokens: [if, thing, b, attacks, animal, c, ,, then, thing, b, is, dangerous, ,, and, thing, c, is, in, danger]
-    Lemmatized tokens: [if, thing, b, attack, animal, c, ,, then, thing, b, be, dangerous, ,, and, thing, c, be, in, danger]
+  Example: If thing B attacks thing C, then thing B is dangerous, and thing C is in danger {
+    Tokens: [if, thing, b, attacks, thing, c, ,, then, thing, b, is, dangerous, ,, and, thing, c, is, in, danger]
+    Lemmatized tokens: [if, thing, b, attack, thing, c, ,, then, thing, b, be, dangerous, ,, and, thing, c, be, in, danger]
     POS tags: [IN, NN, NN, NNS, NN, NN, ,, RB, NN, NN, VBD-AUX, JJ, ,, CC, NN, NN, VBD-AUX, IN, NN]
     NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
     NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
@@ -10124,13 +10124,13 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B interview person C, then person C might be cooperative, and person B might be persistent {
-    Tokens: [if, person, b, interview, person, c, ,, then, person, c, might, be, cooperative, ,, and, person, b, might, be, persistent]
-    Lemmatized tokens: [if, person, b, interview, person, c, ,, then, person, c, might, be, cooperative, ,, and, person, b, might, be, persistent]
-    POS tags: [IN, NN, NN, NN, NN, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, JJ, ,, CC, NN, NN, VBD-AUX, VBD-AUX, JJ]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [], [], [], [compound->1, compound->2, compound->3, compound->4, punct->6, appos->9], [], [], [], [advmod->7, compound->8], [], [], [mark->0, conj:and->19, nsubj->5, aux->10, cop->11, punct->13, cc->14], [], [], [], [compound->15], [], [], [nsubj->16, aux->17, cop->18]]
+  Example: If person B interviewed person C, and the interview lasted for a long time, then person C might be cooperative and person B might be persistent {
+    Tokens: [if, person, b, interviewed, person, c, ,, and, the, interview, lasted, for, a, long, time, ,, then, person, c, might, be, cooperative, and, person, b, might, be, persistent]
+    Lemmatized tokens: [if, person, b, interview, person, c, ,, and, the, interview, last, for, a, long, time, ,, then, person, c, might, be, cooperative, and, person, b, might, be, persistent]
+    POS tags: [IN, NN, NN, VBD, NN, NN, ,, CC, DT, NN, VBD, IN, DT, JJ, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, JJ, CC, NN, NN, VBD-AUX, VBD-AUX, JJ]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [punct->15, mark->0, nsubj->2, dobj->5, parataxis->21, punct->6, cc->22, cc->7, conj:and->10, conj:and->27], [], [compound->4], [], [], [], [det->8], [nsubj->9, nmod:for->14], [], [], [], [case->11, det->12, amod->13], [], [], [], [compound->17], [], [], [advmod->16, nsubj->18, aux->19, cop->20], [], [], [compound->23], [], [], [nsubj->24, aux->25, cop->26]]
   }
 
   Parser.parse: parse {
@@ -10164,13 +10164,13 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B interview person C, then person C might be cooperative, and person B might be persistent {
-    Tokens: [if, person, b, interview, person, c, ,, then, person, c, might, be, cooperative, ,, and, person, b, might, be, persistent]
-    Lemmatized tokens: [if, person, b, interview, person, c, ,, then, person, c, might, be, cooperative, ,, and, person, b, might, be, persistent]
-    POS tags: [IN, NN, NN, NN, NN, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, JJ, ,, CC, NN, NN, VBD-AUX, VBD-AUX, JJ]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [], [], [], [compound->1, compound->2, compound->3, compound->4, punct->6, appos->9], [], [], [], [advmod->7, compound->8], [], [], [mark->0, conj:and->19, nsubj->5, aux->10, cop->11, punct->13, cc->14], [], [], [], [compound->15], [], [], [nsubj->16, aux->17, cop->18]]
+  Example: If person B interviewed person C, and the interview lasted for a long time, then person C might be cooperative and person B might be persistent {
+    Tokens: [if, person, b, interviewed, person, c, ,, and, the, interview, lasted, for, a, long, time, ,, then, person, c, might, be, cooperative, and, person, b, might, be, persistent]
+    Lemmatized tokens: [if, person, b, interview, person, c, ,, and, the, interview, last, for, a, long, time, ,, then, person, c, might, be, cooperative, and, person, b, might, be, persistent]
+    POS tags: [IN, NN, NN, VBD, NN, NN, ,, CC, DT, NN, VBD, IN, DT, JJ, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, JJ, CC, NN, NN, VBD-AUX, VBD-AUX, JJ]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [punct->15, mark->0, nsubj->2, dobj->5, parataxis->21, punct->6, cc->22, cc->7, conj:and->10, conj:and->27], [], [compound->4], [], [], [], [det->8], [nsubj->9, nmod:for->14], [], [], [], [case->11, det->12, amod->13], [], [], [], [compound->17], [], [], [advmod->16, nsubj->18, aux->19, cop->20], [], [], [compound->23], [], [], [nsubj->24, aux->25, cop->26]]
   }
 
   Parser.parse: parse {
@@ -11260,13 +11260,13 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B admires person C, then person B might follow person C {
-    Tokens: [if, person, b, admires, person, c, ,, then, person, b, might, follow, person, c]
-    Lemmatized tokens: [if, person, b, admire, person, c, ,, then, person, b, might, follow, person, c]
-    POS tags: [IN, NN, NN, VBZ, NN, NN, ,, RB, NN, NN, VBD-AUX, VB, NN, NN]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [mark->0, nsubj->2, dobj->5, punct->6, parataxis->11], [], [compound->4], [], [], [], [compound->8], [], [advmod->7, nsubj->9, aux->10, dobj->13], [], [compound->12]]
+  Example: If person B admires person C, then person B might follow person C's example {
+    Tokens: [if, person, b, admires, person, c, ,, then, person, b, might, follow, person, c, 's, example]
+    Lemmatized tokens: [if, person, b, admire, person, c, ,, then, person, b, might, follow, person, c, 's, example]
+    POS tags: [IN, NN, NN, VBZ, NN, NN, ,, RB, NN, NN, VBD-AUX, VB, NN, NN, POS, NN]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [mark->0, nsubj->2, dobj->5, punct->6, parataxis->11], [], [compound->4], [], [], [], [compound->8], [], [dobj->15, advmod->7, nsubj->9, aux->10], [], [compound->12, case->14], [], [nmod:poss->13]]
   }
 
   Parser.parse: parse {
@@ -11313,13 +11313,13 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B admires person C, then person B might follow person C {
-    Tokens: [if, person, b, admires, person, c, ,, then, person, b, might, follow, person, c]
-    Lemmatized tokens: [if, person, b, admire, person, c, ,, then, person, b, might, follow, person, c]
-    POS tags: [IN, NN, NN, VBZ, NN, NN, ,, RB, NN, NN, VBD-AUX, VB, NN, NN]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [mark->0, nsubj->2, dobj->5, punct->6, parataxis->11], [], [compound->4], [], [], [], [compound->8], [], [advmod->7, nsubj->9, aux->10, dobj->13], [], [compound->12]]
+  Example: If person B admires person C, then person B might follow person C's example {
+    Tokens: [if, person, b, admires, person, c, ,, then, person, b, might, follow, person, c, 's, example]
+    Lemmatized tokens: [if, person, b, admire, person, c, ,, then, person, b, might, follow, person, c, 's, example]
+    POS tags: [IN, NN, NN, VBZ, NN, NN, ,, RB, NN, NN, VBD-AUX, VB, NN, NN, POS, NN]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [mark->0, nsubj->2, dobj->5, punct->6, parataxis->11], [], [compound->4], [], [], [], [compound->8], [], [dobj->15, advmod->7, nsubj->9, aux->10], [], [compound->12, case->14], [], [nmod:poss->13]]
   }
 
   Parser.parse: parse {
@@ -12204,13 +12204,13 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B doesn’t get angry with person C, then person C might apologize, or person B might calm down {
-    Tokens: [if, person, b, does, n't, get, angry, with, person, c, ,, then, person, c, might, apologize, ,, or, person, b, might, calm, down]
-    Lemmatized tokens: [if, person, b, do, not, get, angry, with, person, c, ,, then, person, c, might, apologize, ,, or, person, b, might, calm, down]
-    POS tags: [IN, NN, NN, VBD-AUX, RB, VB, JJ, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, VB, ,, CC, NN, NN, VBD-AUX, VB, RP]
+  Example: If person C does apologize, or person B does calm down, then person B might not get angry with person C {
+    Tokens: [if, person, c, does, apologize, ,, or, person, b, does, calm, down, ,, then, person, b, might, not, get, angry, with, person, c]
+    Lemmatized tokens: [if, person, c, do, apologize, ,, or, person, b, do, calm, down, ,, then, person, b, might, not, get, angry, with, person, c]
+    POS tags: [IN, NN, NN, VBD-AUX, VB, ,, CC, NN, NN, VBD-AUX, VB, RB, ,, RB, NN, NN, VBD-AUX, RB, VB, JJ, IN, NN, NN]
     NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
     NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [], [mark->0, nsubj->2, aux->3, neg->4, xcomp->6, nmod:with->9], [], [], [], [case->7, compound->8], [], [], [], [advmod->11, compound->12], [], [punct->16, cc->17, advcl->5, conj:or->21, punct->10, nsubj->13, aux->14], [], [], [], [compound->18], [], [nsubj->19, aux->20, compound:prt->22], []]
+    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, parataxis->18, aux->3, punct->5, cc->6, conj:or->10, punct->12], [], [], [], [compound->7], [], [nsubj->8, aux->9, advmod->11], [], [], [], [], [compound->14], [], [], [nsubj->15, aux->16, neg->17, xcomp->19, nmod:with->22, advmod->13], [], [], [], [case->20, compound->21]]
   }
 
   Parser.parse: parse {
@@ -12257,13 +12257,13 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B doesn’t get angry with person C, then person C might apologize, or person B might calm down {
-    Tokens: [if, person, b, does, n't, get, angry, with, person, c, ,, then, person, c, might, apologize, ,, or, person, b, might, calm, down]
-    Lemmatized tokens: [if, person, b, do, not, get, angry, with, person, c, ,, then, person, c, might, apologize, ,, or, person, b, might, calm, down]
-    POS tags: [IN, NN, NN, VBD-AUX, RB, VB, JJ, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, VB, ,, CC, NN, NN, VBD-AUX, VB, RP]
+  Example: If person C does apologize, or person B does calm down, then person B might not get angry with person C {
+    Tokens: [if, person, c, does, apologize, ,, or, person, b, does, calm, down, ,, then, person, b, might, not, get, angry, with, person, c]
+    Lemmatized tokens: [if, person, c, do, apologize, ,, or, person, b, do, calm, down, ,, then, person, b, might, not, get, angry, with, person, c]
+    POS tags: [IN, NN, NN, VBD-AUX, VB, ,, CC, NN, NN, VBD-AUX, VB, RB, ,, RB, NN, NN, VBD-AUX, RB, VB, JJ, IN, NN, NN]
     NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
     NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [], [mark->0, nsubj->2, aux->3, neg->4, xcomp->6, nmod:with->9], [], [], [], [case->7, compound->8], [], [], [], [advmod->11, compound->12], [], [punct->16, cc->17, advcl->5, conj:or->21, punct->10, nsubj->13, aux->14], [], [], [], [compound->18], [], [nsubj->19, aux->20, compound:prt->22], []]
+    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, parataxis->18, aux->3, punct->5, cc->6, conj:or->10, punct->12], [], [], [], [compound->7], [], [nsubj->8, aux->9, advmod->11], [], [], [], [], [compound->14], [], [], [nsubj->15, aux->16, neg->17, xcomp->19, nmod:with->22, advmod->13], [], [], [], [case->20, compound->21]]
   }
 
   Parser.parse: parse {
@@ -13130,26 +13130,26 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B lift person C onto bed, then the bed belongs to person C {
-    Tokens: [if, person, b, lift, person, c, onto, bed, ,, then, the, bed, belongs, to, person, c]
-    Lemmatized tokens: [if, person, b, lift, person, c, onto, bed, ,, then, the, bed, belong, to, person, c]
-    POS tags: [IN, NN, NN, NN, NN, NN, IN, NN, ,, RB, DT, NN, VBZ, TO, NN, NN]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [], [], [], [compound->1, compound->2, compound->3, compound->4, nmod:onto->7], [], [case->6, punct->8, appos->11], [], [], [], [advmod->9, det->10], [nmod:to->15, mark->0, nsubj->5], [], [], [case->13, compound->14]]
+  Example: If person B lifts person C onto bed, then person C possesses the bed {
+    Tokens: [if, person, b, lifts, person, c, onto, bed, ,, then, person, c, possesses, the, bed]
+    Lemmatized tokens: [if, person, b, lift, person, c, onto, bed, ,, then, person, c, possess, the, bed]
+    POS tags: [IN, NN, NN, VBZ, NN, NN, IN, NN, ,, RB, NN, NN, VBZ, DT, NN]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [mark->0, nsubj->2, dobj->5, nmod:onto->7, punct->8, parataxis->12], [], [compound->4], [], [case->6], [], [], [], [compound->10], [advmod->9, nsubj->11, dobj->14], [], [det->13]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B lift person C onto shoulders, then shoulders belong to person B {
-    Tokens: [if, person, b, lift, person, c, onto, shoulders, ,, then, shoulders, belong, to, person, b]
-    Lemmatized tokens: [if, person, b, lift, person, c, onto, shoulder, ,, then, shoulder, belong, to, person, b]
-    POS tags: [IN, NN, NN, NN, NN, NN, IN, NNS, ,, RB, NNS, VBP, TO, NN, NN]
+  Example: If person B lift person C onto shoulders, then person B possesses the shoulders {
+    Tokens: [if, person, b, lift, person, c, onto, shoulders, ,, then, person, b, possesses, the, shoulders]
+    Lemmatized tokens: [if, person, b, lift, person, c, onto, shoulder, ,, then, person, b, possess, the, shoulder]
+    POS tags: [IN, NN, NN, NN, NN, NN, IN, NNS, ,, RB, NN, NN, VBZ, DT, NNS]
     NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
     NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [], [], [], [compound->1, compound->2, compound->3, compound->4, nmod:onto->7], [], [case->6, punct->8, appos->10], [], [], [advmod->9], [mark->0, nsubj->5, nmod:to->14], [], [], [case->12, compound->13]]
+    Dependency children: [[], [], [], [], [], [compound->1, compound->2, compound->3, compound->4, nmod:onto->11], [], [], [], [], [], [case->6, compound->7, punct->8, advmod->9, compound->10], [mark->0, nsubj->5, dobj->14], [], [det->13]]
   }
 
   Parser.parse: parse {
@@ -13183,26 +13183,26 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B lift person C onto bed, then the bed belongs to person C {
-    Tokens: [if, person, b, lift, person, c, onto, bed, ,, then, the, bed, belongs, to, person, c]
-    Lemmatized tokens: [if, person, b, lift, person, c, onto, bed, ,, then, the, bed, belong, to, person, c]
-    POS tags: [IN, NN, NN, NN, NN, NN, IN, NN, ,, RB, DT, NN, VBZ, TO, NN, NN]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [], [], [], [compound->1, compound->2, compound->3, compound->4, nmod:onto->7], [], [case->6, punct->8, appos->11], [], [], [], [advmod->9, det->10], [nmod:to->15, mark->0, nsubj->5], [], [], [case->13, compound->14]]
+  Example: If person B lifts person C onto bed, then person C possesses the bed {
+    Tokens: [if, person, b, lifts, person, c, onto, bed, ,, then, person, c, possesses, the, bed]
+    Lemmatized tokens: [if, person, b, lift, person, c, onto, bed, ,, then, person, c, possess, the, bed]
+    POS tags: [IN, NN, NN, VBZ, NN, NN, IN, NN, ,, RB, NN, NN, VBZ, DT, NN]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [mark->0, nsubj->2, dobj->5, nmod:onto->7, punct->8, parataxis->12], [], [compound->4], [], [case->6], [], [], [], [compound->10], [advmod->9, nsubj->11, dobj->14], [], [det->13]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B lift person C onto shoulders, then shoulders belong to person B {
-    Tokens: [if, person, b, lift, person, c, onto, shoulders, ,, then, shoulders, belong, to, person, b]
-    Lemmatized tokens: [if, person, b, lift, person, c, onto, shoulder, ,, then, shoulder, belong, to, person, b]
-    POS tags: [IN, NN, NN, NN, NN, NN, IN, NNS, ,, RB, NNS, VBP, TO, NN, NN]
+  Example: If person B lift person C onto shoulders, then person B possesses the shoulders {
+    Tokens: [if, person, b, lift, person, c, onto, shoulders, ,, then, person, b, possesses, the, shoulders]
+    Lemmatized tokens: [if, person, b, lift, person, c, onto, shoulder, ,, then, person, b, possess, the, shoulder]
+    POS tags: [IN, NN, NN, NN, NN, NN, IN, NNS, ,, RB, NN, NN, VBZ, DT, NNS]
     NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
     NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [], [], [], [compound->1, compound->2, compound->3, compound->4, nmod:onto->7], [], [case->6, punct->8, appos->10], [], [], [advmod->9], [mark->0, nsubj->5, nmod:to->14], [], [], [case->12, compound->13]]
+    Dependency children: [[], [], [], [], [], [compound->1, compound->2, compound->3, compound->4, nmod:onto->11], [], [], [], [], [], [case->6, compound->7, punct->8, advmod->9, compound->10], [mark->0, nsubj->5, dobj->14], [], [det->13]]
   }
 
   Parser.parse: parse {

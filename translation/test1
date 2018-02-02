@@ -2,37 +2,50 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: I poured water from the bottle into the cup until it was full {
-    Tokens: [i, poured, water, from, the, bottle, into, the, cup, until, it, was, full]
-    Lemmatized tokens: [I, pour, water, from, the, bottle, into, the, cup, until, it, be, full]
-    POS tags: [PRP, VBD, NN, IN, DT, NN, IN, DT, NN, IN, PRP, VBD-AUX, JJ]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [nsubj->0, dobj->2, nmod:from->5, nmod:into->8, advcl->12], [], [], [], [case->3, det->4], [], [], [case->6, det->7], [], [], [], [mark->9, nsubj->10, cop->11]]
+  Example: The man lifted the boy onto his bunk bed {
+    Tokens: [the, man, lifted, the, boy, onto, his, bunk, bed]
+    Lemmatized tokens: [the, man, lift, the, boy, onto, he, bunk, bed]
+    POS tags: [DT, NN, VBD, DT, NN, IN, PRP$, NN, NN]
+    NER tags: [O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [det->0], [nsubj->1, dobj->4, nmod:onto->8], [], [det->3], [], [], [], [case->5, nmod:poss->6, compound->7]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If somebody pours something from thing B into thing C, then thing B will be empty, and thing C will be full {
-    Tokens: [if, somebody, pours, something, from, thing, b, into, thing, c, ,, then, thing, b, will, be, empty, ,, and, thing, c, will, be, full]
-    Lemmatized tokens: [if, somebody, pour, something, from, thing, b, into, thing, c, ,, then, thing, b, will, be, empty, ,, and, thing, c, will, be, full]
-    POS tags: [IN, NN, VBZ, NN, IN, NN, NN, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, VBD-AUX, JJ, ,, CC, NN, NN, VBD-AUX, VBD-AUX, JJ]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [mark->0, nsubj->1, dobj->3, nmod:into->9], [nmod:from->6], [], [], [case->4, compound->5], [], [], [case->7, compound->8], [], [], [], [advmod->11, compound->12], [], [], [cop->15, punct->17, advcl->2, cc->18, conj:and->23, punct->10, nsubj->13, aux->14], [], [], [], [compound->19], [], [], [nsubj->20, aux->21, cop->22]]
+  Example: If person B lift person C onto bed, then the bed belongs to person C {
+    Tokens: [if, person, b, lift, person, c, onto, bed, ,, then, the, bed, belongs, to, person, c]
+    Lemmatized tokens: [if, person, b, lift, person, c, onto, bed, ,, then, the, bed, belong, to, person, c]
+    POS tags: [IN, NN, NN, NN, NN, NN, IN, NN, ,, RB, DT, NN, VBZ, TO, NN, NN]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [], [], [], [compound->1, compound->2, compound->3, compound->4, nmod:onto->7], [], [case->6, punct->8, appos->11], [], [], [], [advmod->9, det->10], [nmod:to->15, mark->0, nsubj->5], [], [], [case->13, compound->14]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: What was full {
-    Tokens: [what, was, full]
-    Lemmatized tokens: [what, be, full]
-    POS tags: [WP, VBD-AUX, JJ]
+  Example: If person B lift person C onto shoulders, then shoulders belong to person B {
+    Tokens: [if, person, b, lift, person, c, onto, shoulders, ,, then, shoulders, belong, to, person, b]
+    Lemmatized tokens: [if, person, b, lift, person, c, onto, shoulder, ,, then, shoulder, belong, to, person, b]
+    POS tags: [IN, NN, NN, NN, NN, NN, IN, NNS, ,, RB, NNS, VBP, TO, NN, NN]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [], [], [], [compound->1, compound->2, compound->3, compound->4, nmod:onto->7], [], [case->6, punct->8, appos->10], [], [], [advmod->9], [mark->0, nsubj->5, nmod:to->14], [], [], [case->12, compound->13]]
+  }
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: Whose bunk bed {
+    Tokens: [whose, bunk, bed]
+    Lemmatized tokens: [whose, bunk, bed]
+    POS tags: [WP$, NN, NN]
     NER tags: [O, O, O]
     NER values: [null, null, null]
-    Dependency children: [[], [], [nsubj->0, cop->1]]
+    Dependency children: [[], [nmod:poss->0], [dep->1]]
   }
