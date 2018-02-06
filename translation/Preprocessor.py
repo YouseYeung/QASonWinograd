@@ -1,13 +1,15 @@
 import requests
 import os
+import socket
 
 keywords = [" but ", " because ", " then ", " although "]
 keywords2 = [ " and ", " or "]
-pronoun = ["he", "He", "she", "She", "it", "It", "they", "They", ]
+pronoun = ["he", "He", "she", "She", "it", "It", "they", "They", "I"]
 
-class questionParsing(object):
+class Preprocessor(object):
     def __init__(self):
-        self.url = 'http://youse-thinkstation-e31:8400/sempre?q='
+        hostname = socket.gethostname()
+        self.url = 'http://' + hostname + ':8400/sempre?q='
         self.inputFileName = ""
         self.outputFileName = ""
 
@@ -25,6 +27,7 @@ class questionParsing(object):
         return self.outputFileName
 
     def parsing(self):
+        url = self.url
         with open(self.outputFileName, 'w') as ofp:
             with open(self.inputFileName,'r') as ifp:
                 startSymbol = "<pre>"
@@ -33,11 +36,12 @@ class questionParsing(object):
                     i = 0
                     end = False
                     while i < 3:
-                        oneLineContent= f.readline()
-                        contentList = [oneLineContent]
+                        oneLineContent= ifp.readline()
+                        oneLineContent = oneLineContent.strip()
                         if oneLineContent == "":
                             end = True
                             break
+                        contentList = [oneLineContent]
                         index = oneLineContent.find('?')
                         if index != -1:
                             oneLineContent = oneLineContent[:index] + oneLineContent[index + 1:]

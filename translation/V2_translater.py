@@ -16,7 +16,11 @@ class translater(object):
         #z3 keywords, these words can not be declared as a rel, we have to add '_' in front of the word.
         self.outputStr = ""
         self.possessionVerbs = []
+        #sort verbs is used to transform constant noun name in kb into a rel
+        #e.g. If person A lifts person B onto arms, "__sort__arms" is a rel, it return true for all "arms" words
+        self.sortVerbs = []
         self.questionVerbNames = []
+        self.sortVerbSymbol = "__sort__"
         self.parsingSymbol = ['Tokens:', 'Lemmatized tokens:', 'POS tags:', 'NER tags:', 'NER values:', 'Dependency children:']
         self.z3_keywords = ["repeat", "assert", "declare", "map"]
         self.existVars = ["somebody", "something", "sth", "sb", "he", "it"]
@@ -60,6 +64,7 @@ class translater(object):
                     self.addedVerbs = []
                     self.possessionVerbs = []
                     self.questionVerbNames = []
+                    self.sortVerbs = []
                     beginMark = False
 
                 for symbol in self.parsingSymbol:
@@ -1279,10 +1284,7 @@ class translater(object):
                         nounName1 = self.getCompleteNounNameByIndex(index, completeNouns, tokens, False)
                         nounName2 = self.getCompleteNounNameByIndex(index, completeNouns, tokens, True)
                         if nounSortMap.has_key(sort):
-                            if nounName1 not in nounSortMap[sort]:
-                                nounSortMap[sort].append(nounName1)
-                            if nounName2 not in nounSortMap[sort]:
-                                nounSortMap[sort].append(nounName2)
+                            sortVerbName = self.sortVerbSymbol + nounName1
                         else:
                             if nounName1 == nounName2:
                                 nounSortMap[sort] = [nounName1]
@@ -1357,6 +1359,7 @@ class translater(object):
         for verbs in allVerbs:
             verbLength += 1
             res += self.addDeclareRel(verbs)
+        self.addDeclareRel_sortVerb(self.sortVerbs)
         self.addDeclareRel_possession(self.description)
         self.addDeclareRel_possession(self.question)
         i = 0

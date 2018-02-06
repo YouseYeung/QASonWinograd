@@ -51,8 +51,8 @@ If person C and person B is rival, and person C is the winner of the competition
 Who was the winner of the competition?
 
 Frank felt crushed when his longtime rival Bill revealed that he was the winner of the competition.
-Who was the winner of the competition?
 If person C and person B is rival, and person C is the winner of the competition, then person C will feel vindicated and person B will feel crushed.
+Who was the winner of the competition?
 
 The man couldn't lift his son because he was so weak.
 If person B is weak, and person C is heavy, then person B couldn’t lift person C .
@@ -521,11 +521,11 @@ If somebody carries thing B over thing C, then thing B is over thing C. If someb
 What was I trying to keep dry?
 
 Sara borrowed the book from the library because she needs it for an article she is working on. She reads it when she gets home from work.
-If person B borrows a book, then person B can read the book and person B can not write the book.    If person B is working on thing C, then person B might write thing C.
+If person B borrows a book, then person B can read the book and person B can not write the book. If person B is working on thing C, then person B might write thing C.
 What does Sara read when she gets home from work?
 
 Sara borrowed the book from the library because she needs it for an article she is working on. She writes it when she gets home from work.
-If person B borrows a book, then person B can read the book and person B can not write the book.    If person B is working on thing C, then person B might write thing C.
+If person B borrows a book, then person B can read the book and person B can not write the book. If person B is working on thing C, then person B might write thing C.
 What does Sara write when she gets home from work?
 
 This morning, Joey built a sand castle on the beach, and put a toy flag in the highest tower, but this afternoon a breeze knocked it down.
@@ -977,11 +977,11 @@ If person B passes gameboy to person C, then person B’s turn is over and perso
 Whose turn was next?
 
 The man lifted the boy onto his bunk bed.
-If person B lifts person C onto bed, then person C possesses the bed. If person B lift person C onto shoulders, then person B possesses the shoulders.
+If person B lifts person C onto bed, then person C possesses the bed. If person B lifts person C onto shoulders, then person B possesses the shoulders.
 Whose bunk bed?
 
 The man lifted the boy onto his shoulders.
-If person B lifts person C onto bed, then person C possesses the bed. If person B lift person C onto shoulders, then person B possesses the shoulders.
+If person B lifts person C onto bed, then person C possesses the bed. If person B lifts person C onto shoulders, then person B possesses the shoulders.
 Whose shoulders?
 
 Patting her back, the woman smiled at the girl.

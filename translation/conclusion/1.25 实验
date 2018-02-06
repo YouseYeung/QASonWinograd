@@ -27,3 +27,17 @@ beat_at sb sb sth = beat_3 sb sb sth.（可用于陈述句中的动词匹配）
 陈述句和疑问句的主语宾语顺序会颠倒
 
 对于所有的谓词都添加一个蕴含verb => do sth.
+
+
+2.4实验结果：
+1. 每个名词都加上一个Noun_前缀，每个动词都加上Verb_前缀
+2. 当一个名词会被作为动词时，我们各为其声明其名词形态(Noun_name)和动词形态(Verb_name)
+3. 对candy is food和give sb food的翻译进行修改
+这种类型的问题就是，当一个名词会被作为动词时，该名词作为其他动词的宾语时，该名词需要转化为中间变量，并建立起该变量与它的动词形态之间的关系。
+对于这个问题，修改如下：
+forall (x person y person) (give x y food) 改为
+forall (x person y person c thing) (and (give x y c) (food c))
+
+2.5实验结果：
+nmod:poss不能算作宾语
+nmod:+其他介词可以
