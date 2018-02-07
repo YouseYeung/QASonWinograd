@@ -1,38 +1,38 @@
- Parser.parse: parse {
+  Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: The city councilmen refused the demonstrators a permit, because they advocated violence {
-    Tokens: [the, city, councilmen, refused, the, demonstrators, a, permit, ,, because, they, advocated, violence]
-    Lemmatized tokens: [the, city, councilmen, refuse, the, demonstrator, a, permit, ,, because, they, advocate, violence]
-    POS tags: [DT, NN, NN, VBD, DT, NNS, DT, NN, ,, IN, PRP, VBD, NN]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [det->0, compound->1], [nsubj->2, xcomp->7, punct->8, advcl->11], [], [det->4], [], [nsubj->5, det->6], [], [], [], [mark->9, nsubj->10, dobj->12], []]
+  Example: The lawyer asked the witness a question, but he was reluctant to answer it {
+    Tokens: [the, lawyer, asked, the, witness, a, question, ,, but, he, was, reluctant, to, answer, it]
+    Lemmatized tokens: [the, lawyer, ask, the, witness, a, question, ,, but, he, be, reluctant, to, answer, it]
+    POS tags: [DT, NN, VBD, DT, NN, DT, NN, ,, CC, PRP, VBD-AUX, JJ, TO, VB, PRP]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [det->0], [nsubj->1, xcomp->6, punct->7, cc->8, conj:but->11], [], [det->3], [], [nsubj->4, det->5], [], [], [], [], [nsubj->9, cop->10, xcomp->13], [], [mark->12, dobj->14], []]
   }
 
- Parser.parse: parse {
+  Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B does fear violence, and person C does advocate violence, then person B might refuse person C a permit {
-    Tokens: [if, person, b, does, fear, violence, ,, and, person, c, does, advocate, violence, ,, then, person, b, might, refuse, person, c, a, permit]
-    Lemmatized tokens: [if, person, b, do, fear, violence, ,, and, person, c, do, advocate, violence, ,, then, person, b, might, refuse, person, c, a, permit]
-    POS tags: [IN, NN, NN, VBD-AUX, VB, NN, ,, CC, NN, NN, VBD-AUX, VB, NN, ,, RB, NN, NN, VBD-AUX, VB, NN, NN, DT, NN]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, parataxis->18, aux->3, dobj->5, punct->6, cc->7, conj:and->11, punct->13], [], [], [], [], [compound->8], [], [nsubj->9, aux->10, dobj->12], [], [], [], [], [compound->15], [], [nsubj->16, aux->17, iobj->20, dobj->22, advmod->14], [], [compound->19], [], [det->21]]
+  Example: If person B does ask person C a question, then person B might not repeat the question, and person C might not answer the question {
+    Tokens: [if, person, b, does, ask, person, c, a, question, ,, then, person, b, might, not, repeat, the, question, ,, and, person, c, might, not, answer, the, question]
+    Lemmatized tokens: [if, person, b, do, ask, person, c, a, question, ,, then, person, b, might, not, repeat, the, question, ,, and, person, c, might, not, answer, the, question]
+    POS tags: [IN, NN, NN, VBD-AUX, VB, NN, NN, DT, NN, ,, RB, NN, NN, VBD-AUX, RB, VB, DT, NN, ,, CC, NN, NN, VBD-AUX, RB, VB, DT, NN]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, aux->3, xcomp->8], [], [compound->5], [], [nsubj->6, det->7], [], [], [], [advmod->10, compound->11], [], [], [dobj->17, punct->18, cc->19, advcl->4, conj:and->24, punct->9, nsubj->12, aux->13, neg->14], [], [det->16], [], [], [], [compound->20], [], [], [nsubj->21, aux->22, neg->23, dobj->26], [], [det->25]]
   }
 
- Parser.parse: parse {
+  Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: Who advocated violence {
-    Tokens: [who, advocated, violence]
-    Lemmatized tokens: [who, advocate, violence]
-    POS tags: [WP, VBN, NN]
-    NER tags: [O, O, O]
-    NER values: [null, null, null]
-    Dependency children: [[], [nsubj->0, dobj->2], []]
+  Example: Who was reluctant to answer the question {
+    Tokens: [who, was, reluctant, to, answer, the, question]
+    Lemmatized tokens: [who, be, reluctant, to, answer, the, question]
+    POS tags: [WP, VBD-AUX, JJ, TO, VB, DT, NN]
+    NER tags: [O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null]
+    Dependency children: [[], [], [nsubj->0, cop->1, xcomp->4], [], [mark->3, dobj->6], [], [det->5]]
   }

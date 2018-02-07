@@ -88,3 +88,8 @@ class questionParsing(object):
                         i += 1
                     if end:
                         break
+
+t = questionParsing()
+t.setInputFileName("formatWSC")
+t.setOutputFileName("AllQuestionsParsing")
+t.parsing()

@@ -24,7 +24,7 @@ class Translater(object):
         self.question = {}
         self.kbList = []
         self.context = []
-        self.addedVerbs = []
+        self.addedVerbs = {}
         self.addedNouns = []
         #z3 keywords, these words can not be declared as a rel, we have to add '_' in front of the word.
         self.outputStr = ""
@@ -153,7 +153,7 @@ class Translater(object):
                     self.question = {}
                     self.description = {}
                     self.context = []
-                    self.addedVerbs = []
+                    self.addedVerbs = {}
                     self.addedNouns = []
                     self.possessionVerbs = []
                     self.questionVerbNames = []
@@ -504,7 +504,7 @@ class Translater(object):
         verbSymbol = self.VERB_SYMBOL
         nounSymbol = self.NOUN_SYMBOL
         nounSentence = ""
-        for verbName in self.addedVerbs:
+        for verbName in self.addedVerbs.keys():
             for nounName in self.addedNouns:
                 if nounName.find(verbName) != -1:
                     res += headString + verbSymbol + verbName + " " + nounName + "))\n"
@@ -536,49 +536,57 @@ class Translater(object):
             combinedVerbName = info[self.VERB_COMBINE_NAME_TAG]
             originalVerbName = info[self.VERB_ORIGIN_NAME_TAG]
 
+            '''
             if originalVerbName not in self.addedVerbs:
                 nouns = info["relatedNouns"]
                 res += declareRel + verbSymbol + originalVerbName + " ("
+                num = 0
                 for noun in nouns:
                     res += noun[self.VERB_NOUN_SORT_TAG] + " "
+                    num += 1
                 res += "))\n"
                 #add all declared verbs into list addedverb
-                self.addedVerbs.append(originalVerbName)
+                self.addedVerbs[originalVerbName] = num
+            '''
 
             if combinedVerbName not in self.addedVerbs:
                 nouns = info["relatedNouns"]
                 res += declareRel + verbSymbol + combinedVerbName + " ("
+                num = 0
                 for noun in nouns:
                     res += noun[self.VERB_NOUN_SORT_TAG] + " "
+                    num += 1
                 res += "))\n"
-                #add all declared verbs into list addedverb
-                self.addedVerbs.append(combinedVerbName)
+                #add all declared verbs and its number of parameters into list addedverb
+                self.addedVerbs[combinedVerbName] = num
 
             #descending grade for verbs to get predicates with less parameter
-            number = 1
+            num = 1
             nouns = ""
             if combinedVerbName != originalVerbName:
                 relatedNouns = info["relatedNouns"]
                 for noun in relatedNouns:
-                    lessPredicateVerbName = originalVerbName + "_" + str(number)
-                    if lessPredicateVerbName in self.addedVerbs:
+                    lessPredicateVerbName = originalVerbName + "_" + str(num)
+                    if lessPredicateVerbName in self.addedVerbs.keys():
                         continue
                     res += declareRel + verbSymbol + lessPredicateVerbName + " ("
                     nouns += noun[self.VERB_NOUN_SORT_TAG] + " "
                     res += nouns + "))\n"
-                    self.addedVerbs.append(lessPredicateVerbName)
-                    number += 1
+                    self.addedVerbs[lessPredicateVerbName] = num
+                    num += 1
 
             #additional verb for negative verb
             if "not" in combinedVerbName:
                 indexStart = combinedVerbName.find("not_")
                 newVerbName = combinedVerbName[indexStart + len("not_"):]
-                if newVerbName not in self.addedVerbs:
+                if newVerbName not in self.addedVerbs.keys():
                     res += declareRel + verbSymbol + newVerbName + " ("
+                    num = 0
                     for noun in info["relatedNouns"]:
                         res += noun[self.VERB_NOUN_SORT_TAG] + " "
+                        num += 1
                     res += "))\n"
-                    self.addedVerbs.append(newVerbName)
+                    self.addedVerbs[newVerbName] = num
 
         return res
 
@@ -693,14 +701,14 @@ class Translater(object):
             for index, info in verbs.iteritems():
                 nouns = info["relatedNouns"]
                 verbName = info[self.VERB_COMBINE_NAME_TAG]
-                if verbName not in self.addedVerbs:
+                if verbName not in self.addedVerbs.keys():
                     verbName = info[self.VERB_ORIGIN_NAME_TAG]
-                    if verbName not in self.addedVerbs:
+                    if verbName not in self.addedVerbs.keys():
                         verbExist = False
                         length = len(nouns)
                         for i in range(1, length + 1):
                             tempVerbName = verbName + "_" + str(i)
-                            if tempVerbName in self.addedVerbs:
+                            if tempVerbName in self.addedVerbs.keys():
                                 verbName = tempVerbName
                                 verbExist = True
                                 break
@@ -860,7 +868,7 @@ class Translater(object):
                         numOfPronoun += 1
                 else:
                     #address the condition of noun being added as a verb
-                    if nounName in self.addedVerbs:
+                    if nounName in self.addedVerbs.keys():
                         res += "(" + pronouns[numOfPronoun] + " " + sort + ") "
                         pronoun_name_Map[nounName] = pronouns[numOfPronoun]
                         numOfPronoun += 1
@@ -1058,15 +1066,20 @@ class Translater(object):
                 continue
             nouns = info["relatedNouns"]
             verbName = info[self.VERB_COMBINE_NAME_TAG]
-            if verbName not in self.addedVerbs:
+            if verbName not in self.addedVerbs.keys():
                 verbName = info[self.VERB_ORIGIN_NAME_TAG]
-                if verbName not in self.addedVerbs:
+                if verbName not in self.addedVerbs.keys():
                     self.errorTypes.append({"type" : ErrorTypes.PREDICATE_NAME_ERROR, "val" : verbName})
                     continue
 
             headString += "(" + verbSymbol + verbName
             possessionStrs = []
+            numOfNounsInVerb = self.addedVerbs[verbName]
+            num = 0
             for noun in nouns:
+                num += 1
+                if num > numOfNounsInVerb:
+                    break
                 nounIndex = noun[self.VERB_NOUN_INDEX_TAG]
                 nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, False)
                 posStr = self.addPossessionReality(library, nounIndex, pronoun_name_Map)
@@ -1095,7 +1108,7 @@ class Translater(object):
 
                 else:
                     #if noun is added as a verb, then transform verb noun into (and (verb x) (noun x))
-                    if nounName in self.addedVerbs:
+                    if nounName in self.addedVerbs.keys():
                         headString += " " + pronoun_name_Map[nounName]
                         nounAsVerbSentence = "(" + verbSymbol + nounName + " " \
                                             + pronoun_name_Map[nounName] + ")"
@@ -1156,13 +1169,13 @@ class Translater(object):
             index = child.find("nmod:poss")
             if not added and index != -1:
                 verbName = self.Possess_Person_Thing
-                if verbName not in self.addedVerbs:
+                if verbName not in self.addedVerbs.keys():
                     res += headString + verbSymbol + verbName + " (person thing))\n"       
-                    self.addedVerbs.append(verbName)
+                    self.addedVerbs[verbName] = 2
                 verbName = self.Possess_Thing_Thing
-                if verbName not in self.addedVerbs:
+                if verbName not in self.addedVerbs.keys():
                     res += headString + verbSymbol + verbName + " (thing thing))\n"       
-                    self.addedVerbs.append(verbName)  
+                    self.addedVerbs[verbName] = 2
                 added = True
                 break
 
@@ -1295,9 +1308,10 @@ class Translater(object):
                 nounList = nounSortMap["thing"]
 
         verbs = self.findVerbsAndItsRelatedNouns(question)
+        allQuestionVerbSentences = []
         for index, info in verbs.iteritems():
             verbName = info[self.VERB_COMBINE_NAME_TAG]
-            if verbName not in self.addedVerbs:
+            if verbName not in self.addedVerbs.keys():
                 continue
             nouns = info["relatedNouns"]
             verbSentence = "(" + verbSymbol + verbName + " "
@@ -1319,6 +1333,7 @@ class Translater(object):
                     removePronounNounList.append(noun)
             nounList = removePronounNounList
             self.findAllAnswerSentence(addingNouns, nounList[:], sentences, string)
+            allQuestionVerbSentences.append(sentences)
             i, length = 0, len(sentences)
             for i in range(length):
                 trueSentence = verbSentence + sentences[i] + ") "
@@ -1349,21 +1364,26 @@ class Translater(object):
             if originalVerbName not in answerTokens:
                 verbName = ""
                 nouns = info["relatedNouns"]
-                if combinedVerbName in self.addedVerbs:
+                if combinedVerbName in self.addedVerbs.keys():
                     verbName = combinedVerbName
-                elif originalVerbName in self.addedVerbs:
+                elif originalVerbName in self.addedVerbs.keys():
                     verbName = originalVerbName
                 else:
                     length = len(nouns)
                     for i in range(length,0,-1):
                         tempVerbName = originalVerbName + "_" + str(i)
-                        if tempVerbName in self.addedVerbs:
+                        if tempVerbName in self.addedVerbs.keys():
                             verbName = tempVerbName
                             break
                 if verbName == "":
                     continue
                 res += '(' + verbSymbol + verbName + ' '
+                numOfNounsInVerb = self.addedVerbs[verbName]
+                num = 0
                 for noun in nouns:
+                    num += 1
+                    if num > numOfNounsInVerb:
+                        break
                     nounIndex = noun[self.VERB_NOUN_INDEX_TAG]
                     nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, descriptionTokens, False)
                     #align description noun name to the noun name in kb
@@ -1455,16 +1475,16 @@ class Translater(object):
             verbName = info[self.VERB_COMBINE_NAME_TAG]
             nouns = info["relatedNouns"]
             length = len(nouns)
-            if verbName not in self.addedVerbs:
+            if verbName not in self.addedVerbs.keys():
                 number = length
                 verbName = info[self.VERB_ORIGIN_NAME_TAG]
                 for _ in range(length):
                     lessParaVerbName = verbName + "_" + str(number)
-                    if lessParaVerbName in self.addedVerbs:
+                    if lessParaVerbName in self.addedVerbs.keys():
                         verbName = lessParaVerbName
                         break
                     number -= 1
-            if verbName not in self.addedVerbs:
+            if verbName not in self.addedVerbs.keys():
                 print "[ERROR]: verb name:[" + verbName + "] not exists"
                 errorType = ErrorTypes.PREDICATE_NAME_ERROR
                 self.errorTypes.append({"type" : errorType, "val" : verbName})
@@ -1524,6 +1544,19 @@ class Translater(object):
                     else:
                         getAnswerSentence(sentenceList[1:], temp, completeSentences)
 
+            answerSymbol = "unsat"
+            reverseSymbol = False
+            for reverseWord in self.reverseKeywords:
+                if reverseSymbol:
+                    break
+                num = 0
+                for token in self.description[self.LEM_TOKEN_TAG]:
+                    if token == reverseWord:
+                        answerSymbol = "sat"
+                        reverseSymbol = True
+                        break
+                    num += 1
+
             answers = []
             getAnswerSentence(verbSentencesList, "", answers)
             verbNum = len(verbSentencesList)
@@ -1550,7 +1583,7 @@ class Translater(object):
                 var = os.popen("z3 " +  fileName).read()
                 print ("verification result:" + " " + answerSentence + " : " + var)
                 i += 1
-                if "unsat" in str(var):
+                if str(var).find(answerSymbol) == 0:
                     wordList = answerSentence.split(" ")
                     answer = ""
                     for word in wordList:
