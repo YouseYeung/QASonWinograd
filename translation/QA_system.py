@@ -255,7 +255,6 @@ class MainWindow(object):
         self.inputFilePath_Linux = "input/"
         self.outputFilePath_Win = "output/"
         self.outputFilePath_Linux = "output/"
-        self.translater = Translater()
 
     def run(self):
         self.window.mainloop()
@@ -281,7 +280,7 @@ class MainWindow(object):
         if "Win" in systemType:
             fileName = self.inputFilePath_Win + fileName
         else:
-            fileName = self.outputFilePath_Linux + fileName
+            fileName = self.inputFilePath_Linux + fileName
         if not os.path.isfile(fileName):
             tkMessageBox.showinfo(title = "Error", message = "File doesn't exist: " + fileName)
             return
@@ -388,6 +387,7 @@ class MainWindow(object):
 
     def parsing(self):
         startTime = time.clock()
+        self.translater = Translater()
         dStr = self.descriptionEntry.get()
         kStr = self.knowledgeEntry.get()
         qStr = self.questionEntry.get()
@@ -402,7 +402,7 @@ class MainWindow(object):
 
             tkMessageBox.showinfo(title = "File Error", message = msg)
         inputFileName = "inputTemp"
-        with open(inputFileName, "w") as f:
+        with open(self.inputFilePath_Win + inputFileName, "w") as f:
             if dStr[-1] != '\n':
                 dStr += '\n'
             if kStr[-1] != '\n':

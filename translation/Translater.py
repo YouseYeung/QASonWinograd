@@ -100,7 +100,7 @@ class Translater(object):
                     content += '\n'
                 f.write(content)
         self.preprocessor.setInputFileName(questionFileName)
-        self.preprocessor.setOutputFileName("temp")
+        self.preprocessor.setOutputFileName("outputTemp")
         self.preprocessor.parsing()
         self.loadFileName(self.preprocessor.getOutputFileName)
 
@@ -108,7 +108,7 @@ class Translater(object):
         if not self.setInputFileName(fileName):
             return ""
         self.preprocessor.setInputFileName(self.loadFileName)
-        self.preprocessor.setOutputFileName("temp")
+        self.preprocessor.setOutputFileName("outputTemp")
         self.preprocessor.parsing()
         return self.preprocessor.getOutputFileName()
 
@@ -386,12 +386,18 @@ class Translater(object):
                         nounInfo["var"] = True
 
                     elif nounName in existVars:
+                            
                         if nounName == "somebody" or nounName == "sb" or nounName == "he":
                             nounInfo[self.VERB_NOUN_SORT_TAG] = "person"
                             nounInfo["var"] = True
                         elif nounName == "something" or nounName == "sth" or nounName == "it":
-                            nounInfo[self.VERB_NOUN_SORT_TAG] = "thing"
-                            nounInfo["var"] = True
+                            #address the condition of do something adj.
+                            if nounName == "something" and children[index].find("amod") != -1:
+                                nounInfo["var"] = False
+                                nounInfo[self.VERB_NOUN_SORT_TAG] = "thing"
+                            else:
+                                nounInfo[self.VERB_NOUN_SORT_TAG] = "thing"
+                                nounInfo["var"] = True
 
                     elif tags[index] in self.questionAnswerTags:
                         if nounName == "who" or nounName == "whom" or nounName == "whose":
@@ -1894,8 +1900,8 @@ Who is nosy?"
 
 def main():
     t = Translater()
-    #t.loadFromFile("test")
-    t.parsingSample()
+    t.loadFromFile("outputTemp")
+    #t.parsingSample()
 
 if __name__ == '__main__':
     main()

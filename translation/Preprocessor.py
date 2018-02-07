@@ -6,12 +6,15 @@ keywords = [" but ", " because ", " then ", " although "]
 keywords2 = [ " and ", " or "]
 pronoun = ["he", "He", "she", "She", "it", "It", "they", "They", "I"]
 
+
 class Preprocessor(object):
     def __init__(self):
         hostname = socket.gethostname()
         self.url = 'http://' + hostname + ':8400/sempre?q='
         self.inputFileName = ""
         self.outputFileName = ""
+        self.outputFilePath = "output/"
+        self.inputFilePath = "input/"
 
     def setInputFileName(self, fileName):
         if os.path.isfile(fileName):
@@ -28,8 +31,10 @@ class Preprocessor(object):
 
     def parsing(self):
         url = self.url
-        with open(self.outputFileName, 'w') as ofp:
-            with open(self.inputFileName,'r') as ifp:
+        outputFile = self.inputFilePath + self.outputFileName
+        inputFile = self.inputFilePath + self.inputFileName
+        with open(outputFile, 'w') as ofp:
+            with open(inputFile,'r') as ifp:
                 startSymbol = "<pre>"
                 endSymbol = "</pre>"
                 while True:
@@ -86,9 +91,12 @@ class Preprocessor(object):
                                 if content[-1] == '.':
                                     content = content[:-1].strip()
                             content = requests.get(url + content).content
+                            print content
                             startPos = content.find(startSymbol)
                             endPos = content.find(endSymbol)
-                            ofp.write(content[startPos + 5:endPos])
+                            ofp.write(content[startPos + 7:endPos])
+                            if i != 2:
+                                ofp.write('\n')
                         i += 1
                     if end:
                         break
