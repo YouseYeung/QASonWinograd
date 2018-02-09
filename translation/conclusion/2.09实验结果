@@ -1,0 +1,6 @@
+acl:relcl用于找宾语从句中动词的宾语。
+
+把存在量词的声明放在了整个蕴含语句的开头，而不只是某个前件或者后件的开头，这是为了使得前件和后件中都可以找到
+存在量词这个变量。
+forall ((x person)) (=> (exists ((y person))改为
+forall ((x person)) (exists ((y person)) (=>

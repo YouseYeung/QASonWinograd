@@ -29,11 +29,12 @@ class questionParsing(object):
             with open(self.inputFileName,'r') as ifp:
                 startSymbol = "<pre>"
                 endSymbol = "</pre>"
+                url = self.url
                 while True:
                     i = 0
                     end = False
                     while i < 3:
-                        oneLineContent= f.readline()
+                        oneLineContent= ifp.readline()
                         contentList = [oneLineContent]
                         if oneLineContent == "":
                             end = True
@@ -90,6 +91,6 @@ class questionParsing(object):
                         break
 
 t = questionParsing()
-t.setInputFileName("formatWSC")
-t.setOutputFileName("AllQuestionsParsing")
+t.setInputFileName("input/formatWSC")
+t.setOutputFileName("output/AllQuestionsParsing")
 t.parsing()

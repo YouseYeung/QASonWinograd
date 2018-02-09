@@ -260,6 +260,18 @@ class Translater(object):
         verbChildren = children[index][1:-1].split(',')
         typeOfNoun = ['subj', 'iobj', 'dobj', 'nmod', 'xcomp', 'advmod']
         relatedNounsIndex = []
+        #find obj related to a verb in a relative clause
+        #I saw the man you love, relcl(man, love), relcl is man's children dependency
+        nounClauseSymbol = "acl:relcl"
+        i = 0
+        for child in children:
+            if child.find(nounClauseSymbol) != -1:
+                relIndex = self.findIndexBySymbol(child ,nounClauseSymbol)
+                if index == relIndex:
+                    relatedNounsIndex.append(i)
+                    break
+            i += 1
+
         for _type in typeOfNoun:
             indexStart = 0
             verbChild = children[index]
@@ -282,7 +294,11 @@ class Translater(object):
                     tag = tags[i]
                     #add the word if it is a noun
                     if "NN" in tag or "PRP" in tag or tag in self.questionAnswerTags:
-                        relatedNounsIndex.append(i)
+                        #insert subj's index at the first position
+                        if _type == 'subj':
+                            relatedNounsIndex.insert(0, i)
+                        else:
+                            relatedNounsIndex.append(i)
                     #find more nouns in its related word's children
                     if (_type == "xcomp" and ("NN" in tag or "PRP" in tag))\
                      or (_type == "advmod" and tag == "IN") \
@@ -471,7 +487,6 @@ class Translater(object):
             newLine = self.bracketCheck(newLine) + '\n'
             for name in nouns:
                 if not addedName.has_key(name):
-                    self.addedNouns.append(name)
                     newLine = declareConst + nounSymbol + name + ' ' + sortName
                     newLine = self.bracketCheck(newLine) + '\n'
                     res += newLine
@@ -832,6 +847,8 @@ class Translater(object):
         children = library[self.CHILDREN_TAG]
         pronouns = []
         existVars = self.existVars
+        existSentence = ""
+        hasAddedStr_EXIST = False
         for i in range(26):
             pronouns.append(chr(ord('a') + i))
         numOfPronoun = 0
@@ -847,6 +864,9 @@ class Translater(object):
                 sort = noun[self.VERB_NOUN_SORT_TAG]
                 
                 if noun["var"]:
+                    #remove "he" and "it"
+                    if nounName == "he" or nounName == "it":
+                        continue
                     if nounName not in existVars:
                         nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, False)
                         if not pronoun_name_Map.has_key(nounName):
@@ -860,14 +880,27 @@ class Translater(object):
                                 sortNameMap[sort] = [pronoun]
                             numOfPronoun += 1
                     else:
-                        pronoun_name_Map[nounName] = pronouns[numOfPronoun]
+                        pronoun = pronouns[numOfPronoun]
+                        pronoun_name_Map[nounName] = pronoun
                         if nounName == "somebody" or nounName == "sb":
-                            pronoun_name_Map["he"] = pronouns[numOfPronoun]
+                            pronoun_name_Map["he"] = pronoun
+                            if sortNameMap.has_key("person"): 
+                                sortNameMap["person"].append(pronoun)
+                            else:
+                                sortNameMap["person"] = [pronoun]
+
                         elif nounName == "something" or nounName == "sth":
-                            pronoun_name_Map["it"] = pronouns[numOfPronoun]
+                            pronoun_name_Map["it"] = pronoun
+                            if sortNameMap.has_key("thing"):
+                                sortNameMap["thing"].append(pronoun)
+                            else:
+                                sortNameMap["thing"] = [pronoun]
+
                         numOfPronoun += 1
+                        existSentence += self.addExistVarDeclaration(nounName, hasAddedStr_EXIST, pronoun_name_Map)
+                        hasAddedStr_EXIST = True
                 else:
-                    #address the condition of noun being added as a verb
+                    #address the condit/ion of noun being added as a verb
                     if nounName in self.addedVerbs.keys():
                         res += "(" + pronouns[numOfPronoun] + " " + sort + ") "
                         pronoun_name_Map[nounName] = pronouns[numOfPronoun]
@@ -901,6 +934,9 @@ class Translater(object):
                                     elif compoundNoun == "thing":
                                         numOfPronoun += 1
                                         pronoun_name_Map[compoundNounName] = pronoun
+        if existSentence != "":
+            existSentence += ") "
+        
         if res == "":
             return "(assert (", pronoun_name_Map
         notEqualPairs = 0
@@ -911,13 +947,14 @@ class Translater(object):
                 for i in range(length):
                     for j in range(i + 1, length):
                         entityNotEqualString += "(not (= " + names[i] + " " + names[j] + ")) "
-                notEqualPairs += 1
+                        notEqualPairs += 1
         
         if notEqualPairs > 1:
-            entityNotEqualString += "(=> (and " + entityNotEqualString + ") "
+            entityNotEqualString = "(=> (and " + entityNotEqualString + ") "
         elif notEqualPairs == 1:
             entityNotEqualString = "(=> " + entityNotEqualString
-        return headString + res + ") " + entityNotEqualString, pronoun_name_Map
+
+        return headString + res + ") " + existSentence + entityNotEqualString, pronoun_name_Map
 
     def addEntailment(self, library, verbs, entailmentType, sepIndex):
         tokens = library[self.LEM_TOKEN_TAG]
@@ -1144,20 +1181,7 @@ class Translater(object):
                     headString += " " + nounAsVerbSentence
                 headString += ")"
 
-        #add exist variable
-        existDeclareString = ""
-        addedExist = False
-        for nounName in addedNounName:
-            #neglect "he" and "it"
-            if nounName in self.existVars[:-2]:
-                existDeclareString += self.addExistVarDeclaration(nounName, addedExist, pronoun_name_Map)
-                addedExist = True
-        
-        if addedExist:
-            existDeclareString += ") "
-            return existDeclareString + headString + ") "
-        else:
-            return headString
+        return headString
 
     def addDeclareRel_possession(self, library):
         children = library[self.CHILDREN_TAG]
@@ -1640,17 +1664,17 @@ class Translater(object):
                         index = noun[self.VERB_NOUN_INDEX_TAG]
                         nounName1 = self.getCompleteNounNameByIndex(index, completeNouns, tokens, False)
                         nounName2 = self.getCompleteNounNameByIndex(index, completeNouns, tokens, True)
-                        if nounSortMap.has_key(sort):
-                            if nounName1 not in nounSortMap[sort]:
-                                nounSortMap[sort].append(nounName1)
-                            if nounName2 not in nounSortMap[sort]:
-                                nounSortMap[sort].append(nounName2)
-                        else:
-                            if nounName1 == nounName2:
-                                nounSortMap[sort] = [nounName1]
-                            else:
-                                nounSortMap[sort] = [nounName1, nounName2]
-
+                        def addNounIntoMap(sort, name):
+                            if name not in self.addedNouns:
+                                if nounSortMap.has_key(sort):
+                                    nounSortMap[sort].append(name)
+                                else:
+                                    nounSortMap[sort] = [name]
+                                self.addedNouns.append(name)
+                        
+                        addNounIntoMap(sort, nounName1)
+                        addNounIntoMap(sort, nounName2)
+            
             #find nouns in description
             tokens = description[self.LEM_TOKEN_TAG]
             completeNouns = self.findCompleteNouns(description)
@@ -1674,6 +1698,7 @@ class Translater(object):
                     for noun in nouns:
                         nounIndex = noun[self.VERB_NOUN_INDEX_TAG]
                         nounName = tokens[nounIndex]
+                        sort = ""
                         if i < length:
                             sort = kbNounsInfo[i][self.VERB_NOUN_SORT_TAG]
                         else:
@@ -1684,17 +1709,19 @@ class Translater(object):
                             sort = nouns[i][self.VERB_NOUN_SORT_TAG]
                         nounName1 = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, False)
                         nounName2 = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, True)
-                        if nounSortMap.has_key(sort):
-                            if nounName1 not in nounSortMap[sort]:
-                                nounSortMap[sort].append(nounName1)
-                            if nounName2 not in nounSortMap[sort]:
-                                nounSortMap[sort].append(nounName2)
-                        else:
-                            if nounName1 == nounName2:
-                                nounSortMap[sort] = [nounName1]
-                            else:
-                                nounSortMap[sort] = [nounName1, nounName2]
-                        #add possession noun into the sort map
+                       
+                        def addNounIntoMap(sort, name):
+                            if name not in self.addedNouns:
+                                if nounSortMap.has_key(sort):
+                                    nounSortMap[sort].append(name)
+                                else:
+                                    nounSortMap[sort] = [name]
+                                self.addedNouns.append(name)
+                        
+                        addNounIntoMap(sort, nounName1)
+                        addNounIntoMap(sort, nounName2)
+                       
+                       #add possession noun into the sort map
                         nameList1 = nounName1.split("_")
                         nameList2 = nounName2.split("_")
                         possessionName = ""
@@ -1704,12 +1731,10 @@ class Translater(object):
                         if possessionName != "":
                             #constant noun name + _p presenting person noun, _t presenting thing noun
                             possessionName += "p"
-                            if nounSortMap.has_key("person") and possessionName not in nounSortMap["person"]:
-                                nounSortMap["person"].append(possessionName)
+                            addNounIntoMap("person", possessionName)
                             possessionName = possessionName[:-1] + "t"
-                            if nounSortMap.has_key("thing") and possessionName not in nounSortMap["thing"]:
-                                nounSortMap["thing"].append(possessionName)
-                        
+                            addNounIntoMap("thing", possessionName)
+
                         i += 1
 
         res = ""
