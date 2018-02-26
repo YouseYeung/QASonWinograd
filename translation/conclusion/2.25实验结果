@@ -1,0 +1,30 @@
+1）关于exist存在的位置：
+1. 当蕴含语句中出现something和it对应时，exist应该出现在全局中
+2. 否则exist只出现在前件或后件中
+
+例子一：
+If I know somebody, then he is famous.
+forall ((x person)) (exist ((y person)) (=> (antecedent) (secedent))
+
+例子二：
+If I am strong, then I can beat somebody.
+forall ((x person)) (=> (= (antecedent) (exist ((y person)) (secedent))
+
+
+2）关于否定：
+原来：只对具有否定形式的动词添加否定蕴含形式
+现在：对所有的动词都添加它的否定蕴含形式。
+
+3）关于变量声明中的变量互不相等原则：
+对于存在量词的变量声明
+原来：只存在与前件或者后件中的存在量词与全称量词共同进行变量互不相等原则的声明，这样的情况下，如果存在两次只存在于前件或者后件时，句子就会出现找不到存在量词变量的情况
+例子：
+forall ((x person)) (=> (not (= x y)) (exists ((y person))-->wrong
+现在：当存在量词变量只存在于前件或者后件时，不与全称量词一起做互不相等声明。
+forall ((x person)) (=> (exists ((y person)) (and (not (= x y)) (antecedent)) (secedent)) -->right
+待改进：
+现在还没有添加这个互不相等声明"(and (not (= x y))"
+ 
+4）关于代词
+在答案唯一假定和答案推理语句中，不对任何代词进行推理。
+

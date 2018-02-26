@@ -551,19 +551,6 @@ class Translater(object):
             combinedVerbName = info[self.VERB_COMBINE_NAME_TAG]
             originalVerbName = info[self.VERB_ORIGIN_NAME_TAG]
 
-            '''
-            if originalVerbName not in self.addedVerbs:
-                nouns = info["relatedNouns"]
-                res += declareRel + verbSymbol + originalVerbName + " ("
-                num = 0
-                for noun in nouns:
-                    res += noun[self.VERB_NOUN_SORT_TAG] + " "
-                    num += 1
-                res += "))\n"
-                #add all declared verbs into list addedverb
-                self.addedVerbs[originalVerbName] = num
-            '''
-
             if combinedVerbName not in self.addedVerbs:
                 nouns = info["relatedNouns"]
                 res += declareRel + verbSymbol + combinedVerbName + " ("
@@ -591,10 +578,9 @@ class Translater(object):
                     num += 1
 
             #additional verb for negative verb
-            if "not" in combinedVerbName:
-                indexStart = combinedVerbName.find("not_")
-                newVerbName = combinedVerbName[indexStart + len("not_"):]
-                if newVerbName not in self.addedVerbs.keys():
+            if "not" not in combinedVerbName:
+                newVerbName = "not_" + combinedVerbName
+                if not self.addedVerbs.has_key(newVerbName):
                     res += declareRel + verbSymbol + newVerbName + " ("
                     num = 0
                     for noun in info["relatedNouns"]:
@@ -884,23 +870,28 @@ class Translater(object):
                         pronoun_name_Map[nounName] = pronoun
                         if nounName == "somebody" or nounName == "sb":
                             pronoun_name_Map["he"] = pronoun
-                            if sortNameMap.has_key("person"): 
-                                sortNameMap["person"].append(pronoun)
-                            else:
-                                sortNameMap["person"] = [pronoun]
+                            if "he" in tokens:
+                                if sortNameMap.has_key("person"): 
+                                    sortNameMap["person"].append(pronoun)
+                                else:
+                                    sortNameMap["person"] = [pronoun]
 
                         elif nounName == "something" or nounName == "sth":
                             pronoun_name_Map["it"] = pronoun
-                            if sortNameMap.has_key("thing"):
-                                sortNameMap["thing"].append(pronoun)
-                            else:
-                                sortNameMap["thing"] = [pronoun]
+                            if "it" in tokens:
+                                if sortNameMap.has_key("thing"):
+                                    sortNameMap["thing"].append(pronoun)
+                                else:
+                                    sortNameMap["thing"] = [pronoun]
 
                         numOfPronoun += 1
-                        existSentence += self.addExistVarDeclaration(nounName, hasAddedStr_EXIST, pronoun_name_Map)
+                        #determine whether to add existence declaration in this position
+                        if (nounName == "somebody" and "he" in tokens) \
+                            or (nounName == "something" and "it" in tokens):
+                            existSentence += self.addExistVarDeclaration(nounName, hasAddedStr_EXIST, pronoun_name_Map)
                         hasAddedStr_EXIST = True
                 else:
-                    #address the condit/ion of noun being added as a verb
+                    #address the condition of noun being added as a verb
                     if nounName in self.addedVerbs.keys():
                         res += "(" + pronouns[numOfPronoun] + " " + sort + ") "
                         pronoun_name_Map[nounName] = pronouns[numOfPronoun]
@@ -978,49 +969,74 @@ class Translater(object):
         
         def addRealityByAntAndSec(antecedent, secedent, verbs):
             newVerbs = {}
+            #transform verb list into dict
             for verb in antecedent:
                 newVerbs[verb[0]] = verb[1]
             for verb in secedent:
                 newVerbs[verb[0]] = verb[1]
             
             declareString, pronoun_name_Map = self.addVariableDeclare(library, newVerbs)
-            addedVerbsNum = 0
+            #determine whether to add existence declaration in this position
+            shouldAddExist = True
+            #if existence declaration has been added
+            if declareString.find("exists ((") != -1:
+                shouldAddExist = False
+            
             #assure that verb occurs in order to get the right relation between verbs, such as conj:and, conj:or
             antecedentString = ""
             secedentString = ""
+
+            addedVerbsNum = 0
+            existSentence = ""
+            addedExist = False
             for verb in antecedent:
                 newString = self.addRealityForOneVerb(library, {verb[0]:verb[1]}, verbs, pronoun_name_Map, addedVerbsIndex)
                 if newString != "":
                     antecedentString += newString + " "
                     addedVerbsNum += 1
+                if shouldAddExist:
+                    for noun in verb[1][self.VERB_RELATION_NOUN_TAG]:
+                        nounName = tokens[noun[self.VERB_NOUN_INDEX_TAG]]
+                        if nounName in self.existVars[:-2]:
+                            existSentence += self.addExistVarDeclaration(nounName, addedExist, pronoun_name_Map)
+                            addedExist = True
+
             if addedVerbsNum > 1:
                 antecedentString = "(and " + antecedentString + ")"
-            
+            if existSentence != "":
+                antecedentString = existSentence + ") " + antecedentString + ")"
+
             addedVerbsNum = 0
+            existSentence = ""
+            addedExist = False
             for verb in secedent:
                 newString = self.addRealityForOneVerb(library, {verb[0]:verb[1]}, verbs, pronoun_name_Map, addedVerbsIndex) 
                 if newString != "":
                     secedentString += newString + " "
                     addedVerbsNum += 1
+                if shouldAddExist:
+                    for noun in verb[1][self.VERB_RELATION_NOUN_TAG]:
+                        nounName = tokens[noun[self.VERB_NOUN_INDEX_TAG]]
+                        if nounName in self.existVars[:-2]:
+                            existSentence += self.addExistVarDeclaration(nounName, addedExist, pronoun_name_Map)
+                            addedExist = True
+
             if addedVerbsNum > 1:
                 secedentString = "(and " + secedentString + ")"
+            if existSentence != "":
+                secedentString = existSentence + ") " + secedentString + ")"
             
-            #determine if there exists entity not equal string
-            #if exists add one more right bracket
-            rightBracket = ""
-            if declareString.find("(not (=") != -1:
-                rightBracket = ")"
-            return declareString, antecedentString + " " + secedentString + ")))" + rightBracket + "\n"
+            return declareString, antecedentString + " " + secedentString
 
         if type_AB1 == entailmentType:
             res = ""
             declareString, realityString = addRealityByAntAndSec(antecedent, secedent, verbs)
             res = declareString + "(=> " + realityString
-            return res
+            return self.bracketCheck(res) + "\n"
         
         elif type_AB2 == entailmentType:
             declareString, realityString = addRealityByAntAndSec(antecedent, secedent, verbs)
-            return declareString + "(= " + realityString
+            return self.bracketCheck(declareString + "(= " + realityString) + "\n"
 
         elif type_ABC1 == entailmentType:
             res = ""
@@ -1035,7 +1051,7 @@ class Translater(object):
                 tempVerbs = newVerbs
                 tempVerbs[verb[0]] = verb[1]
                 declareString, realityString = addRealityByAntAndSec([verb], antecedent, tempVerbs)
-                res += declareString + "(=> " + realityString
+                res += self.bracketCheck(declareString + "(=> " + realityString) + "\n"
             return res
         
         elif type_ABC2 == entailmentType:
@@ -1053,7 +1069,7 @@ class Translater(object):
                 tempVerbs = newVerbs
                 tempVerbs[verb[0]] = verb[1]
                 declareString, realityString = addRealityByAntAndSec(secedent[:], [verb], tempVerbs)
-                res += declareString + "(=> " + realityString
+                res += self.bracketCheck(declareString + "(=> " + realityString) + "\n"
             return res
 
     def addExistVarDeclaration(self, token, addedExist, pronoun_name_Map):
@@ -1268,32 +1284,32 @@ class Translater(object):
         res = ""
         verbSymbol = self.VERB_SYMBOL
         nounSymbol = self.NOUN_SYMBOL
+        tokens = library[self.TOKEN_TAG]
+        completeNouns = self.findCompleteNouns(library)
+        headString = "(assert ("
         for index, info in verbs.iteritems():
             combinedVerbName = info[self.VERB_COMBINE_NAME_TAG]
-            if "not" in combinedVerbName and combinedVerbName not in addedVerbs:
+            if "not" not in combinedVerbName and combinedVerbName not in addedVerbs:
                 addedVerbs.append(combinedVerbName)
-                i = combinedVerbName.find("not_")
-                newVerbName = combinedVerbName[i + len("not_"):]
-                newVerb = {}
-                newVerb[index] = {self.VERB_COMBINE_NAME_TAG: newVerbName, self.VERB_ORIGIN_NAME_TAG: newVerbName, "relatedNouns": info["relatedNouns"]}
-                varStr, pronoun_name_Map = self.addVariableDeclare(library, newVerb)
-                realitySentece = self.addRealityForOneVerb(library, newVerb, newVerb, pronoun_name_Map, [])
-                verbNameStart = realitySentece.find(newVerbName)
-                if verbNameStart == -1:
-                    continue
-                negSentence = "(not (" + verbSymbol + combinedVerbName + realitySentece[verbNameStart + len(newVerbName):]
-                rightBracket = ""
-                if varStr.find("(not (=") != -1:
-                    rightBracket = ")"
-                if realitySentece.find("exists") != -1:
-                    realitySentece = realitySentece[:verbNameStart - 2] + " (= (" + realitySentece[verbNameStart:-2]
-                    newLine = varStr + realitySentece + " " +  negSentence + rightBracket
-                    newLine = self.bracketCheck(newLine) + '\n'
-                    res += newLine
-                else:
-                    newLine = varStr + "(= " + realitySentece + " " + negSentence + rightBracket
-                    newLine = self.bracketCheck(newLine) + '\n'
-                    res += newLine
+                newVerbName = "not_" + combinedVerbName
+                number = 1
+                negSentence = "(" + verbSymbol + newVerbName + " "
+                posSentence = "(" + verbSymbol + combinedVerbName + " "
+                nounSentence = ""
+                nounDeclareString = ""
+                for noun in info[self.VERB_RELATION_NOUN_TAG]:
+                    if noun["var"]:
+                        pronoun = chr(ord('a') + number)
+                        nounSentence += pronoun + " "
+                        nounDeclareString += "(" + pronoun + " " + noun[self.VERB_NOUN_SORT_TAG] + ") "
+                    else:
+                        nounSentence += nounSymbol + self.getCompleteNounNameByIndex(noun[self.VERB_NOUN_INDEX_TAG], completeNouns, tokens, True) + " "
+                    number += 1
+                if nounDeclareString != "":
+                    nounDeclareString = "forall (" + nounDeclareString + ") "
+                temp = headString + nounDeclareString + "(= " + posSentence + nounSentence + ") "
+                temp += "(not " + negSentence + nounSentence
+                res += self.bracketCheck(temp) + "\n"
         return outputStr + res
 
     #substitue the variable noun with the candidate answer noun
@@ -1326,10 +1342,20 @@ class Translater(object):
         nounList = []
         if "who" in tokens or "whom" in tokens:
             if nounSortMap.has_key("person"):
-                nounList = nounSortMap["person"]
-        else:
+                for noun in nounSortMap["person"]:
+                    if "_p" in noun or "_t" in noun:
+                        noun = noun[:-2]
+                    if noun not in self.pronounList:
+                        nounList.append(noun)
+        
+        if "what" in tokens:
             if nounSortMap.has_key("thing"):
-                nounList = nounSortMap["thing"]
+                for noun in nounSortMap["thing"]:
+                    if "_p" in noun or "_t" in noun:
+                        noun = noun[:-2]
+                    if noun not in self.pronounList:
+                        nounList.append(noun)
+                
 
         verbs = self.findVerbsAndItsRelatedNouns(question)
         allQuestionVerbSentences = []
@@ -1447,10 +1473,18 @@ class Translater(object):
         nounList = []
         #person answer
         if "who" in tokens or "whom" in tokens or "whose" in tokens:
-            nounList = nounSortMap["person"]
+            for noun in nounSortMap["person"]:
+                if "_p" in noun or "_t" in noun:
+                    noun = noun[:-2]
+                if noun not in self.pronounList:
+                    nounList.append(noun)
         #thing answer
         if "what" in tokens:
-            nounList.extend(nounSortMap["thing"])
+            for noun in nounSortMap["thing"]:
+                if "_p" in noun or "_t" in noun:
+                    noun = noun[:-2]
+                if noun not in self.pronounList:
+                    nounList.append(noun)
 
         #deal with possesion question
         possessionStr = ""
@@ -1820,141 +1854,6 @@ class Translater(object):
             errorStr += errorInfo[error["type"]] + " : " + error["val"] + "\n"
 
         return errorStr
-
-    def parsingSample(self):
-        sampleQuestionContent = \
-"Susan knows about Ann's personal problems because she is nosy.\n\
-If person B is nosy, then person B will know about somebody's personal problems.\n\
-If person B is indiscreet, then somebody will know about person B's personal problems.\n\
-Who is nosy?"
-
-        sampleParsingContent = " Parser.parse: parse {\
-                Parser.ensureExecuted \
-              } \
-              Parser.setEvaluation: 0 candidates \
-              Example: Susan knows about Ann's personal problems. because she is nosy {\
-                Tokens: [susan, knows, about, ann, 's, personal, problems, ., because, she, is, nosy]\
-                Lemmatized tokens: [Susan, know, about, Ann, 's, personal, problem, ., because, she, be, nosy]\
-                POS tags: [NNP, VBZ, IN, NNP, POS, JJ, NNS, ., IN, PRP, VBD-AUX, JJ]\
-                NER tags: [PERSON, O, O, PERSON, O, O, O, O, O, O, O, O]\
-                NER values: [null, null, null, null, null, null, null, null, null, null, null, null]\
-                Dependency children: [[], [nsubj->0, nmod:about->6, punct->7], [], [case->4], [], [], \
-                [case->2, nmod:poss->3, amod->5], [], [], [], [], [cop->10, mark->8, nsubj->9]]\
-              }\
-            \
-              Parser.parse: parse {\
-                Parser.ensureExecuted\
-              }\
-              Parser.setEvaluation: 0 candidates \
-              Example: If person B is nosy, then person B will know about somebody’s personal problems {\
-                Tokens: [if, person, b, is, nosy, ,, then, person, b, will, know, about, somebody, 's, personal, problems]\
-                Lemmatized tokens: [if, person, b, be, nosy, ,, then, person, b, will, know, about, somebody, 's, personal,\
-                 problem]\
-                POS tags: [IN, NN, NN, VBD-AUX, JJ, ,, RB, NN, NN, VBD-AUX, VB, IN, NN, POS, JJ, NNS]\
-                NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]\
-                NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]\
-                Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, cop->3, punct->5, parataxis->10], [], \
-                [], [], [compound->7], [], [nmod:about->15, advmod->6, nsubj->8, aux->9], [], [case->13], [], [], [case->11,\
-                 nmod:poss->12, amod->14]]\
-              }\
-            \
-              Parser.parse: parse {\
-                Parser.ensureExecuted \
-              }\
-              Parser.setEvaluation: 0 candidates \
-              Example: If person B is indiscreet, then somebody will know about person B’s personal problems {\
-                Tokens: [if, person, b, is, indiscreet, ,, then, somebody, will, know, about, person, b, 's, \
-                personal, problems]\
-                Lemmatized tokens: [if, person, b, be, indiscreet, ,, then, somebody, will, know, about, person\
-                , b, 's, personal, problem]\
-                POS tags: [IN, NN, NN, VBD-AUX, JJ, ,, RB, NN, VBD-AUX, VB, IN, NN, NN, POS, JJ, NNS]\
-                NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]\
-                NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]\
-                Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, cop->3], [], [], [advmod->6], [], \
-                [nmod:about->15, advcl->4, punct->5, nsubj->7, aux->8], [], [], [compound->11, case->13], [], [], \
-                [case->10, nmod:poss->12, amod->14]]\
-              }\
-            \
-              Parser.parse: parse {\
-                Parser.ensureExecuted \
-              }\
-              Parser.setEvaluation: 0 candidates \
-              Example: Who is nosy {\
-                Tokens: [who, is, nosy]\
-                Lemmatized tokens: [who, be, nosy]\
-                POS tags: [WP, VBD-AUX, JJ]\
-                NER tags: [O, O, O]\
-                NER values: [null, null, null]\
-                Dependency children: [[], [], [nsubj->0, cop->1]]\
-              }"
-
-        sampleZ3Content = "(declare-sort thing)\n \
-            (declare-sort person)\n\
-            (declare-const Noun_personal_somebody_problem thing)\n\
-            (declare-const Noun_personal_problem thing)\n\
-            (declare-const Noun_personal_Ann_problem thing)\n\
-            (declare-const Noun_Ann_t thing)\n\
-            (declare-const Noun_personal_b_problem thing)\n\
-            (declare-const Noun_Susan person)\n\
-            (declare-const Noun_Ann_p person)\n\
-            (declare-const Noun_she person)\n\
-            (assert (not (= Noun_personal_somebody_problem Noun_personal_problem)))\n\
-            (assert (not (= Noun_personal_somebody_problem Noun_personal_Ann_problem)))\n\
-            (assert (not (= Noun_personal_somebody_problem Noun_Ann_t)))\n\
-            (assert (not (= Noun_personal_somebody_problem Noun_personal_b_problem)))\n\
-            (assert (not (= Noun_personal_problem Noun_personal_Ann_problem)))\n\
-            (assert (not (= Noun_personal_problem Noun_Ann_t)))\n\
-            (assert (not (= Noun_personal_problem Noun_personal_b_problem)))\n\
-            (assert (not (= Noun_personal_Ann_problem Noun_Ann_t)))\n\
-            (assert (not (= Noun_personal_Ann_problem Noun_personal_b_problem)))\n\
-            (assert (not (= Noun_Ann_t Noun_personal_b_problem)))\n\
-            (assert (not (= Noun_Susan Noun_Ann_p)))\n\
-            (assert (not (= Noun_Susan Noun_she)))\n\
-            (assert (not (= Noun_Ann_p Noun_she)))\n\
-            (assert (forall ((x thing)) (or (= x Noun_personal_somebody_problem)\
-             (= x Noun_personal_problem) (= x Noun_personal_Ann_problem) (= x Noun_Ann_t)\
-              (= x Noun_personal_b_problem) )))\n\
-            (assert (forall ((x person)) (or (= x Noun_Susan) (= x Noun_Ann_p) (= x Noun_she) )))\n\
-            (declare-rel Verb_know (person thing ))\n\
-            (declare-rel Verb_know_about (person thing ))\n\
-            (declare-rel Verb_know_1 (person ))\n\
-            (declare-rel Verb_know_2 (person thing ))\n\
-            (declare-rel Verb_nosy (person ))\n\
-            (declare-rel Verb_indiscreet (person ))\n\
-            (declare-rel Verb_possess_pt (person thing))\n\
-            (declare-rel Verb_possess_tt (thing thing))\n\
-            (assert (forall ((a person) ) (= (Verb_nosy a)\
-              (exists ((b person)) (and (Verb_know_about a Noun_personal_problem)\
-               (Verb_possess_pt b Noun_personal_problem) ))  )))\n\
-            (assert (forall ((b person) ) (= (Verb_indiscreet b)  \
-            (exists ((a person)) (and (Verb_know_about a Noun_personal_problem) \
-            (Verb_possess_pt b Noun_personal_problem) ))  )))\n\
-            (assert (forall ((b person) ) (=> (Verb_know_about b Noun_personal_problem ) \
-            (Verb_know_1 b ))))\n\
-            (assert (forall ((b person) ) (= (Verb_know_about b Noun_personal_problem )\
-             (Verb_know_2 b Noun_personal_problem ))))\n\
-            (assert (= (Verb_nosy Noun_Susan ) (not (Verb_nosy Noun_Ann_p )) ))\n\
-            (assert (= (Verb_nosy Noun_Ann_p ) (not (Verb_nosy Noun_Susan )) ))\n\
-            (assert (and (Verb_know_about Noun_Susan Noun_personal_problem )   \
-            (Verb_possess_pt Noun_Ann_p Noun_personal_problem) \
-            (Verb_possess_tt Noun_Ann_t Noun_personal_problem) ))\n\
-            (assert (not  (Verb_nosy Noun_Susan )))\n\
-            (check-sat)\n"
-        systemType = platform.system()
-        fileName = "sample"
-        if "Win" in systemType:
-            fileName = self.outputFilePath_Win + fileName
-        else:
-            fileName = self.outputFilePath_Linux + fileName
-        with open(fileName, "w") as f:
-            f.write(sampleZ3Content)
-        var = os.popen("z3 " +  fileName).read()
-        print "Sample Question:"
-        print sampleQuestionContent
-        if "unsat" in var:
-            print "Answer: " + sampleZ3Content.split('\n')[-3].strip()
-        else:
-            print "Unable to solve."
 
 def main():
     t = Translater()

@@ -1,51 +1,35 @@
-  Parser.parse: parse {
-    Parser.ensureExecuted 
-  }
-  Parser.setEvaluation: 0 candidates 
-  Example: 27.Susan knew that Ann's son had been in a car accident, because she told her about it {
-    Tokens: [27, ., susan, knew, that, ann, 's, son, had, been, in, a, car, accident, ,, because, she, told, her, about, it]
-    Lemmatized tokens: [27, ., Susan, know, that, Ann, 's, son, have, be, in, a, car, accident, ,, because, she, tell, she, about, it]
-    POS tags: [CD, ., NNP, VBD, IN, NNP, POS, NN, VBD-AUX, VBD-AUX, IN, DT, NN, NN, ,, IN, PRP, VBD, PRP, IN, PRP]
-    NER tags: [NUMBER, O, PERSON, O, O, PERSON, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [27.0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[punct->1], [], [], [ccomp->13, nsubj->2], [], [case->6], [], [nmod:poss->5], [], [], [], [], [], [mark->4, nsubj->7, aux->8, cop->9, case->10, det->11, compound->12, punct->14, advcl->17], [], [], [], [nmod:about->20, mark->15, nsubj->16, dobj->18], [], [], [case->19]]
+ Parser.setEvaluation: 0 candidates 
+  Example: 26.Sid explained his theory to Mark. but he couldn't understand him {
+    Tokens: [26, ., sid, explained, his, theory, to, mark, ., but, he, could, n't, understand, him]
+    Lemmatized tokens: [26, ., Sid, explain, he, theory, to, mark, ., but, he, could, not, understand, he]
+    POS tags: [CD, ., NNP, VBD, PRP$, NN, TO, NN, ., CC, PRP, VBD-AUX, RB, VB, PRP]
+    NER tags: [NUMBER, O, PERSON, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [26.0, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[punct->1], [], [], [dobj->5, nmod:to->7, punct->8, nsubj->2], [], [nmod:poss->4], [], [case->6], [], [], [], [], [], [dobj->14, cc->9, nsubj->10, aux->11, neg->12], []]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B knows something, then person B might tell somebody about it {
-    Tokens: [if, person, b, knows, something, ,, then, person, b, might, tell, somebody, about, it]
-    Lemmatized tokens: [if, person, b, know, something, ,, then, person, b, might, tell, somebody, about, it]
-    POS tags: [IN, NN, NN, VBZ, NN, ,, RB, NN, NN, VBD-AUX, VB, NN, IN, PRP]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [mark->0, nsubj->2, dobj->4, punct->5, parataxis->10], [], [], [], [], [compound->7], [], [advmod->6, nsubj->8, aux->9, dobj->11, nmod:about->13], [], [], [case->12]]
+  Example: If person B explains something to person C, then person B might convince person C, and person C might understand person B {
+    Tokens: [if, person, b, explains, something, to, person, c, ,, then, person, b, might, convince, person, c, ,, and, person, c, might, understand, person, b]
+    Lemmatized tokens: [if, person, b, explain, something, to, person, c, ,, then, person, b, might, convince, person, c, ,, and, person, c, might, understand, person, b]
+    POS tags: [IN, NN, NN, VBZ, NN, TO, NN, NN, ,, RB, NN, NN, VBD-AUX, VB, NN, NN, ,, CC, NN, NN, VBD-AUX, VB, NN, NN]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [mark->0, nsubj->2, dobj->4, nmod:to->7], [], [], [], [case->5, compound->6], [], [], [], [advmod->9, compound->10], [], [dobj->15, punct->16, cc->17, advcl->3, conj:and->21, punct->8, nsubj->11, aux->12], [], [compound->14], [], [], [], [compound->18], [], [nsubj->19, aux->20, dobj->23], [], [compound->22]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B tells person C about something, then person C knows it {
-    Tokens: [if, person, b, tells, person, c, about, something, ,, then, person, c, knows, it]
-    Lemmatized tokens: [if, person, b, tell, person, c, about, something, ,, then, person, c, know, it]
-    POS tags: [IN, NN, NN, VBZ, NN, NN, IN, NN, ,, RB, NN, NN, VBZ, PRP]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [mark->0, nsubj->2, dobj->5, punct->8, parataxis->12], [], [compound->4, nmod:about->7], [], [case->6], [], [], [], [compound->10], [advmod->9, nsubj->11, dobj->13], []]
-  }
-
-  Parser.parse: parse {
-    Parser.ensureExecuted 
-  }
-  Parser.setEvaluation: 0 candidates 
-  Example: Who told the other about the accident {
-    Tokens: [who, told, the, other, about, the, accident]
-    Lemmatized tokens: [who, tell, the, other, about, the, accident]
-    POS tags: [WP, VBD, DT, JJ, IN, DT, NN]
-    NER tags: [O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null]
-    Dependency children: [[], [nsubj->0, dobj->3, nmod:about->6], [], [det->2], [], [], [case->4, det->5]]
+  Example: Who did not understand whom {
+    Tokens: [who, did, not, understand, whom]
+    Lemmatized tokens: [who, do, not, understand, whom]
+    POS tags: [WP, VBD-AUX, RB, VB, WP]
+    NER tags: [O, O, O, O, O]
+    NER values: [null, null, null, null, null]
+    Dependency children: [[], [], [], [nsubj->0, aux->1, neg->2, dobj->4], []]
   }
