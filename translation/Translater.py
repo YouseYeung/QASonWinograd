@@ -54,7 +54,7 @@ class Translater(object):
         self.existVars = ["somebody", "something", "sth", "sb", "he", "it"]
         self.pronounList = ["it", "he", "she", "they", "I", "we", "you", "It", "He", "She", "They", "You", "We"]
         self.questionAnswerTags = ["WP", "WDT", "WRB", "WP$"]
-        self.reverseKeywords = ["although"]
+        self.reverseKeywords = ["although", "though"]
         self.preprocessor = Preprocessor()
         self.inputFilePath_Win = "input/"
         self.outputFilePath_Win = "output/"
@@ -996,10 +996,21 @@ class Translater(object):
                     addedVerbsNum += 1
                 if shouldAddExist:
                     for noun in verb[1][self.VERB_RELATION_NOUN_TAG]:
-                        nounName = tokens[noun[self.VERB_NOUN_INDEX_TAG]]
+                        nounIndex = noun[self.VERB_NOUN_INDEX_TAG]    
+                        nounName = tokens[nounIndex]
                         if nounName in self.existVars[:-2]:
                             existSentence += self.addExistVarDeclaration(nounName, addedExist, pronoun_name_Map)
                             addedExist = True
+                        #address the existence variable of possesion noun
+                        nounChild = children[nounIndex]
+                        if nounChild.find("nmod:poss") != -1:
+                            i = self.findIndexBySymbol(nounChild, "nmod:poss")
+                            possName = tokens[i]
+                            if possName in self.existVars[:-2]:
+                                temp = self.addExistVarDeclaration(possName, addedExist, pronoun_name_Map)
+                                if temp != "":
+                                    addedExist = True
+                                    existSentence += temp
 
             if addedVerbsNum > 1:
                 antecedentString = "(and " + antecedentString + ")"
@@ -1016,12 +1027,25 @@ class Translater(object):
                     addedVerbsNum += 1
                 if shouldAddExist:
                     for noun in verb[1][self.VERB_RELATION_NOUN_TAG]:
-                        nounName = tokens[noun[self.VERB_NOUN_INDEX_TAG]]
+                        nounIndex = noun[self.VERB_NOUN_INDEX_TAG]    
+                        nounName = tokens[nounIndex]
                         if nounName in self.existVars[:-2]:
                             temp = self.addExistVarDeclaration(nounName, addedExist, pronoun_name_Map)
                             if temp != "":
                                 addedExist = True
                                 existSentence += temp
+                        #address the existence variable of possesion noun
+                        nounChild = children[nounIndex]
+                        if nounChild.find("nmod:poss") != -1:
+                            i = self.findIndexBySymbol(nounChild, "nmod:poss")
+                            possName = tokens[i]
+                            if possName in self.existVars[:-2]:
+                                temp = self.addExistVarDeclaration(possName, addedExist, pronoun_name_Map)
+                                if temp != "":
+                                    addedExist = True
+                                    existSentence += temp
+
+                        
 
             if addedVerbsNum > 1:
                 secedentString = "(and " + secedentString + ")"
@@ -1286,7 +1310,7 @@ class Translater(object):
         res = ""
         verbSymbol = self.VERB_SYMBOL
         nounSymbol = self.NOUN_SYMBOL
-        tokens = library[self.TOKEN_TAG]
+        tokens = library[self.LEM_TOKEN_TAG]
         completeNouns = self.findCompleteNouns(library)
         headString = "(assert ("
         for index, info in verbs.iteritems():
@@ -1341,24 +1365,7 @@ class Translater(object):
         res = ""
         nounSymbol = self.NOUN_SYMBOL
         verbSymbol = self.VERB_SYMBOL
-        nounList = []
-        if "who" in tokens or "whom" in tokens:
-            if nounSortMap.has_key("person"):
-                for noun in nounSortMap["person"]:
-                    #remove suffix
-                    if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
-                        noun = noun[:-2]
-                    if noun not in self.pronounList:
-                        nounList.append(noun)
-        
-        if "what" in tokens:
-            if nounSortMap.has_key("thing"):
-                for noun in nounSortMap["thing"]:
-                    if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
-                        noun = noun[:-2]
-                    if noun not in self.pronounList:
-                        nounList.append(noun)
-                
+        nounList = self.getCandidateAnswerNounForQuestion(nounSortMap)
 
         verbs = self.findVerbsAndItsRelatedNouns(question)
         allQuestionVerbSentences = []
@@ -1372,7 +1379,8 @@ class Translater(object):
                 for _ in range(length):
                     lessParaVerbName = verbName + "_" + str(number)
                     if lessParaVerbName in self.addedVerbs.keys():
-                        verbName = lessParaVerbNamebreak
+                        verbName = lessParaVerbName
+                        break
                     number -= 1
                 
                 if verbName not in self.addedVerbs.keys():
@@ -1475,6 +1483,31 @@ class Translater(object):
         
         return res
 
+    def getCandidateAnswerNounForQuestion(self, nounSortMap):
+        res = []
+        tokens = self.question[self.LEM_TOKEN_TAG]
+        if "who" in tokens or "whom" in tokens or "whose" in tokens:
+            for noun in nounSortMap["person"]:
+                if noun in self.pronounList:
+                    continue
+                #remove suffix to discard nouns like he_p, he_t and so on
+                if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
+                    if noun[:-2] in self.pronounList:
+                        continue
+                res.append(noun)
+        #thing answer
+        if "what" in tokens:
+            for noun in nounSortMap["thing"]:
+                if noun in self.pronounList:
+                    continue
+                #remove suffix to discard nouns like it_p, it_t and so on
+                if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
+                    if noun[:-2] in self.pronounList:
+                        continue
+                res.append(noun)
+
+        return res
+
     def reasoning(self, nounSortMap, outputStr):
         question = self.question
         tokens = question[self.LEM_TOKEN_TAG]
@@ -1490,22 +1523,7 @@ class Translater(object):
         headString = "(assert (not "
         verbSymbol = self.VERB_SYMBOL
         nounSymbol = self.NOUN_SYMBOL
-        nounList = []
-        #person answer
-        if "who" in tokens or "whom" in tokens or "whose" in tokens:
-            for noun in nounSortMap["person"]:
-                if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
-                    noun = noun[:-2]
-                if noun not in self.pronounList:
-                    nounList.append(noun)
-        #thing answer
-        if "what" in tokens:
-            for noun in nounSortMap["thing"]:
-                if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
-                    noun = noun[:-2]
-                if noun not in self.pronounList:
-                    nounList.append(noun)
-
+        nounList = self.getCandidateAnswerNounForQuestion(nounSortMap)         
         #deal with possesion question
         possessionStr = ""
         possessionSentences = []
@@ -1777,11 +1795,11 @@ class Translater(object):
                                 else:
                                     nounSortMap[sort] = [name]
                                 self.addedNouns.append(name)
-                        
+
+                        #just add the complete form of noun into self.addedNouns
                         addNounIntoMap(sort, nounName1)
-                        addNounIntoMap(sort, nounName2)
                        
-                       #add possession noun into the sort map
+                        #add possession noun into the sort map
                         nameList1 = nounName1.split("_")
                         nameList2 = nounName2.split("_")
                         possessionName = ""

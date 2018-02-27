@@ -1,33 +1,49 @@
+ Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
   Parser.setEvaluation: 0 candidates 
-  Example: 21.I was trying to balance the bottle upside down on the table, but I couldn't do it. because it was so uneven. {
-    Tokens: [21, ., i, was, trying, to, balance, the, bottle, upside, down, on, the, table, ,, but, i, could, n't, do, it, ., because, it, was, so, uneven, .]
-    Lemmatized tokens: [21, ., I, be, try, to, balance, the, bottle, upside, down, on, the, table, ,, but, I, could, not, do, it, ., because, it, be, so, uneven, .]
-    POS tags: [CD, ., PRP, VBD-AUX, VBG, TO, VB, DT, NN, RB, RB, IN, DT, NN, ,, CC, PRP, VBD-AUX, RB, VBD-AUX, PRP, ., IN, PRP, VBD-AUX, RB, JJ, .]
-    NER tags: [NUMBER, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [21.0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[punct->1], [], [], [], [punct->21, xcomp->6, punct->14, cc->15, nsubj->2, aux->3, conj:but->19], [], [mark->5, dobj->8, advmod->10, nmod:on->13], [], [det->7], [], [advmod->9], [], [], [case->11, det->12], [], [], [], [], [], [dobj->20, nsubj->16, aux->17, neg->18], [], [], [], [], [], [], [punct->27, mark->22, nsubj->23, cop->24, advmod->25], []]
+  Example: 25.Susan knows about Ann's personal problems. because she is indiscreet. {
+    Tokens: [25, ., susan, knows, about, ann, 's, personal, problems, ., because, she, is, indiscreet, .]
+    Lemmatized tokens: [25, ., Susan, know, about, Ann, 's, personal, problem, ., because, she, be, indiscreet, .]
+    POS tags: [CD, ., NNP, VBZ, IN, NNP, POS, JJ, NNS, ., IN, PRP, VBD-AUX, JJ, .]
+    NER tags: [NUMBER, O, PERSON, O, O, PERSON, O, O, O, O, O, O, O, O, O]
+    NER values: [25.0, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[punct->1], [], [], [nmod:about->8, punct->9, nsubj->2], [], [case->6], [], [], [case->4, nmod:poss->5, amod->7], [], [], [], [], [mark->10, nsubj->11, cop->12, punct->14], []]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If  thing B is top-heavy, or thing C is uneven, then somebody can’t balance thing B on thing C . {
-    Tokens: [if, thing, b, is, top, heavy, ,, or, thing, c, is, uneven, ,, then, somebody, ca, n't, balance, thing, b, on, thing, c, .]
-    Lemmatized tokens: [if, thing, b, be, top, heavy, ,, or, thing, c, be, uneven, ,, then, somebody, can, not, balance, thing, b, on, thing, c, .]
-    POS tags: [IN, NN, NN, VBD-AUX, JJ, NN, ,, CC, NN, NN, VBD-AUX, JJ, ,, RB, NN, MD, RB, VB, NN, NN, IN, NN, NN, .]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [], [mark->0, nsubj->2, cop->3, amod->4, punct->6, cc->7, conj:or->11], [], [], [], [compound->8], [], [nsubj->9, cop->10], [], [], [advmod->13], [], [], [aux->15, neg->16, dobj->19, advcl->5, nmod:on->22, punct->23, advcl->11, punct->12, nsubj->14], [], [compound->18], [], [], [case->20, compound->21], []]
+  Example: If person B is nosy, then person B will know about somebody’s personal problems {
+    Tokens: [if, person, b, is, nosy, ,, then, person, b, will, know, about, somebody, 's, personal, problems]
+    Lemmatized tokens: [if, person, b, be, nosy, ,, then, person, b, will, know, about, somebody, 's, personal, problem]
+    POS tags: [IN, NN, NN, VBD-AUX, JJ, ,, RB, NN, NN, VBD-AUX, VB, IN, NN, POS, JJ, NNS]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, cop->3, punct->5, parataxis->10], [], [], [], [compound->7], [], [nmod:about->15, advmod->6, nsubj->8, aux->9], [], [case->13], [], [], [case->11, nmod:poss->12, amod->14]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: What was uneven {
-    Tokens: [what, was, uneven]
-    Lemmatized tokens: [what, be, uneven]
+  Example: If person B is indiscreet, then somebody will know about person B’s personal problems. {
+    Tokens: [if, person, b, is, indiscreet, ,, then, somebody, will, know, about, person, b, 's, personal, problems, .]
+    Lemmatized tokens: [if, person, b, be, indiscreet, ,, then, somebody, will, know, about, person, b, 's, personal, problem, .]
+    POS tags: [IN, NN, NN, VBD-AUX, JJ, ,, RB, NN, VBD-AUX, VB, IN, NN, NN, POS, JJ, NNS, .]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, cop->3], [], [], [advmod->6], [], [nmod:about->15, punct->16, advcl->4, punct->5, nsubj->7, aux->8], [], [], [compound->11, case->13], [], [], [case->10, nmod:poss->12, amod->14], []]
+  }
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: Who is indiscreet {
+    Tokens: [who, is, indiscreet]
+    Lemmatized tokens: [who, be, indiscreet]
     POS tags: [WP, VBD-AUX, JJ]
     NER tags: [O, O, O]
     NER values: [null, null, null]
