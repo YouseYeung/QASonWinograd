@@ -1,0 +1,9 @@
+1. 修改问题中谓词的相关语句的补全形式
+原来：完全填充谓词相关的所有名词
+现在：当问题中谓词相关的名词数量多于KB中对应谓词的相关名词数量时，只提取与KB中谓词的相关名词数量一致的名词
+例子：
+KB: If somebody reach the top, then...
+QUESTION: Who reaches the top of stairs?
+EFFECT: 丢弃stairs.只提取who和top
+
+2. 若something作为do的宾语，形成do something adv or adj的形式，则something不作为存在量词变量，something与adj or adv形成复合常量名词。

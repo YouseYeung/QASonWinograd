@@ -48,12 +48,13 @@ class Translater(object):
         self.VERB_RELATION_NOUN_TAG = "relatedNouns"
         self.VERB_NOUN_SORT_TAG = "sort"
         self.VERB_NOUN_INDEX_TAG = "index"
+        self.VERB_NOUN_VAR_TAG = "var"
         self.parsingSymbol = [self.TOKEN_TAG, self.LEM_TOKEN_TAG, self.POS_TAG, self.NER_TAG, self.NER_VAL_TAG, self.CHILDREN_TAG]
         self.z3_keywords = ["repeat", "assert", "declare", "map"]
         self.existVars = ["somebody", "something", "sth", "sb", "he", "it"]
         self.pronounList = ["it", "he", "she", "they", "I", "we", "you", "It", "He", "She", "They", "You", "We"]
         self.questionAnswerTags = ["WP", "WDT", "WRB", "WP$"]
-        self.reverseKeywords = ["but", "although"]
+        self.reverseKeywords = ["although"]
         self.preprocessor = Preprocessor()
         self.inputFilePath_Win = "input/"
         self.outputFilePath_Win = "output/"
@@ -307,17 +308,16 @@ class Translater(object):
                         additiveNounsIndex = self.findRelatedNouns(library, i)
                         for ii in additiveNounsIndex:
                             relatedNounsIndex.append(ii)
-
         return relatedNounsIndex
 
     #library: dict. It is descrption, kb or question
-    #return {index: {self.VERB_ORIGIN_NAME_TAG:str, combinedVerbName:str, "relatedNouns":[{self.VERB_NOUN_INDEX_TAG:nounIndex, self.VERB_NOUN_SORT_TAG:nounSort, "var":symbolOfVariable}] } }
+    #return {index: {self.VERB_ORIGIN_NAME_TAG:str, combinedVerbName:str, self.VERB_RELATION_NOUN_TAG:[{self.VERB_NOUN_INDEX_TAG:nounIndex, self.VERB_NOUN_SORT_TAG:nounSort, self.VERB_NOUN_VAR_TAG:symbolOfVariable}] } }
     def findVerbsAndItsRelatedNouns(self, library):
         existVars = self.existVars
         tokens = library[self.LEM_TOKEN_TAG]
         tags = library[self.POS_TAG]
         children = library[self.CHILDREN_TAG]
-        #{index: {self.VERB_ORIGIN_NAME_TAG:str, combinedVerbName:str, "relatedNouns":[{self.VERB_NOUN_INDEX_TAG:nounIndex, self.VERB_NOUN_SORT_TAG:nounSort, "var":symbolOfVariable}] } }
+        #{index: {self.VERB_ORIGIN_NAME_TAG:str, combinedVerbName:str, self.VERB_RELATION_NOUN_TAG:[{self.VERB_NOUN_INDEX_TAG:nounIndex, self.VERB_NOUN_SORT_TAG:nounSort, self.VERB_NOUN_VAR_TAG:symbolOfVariable}] } }
         verbs = {}
         addedVerbsIndex = []
         i = -1
@@ -390,7 +390,7 @@ class Translater(object):
                 
                 verbs[i] = {self.VERB_ORIGIN_NAME_TAG:originalVerbName, self.VERB_COMBINE_NAME_TAG:combinedVerbName}
                 relatedNounsIndex = self.findRelatedNouns(library, i)
-                verbs[i]["relatedNouns"] = []
+                verbs[i][self.VERB_RELATION_NOUN_TAG] = []
                 unsortedNouns = []
                 for index in relatedNounsIndex:
                     nounInfo = {self.VERB_NOUN_INDEX_TAG:index}
@@ -399,48 +399,48 @@ class Translater(object):
                     if len(nounName) == 1:
                         lastWordIndex = index - 1
                         nounInfo[self.VERB_NOUN_SORT_TAG] = tokens[lastWordIndex]
-                        nounInfo["var"] = True
+                        nounInfo[self.VERB_NOUN_VAR_TAG] = True
 
                     elif nounName in existVars:
                             
                         if nounName == "somebody" or nounName == "sb" or nounName == "he":
                             nounInfo[self.VERB_NOUN_SORT_TAG] = "person"
-                            nounInfo["var"] = True
+                            nounInfo[self.VERB_NOUN_VAR_TAG] = True
                         elif nounName == "something" or nounName == "sth" or nounName == "it":
                             #address the condition of do something adj.
                             if nounName == "something" and children[index].find("amod") != -1:
-                                nounInfo["var"] = False
+                                nounInfo[self.VERB_NOUN_VAR_TAG] = False
                                 nounInfo[self.VERB_NOUN_SORT_TAG] = "thing"
                             else:
                                 nounInfo[self.VERB_NOUN_SORT_TAG] = "thing"
-                                nounInfo["var"] = True
+                                nounInfo[self.VERB_NOUN_VAR_TAG] = True
 
                     elif tags[index] in self.questionAnswerTags:
                         if nounName == "who" or nounName == "whom" or nounName == "whose":
                             nounInfo[self.VERB_NOUN_SORT_TAG] = "person"
                         else:
                             nounInfo[self.VERB_NOUN_SORT_TAG] = "thing"
-                        nounInfo["var"] = False
+                        nounInfo[self.VERB_NOUN_VAR_TAG] = False
 
                     else:
                         nounInfo[self.VERB_NOUN_SORT_TAG] = "thing"
-                        nounInfo["var"] = False
+                        nounInfo[self.VERB_NOUN_VAR_TAG] = False
                     unsortedNouns.append(nounInfo)
 
                 #sort all nouns except the subject noun, it is because subject noun is always the first noun name.
                 
                 if unsortedNouns != []:
                     sortedNouns = sorted(unsortedNouns[1:], key = lambda x : x[self.VERB_NOUN_INDEX_TAG], reverse = False)
-                    verbs[i]["relatedNouns"].append(unsortedNouns[0])
+                    verbs[i][self.VERB_RELATION_NOUN_TAG].append(unsortedNouns[0])
                     for noun in sortedNouns:
-                        verbs[i]["relatedNouns"].append(noun)
+                        verbs[i][self.VERB_RELATION_NOUN_TAG].append(noun)
 
                 addedVerbsIndex.append(i)
 
                 #combination of verb and verb, such as make sure to do, want to do, try to do, has to do
                 combinedindexStart = children[i].find("xcomp")
                 if combinedindexStart != -1:
-                    nsubj = verbs[i]["relatedNouns"][0]
+                    nsubj = verbs[i][self.VERB_RELATION_NOUN_TAG][0]
                     index = self.findIndexBySymbol(children[i], "xcomp")
                     #if complement is not a verb
                     if "VB" not in tags[index]:
@@ -454,7 +454,7 @@ class Translater(object):
                         continue
                     combinedVerbName = tokens[index]
                     verbs[index] = {self.VERB_ORIGIN_NAME_TAG:combinedVerbName, self.VERB_COMBINE_NAME_TAG:combinedVerbName}
-                    verbs[index]["relatedNouns"] = [nsubj]
+                    verbs[index][self.VERB_RELATION_NOUN_TAG] = [nsubj]
                     relatedNounsIndex = self.findRelatedNouns(library, index)
                     for ii in relatedNounsIndex:
                         nounInfo = {self.VERB_NOUN_INDEX_TAG:ii}
@@ -463,13 +463,13 @@ class Translater(object):
                         if len(nounName) == 1:
                             lastWordIndex = ii - 1
                             nounInfo[self.VERB_NOUN_SORT_TAG] = tokens[lastWordIndex]
-                            nounInfo["var"] = True
+                            nounInfo[self.VERB_NOUN_VAR_TAG] = True
                         else:
                             nounInfo[self.VERB_NOUN_SORT_TAG] = "thing"
-                            nounInfo["var"] = False
-                        verbs[index]["relatedNouns"].append(nounInfo)
+                            nounInfo[self.VERB_NOUN_VAR_TAG] = False
+                        verbs[index][self.VERB_RELATION_NOUN_TAG].append(nounInfo)
 
-                    verbs[index]["relatedNouns"] = sorted(verbs[index]["relatedNouns"], key = lambda x : x[self.VERB_NOUN_INDEX_TAG], reverse = False)
+                    verbs[index][self.VERB_RELATION_NOUN_TAG] = sorted(verbs[index][self.VERB_RELATION_NOUN_TAG], key = lambda x : x[self.VERB_NOUN_INDEX_TAG], reverse = False)
                     addedVerbsIndex.append(index)
         return verbs
 
@@ -552,7 +552,7 @@ class Translater(object):
             originalVerbName = info[self.VERB_ORIGIN_NAME_TAG]
 
             if combinedVerbName not in self.addedVerbs:
-                nouns = info["relatedNouns"]
+                nouns = info[self.VERB_RELATION_NOUN_TAG]
                 res += declareRel + verbSymbol + combinedVerbName + " ("
                 num = 0
                 for noun in nouns:
@@ -566,7 +566,7 @@ class Translater(object):
             num = 1
             nouns = ""
             if combinedVerbName != originalVerbName:
-                relatedNouns = info["relatedNouns"]
+                relatedNouns = info[self.VERB_RELATION_NOUN_TAG]
                 for noun in relatedNouns:
                     lessPredicateVerbName = originalVerbName + "_" + str(num)
                     if lessPredicateVerbName in self.addedVerbs.keys():
@@ -583,7 +583,7 @@ class Translater(object):
                 if not self.addedVerbs.has_key(newVerbName):
                     res += declareRel + verbSymbol + newVerbName + " ("
                     num = 0
-                    for noun in info["relatedNouns"]:
+                    for noun in info[self.VERB_RELATION_NOUN_TAG]:
                         res += noun[self.VERB_NOUN_SORT_TAG] + " "
                         num += 1
                     res += "))\n"
@@ -606,7 +606,7 @@ class Translater(object):
                 originalVerbName = info[self.VERB_ORIGIN_NAME_TAG]
                 if combinedVerbName != originalVerbName and not addedVerbs.has_key(originalVerbName):
                     addedVerbs[originalVerbName] = True
-                    nouns = info["relatedNouns"]
+                    nouns = info[self.VERB_RELATION_NOUN_TAG]
                     length = len(nouns)
                     if length == 0:
                         continue
@@ -618,7 +618,7 @@ class Translater(object):
                     nounDeclareString = ""
                     for noun in nouns:
                         originalVerbString = "(" + verbSymbol + originalVerbName + "_" + str(number) + " "
-                        if noun["var"]:
+                        if noun[self.VERB_NOUN_VAR_TAG]:
                             pronoun = chr(ord('a') + number)
                             addedNouns += pronoun + " "
                             nounDeclareString += "(" + pronoun + " " + noun[self.VERB_NOUN_SORT_TAG] + ") "
@@ -700,7 +700,7 @@ class Translater(object):
         #sth is doing sth, sth is adj.
         if verbs != {}:
             for index, info in verbs.iteritems():
-                nouns = info["relatedNouns"]
+                nouns = info[self.VERB_RELATION_NOUN_TAG]
                 verbName = info[self.VERB_COMBINE_NAME_TAG]
                 if verbName not in self.addedVerbs.keys():
                     verbName = info[self.VERB_ORIGIN_NAME_TAG]
@@ -843,13 +843,13 @@ class Translater(object):
         sortNameMap = {}
         completeNouns = self.findCompleteNouns(library)
         for index, info in verbs.iteritems():
-            nouns = info["relatedNouns"]
+            nouns = info[self.VERB_RELATION_NOUN_TAG]
             for noun in nouns:
                 nounIndex = noun[self.VERB_NOUN_INDEX_TAG]
                 nounName = tokens[nounIndex]
                 sort = noun[self.VERB_NOUN_SORT_TAG]
                 
-                if noun["var"]:
+                if noun[self.VERB_NOUN_VAR_TAG]:
                     #remove "he" and "it"
                     if nounName == "he" or nounName == "it":
                         continue
@@ -1018,8 +1018,10 @@ class Translater(object):
                     for noun in verb[1][self.VERB_RELATION_NOUN_TAG]:
                         nounName = tokens[noun[self.VERB_NOUN_INDEX_TAG]]
                         if nounName in self.existVars[:-2]:
-                            existSentence += self.addExistVarDeclaration(nounName, addedExist, pronoun_name_Map)
-                            addedExist = True
+                            temp = self.addExistVarDeclaration(nounName, addedExist, pronoun_name_Map)
+                            if temp != "":
+                                addedExist = True
+                                existSentence += temp
 
             if addedVerbsNum > 1:
                 secedentString = "(and " + secedentString + ")"
@@ -1041,7 +1043,7 @@ class Translater(object):
         elif type_ABC1 == entailmentType:
             res = ""
             declareString, realityString = addRealityByAntAndSec(antecedent, secedent, verbs)
-            res = declareString + "(=> " + realityString
+            res = self.bracketCheck(declareString + "(=> " + realityString) + "\n"
             #revision of the all verbs
             newVerbs = {}
             for verb in antecedent:
@@ -1074,28 +1076,28 @@ class Translater(object):
 
     def addExistVarDeclaration(self, token, addedExist, pronoun_name_Map):
         headString = ""
-        if "somebody" == token:
+        if "somebody" == token and pronoun_name_Map.has_key("somebody"):
             if addedExist:
                 headString += " (" + pronoun_name_Map["somebody"] + " person )"
             else:
                 headString = "(exists ((" + pronoun_name_Map["somebody"] + " person)"
                 addedExist = True
         
-        if "sb" == token:
+        if "sb" == token and pronoun_name_Map.has_key("sb"):
             if addedExist:
                 headString += " (" + pronoun_name_Map["sb"] + " person)"
             else:
                 headString = "(exists ((" + pronoun_name_Map["sb"] + " person)"
                 addedExist = True
         
-        if "something" == token:
+        if "something" == token and pronoun_name_Map.has_key("something"):
             if addedExist:
                 headString += " (" + pronoun_name_Map["something"] + " thing)"
             else:
                 headString = "(exists ((" + pronoun_name_Map["something"] + " thing)"
                 addedExist = True
         
-        if "sth" == token:
+        if "sth" == token and pronoun_name_Map.has_key("sth"):
             if addedExist:
                 headString += " (" + pronoun_name_Map["sth"] + " thing)"
             else:
@@ -1117,7 +1119,7 @@ class Translater(object):
         for index, info in theVerb.iteritems():
             if index in addedVerbsIndex:
                 continue
-            nouns = info["relatedNouns"]
+            nouns = info[self.VERB_RELATION_NOUN_TAG]
             verbName = info[self.VERB_COMBINE_NAME_TAG]
             if verbName not in self.addedVerbs.keys():
                 verbName = info[self.VERB_ORIGIN_NAME_TAG]
@@ -1127,11 +1129,11 @@ class Translater(object):
 
             headString += "(" + verbSymbol + verbName
             possessionStrs = []
-            numOfNounsInVerb = self.addedVerbs[verbName]
+            numOfNounInVerb = self.addedVerbs[verbName]
             num = 0
             for noun in nouns:
                 num += 1
-                if num > numOfNounsInVerb:
+                if num > numOfNounInVerb:
                     break
                 nounIndex = noun[self.VERB_NOUN_INDEX_TAG]
                 nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, False)
@@ -1150,7 +1152,7 @@ class Translater(object):
                         addedNounName.append(possessionName)
 
                 addedNounName.append(nounName)
-                isVar = noun["var"]
+                isVar = noun[self.VERB_NOUN_VAR_TAG]
                 if isVar:
                     if pronoun_name_Map.has_key(nounName):
                         headString += " " + pronoun_name_Map[nounName]
@@ -1298,7 +1300,7 @@ class Translater(object):
                 nounSentence = ""
                 nounDeclareString = ""
                 for noun in info[self.VERB_RELATION_NOUN_TAG]:
-                    if noun["var"]:
+                    if noun[self.VERB_NOUN_VAR_TAG]:
                         pronoun = chr(ord('a') + number)
                         nounSentence += pronoun + " "
                         nounDeclareString += "(" + pronoun + " " + noun[self.VERB_NOUN_SORT_TAG] + ") "
@@ -1343,7 +1345,8 @@ class Translater(object):
         if "who" in tokens or "whom" in tokens:
             if nounSortMap.has_key("person"):
                 for noun in nounSortMap["person"]:
-                    if "_p" in noun or "_t" in noun:
+                    #remove suffix
+                    if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
                         noun = noun[:-2]
                     if noun not in self.pronounList:
                         nounList.append(noun)
@@ -1351,7 +1354,7 @@ class Translater(object):
         if "what" in tokens:
             if nounSortMap.has_key("thing"):
                 for noun in nounSortMap["thing"]:
-                    if "_p" in noun or "_t" in noun:
+                    if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
                         noun = noun[:-2]
                     if noun not in self.pronounList:
                         nounList.append(noun)
@@ -1361,13 +1364,29 @@ class Translater(object):
         allQuestionVerbSentences = []
         for index, info in verbs.iteritems():
             verbName = info[self.VERB_COMBINE_NAME_TAG]
+            nouns = info[self.VERB_RELATION_NOUN_TAG]
             if verbName not in self.addedVerbs.keys():
-                continue
-            nouns = info["relatedNouns"]
+                verbName = info[self.VERB_ORIGIN_NAME_TAG]
+                length = len(nouns)
+                number = length
+                for _ in range(length):
+                    lessParaVerbName = verbName + "_" + str(number)
+                    if lessParaVerbName in self.addedVerbs.keys():
+                        verbName = lessParaVerbNamebreak
+                    number -= 1
+                
+                if verbName not in self.addedVerbs.keys():
+                    continue
+            
             verbSentence = "(" + verbSymbol + verbName + " "
             addingNouns = []
             #determine if the noun is an variable
+            numOfNounInVerb = self.addedVerbs[verbName]
+            num = 0
             for noun in nouns:
+                num += 1
+                if num > numOfNounInVerb:
+                    break
                 nounIndex = noun[self.VERB_NOUN_INDEX_TAG]
                 tag = tags[nounIndex]
                 if tag in self.questionAnswerTags:
@@ -1413,7 +1432,7 @@ class Translater(object):
             combinedVerbName = info[self.VERB_COMBINE_NAME_TAG]
             if originalVerbName not in answerTokens:
                 verbName = ""
-                nouns = info["relatedNouns"]
+                nouns = info[self.VERB_RELATION_NOUN_TAG]
                 if combinedVerbName in self.addedVerbs.keys():
                     verbName = combinedVerbName
                 elif originalVerbName in self.addedVerbs.keys():
@@ -1428,11 +1447,11 @@ class Translater(object):
                 if verbName == "":
                     continue
                 res += '(' + verbSymbol + verbName + ' '
-                numOfNounsInVerb = self.addedVerbs[verbName]
+                numOfNounInVerb = self.addedVerbs[verbName]
                 num = 0
                 for noun in nouns:
                     num += 1
-                    if num > numOfNounsInVerb:
+                    if num > numOfNounInVerb:
                         break
                     nounIndex = noun[self.VERB_NOUN_INDEX_TAG]
                     nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, descriptionTokens, False)
@@ -1441,6 +1460,7 @@ class Translater(object):
                         nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, descriptionTokens, True)
                         possessionStrs.append(self.addPossessionReality(self.description, nounIndex, nounSortMap))
                     res += nounSymbol + nounName + ' '
+
                 res += ') '
                 number += 1
         if possessionStrs != []:
@@ -1474,14 +1494,14 @@ class Translater(object):
         #person answer
         if "who" in tokens or "whom" in tokens or "whose" in tokens:
             for noun in nounSortMap["person"]:
-                if "_p" in noun or "_t" in noun:
+                if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
                     noun = noun[:-2]
                 if noun not in self.pronounList:
                     nounList.append(noun)
         #thing answer
         if "what" in tokens:
             for noun in nounSortMap["thing"]:
-                if "_p" in noun or "_t" in noun:
+                if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
                     noun = noun[:-2]
                 if noun not in self.pronounList:
                     nounList.append(noun)
@@ -1531,7 +1551,7 @@ class Translater(object):
         verbSentencesList = []
         for index, info in verbs.iteritems():
             verbName = info[self.VERB_COMBINE_NAME_TAG]
-            nouns = info["relatedNouns"]
+            nouns = info[self.VERB_RELATION_NOUN_TAG]
             length = len(nouns)
             if verbName not in self.addedVerbs.keys():
                 number = length
@@ -1550,13 +1570,19 @@ class Translater(object):
                 continue
             addingNouns = []
             #find the noun that is variable
+            numOfNounInVerb = self.addedVerbs[verbName]
+            num = 0
             for noun in nouns:
+                num += 1
+                if num > numOfNounInVerb:
+                    break
                 nounIndex = noun[self.VERB_NOUN_INDEX_TAG]
                 tag = tags[nounIndex]
                 if tag in self.questionAnswerTags:
                     addingNouns.append(tag)
                 else:
                     addingNouns.append(tokens[nounIndex])
+            
             sentences = []
             self.findAllAnswerSentence(addingNouns, nounList, sentences, "")
             verbSentencesList.append([verbName, sentences])
@@ -1689,11 +1715,11 @@ class Translater(object):
             completeNouns = self.findCompleteNouns(kb)
             #find nouns in kb
             for index, info in kbVerbs.iteritems():
-                nouns = info["relatedNouns"]
+                nouns = info[self.VERB_RELATION_NOUN_TAG]
                 combinedVerbNameToIndexMap[info[self.VERB_COMBINE_NAME_TAG]] = index
                 originalVerbNameToIndexMap[info[self.VERB_ORIGIN_NAME_TAG]] = index
                 for noun in nouns:
-                    if not noun["var"]:
+                    if not noun[self.VERB_NOUN_VAR_TAG]:
                         sort = noun[self.VERB_NOUN_SORT_TAG]
                         index = noun[self.VERB_NOUN_INDEX_TAG]
                         nounName1 = self.getCompleteNounNameByIndex(index, completeNouns, tokens, False)
@@ -1724,9 +1750,9 @@ class Translater(object):
                     if originalVerbNameToIndexMap.has_key(verbName):
                         kbindex = originalVerbNameToIndexMap[verbName]
                 if kbindex != -1:
-                    nouns = info["relatedNouns"]
+                    nouns = info[self.VERB_RELATION_NOUN_TAG]
                     kbinfo = kbVerbs[kbindex]
-                    kbNounsInfo = kbinfo["relatedNouns"]
+                    kbNounsInfo = kbinfo[self.VERB_RELATION_NOUN_TAG]
                     length = len(kbNounsInfo)
                     i = 0
                     for noun in nouns:

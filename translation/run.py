@@ -80,8 +80,8 @@ class questionParsing(object):
                                         content = content[:index] + ',' + content[index:]
                             content.strip()
                             if content != "":
-                                if content[-1] == '.':
-                                    content = content[:-1].strip()
+                                if len(content) > 3 and content[-1] == '.' and content[-3] == ' ' and content[-2].isalpha():
+                                    content = content[:-1] + " ."
                             content = requests.get(url + content).content
                             startPos = content.find(startSymbol)
                             endPos = content.find(endSymbol)
