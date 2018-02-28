@@ -1,48 +1,62 @@
+  }
   Parser.setEvaluation: 0 candidates 
-  Example: 25.Susan knows about Ann's personal problems. because she is indiscreet. {
-    Tokens: [25, ., susan, knows, about, ann, 's, personal, problems, ., because, she, is, indiscreet, .]
-    Lemmatized tokens: [25, ., Susan, know, about, Ann, 's, personal, problem, ., because, she, be, indiscreet, .]
-    POS tags: [CD, ., NNP, VBZ, IN, NNP, POS, JJ, NNS, ., IN, PRP, VBD-AUX, JJ, .]
-    NER tags: [NUMBER, O, PERSON, O, O, PERSON, O, O, O, O, O, O, O, O, O]
-    NER values: [25.0, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[punct->1], [], [], [nmod:about->8, punct->9, nsubj->2], [], [case->6], [], [], [case->4, nmod:poss->5, amod->7], [], [], [], [], [mark->10, nsubj->11, cop->12, punct->14], []]
+  Example: 66.Since it was raining, I carried the newspaper over my backpack to keep it dry. {
+    Tokens: [66, ., since, it, was, raining, ,, i, carried, the, newspaper, over, my, backpack, to, keep, it, dry, .]
+    Lemmatized tokens: [66, ., since, it, be, rain, ,, I, carry, the, newspaper, over, my, backpack, to, keep, it, dry, .]
+    POS tags: [CD, ., IN, PRP, VBD-AUX, VBG, ,, PRP, VBD, DT, NN, IN, PRP$, NN, TO, VB, PRP, JJ, .]
+    NER tags: [NUMBER, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [66.0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[punct->1], [], [], [], [], [aux->4, mark->2, nsubj->3], [], [], [advcl->5, punct->6, nsubj->7, dobj->10, nmod:over->13, punct->18], [], [det->9], [], [], [case->11, nmod:poss->12, acl->15], [], [mark->14, xcomp->17], [], [nsubj->16], []]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B is nosy, then person B will know about somebody’s personal problems {
-    Tokens: [if, person, b, is, nosy, ,, then, person, b, will, know, about, somebody, 's, personal, problems]
-    Lemmatized tokens: [if, person, b, be, nosy, ,, then, person, b, will, know, about, somebody, 's, personal, problem]
-    POS tags: [IN, NN, NN, VBD-AUX, JJ, ,, RB, NN, NN, VBD-AUX, VB, IN, NN, POS, JJ, NNS]
+  Example: If somebody carries thing B over thing C, then thing B is over thing C {
+    Tokens: [if, somebody, carries, thing, b, over, thing, c, ,, then, thing, b, is, over, thing, c]
+    Lemmatized tokens: [if, somebody, carry, thing, b, over, thing, c, ,, then, thing, b, be, over, thing, c]
+    POS tags: [IN, NN, VBZ, NN, NN, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, IN, NN, NN]
     NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
     NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, cop->3, punct->5, parataxis->10], [], [], [], [compound->7], [], [nmod:about->15, advmod->6, nsubj->8, aux->9], [], [case->13], [], [], [case->11, nmod:poss->12, amod->14]]
+    Dependency children: [[], [], [parataxis->15, mark->0, nsubj->1, dobj->4, punct->8], [], [compound->3, nmod:over->7], [], [], [case->5, compound->6], [], [], [], [compound->10], [], [], [], [advmod->9, nsubj->11, cop->12, case->13, compound->14]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If person B is indiscreet, then somebody will know about person B’s personal problems. {
-    Tokens: [if, person, b, is, indiscreet, ,, then, somebody, will, know, about, person, b, 's, personal, problems, .]
-    Lemmatized tokens: [if, person, b, be, indiscreet, ,, then, somebody, will, know, about, person, b, 's, personal, problem, .]
-    POS tags: [IN, NN, NN, VBD-AUX, JJ, ,, RB, NN, VBD-AUX, VB, IN, NN, NN, POS, JJ, NNS, .]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [compound->1], [], [mark->0, nsubj->2, cop->3], [], [], [advmod->6], [], [nmod:about->15, punct->16, advcl->4, punct->5, nsubj->7, aux->8], [], [], [compound->11, case->13], [], [], [case->10, nmod:poss->12, amod->14], []]
+  Example: If somebody carries thing B in thing C, then thing C is over thing B {
+    Tokens: [if, somebody, carries, thing, b, in, thing, c, ,, then, thing, c, is, over, thing, b]
+    Lemmatized tokens: [if, somebody, carry, thing, b, in, thing, c, ,, then, thing, c, be, over, thing, b]
+    POS tags: [IN, NN, VBZ, NN, NN, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, IN, NN, NN]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [parataxis->15, mark->0, nsubj->1, dobj->4, punct->8], [], [compound->3, nmod:in->7], [], [], [case->5, compound->6], [], [], [], [compound->10], [], [], [], [advmod->9, nsubj->11, cop->12, case->13, compound->14]]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: Who is indiscreet? {
-    Tokens: [who, is, indiscreet, ?]
-    Lemmatized tokens: [who, be, indiscreet, ?]
-    POS tags: [WP, VBD-AUX, NN, .]
-    NER tags: [O, O, O, O]
-    NER values: [null, null, null, null]
-    Dependency children: [[cop->1, nsubj->2, punct->3], [], [], []]
+  Example: When it is rainy, and thing B is over thing C, then thing C is dry. {
+    Tokens: [when, it, is, rainy, ,, and, thing, b, is, over, thing, c, ,, then, thing, c, is, dry, .]
+    Lemmatized tokens: [when, it, be, rainy, ,, and, thing, b, be, over, thing, c, ,, then, thing, c, be, dry, .]
+    POS tags: [WRB, PRP, VBD-AUX, JJ, ,, CC, NN, NN, VBD-AUX, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, JJ, .]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [], [advmod->0, nsubj->1, cop->2, punct->4, cc->5, conj:and->11], [], [], [], [compound->6], [], [], [], [nsubj->7, cop->8, case->9, compound->10], [], [], [], [advmod->13, compound->14], [], [nsubj->15, cop->16, punct->18, advcl->3, advcl->11, punct->12], []]
+  }
+
+  Parser.parse: parse {
+    Parser.ensureExecuted 
+  }
+  Parser.setEvaluation: 0 candidates 
+  Example: What was I trying to keep dry? {
+    Tokens: [what, was, i, trying, to, keep, dry, ?]
+    Lemmatized tokens: [what, be, I, try, to, keep, dry, ?]
+    POS tags: [WP, VBD-AUX, PRP, VBG, TO, VB, JJ, .]
+    NER tags: [O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [], [aux->1, nsubj->2, xcomp->5, punct->7], [], [dobj->0, mark->4, xcomp->6], [], []]
   }

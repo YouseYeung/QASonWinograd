@@ -1,4 +1,4 @@
-全称量词的修改：
+1)全称量词的修改：
 原来：寻找全称量词的完整形式是使用getCompleteNounNameByIndex的形式。
 现在：直接让其与前面一个单词复合的形式来形成完整的全称量词。
 效果： Example: If somebody uses thing B to clean thing C, then thing B is dirty, and thing C is cleaned {
@@ -13,7 +13,7 @@
 该例子中，sempre错把clean解析成形容词，导致thing C全称量词被解析为clean_thing_C.
 直接使用compound来解析的话就不会出现这样的错误
 
-是否在问句末尾添加问号？
+2)是否在问句末尾添加问号？
 1. 添加则会导致形容词解析出错
  Example: Who is indiscreet? {
     Tokens: [who, is, indiscreet, ?]
@@ -24,3 +24,19 @@
     Dependency children: [[cop->1, nsubj->2, punct->3], [], [], []]
   }
 2. 不添加则会导致动词解析出错
+
+3)问句中事实语句的寻找
+原来：直接用tokens[nounIndex]来替换名词
+现在：用getCompleteNounByIndex()来替换名词
+效果：原来的方式可能得到的不是完整的一个名词，而被声明的名词除了所有格以外都是使用复合名词来声明的，所以直接用tokens[nounIndex]可能出现名词未被声明的情况。
+
+4)当句子中没有全称量词时，返回字符串 "(assert " 而不是"(assert ("，若使用后者则会导致多一个"("，因为addRealityByAntSec是"(= "的形式。
+
+5)名词作为动词
+例子：
+65.Sam pulled up a chair to the piano, but it was broken, so he had to sing instead.
+If chair is broken, then somebody has to stand. If instrument is broken, then somebody has to sing. Piano is an instrument.
+What was broken?
+
+原来：((noun x) and (verb x)) => (secedent)
+现在：((noun x) => (verb x)) => (secedent)

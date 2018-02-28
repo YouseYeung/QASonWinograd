@@ -440,7 +440,9 @@ class Translater(object):
                 #combination of verb and verb, such as make sure to do, want to do, try to do, has to do
                 combinedindexStart = children[i].find("xcomp")
                 if combinedindexStart != -1:
-                    nsubj = verbs[i][self.VERB_RELATION_NOUN_TAG][0]
+                    nsubj = ""
+                    if verbs[i][self.VERB_RELATION_NOUN_TAG] != []:
+                        nsubj = verbs[i][self.VERB_RELATION_NOUN_TAG][0]
                     index = self.findIndexBySymbol(children[i], "xcomp")
                     #if complement is not a verb
                     if "VB" not in tags[index]:
@@ -454,7 +456,10 @@ class Translater(object):
                         continue
                     combinedVerbName = tokens[index]
                     verbs[index] = {self.VERB_ORIGIN_NAME_TAG:combinedVerbName, self.VERB_COMBINE_NAME_TAG:combinedVerbName}
-                    verbs[index][self.VERB_RELATION_NOUN_TAG] = [nsubj]
+                    if nsubj != "":
+                        verbs[index][self.VERB_RELATION_NOUN_TAG] = [nsubj]
+                    else:
+                        verbs[index][self.VERB_RELATION_NOUN_TAG] = []
                     relatedNounsIndex = self.findRelatedNouns(library, index)
                     for ii in relatedNounsIndex:
                         nounInfo = {self.VERB_NOUN_INDEX_TAG:ii}
@@ -951,7 +956,7 @@ class Translater(object):
             existSentence += ") "
         
         if res == "":
-            return "(assert (", pronoun_name_Map
+            return "(assert ", pronoun_name_Map
         notEqualPairs = 0
         entityNotEqualString = ""
         for sort, names in sortNameMap.iteritems():
@@ -1011,6 +1016,7 @@ class Translater(object):
             addedVerbsNum = 0
             existSentence = ""
             addedExist = False
+            addedExistVars = []
             for verb in antecedent:
                 newString = self.addRealityForOneVerb(library, {verb[0]:verb[1]}, verbs, pronoun_name_Map, addedVerbsIndex)
                 if newString != "":
@@ -1020,19 +1026,23 @@ class Translater(object):
                     for noun in verb[1][self.VERB_RELATION_NOUN_TAG]:
                         nounIndex = noun[self.VERB_NOUN_INDEX_TAG]    
                         nounName = tokens[nounIndex]
-                        if nounName in self.existVars[:-2]:
-                            existSentence += self.addExistVarDeclaration(nounName, addedExist, pronoun_name_Map)
-                            addedExist = True
+                        if nounName in self.existVars[:-2] and nounName not in addedExistVars:
+                            temp = self.addExistVarDeclaration(nounName, addedExist, pronoun_name_Map)
+                            if temp != "":
+                                existSentence += temp
+                                addedExist = True
+                                addedExistVars.append(nounName)
                         #address the existence variable of possesion noun
                         nounChild = children[nounIndex]
                         if nounChild.find("nmod:poss") != -1:
                             i = self.findIndexBySymbol(nounChild, "nmod:poss")
                             possName = tokens[i]
-                            if possName in self.existVars[:-2]:
+                            if possName in self.existVars[:-2] and possName not in addedExistVars:
                                 temp = self.addExistVarDeclaration(possName, addedExist, pronoun_name_Map)
                                 if temp != "":
                                     addedExist = True
                                     existSentence += temp
+                                    addedExistVars.append(possName)
 
             if addedVerbsNum > 1:
                 antecedentString = "(and " + antecedentString + ")"
@@ -1042,6 +1052,7 @@ class Translater(object):
             addedVerbsNum = 0
             existSentence = ""
             addedExist = False
+            addedExistVars = []
             for verb in secedent:
                 newString = self.addRealityForOneVerb(library, {verb[0]:verb[1]}, verbs, pronoun_name_Map, addedVerbsIndex) 
                 if newString != "":
@@ -1051,23 +1062,25 @@ class Translater(object):
                     for noun in verb[1][self.VERB_RELATION_NOUN_TAG]:
                         nounIndex = noun[self.VERB_NOUN_INDEX_TAG]    
                         nounName = tokens[nounIndex]
-                        if nounName in self.existVars[:-2]:
+                        if nounName in self.existVars[:-2] and nounName not in addedExistVars:
                             temp = self.addExistVarDeclaration(nounName, addedExist, pronoun_name_Map)
                             if temp != "":
                                 addedExist = True
                                 existSentence += temp
+                                addedExistVars.append(nounName)
+
                         #address the existence variable of possesion noun
                         nounChild = children[nounIndex]
                         if nounChild.find("nmod:poss") != -1:
                             i = self.findIndexBySymbol(nounChild, "nmod:poss")
                             possName = tokens[i]
-                            if possName in self.existVars[:-2]:
+                            #if somebody or something has been added, then neglect
+                            if possName in self.existVars[:-2] and possName not in addedExistVars:
                                 temp = self.addExistVarDeclaration(possName, addedExist, pronoun_name_Map)
                                 if temp != "":
                                     addedExist = True
                                     existSentence += temp
-
-                        
+                                    addedExistVars.append(possName)
 
             if addedVerbsNum > 1:
                 secedentString = "(and " + secedentString + ")"
@@ -1104,7 +1117,7 @@ class Translater(object):
         
         elif type_ABC2 == entailmentType:
             res = ""
-            #neglect the answer antecedent to get description secendent
+            #neglect the answer antecedent to get description secedent
             #just use description secedent to get answer antecedent
             #example: sculpture roll_off shelf
             #declareString, realityString = addRealityByAntAndSec(antecedent, secedent, verbs)
@@ -1218,7 +1231,7 @@ class Translater(object):
                         self.errorTypes.append({"type" : errorType, "val" : nounName})
 
                 else:
-                    #if noun is added as a verb, then transform verb noun into (and (verb x) (noun x))
+                    #if noun is added as a verb, then transform verb noun into (=> (noun x) (verb x))
                     if nounName in self.addedVerbs.keys():
                         headString += " " + pronoun_name_Map[nounName]
                         nounAsVerbSentence = "(" + verbSymbol + nounName + " " \
@@ -1246,14 +1259,15 @@ class Translater(object):
                     self.errorTypes.append({"type" : errorType, "val" : verbName})
 
         
-            #add possession reality and noun as verb sentence
-            if possessionStrs != [] or nounAsVerbSentence != "":
+            #add possession reality
+            if possessionStrs != []:
                 headString = "(and " + headString
                 for posStr in possessionStrs:
                     headString += " " + posStr + " "
-                if nounAsVerbSentence != "":
-                    headString += " " + nounAsVerbSentence
                 headString += ")"
+            #add noun as verb sentence reality
+            if nounAsVerbSentence != "":
+                    headString = "(=> " + nounAsVerbSentence + " " + headString + ")"
 
         return headString
 
@@ -1518,25 +1532,27 @@ class Translater(object):
     def getCandidateAnswerNounForQuestion(self, nounSortMap):
         res = []
         tokens = self.question[self.LEM_TOKEN_TAG]
-        if "who" in tokens or "whom" in tokens or "whose" in tokens:
-            for noun in nounSortMap["person"]:
-                if noun in self.pronounList:
-                    continue
-                #remove suffix to discard nouns like he_p, he_t and so on
-                if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
-                    if noun[:-2] in self.pronounList:
+        if "who" in tokens or "whom" in tokens or "whose" in tokens or "which" in tokens:
+            if nounSortMap.has_key("person"):
+                for noun in nounSortMap["person"]:
+                    if noun in self.pronounList:
                         continue
-                res.append(noun)
+                    #remove suffix to discard nouns like he_p, he_t and so on
+                    if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
+                        if noun[:-2] in self.pronounList:
+                            continue
+                    res.append(noun)
         #thing answer
-        if "what" in tokens:
-            for noun in nounSortMap["thing"]:
-                if noun in self.pronounList:
-                    continue
-                #remove suffix to discard nouns like it_p, it_t and so on
-                if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
-                    if noun[:-2] in self.pronounList:
+        if "what" in tokens or "which" in tokens:
+            if nounSortMap.has_key("thing"):
+                for noun in nounSortMap["thing"]:
+                    if noun in self.pronounList:
                         continue
-                res.append(noun)
+                    #remove suffix to discard nouns like it_p, it_t and so on
+                    if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
+                        if noun[:-2] in self.pronounList:
+                            continue
+                    res.append(noun)
 
         return res
 
@@ -1556,6 +1572,7 @@ class Translater(object):
         verbSymbol = self.VERB_SYMBOL
         nounSymbol = self.NOUN_SYMBOL
         nounList = self.getCandidateAnswerNounForQuestion(nounSortMap)         
+
         #deal with possesion question
         possessionStr = ""
         possessionSentences = []
@@ -1596,8 +1613,10 @@ class Translater(object):
         length = len(nounList)
         i = 0
         verbs = self.findVerbsAndItsRelatedNouns(question)
+        completeNouns = self.findCompleteNouns(question)
         answer = ""
         z3Content = ""
+        #get all the possible reality sentences for question
         verbSentencesList = []
         for index, info in verbs.iteritems():
             verbName = info[self.VERB_COMBINE_NAME_TAG]
@@ -1631,7 +1650,7 @@ class Translater(object):
                 if tag in self.questionAnswerTags:
                     addingNouns.append(tag)
                 else:
-                    addingNouns.append(tokens[nounIndex])
+                    addingNouns.append(self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, False))
             
             sentences = []
             self.findAllAnswerSentence(addingNouns, nounList, sentences, "")
@@ -1819,7 +1838,6 @@ class Translater(object):
                             sort = nouns[i][self.VERB_NOUN_SORT_TAG]
                         nounName1 = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, False)
                         nounName2 = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, True)
-                       
                         def addNounIntoMap(sort, name):
                             if name not in self.addedNouns:
                                 if nounSortMap.has_key(sort):
@@ -1873,7 +1891,7 @@ class Translater(object):
         #add entailment
         res += self.addPrepVerbToVerbEntailment()
         #res += self.addRules_NounAsVerbRange()
-        res += self.addRules_OnlyOneAnswer(nounSortMap)
+        #res += self.addRules_OnlyOneAnswer(nounSortMap)
         res += self.addDescription(self.description, nounSortMap)
         if len(self.context) >= 3:
             print "Description", self.context[0]

@@ -347,19 +347,19 @@ If person B is way head and person C doesn’t have a sudden run of good luck, t
 Who would have lost?
 
 45.Adam can't leave work here until Bob arrives to replace him. If Bob had left home for work on time, he would be here by this time.
-If person B leaves some place for sth on time, then person B would be here by this time. If person B leaves some place for sth on time and person B replaces person C, then person C would be gone by this time.
+If person B leaves some place for something on time, then person B would be here by this time. If person B leaves some place for something on time and person B replaces person C, then person C would be gone by this time.
 Who would be here?
 
 45.Adam can't leave work here until Bob arrives to replace him. If Bob had left home for work on time, he would be gone by this time.
-If person B leaves some place for sth on time, then person B would be here by this time. If person B leaves some place for sth on time and person B replaces person C, then person C would be gone by this time.
+If person B leaves some place for something on time, then person B would be here by this time. If person B leaves some place for something on time and person B replaces person C, then person C would be gone by this time.
 Who would be gone?
 
 46.If the con artist has succeeded in fooling Sam, he would have gotten a lot of money.
-If person B succeed in fooling person C, then person B will get benefit and person C will lose benefit. If person B get money, then person B will get benefit. If person C will lose money, then person C will lose benefit.
+If person B does succeed in fooling person C, then person B will get benefit and person C will lose benefit. If person B does get money, then person B will get benefit. If person C does lose money, then person C will lose benefit.
 Who would have gotten the money?
 
 46.If the con artist has succeeded in fooling Sam, he would have lost a lot of money.
-If person B succeed in fooling person C, then person B will get benefit and person C will lose benefit. If person B get money, then person B will get benefit. If person C will lose money, then person C will lose benefit.
+If person B does succeed in fooling person C, then person B will get benefit and person C will lose benefit. If person B does get money, then person B will get benefit. If person C does lose money, then person C will lose benefit.
 Who would have lost the money?
 
 47.It was a summer afternoon, and the dog was sitting in the middle of the lawn. After a while, it got up and moved to a spot under the tree, because it was hot.
@@ -387,25 +387,24 @@ If person B is a woman and person C is a baby, then person B might give birth to
 Who is a very charming baby?
 
 50.Alice tried frantically to stop her daughter from chatting at the party, leaving us to wonder why she was behaving so strangely.
-If person B stop person C doing sth normal, then person B behaves so strangely. If person B doing sth strange, then person B behaves so strangely. If person B is chatting , then person B is doing sth normal. If person B is barking, then person B is doing sth strange.
+If person B stop person C doing something normal, then person B behaves so strangely. If person B doing something strange, then person B behaves so strangely. If person B is chatting , then person B is doing something normal. If person B is barking, then person B is doing something strange.
 Who was behaving strangely?
 
 50.Alice tried frantically to stop her daughter from barking at the party, leaving us to wonder why she was behaving so strangely.
-If person B stop person C doing sth normal, then person B behaves so strangely. If person B doing sth strange, then person B behaves so strangely. If person B is chatting, then person B is doing sth normal. If person B is barking , then person B is doing sth strange.
+If person B stop person C doing something normal, then person B behaves so strangely. If person B doing something strange, then person B behaves so strangely. If person B is chatting, then person B is doing something normal. If person B is barking , then person B is doing something strange.
 Who was behaving strangely?
 
-51.
 51.I saw Jim yelling at some guy in a military uniform with a huge red beard. I don't know who he was, but he looked very unhappy.
 Who looked very unhappy?
 
-52.I saw Jim yelling at some guy in a military uniform with a huge red beard. I don't know why he was, but he looked very unhappy.
+51.I saw Jim yelling at some guy in a military uniform with a huge red beard. I don't know why he was, but he looked very unhappy.
 Who looked very unhappy?
 
 52.The fish ate the worm. It was tasty.
 If thing B eats thing C, then thing B is hungry and thing C is tasty.
 What was tasty?
 
-53.The fish ate the worm. It was hungry.
+52.The fish ate the worm. It was hungry.
 If thing B eats thing C, then thing B is hungry and thing C is tasty.
 What was hungry?
 
@@ -413,7 +412,7 @@ What was hungry?
 If somebody tries to open the lock with the thing B, then he might not get the thing B in. If somebody fills the keyhole with thing C, then thing C is in the keyhole. If thing C is in the keyhole, then somebody might not get thing C out.
 What couldn't I get in?
 
-54.I was trying to open the lock with the key, but someone had filled the keyhole with chewing gum, and I couldn't get it out.
+53.I was trying to open the lock with the key, but someone had filled the keyhole with chewing gum, and I couldn't get it out.
 If somebody tries to open the lock with the thing B, then he might not get the thing B in. If somebody fills the keyhole with thing C, then thing C is in the keyhole. If thing C is in the keyhole, then somebody might not get thing C out.
 What couldn't I get out?
 
@@ -421,47 +420,47 @@ What couldn't I get out?
 If thing B chases thing C and thing C runs up, then thing B might waits at the bottom or thing C might waits at the top.
 Which waited at the top?
 
-55.The dog chased the cat, which ran up a tree. It waited at the bottom.
+54.The dog chased the cat, which ran up a tree. It waited at the bottom.
 If thing B chases thing C and thing C runs up, then thing B might waits at the bottom or thing C might waits at the top.
 Which waited at the bottom?
 
 55.In the storm, the tree fell down and crashed through the roof of my house. Now, I have to get it removed.
-If thing B crash through thing C, then thing B might be removed and thing C is broken. If thing C is broken, then thing C might be repaired.
+If thing B does crash through thing C, then thing B might be removed and thing C is broken. If thing C is broken, then thing C might be repaired.
 What has to be removed?
 
-56.In the storm, the tree fell down and crashed through the roof of my house. Now, I have to get it repaired.
-If thing B crash through thing C, then thing B might be removed and thing C is broken. If thing C is broken, then thing C might be repaired.
+55.In the storm, the tree fell down and crashed through the roof of my house. Now, I have to get it repaired.
+If thing B does crash through thing C, then thing B might be removed and thing C is broken. If thing C is broken, then thing C might be repaired.
 What has to be repaired?
 
 56.The customer walked into the bank and stabbed one of the tellers. He was immediately taken to the emergency room.
-If person B stabs person C, then person C might be hurt and person B might commit a crime. If person B commits a crime, then person B might be taken to the police station. If person B is hurt, then person B might be taken to emergency.
+If person B stabs person C, then person C might be hurt and person B might commit a crime. If person B commits a crime, then person B might be taken to the police station. If person B is hurt, then person B might be taken to emergency room.
 Who was taken to the emergency room?
 
-57.The customer walked into the bank and stabbed one of the tellers. He was immediately taken to the police station.
-If person B stabs person C, then person C might be hurt and person B might commit a crime. If person B commits a crime, then person B might be taken to the police station. If person B is hurt, then person B might be taken to emergency.
+56.The customer walked into the bank and stabbed one of the tellers. He was immediately taken to the police station.
+If person B stabs person C, then person C might be hurt and person B might commit a crime. If person B commits a crime, then person B might be taken to the police station. If person B is hurt, then person B might be taken to emergency room.
 Who was taken to the police station?
 
 57.John was doing research in the library when he heard a man humming and whistling. He was very annoyed.
 If person B hear person C and person C is making noise, then person B might be annoyed or person C might be annoying. If person B is humming and whistling, then person B is making noise.
 Who was annoyed?
 
-58.John was doing research in the library when he heard a man humming and whistling. He was very annoying.
+57.John was doing research in the library when he heard a man humming and whistling. He was very annoying.
 If person B hear person C and person C is making noise, then person B might be annoyed or person C might be annoying. If person B is humming and whistling, then person B is making noise.
 Who was annoying?
 
 58.John was jogging through the park when he saw a man juggling watermelons. He was very impressed.
-If person B sees person C doing something, then person B might be impressed and person C might be impressive.
+If person B sees person C juggling something, then person B might be impressed and person C might be impressive.
 Who was impressed?
 
-59.John was jogging through the park when he saw a man juggling watermelons. He was very impressive.
-If person B sees person C doing something, then person B might be impressed and person C might be impressive.
+58.John was jogging through the park when he saw a man juggling watermelons. He was very impressive.
+If person B sees person C juggling something, then person B might be impressed and person C might be impressive.
 Who was impressive?
 
 59.Bob collapsed on the sidewalk. Soon he saw Carl coming to help. He was very ill.
 If person B collapses, then person B is ill. If person C helps person B, then person C is concerned. If person B sees person C coming to help, then person C helps person B.
 Who was ill?
 
-60.Bob collapsed on the sidewalk. Soon he saw Carl coming to help. He was very concerned.
+59.Bob collapsed on the sidewalk. Soon he saw Carl coming to help. He was very concerned.
 If person B collapses, then person B is ill. If person C helps person B, then person C is concerned. If person B sees person C coming to help, then person C helps person B.
 Who was concerned?
 
@@ -469,39 +468,39 @@ Who was concerned?
 If person B and person C are in love, and person B is young, and person C is young, then parents might be unhappy. If person B and person C are in love and parents are snobs, then parents might be unhappy.
 Who are snobs?
 
-61.Sam and Amy are passionately in love, but Amy's parents are unhappy about it, because they are fifteen.
+60.Sam and Amy are passionately in love, but Amy's parents are unhappy about it, because they are fifteen.
 If person B and person C are in love, and person B is young, and person C is young, then parents might be unhappy. If person B and person C are in love and parents are snobs, then parents might be unhappy.If person B is fifteen, then person B is young.
 Who are fifteen?
 
 61.Mark told Pete many lies about himself, which Pete included in his book. He should have been more truthful.
-If person B tells person C lies, then person B should be truthful and person C should be skeptical.
+If person B tells person C many lies, then person B should be truthful and person C should be skeptical.
 Who should have been more truthful?
 
-62.Mark told Pete many lies about himself, which Pete included in his book. He should have been more skeptical.
-If person B tells person C lies, then person B should be truthful and person C should be skeptical.
+61.Mark told Pete many lies about himself, which Pete included in his book. He should have been more skeptical.
+If person B tells person C many lies, then person B should be truthful and person C should be skeptical.
 Who should have been more skeptical?
 
 62.Joe has sold his house and bought a new one a few miles away. He will be moving out of it on Thursday.
-If somebody sells his house B and buys a house C, then he might move out of house B and move into house C.
+If somebody sells thing B and buys thing C, then he might move out of thing B and move into thing C.
 Which house will he be moving out of?
 
-63.Joe has sold his house and bought a new one a few miles away. He will be moving into it on Thursday.
-If somebody sells his house B and buys a house C, then he might move out of house B and move into house C.
+62.Joe has sold his house and bought a new one a few miles away. He will be moving into it on Thursday.
+If somebody sells thing B and buys thing C, then he might move out of thing B and move into thing C.
 Which house will he be moving into?
 
 63.Many people start to read Paul's books and can't put them down. They are gripped because Paul writes so well.
-If person B reads thing C, then person B might be gripped or thing C might be popular.
+If person B reads thing C, then person B might be gripped and thing C might be popular.
 Who or what are gripped?
 
-64.Many people start to read Paul's books and can't put them down. They are popular because Paul writes so well.
-If person B reads thing C, then person B might be gripped or thing C might be popular.
+63.Many people start to read Paul's books and can't put them down. They are popular because Paul writes so well.
+If person B reads thing C, then person B might be gripped and thing C might be popular.
 Who or what are popular?
 
 64.Mary took out her flute and played one of her favorite pieces. She has loved it since she was a child.
 If thing B is somebody’s favorite, then he loves thing B. If somebody takes out thing B, then he has thing B.
 What has Mary loved since she was a child?
 
-65.Mary took out her flute and played one of her favorite pieces. She has had it since she was a child.
+64.Mary took out her flute and played one of her favorite pieces. She has had it since she was a child.
 If thing B is somebody’s favorite, then he loves thing B. If somebody takes out thing B, then he has thing B.
 What has Mary had since she was a child?
 
@@ -509,23 +508,23 @@ What has Mary had since she was a child?
 If chair is broken, then somebody has to stand. If instrument is broken, then somebody has to sing. Piano is an instrument.
 What was broken?
 
-66.Sam pulled up a chair to the piano, but it was broken, so he had to sing instead.
+65.Sam pulled up a chair to the piano, but it was broken, so he had to sing instead.
 If chair is broken, then somebody has to stand. If instrument is broken, then somebody has to sing. Piano is an instrument.
 What was broken?
 
 66.Since it was raining, I carried the newspaper over my backpack to keep it dry.
-If somebody carries thing B over thing C, then thing B is over thing C. If somebody carries thing B in thing C, then thing C is over thing B. When it is rainy and thing B is over thing C, then thing C is dry.
+If somebody carries thing B over thing C, then thing B is over thing C. If somebody carries thing B in thing C, then thing C is over thing B. When it is raining and thing B is over thing C, then somebody tries to keep thing C dry.
 What was I trying to keep dry?
 
-67.Since it was raining, I carried the newspaper in my backpack to keep it dry.
-If somebody carries thing B over thing C, then thing B is over thing C. If somebody carries thing B in thing C, then thing C is over thing B. When it is rainy and thing B is over thing C, then thing C is dry.
+66.Since it was raining, I carried the newspaper in my backpack to keep it dry.
+If somebody carries thing B over thing C, then thing B is over thing C. If somebody carries thing B in thing C, then thing C is over thing B. When it is raining and thing B is over thing C, then somebody tries to keep thing C dry.
 What was I trying to keep dry?
 
 67.Sara borrowed the book from the library because she needs it for an article she is working on. She reads it when she gets home from work.
 If person B borrows a book, then person B can read the book and person B can not write the book. If person B is working on thing C, then person B might write thing C.
 What does Sara read when she gets home from work?
 
-68.Sara borrowed the book from the library because she needs it for an article she is working on. She writes it when she gets home from work.
+67.Sara borrowed the book from the library because she needs it for an article she is working on. She writes it when she gets home from work.
 If person B borrows a book, then person B can read the book and person B can not write the book. If person B is working on thing C, then person B might write thing C.
 What does Sara write when she gets home from work?
 
@@ -533,7 +532,7 @@ What does Sara write when she gets home from work?
 If thing C is built by sand, then tide will knock down thing C. Sand castle is built by sand. If thing B is in a high position,  then breeze will knock down thing B. If thing B is in highest tower,  then thing B is in a high position.
 What did the breeze knock down?
 
-69.This morning, Joey built a sand castle on the beach, and put a toy flag in the highest tower, but this afternoon the tide knocked it down.
+68.This morning, Joey built a sand castle on the beach, and put a toy flag in the highest tower, but this afternoon the tide knocked it down.
 If thing C is built by sand, then tide will knock down thing C. Sand castle is built by sand. If thing B is in a high position, then breeze will knock down thing B. If thing B is in highest tower,  then thing B is in a high position.
 What did the tide knock down?
 
@@ -541,7 +540,7 @@ What did the tide knock down?
 If person B knocks on person C’s door and there is no answer, then person C might be not at the house or person B might be disappointed. If person C might be not at the house, then person C might be out.
 Who was out?
 
-70.Jane knocked on Susan's door, but there was no answer. She was disappointed.
+69.Jane knocked on Susan's door, but there was no answer. She was disappointed.
 If person B knocks on person C’s door and there is no answer, then person C might be not at the house or person B might be disappointed. If person C might be not at the house, then person C might be out.
 Who was disappointed?
 
@@ -549,7 +548,7 @@ Who was disappointed?
 If person B knock on the door and person C answers it, then person B is outside and person C is inside. If person B is outside and person C is inside, then person C might invite person B to come in or person B might invite person C to come out.
 Who invited whom?
 
-71.Jane knocked on the door, and Susan answered it. She invited her to come in.
+70.Jane knocked on the door, and Susan answered it. She invited her to come in.
 If person B knock on the door and person C answers it, then person B is outside and person C is inside. If person B is outside and person C is inside, then person C might invite person B to come in or person B might invite person C to come out.
 Who invited whom?
 
@@ -557,7 +556,7 @@ Who invited whom?
 If person B take classes from person C, then person C teaches person B. If person C teaches person B, then person B knows less than person C.  If person B knows less than person C, then person B is eager to know something and person C is known to know something. Speak french fluently is knowing something.
 Who was eager to speak French fluently?
 
-72.Sam took French classes from Adam, because he was known to speak it fluently.
+71.Sam took French classes from Adam, because he was known to speak it fluently.
 If person B take classes from person C, then person C teaches person B. If person C teaches person B, then person B knows less than person C.  If person B knows less than person C, then person B is eager to know something and person C is known to know something. Speak french fluently is knowing something.
 Who was known to speak French fluently?
 
@@ -565,7 +564,7 @@ Who was known to speak French fluently?
 Path is used to reach somewhere. If path to somewhere is blocked, path can’t be used and somewhere can’t be reached.
 What couldn't we reach?
 
-73.The path to the lake was blocked, so we couldn't use it.
+72.The path to the lake was blocked, so we couldn't use it.
 Path is used to reach somewhere. If path to somewhere is blocked, path can’t be used and somewhere can’t be reached.
 What couldn't we use?
 
@@ -573,7 +572,7 @@ What couldn't we use?
 If sun is covered by thing C and sun is out, then it is lucky. If it is lucky, then it is luckily. If sun is covered by thing C and thing C is gone, then it is lucky.
 What was gone?
 
-74.The sun was covered by a thick cloud all morning, but luckily, by the time the picnic started, it was out.
+73.The sun was covered by a thick cloud all morning, but luckily, by the time the picnic started, it was out.
 If sun is covered by thing C and sun is out, then it is lucky. If it is lucky, then it is luckily. If sun is covered by thing C and thing C is gone, then it is lucky.
 What was out?
 
@@ -581,7 +580,7 @@ What was out?
 If something dangerous is at place B, then place B is dangerous.Shark is a dangerous thing.
 Which was a dangerous place to swim?
 
-75.We went to the lake, because a shark had been seen at the ocean beach, so it was a safer place to swim.
+74.We went to the lake, because a shark had been seen at the ocean beach, so it was a safer place to swim.
 If something dangerous is at place B, then place B is dangerous.Shark is a dangerous thing.
 Which was a safer place to swim?
 
@@ -589,7 +588,7 @@ Which was a safer place to swim?
 If thing B looks like thing C, then thing B has the same shape with thing C. Shepherd and golfers are same specie. Sheep and dogs are the same specie. Sheep and shepherd are not same specie. If thing B and thing C are same species, then thing B has the same shape with thing C.
 What looked like dogs?
 
-76.Sam tried to paint a picture of shepherds with sheep, but they ended up looking more like golfers.
+75.Sam tried to paint a picture of shepherds with sheep, but they ended up looking more like golfers.
 If thing B looks like thing C, then thing B has the same shape with thing C. Shepherd and golfers are same specie. Sheep and dogs are the same specie. Sheep and shepherd are not same specie. If thing B and thing C are same species, then thing B has the same shape with thing C.
 What looked like golfers?
 
@@ -597,7 +596,7 @@ What looked like golfers?
 If person B tucks person C into bed, then person C could sleep. If person B sleeps, then person B can’t work.
 Who is going to sleep?
 
-77.Mary tucked her daughter Anne into bed, so that she could work.
+76.Mary tucked her daughter Anne into bed, so that she could work.
 If person B tucks person C into bed, then person C could sleep. If person B sleeps, then person B can’t work.
 Who is going to work?
 
@@ -605,7 +604,7 @@ Who is going to work?
 Coats might not be enough for the cold. Persons might not be prepared for the cold.
 Who or what were not enough for the cold?
 
-78.Fred and Alice had very warm down coats, but they were not prepared for the cold in Alaska.
+77.Fred and Alice had very warm down coats, but they were not prepared for the cold in Alaska.
 Coats might not be enough for the cold. Persons might not be prepared for the cold.
 Who or what were not prepared for the cold?
 
@@ -613,7 +612,7 @@ Who or what were not prepared for the cold?
 If person B visit somewhere, then person B might travel. If person B has grave, then person B might be dead.
 Who had been dead for five years?
 
-79.Thomson visited Cooper's grave in 1765. At that date he had been travelling for five years.
+78.Thomson visited Cooper's grave in 1765. At that date he had been travelling for five years.
 If person B visit somewhere, then person B might travel. If person B has grave, then person B might be dead.
 Who had been travelling for five years?
 
@@ -621,7 +620,7 @@ Who had been travelling for five years?
 If person B is influenced by person C, then person B lived later and person C lived earlier.
 Who lived earlier?
 
-80.Jackson was greatly influenced by Arnold, though he lived two centuries later.
+79.Jackson was greatly influenced by Arnold, though he lived two centuries later.
 If person B is influenced by person C, then person B lived later and person C lived earlier.
 Who lived later?
 
@@ -629,7 +628,7 @@ Who lived later?
 If person B is engaged to person C, then person B and person C are two lovers. If person B is person C’s partner, then person B’s profession is the same with person C’s.
 Which two people have known one another for ten years?
 
-81.Tom's daughter Eva is engaged to Dr. Stewart, who is his partner. The two lovers have known one another for ten years.
+80.Tom's daughter Eva is engaged to Dr. Stewart, who is his partner. The two lovers have known one another for ten years.
 If person B is engaged to person C, then person B and person C are two lovers. If person B is person C’s partner, then person B’s profession is the same with person C’s.
 Which two people have known one another for ten years?
 
@@ -637,7 +636,7 @@ Which two people have known one another for ten years?
 If thing C is thick or thing D is small, then somebody can’t cut thing C down with thing D.
 What is too thick?
 
-82.I can't cut that tree down with that axe; it is too small.
+81.I can't cut that tree down with that axe; it is too small.
 If thing C is thick or thing D is small, then somebody can’t cut thing C down with thing D.
 What is too small?
 
@@ -645,7 +644,7 @@ What is too small?
 If thing B attacks thing C, then thing B is dangerous and thing C is in danger. If thing B is dangerous, then person D should kill thing B. If thing B is in danger, person D should guard thing B.
 What do I have to guard?
 
-83.The foxes are getting in at night and attacking the chickens. I shall have to kill them.
+82.The foxes are getting in at night and attacking the chickens. I shall have to kill them.
 If thing B attacks thing C, then thing B is dangerous and thing C is in danger. If thing B is dangerous, then person D should kill thing B. If thing B is in danger, person D should guard thing B.
 What do I have to kill?
 
@@ -653,7 +652,7 @@ What do I have to kill?
 If thing B attacks thing C, then thing B gets bold and thing C gets nervous.
 What has gotten bold?
 
-84.The foxes are getting in at night and attacking the chickens. They have gotten very nervous.
+83.The foxes are getting in at night and attacking the chickens. They have gotten very nervous.
 If thing B attacks thing C, then thing B gets bold and thing C gets nervous.
 What has gotten nervous?
 
@@ -661,7 +660,7 @@ What has gotten nervous?
 If person B covers thing C with thing D and thing D is in lower position than thing C, then thing C is closed and thing D is raised up. Hands is in lower position than eyes. If thing B is closed, then person B can open thing B. If thing B is raised up, then person B can lower thing B.
 What did Fred open?
 
-85.Fred covered his eyes with his hands, because the wind was blowing sand around. He lowered them when the wind stopped.
+84.Fred covered his eyes with his hands, because the wind was blowing sand around. He lowered them when the wind stopped.
 If person B covers thing C with thing D and thing D is in lower position than thing C, then thing C is closed and thing D is raised up. Hands is in lower position than eyes. If thing B is closed, then person B can open thing B. If thing B is raised up, then person B can lower thing B.
 What did Fred lower?
 
@@ -669,7 +668,7 @@ What did Fred lower?
 If name B is easier to pronounce than name C, then somebody might change name B to name C. If name B is easier to pronounce than name C, then name C is harder to pronounce than name B.
 Which name was easier to pronounce?
 
-86.The actress used to be named Terpsichore, but she changed it to Tina a few years ago, because she figured it was too hard to pronounce.
+85.The actress used to be named Terpsichore, but she changed it to Tina a few years ago, because she figured it was too hard to pronounce.
 If name B is easier to pronounce than name C, then somebody might change name B to name C. If name B is easier to pronounce than name C, then name C is harder to pronounce than name B.
 Which name was too hard to pronounce?
 
@@ -677,7 +676,7 @@ Which name was too hard to pronounce?
 If person B go out to buy groceries, then person B is out. If person B is out, then person B could get back. If person B watches TV, then he might sit down. If person B might sit down, then he could get up.
 Who got up?
 
-87.Fred watched TV while George went out to buy groceries. After an hour he got back.
+86.Fred watched TV while George went out to buy groceries. After an hour he got back.
 If person B go out to buy groceries, then person B is out. If person B is out, then person B could get back. If person B watches TV, then he might sit down. If person B might sit down, then he could get up.
 Who got back?
 
@@ -685,7 +684,7 @@ Who got back?
 If thing B is on, then thing B could be turned off. If thing B is off, then thing B could be turned on. If person B watches thing C, then thing C is on. If person B puts off thing C, then thing C is off.
 What did Fred turn on?
 
-88.Fred was supposed to run the dishwasher, but he put it off, because he wanted to watch TV. But the show turned out to be boring, so he changed his mind and turned it off.
+87.Fred was supposed to run the dishwasher, but he put it off, because he wanted to watch TV. But the show turned out to be boring, so he changed his mind and turned it off.
 If thing B is on, then thing B could be turned off. If thing B is off, then thing B could be turned on. If person B watches thing C, then thing C is on. If person B puts off thing C, then thing C is off.
 What did Fred turn off?
 
@@ -693,7 +692,7 @@ What did Fred turn off?
 If person B is alive, then person B is remarkable. If person B is dead, then person B was remarkable. Great-grandfather might be dead.
 Who is a remarkable man?
 
-89.Fred is the only man still alive who remembers my great-grandfather. He was a remarkable man.
+88.Fred is the only man still alive who remembers my great-grandfather. He was a remarkable man.
 If person B is alive, then person B is remarkable. If person B is dead, then person B was remarkable. Great-grandfather might be dead.
 Who was a remarkable man?
 
@@ -701,7 +700,7 @@ Who was a remarkable man?
 If person B is an infant, then his age is less than three years. Twelve years is not less than three years. Twelve months is equal to one year. One year is less than three years.
 Who was twelve years old?
 
-90.Fred is the only man alive who still remembers my father as an infant. When Fred first saw my father, he was twelve months old.
+89.Fred is the only man alive who still remembers my father as an infant. When Fred first saw my father, he was twelve months old.
 If person B is an infant, then his age is less than three years. Twelve years is not less than three years. Twelve months is equal to one year. One year is less than three years.
 Who was twelve months old?
 
@@ -709,31 +708,31 @@ Who was twelve months old?
 If region B is stronger, then region B wins. If region B wins, then region B is victorious and region B is not defeated. If region B is better, then region B is stronger.
 Who was victorious?
 
-91.In July, Kamtchatka declared war on Yakutsk. Since Yakutsk's army was much better equipped and ten times larger, they were defeated within weeks.
+90.In July, Kamtchatka declared war on Yakutsk. Since Yakutsk's army was much better equipped and ten times larger, they were defeated within weeks.
 If region B is stronger, then region B wins. If region B wins, then region B is victorious and region B is not defeated. If region B is better, then region B is stronger.
 Who was defeated?
 
 91.Elizabeth moved her company from Sparta to Troy to save money on taxes; the taxes are much higher there.
-If person B moves from place C to place D to do sth, then person B do sth in place D. If place D might has lower taxes and place C has higher taxes , then person B can save money in place D. If person B save money in place D, then person B do sth in place D.
+If person B moves from place C to place D to do something, then person B do something in place D. If place D might has lower taxes and place C has higher taxes , then person B can save money in place D. If person B save money in place D, then person B do something in place D.
 Where are the taxes higher? 
 
-92.Elizabeth moved her company from Sparta to Troy to save money on taxes; the taxes are much lower there.
-If person B moves from place C to place D to do sth, then person B do sth in place D. If place D might has lower taxes and place C has higher taxes , then person B can save money in place D. If person B save money in place D, then person B do sth in place D.
+91.Elizabeth moved her company from Sparta to Troy to save money on taxes; the taxes are much lower there.
+If person B moves from place C to place D to do something, then person B do something in place D. If place D might has lower taxes and place C has higher taxes , then person B can save money in place D. If person B save money in place D, then person B do something in place D.
 Where are the taxes lower? 
 
-92.Esther figures that she will save shipping costs if she builds her factory in Springfield instead of Franklin, because most of her customers live there.
+92.Esomethinger figures that she will save shipping costs if she builds her factory in Springfield instead of Franklin, because most of her customers live there.
 If person B builds factory in place C and most of customers live in place C, then person B will save shipping costs.  If person B doesn’t build factory in place C and none of customers live in place C, then person B might save money. If person B builds factory in place C instead of place D, then person B builds factory in place C and person B doesn’t build factory in place D.
-In which town do most of Esther's customers live?
+In which town do most of Esomethinger's customers live?
 
-93.Esther figures that she will save shipping costs if she builds her factory in Springfield instead of Franklin, because none of her customers live there.
+92.Esomethinger figures that she will save shipping costs if she builds her factory in Springfield instead of Franklin, because none of her customers live there.
 If person B builds factory in place C and most of customers live in place C, then person B will save shipping costs.  If person B doesn’t build factory in place C and none of customers live in place C, then person B might save money. If person B builds factory in place C instead of place D, then person B builds factory in place C and person B doesn’t build factory in place D.
-In which town do none of Esther's customers live?
+In which town do none of Esomethinger's customers live?
 
 93.Look! There is a shark swimming right below that duck! It had better get away to safety fast!
 If thing B is the prey of thing C and thing B is near thing C, then thing B might get away to safety. Duck is the prey of shark. Minnow is the prey of duck.
 What needs to get away to safety?
 
-94.Look! There is a minnow swimming right below that duck! It had better get away to safety fast! 
+93.Look! There is a minnow swimming right below that duck! It had better get away to safety fast! 
 If thing B is the prey of thing C and thing B is near thing C, then thing B might get away to safety. Duck is the prey of shark. Minnow is the prey of duck.
 What needs to get away to safety?
 
@@ -741,31 +740,31 @@ What needs to get away to safety?
 If animal B is the prey of animal C, then animal C’s population should increase and animal B's population should decrease. Deer is the prey of wolves.
 Which population will increase?
 
-95.There are too many deer in the park, so the park service brought in a small pack of wolves. The population should decrease over the next few years.
+94.There are too many deer in the park, so the park service brought in a small pack of wolves. The population should decrease over the next few years.
 If animal B is the prey of animal C, then animal C’s population should increase and animal B's population should decrease. Deer is the prey of wolves.
 Which population will decrease?
 
 95.Archaeologists have concluded that humans lived in Laputa 20,000 years ago. They hunted for deer on the river banks.
-If person B has concluded sth, then person B hunts for evidence. If person B lives many years ago, then person B is ancient. If person B is an ancient, then person B hunts for animals. If person B hunts for deer, then person B hunts for animals.
+If person B has concluded something, then person B hunts for evidence. If person B lives many years ago, then person B is ancient. If person B is an ancient, then person B hunts for animals. If person B hunts for deer, then person B hunts for animals.
 Who hunted for deer?
 
-96.Archaeologists have concluded that humans lived in Laputa 20,000 years ago. They hunted for evidence on the river banks.
-If person B has concluded sth, then person B hunts for evidence. If person B lives many years ago, then person B is ancient. If person B is an ancient, then person B hunts for animals. If person B hunts for deer, then person B hunts for animals.
+95.Archaeologists have concluded that humans lived in Laputa 20,000 years ago. They hunted for evidence on the river banks.
+If person B has concluded something, then person B hunts for evidence. If person B lives many years ago, then person B is ancient. If person B is an ancient, then person B hunts for animals. If person B hunts for deer, then person B hunts for animals.
 Who hunted for evidence?
 
 96.The scientists are studying three species of fish that have recently been found living in the Indian Ocean. They appeared two years ago.
-If thing B has been found living in something, then thing B might appear some years ago. If thing B is studying sth, then thing B might begin some years ago.
+If thing B has been found living in something, then thing B might appear some years ago. If thing B is studying something, then thing B might begin some years ago.
 Who or what appeared two years ago?
 
-97.The scientists are studying three species of fish that have recently been found living in the Indian Ocean. They began two years ago.
-If thing B has been found living in something, then thing B might appear some years ago. If thing B is studying sth, then thing B might begin some years ago.
+96.The scientists are studying three species of fish that have recently been found living in the Indian Ocean. They began two years ago.
+If thing B has been found living in something, then thing B might appear some years ago. If thing B is studying something, then thing B might begin some years ago.
 Who or what began two years ago?
 
 97.The journalists interviewed the stars of the new movie. They were very cooperative, so the interview lasted for a long time.
 If person B interviewed person C and the interview lasted for a long time, then person C might be cooperative and person B might be persistent.
 Who was cooperative?
 
-98.The journalists interviewed the stars of the new movie. They were very persistent, so the interview lasted for a long time.
+97.The journalists interviewed the stars of the new movie. They were very persistent, so the interview lasted for a long time.
 If person B interviewed person C and the interview lasted for a long time, then person C might be cooperative and person B might be persistent.
 Who was persistent?
 
@@ -773,7 +772,7 @@ Who was persistent?
 The police is good man. The gang members is bad man. Good man do good things. Bad man do bad things. Run the drug trade is to do bad things. Stop drug trade is to do good things.
 Who was trying to run the drug trade?
 
-99.The police arrested all of the gang members. They were trying to stop the drug trade in the neighborhood.
+98.The police arrested all of the gang members. They were trying to stop the drug trade in the neighborhood.
 The police is good man. The gang members is bad man. Good man do good things. Bad man do bad things. Run the drug trade is to do bad things. Stop drug trade is to do good things.
 Who was trying to stop the drug trade?
 
@@ -781,7 +780,7 @@ Who was trying to stop the drug trade?
 Cake has butter. Refrigerator has leftovers
 What has a lot of butter?
 
-100.I put the cake away in the refrigerator. It has a lot of leftovers in it.
+990.I put the cake away in the refrigerator. It has a lot of leftovers in it.
 Cake has butter. Refrigerator has leftovers
 What has a lot of leftovers?
 
@@ -789,7 +788,7 @@ What has a lot of leftovers?
 If thing B is broken, then thing B is bad. If thing B is a tool, then thing B is necessary. If thing B is at state C and after long time, then thing B is not at state C. Crutches is a tool. If person B break thing C, then thing C is broken.
 What should be better?
 
-101.Sam broke both his ankles and he's walking with crutches. But a month or so from now they should be unnecessary.
+100.Sam broke both his ankles and he's walking with crutches. But a month or so from now they should be unnecessary.
 If thing B is broken, then thing B is bad. If thing B is a tool, then thing B is necessary. If thing B is at state C and after long time, then thing B is not at state C. Crutches is a tool. If person B break thing C, then thing C is broken.
 What should be unnecessary?
 
@@ -797,7 +796,7 @@ What should be unnecessary?
 If there is full of person B, then person B is in the majority and person B is not in the minority.
 Who were in the majority?
 
-102.When the sponsors of the bill got to the town hall, they were surprised to find that the room was full of opponents. They were very much in the minority.
+101.When the sponsors of the bill got to the town hall, they were surprised to find that the room was full of opponents. They were very much in the minority.
 If there is full of person B, then person B is in the majority and person B is not in the minority.
 Who were in the minority?
 
@@ -805,7 +804,7 @@ Who were in the minority?
 If more people like thing B, then thing B should be make more. If less people like thing C, then thing C should be make fewer. Everyone loves thing B, everyone likes thing B. Everyone likes thing B, more people likes thing B. A few people likes thing B, then less people likes thing B.
 Which cookie should we make more of, next time?
 
-103.Everyone really loved the oatmeal cookies; only a few people liked the chocolate chip cookies. Next time, we should make fewer of them.
+102.Everyone really loved the oatmeal cookies; only a few people liked the chocolate chip cookies. Next time, we should make fewer of them.
 If more people like thing B, then thing B should be make more. If less people like thing C, then thing C should be make fewer. Everyone loves thing B, everyone likes thing B. Everyone likes thing B, more people likes thing B. A few people likes thing B, then less people likes thing B.
 Which cookie should we make fewer of, next time?
 
@@ -813,7 +812,7 @@ Which cookie should we make fewer of, next time?
 If thing B is all, then thing B is too many.
 There are too many of what?
 
-104.We had hoped to place copies of our newsletter on all the chairs in the auditorium, but there were simply  too many of them.
+103.We had hoped to place copies of our newsletter on all the chairs in the auditorium, but there were simply  too many of them.
 If thing B is all, then thing B is too many.
 There are not enough of what?
 
@@ -821,7 +820,7 @@ There are not enough of what?
 If person B sticks thing B through thing C, then thing B might left a hole and thing C might have a hole.
 What left a hole?
 
-105.I stuck a pin through a carrot. When I pulled the pin out, it had a hole.
+104.I stuck a pin through a carrot. When I pulled the pin out, it had a hole.
 If person B sticks thing B through thing C, then thing B might left a hole and thing C might have a hole.
 What had a hole?
 
@@ -829,7 +828,7 @@ What had a hole?
 Pen’s content is ink. Coffee’s content is coffee. If person B use thing C to stir thing D, then thing C might get full of thing D’s content and thing D might get full of thing C’s content.
 What got full of ink?
 
-106.I couldn't find a spoon, so I tried using a pen to stir my coffee. But that turned out to be a bad idea, because it got full of coffee.
+105.I couldn't find a spoon, so I tried using a pen to stir my coffee. But that turned out to be a bad idea, because it got full of coffee.
 Pen’s content is ink. Coffee’s content is coffee. If person B use thing C to stir thing D, then thing C might get full of thing D’s content and thing D might get full of thing C’s content.
 What got full of coffee?
 
@@ -837,7 +836,7 @@ What got full of coffee?
 If person B admires person C, then person B might follow person C's example. If person B follow person C, then person C influences person B.
 Who admires whom?
 
-107.Steve follows Fred's example in everything. He influences him hugely.
+106.Steve follows Fred's example in everything. He influences him hugely.
 If person B admires person C, then person B might follow person C's example. If person B follow person C, then person C influences person B.
 Who influences whom?
 
@@ -845,7 +844,7 @@ Who influences whom?
 If thing B is too wide and thing C is too narrow, then thing B can’t fit through thing C.
 What is too wide?
 
-108.The table won't fit through the doorway because it is too narrow.
+107.The table won't fit through the doorway because it is too narrow.
 If thing B is too wide and thing C is too narrow, then thing B can’t fit through thing C.
 What is too narrow?
 
@@ -853,7 +852,7 @@ What is too narrow?
 If person B trades thing C for thing D, then person B likes thing D and person B doesn’t like thing C. If person B thinks thing C looks great, then person B likes thing C. If person B thinks thing D looks dowdy, then person B doesn’t like thing D.
 What looks great on Grace?
 
-109.Grace was happy to trade me her sweater for my jacket. She thinks it looks dowdy on her.
+108.Grace was happy to trade me her sweater for my jacket. She thinks it looks dowdy on her.
 If person B trades thing C for thing D, then person B likes thing D and person B doesn’t like thing C. If person B thinks thing C looks great, then person B likes thing C. If person B thinks thing D looks dowdy, then person B doesn’t like thing D.
 What looks dowdy on Grace?
 
@@ -861,7 +860,7 @@ What looks dowdy on Grace?
 If person B calls attention to himself, then it is rude to somebody and it is rude of person B.
 Who called attention to himself?
 
-110.Bill thinks that calling attention to himself was rude of Bert.
+109.Bill thinks that calling attention to himself was rude of Bert.
 If person B calls attention to himself, then it is rude to somebody and it is rude of person B.
 Who called attention to himself?
 
@@ -869,7 +868,7 @@ Who called attention to himself?
 If person B hires person C to take care of him, then person C takes care of person B. If person B hires himself out to person C to take care of him, then person B takes care of person C.
 Who is taking care of whom?
 
-111.John hired himself out to Bill to take care of him.
+110.John hired himself out to Bill to take care of him.
 If person B hires person C to take care of him, then person C takes care of person B. If person B hires himself out to person C to take care of him, then person B takes care of person C.
 Who is taking care of whom?
 
@@ -877,21 +876,21 @@ Who is taking care of whom?
 If person B promise person C to do something, then person B will do it. If person B order person C to do something, then person C will do it. If somebody leave, he is to do something.
 Who left?
 
-112.John ordered Bill to leave, so an hour later he left.
+111.John ordered Bill to leave, so an hour later he left.
 If person B promise person C to do something, then person B will do it. If person B order person C to do something, then person C will do it. If somebody leave, he is to do something.
 Who left?
 
 112.Sam Goodman's biography of the Spartan general Xenophanes conveys a vivid sense of the difficulties he faced in his childhood.
 Who faced difficulties?
 
-113.Sam Goodman's biography of the Spartan general Xenophanes conveys a vivid sense of the difficulties he faced in his research.
+112.Sam Goodman's biography of the Spartan general Xenophanes conveys a vivid sense of the difficulties he faced in his research.
 Who faced difficulties?
 
 113.Emma's mother had died long ago, and her place had been [taken/managed] by an excellent woman as governess.
 If person B dies, then person B’s place might be taken.
 Whose place had been [taken/managed]?
 
-114.Emma's mother had died long ago, and her education had been [taken/managed] by an excellent woman as governess.
+113.Emma's mother had died long ago, and her education had been [taken/managed] by an excellent woman as governess.
 If person B dies, then person B’s place might be taken.
 Whose education had been [taken/managed]?
 
@@ -899,7 +898,7 @@ Whose education had been [taken/managed]?
 If person B knocks on person C’s door, then person B might not get an answer and person C might not answer.
 Who did not answer?
 
-115.Jane knocked on Susan's door but she did not get an answer.
+114.Jane knocked on Susan's door but she did not get an answer.
 If person B knocks on person C’s door, then person B might not get an answer and person C might not answer.
 Who did not get an answer?
 
@@ -908,7 +907,7 @@ Who did not get an answer?
 If person B is a detective, then person B might delivers report and somebody might receive report from person B.
 Who received the final report?
 
-116.Joe paid the detective after he delivered the final report on the case.
+115.Joe paid the detective after he delivered the final report on the case.
 If person B is a detective, then person B might delivers report and somebody might receive report from person B.
 person B.
 Who delivered the final report?
@@ -1010,11 +1009,11 @@ If person B speaks to person C, then person B’s silence is broken and person C
 Whose silence?
 
 129.When Tommy dropped his ice cream, Timmy giggled, so father gave him a stern look.
-If person B drop sth, then person B is unfortunate. If person B is unfortunate and person C smiles, then somebody might give person B a sympathetic look and person C is annoying. If person B is annoying, then somebody might give person B a stem look. If person B giggles, then person B smiles.
+If person B drop something, then person B is unfortunate. If person B is unfortunate and person C smiles, then somebody might give person B a sympathetic look and person C is annoying. If person B is annoying, then somebody might give person B a stem look. If person B giggles, then person B smiles.
 Who got the look from father?
 
 129.When Tommy dropped his ice cream, Timmy giggled, so father gave him a sympathetic look.
-If person B drop sth, then person B is unfortunate. If person B is unfortunate and person C smiles, then somebody might give person B a sympathetic look and person C is annoying. If person B is annoying, then somebody might give person B a stem look. If person B giggles, then person B smiles.
+If person B drop something, then person B is unfortunate. If person B is unfortunate and person C smiles, then somebody might give person B a sympathetic look and person C is annoying. If person B is annoying, then somebody might give person B a stem look. If person B giggles, then person B smiles.
 Who got the look from father?
 
 130.As Ollie carried Tommy up the long winding steps, his legs dangled.
@@ -1042,35 +1041,35 @@ If person B holds person C, then person C might reject. If person C is against h
 Whose will?
 
 133.Pam's parents came home and found her having sex with her boyfriend, Paul. They were embarrassed about it.
-If person B found person C doing sth embarrassing, then person B might be furious and person C might be embarrassed. If person B is having sex, then person B is doing sth embarrassing.
+If person B found person C doing something embarrassing, then person B might be furious and person C might be embarrassed. If person B is having sex, then person B is doing something embarrassing.
 Who were embarrassed?
 
 133.Pam's parents came home and found her having sex with her boyfriend, Paul. They were furious about it.
-If person B found person C doing sth embarrassing, then person B might be furious and person C might be embarrassed. If person B is having sex, then person B is doing sth embarrassing.
+If person B found person C doing something embarrassing, then person B might be furious and person C might be embarrassed. If person B is having sex, then person B is doing something embarrassing.
 Who were furious?
 
 134.Dr. Adams informed Kate that she had cancer and presented several options for future treatment.
-If person B inform person C sth and person B is a doctor, then person C might have illness or person B might have retired.
+If person B inform person C something and person B is a doctor, then person C might have illness or person B might have retired.
 Who had cancer?
 
 134.Dr. Adams informed Kate that she had retired and presented several options for future treatment. 
-If person B inform person C sth and person B is a doctor, then person C might have illness or person B might have retired.
+If person B inform person C something and person B is a doctor, then person C might have illness or person B might have retired.
 Who had retired?
 
 135.Dan had to stop Bill from toying with the injured bird. He is very compassionate.
-If person B stop person C from doing sth crucial, then person B is compassionate and person C is cruel. If somebody toys with the injured bird, then he is doing sth crucial.
+If person B stop person C from doing something crucial, then person B is compassionate and person C is cruel. If somebody toys with the injured bird, then he is doing something crucial.
 Who is compassionate?
 
 135.Dan had to stop Bill from toying with the injured bird. He is very cruel.
-If person B stop person C from doing sth crucial, then person B is compassionate and person C is cruel. If somebody toys with the injured bird, then he is doing sth crucial.
+If person B stop person C from doing something crucial, then person B is compassionate and person C is cruel. If somebody toys with the injured bird, then he is doing something crucial.
 Who is cruel?
 
 136.George got free tickets to the play, but he gave them to Eric because he was [particularly/not particularly] eager to see it.
-If person B gives the tickets to person C, then person B is not particularly eager to see sth and person C is particularly eager to see sth.
+If person B gives the tickets to person C, then person B is not particularly eager to see something and person C is particularly eager to see something.
 Who was eager to see the play?
 
 136.George got free tickets to the play, but he gave them to Eric even though he was [particularly/not particularly] eager to see it.
-If person B gives the tickets to person C, then person B is not particularly eager to see sth and person C is particularly eager to see sth.
+If person B gives the tickets to person C, then person B is not particularly eager to see something and person C is particularly eager to see something.
 Who  was not eager to see the play?
 
 137.Jane gave Joan candy because she was hungry.
@@ -1098,11 +1097,11 @@ If person B ask person C for a favor, then person B may be refused or person C m
 Who was refused?
 
 140.Kirilov ceded the presidency to Shatov because he was more popular.
-If person B cedes sth to person C, then person B lose sth and person C get sth. If person B is less popular, then person B lose sth. If person C is more popular, then person C get sth.
+If person B cedes something to person C, then person B lose something and person C get something. If person B is less popular, then person B lose something. If person C is more popular, then person C get something.
 Who was more popular?
 
 140.Kirilov ceded the presidency to Shatov because he was less popular.
-If person B cedes sth to person C, then person B lose sth and person C get sth. If person B is less popular, then person B lose sth. If person C is more popular, then person C get sth.
+If person B cedes something to person C, then person B lose something and person C get something. If person B is less popular, then person B lose something. If person C is more popular, then person C get something.
 Who was less popular?
 
 141.Emma did not pass the ball to Janie although she was open.
@@ -1114,11 +1113,11 @@ If person B is open, somebody migth pass the ball to person B.If person B sees t
 Who saw that the other player was open?
 
 142.Joe saw his brother skiing on TV last night but the fool didn't recognize him.
-If person B sees person C and person B might not recognize person C, person B is a fool. If person B do sth in low temperature and person B doesn’t have a coat on, person B is a fool. Skiing on TV is doing sth in low temperature.
+If person B sees person C and person B might not recognize person C, person B is a fool. If person B do something in low temperature and person B doesn’t have a coat on, person B is a fool. Skiing on TV is doing something in low temperature.
 Who is the fool?
 
 142.Joe saw his brother skiing on TV last night but the fool didn't have a coat on.
-If person B sees person C and person B might not recognize person C, person B is a fool. If person B do sth in low temperature and person B doesn’t have a coat on, person B is a fool. Skiing on TV is doing sth in low temperature.
+If person B sees person C and person B might not recognize person C, person B is a fool. If person B do something in low temperature and person B doesn’t have a coat on, person B is a fool. Skiing on TV is doing something in low temperature.
 Who is the fool?
 
 143.I put the heavy book on the table and it broke.
@@ -1138,11 +1137,11 @@ Who couldn't stand whose boyfriend?
 Who slept with whose boyfriend?
 
 145.Carol believed that Rebecca suspected  that she had stolen the watch.
-If person B suspect that somebody do sth, then he might be suspected of doing it. If person B regrets that somebody do sth, person B might doing it.
+If person B suspect that somebody do something, then he might be suspected of doing it. If person B regrets that somebody do something, person B might doing it.
 Who is suspected of stealing the watch? / Who stole the watch?
 
 145.Carol believed that Rebecca  regretted that she had stolen the watch.
-If person B suspect that somebody do sth, then he might be suspected of doing it. If person B regrets that somebody do sth, person B might doing it.
+If person B suspect that somebody do something, then he might be suspected of doing it. If person B regrets that somebody do something, person B might doing it.
 Who is suspected of stealing the watch? / Who stole the watch?
 
 146.This book introduced Shakespeare to Ovid; it was a major influence on his writing.
@@ -1164,7 +1163,7 @@ Fine selection of whose writing?
 If  person B has good luck or person C is obvious, then person B spots person C quickly. If person B wears a red turban, then person B is obvious.
 Who always has good luck?
 
-149.Alice looked for her friend Jade in the crowd. Since she always wears a red turban, Alice spotted her quickly.
+148.Alice looked for her friend Jade in the crowd. Since she always wears a red turban, Alice spotted her quickly.
 If  person B has good luck or person C is obvious, then person B spots person C quickly. If person B wears a red turban, then person B is obvious.
 Who always wears a red turban?
 
@@ -1172,6 +1171,6 @@ Who always wears a red turban?
 During a game of tag, if person B is a 'it',  then person B might chase somebody and somebody might run from person B.
 Who was "it"?
 
-150.During a game of tag, Ethan ran from Luke because he was "it".
+149.During a game of tag, Ethan ran from Luke because he was "it".
 During a game of tag, if person B is a 'it',  then person B might chase somebody and somebody might run from person B.
 Who was "it"?
