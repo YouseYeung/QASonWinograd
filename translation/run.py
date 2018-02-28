@@ -1,15 +1,17 @@
 import requests
 import os
+import time
 
 keywords = [" but ", " because ", " then ", " although "]
 keywords2 = [ " and ", " or "]
 pronoun = ["he", "He", "she", "She", "it", "It", "they", "They", ]
-
+NUM = 149.0 * 4
 class questionParsing(object):
     def __init__(self):
         self.url = 'http://youse-thinkstation-e31:8400/sempre?q='
         self.inputFileName = ""
         self.outputFileName = ""
+        print "parsing:"
 
     def setInputFileName(self, fileName):
         if os.path.isfile(fileName):
@@ -30,7 +32,14 @@ class questionParsing(object):
                 startSymbol = "<pre>"
                 endSymbol = "</pre>"
                 url = self.url
+                count = 0
+                lastTime = time.time()
                 while True:
+                    currentTime = time.time()
+                    count += 1
+                    if currentTime - lastTime > 5:
+                        print ("%.2f"%(count / NUM))
+                        lastTime = currentTime
                     i = 0
                     end = False
                     while i < 3:
@@ -39,9 +48,7 @@ class questionParsing(object):
                         if oneLineContent == "":
                             end = True
                             break
-                        index = oneLineContent.find('?')
-                        if index != -1:
-                            oneLineContent = oneLineContent[:index] + oneLineContent[index + 1:]
+                        index = 0 
                         if oneLineContent == '\n':
                             ofp.write('\n')
                             i += 1
@@ -82,6 +89,9 @@ class questionParsing(object):
                             if content != "":
                                 if len(content) > 3 and content[-1] == '.' and content[-3] == ' ' and content[-2].isalpha():
                                     content = content[:-1] + " ."
+                            #add ? into content's last position
+                            if content != "" and content[-1] == "?":
+                                content = content[:-1] + "%3F"
                             content = requests.get(url + content).content
                             startPos = content.find(startSymbol)
                             endPos = content.find(endSymbol)

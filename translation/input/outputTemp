@@ -1,6 +1,3 @@
- Parser.parse: parse {
-    Parser.ensureExecuted 
-  }
   Parser.setEvaluation: 0 candidates 
   Example: 25.Susan knows about Ann's personal problems. because she is indiscreet. {
     Tokens: [25, ., susan, knows, about, ann, 's, personal, problems, ., because, she, is, indiscreet, .]
@@ -41,11 +38,11 @@
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: Who is indiscreet {
-    Tokens: [who, is, indiscreet]
-    Lemmatized tokens: [who, be, indiscreet]
-    POS tags: [WP, VBD-AUX, JJ]
-    NER tags: [O, O, O]
-    NER values: [null, null, null]
-    Dependency children: [[], [], [nsubj->0, cop->1]]
+  Example: Who is indiscreet? {
+    Tokens: [who, is, indiscreet, ?]
+    Lemmatized tokens: [who, be, indiscreet, ?]
+    POS tags: [WP, VBD-AUX, NN, .]
+    NER tags: [O, O, O, O]
+    NER values: [null, null, null, null]
+    Dependency children: [[cop->1, nsubj->2, punct->3], [], [], []]
   }

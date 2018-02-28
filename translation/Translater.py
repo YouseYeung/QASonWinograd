@@ -669,13 +669,29 @@ class Translater(object):
         return nounName
 
     #Add reality: sb. do sth. sth do sth.
-    def addReality_OneVerb(self, library, verbs, outputStr):
+    def addReality_NoEntailment(self, library, verbs, outputStr):
         res = ""
         headString = "(assert "
         declareVarStr, pronoun_name_Map = self.addVariableDeclare(library, verbs)
+        tokens = library[self.LEM_TOKEN_TAG]
+        addedExist = False
+        existSentence = ""
+        for index, info in verbs.iteritems():
+            nouns = info[self.VERB_RELATION_NOUN_TAG]
+            for noun in nouns:
+                nounIndex = noun[self.VERB_NOUN_INDEX_TAG]
+                nounName = tokens[nounIndex]
+                if nounName in self.existVars[:-2]:
+                    temp = self.addExistVarDeclaration(nounName, addedExist, pronoun_name_Map)
+                    if temp != "":
+                        addedExist = True
+                        existSentence += temp
+
         sentence = self.addRealityForOneVerb(library, verbs, verbs, pronoun_name_Map, [])
+        if existSentence != "":
+            existSentence += ")"
         if sentence != "":
-            res = headString + sentence
+            res = headString + existSentence + sentence
             res = self.bracketCheck(res) + '\n'
         return outputStr + res
 
@@ -854,7 +870,13 @@ class Translater(object):
                     if nounName == "he" or nounName == "it":
                         continue
                     if nounName not in existVars:
-                        nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, False)
+                        #if it is a variable, find its compound noun
+                        nounChild = children[nounIndex]
+                        if nounChild.find("compound") != -1:
+                            compoundIndex = self.findIndexBySymbol(nounChild, "compound")
+                            compoundNounName = tokens[compoundIndex]
+                            nounName = compoundNounName + "_"+ nounName
+                        
                         if not pronoun_name_Map.has_key(nounName):
                             pronoun = pronouns[numOfPronoun]
                             addedPronoun.append(pronoun)
@@ -1160,7 +1182,17 @@ class Translater(object):
                 if num > numOfNounInVerb:
                     break
                 nounIndex = noun[self.VERB_NOUN_INDEX_TAG]
-                nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, False)
+                nounName = tokens[nounIndex] 
+                isVar = noun[self.VERB_NOUN_VAR_TAG]
+                if isVar:
+                    #if it is a variable, find its compound noun
+                    nounChild = children[nounIndex]
+                    if nounChild.find("compound") != -1:
+                        compoundIndex = self.findIndexBySymbol(nounChild, "compound")
+                        compoundNounName = tokens[compoundIndex]
+                        nounName = compoundNounName + "_"+ nounName
+                else:
+                    nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, False)
                 posStr = self.addPossessionReality(library, nounIndex, pronoun_name_Map)
                 if posStr != "":
                     possessionStrs.append(posStr)
@@ -1301,7 +1333,7 @@ class Translater(object):
             if "be" in tokens:
                 return self.addReality_IS_Relation(library, verbs, outputStr)
             else:
-                return self.addReality_OneVerb(library, verbs, outputStr)
+                return self.addReality_NoEntailment(library, verbs, outputStr)
         else:
             return self.addReality_Entailment(library, verbs, sepIndex, outputStr)
 
@@ -1312,7 +1344,7 @@ class Translater(object):
         nounSymbol = self.NOUN_SYMBOL
         tokens = library[self.LEM_TOKEN_TAG]
         completeNouns = self.findCompleteNouns(library)
-        headString = "(assert ("
+        headString = "(assert "
         for index, info in verbs.iteritems():
             combinedVerbName = info[self.VERB_COMBINE_NAME_TAG]
             if "not" not in combinedVerbName and combinedVerbName not in addedVerbs:
@@ -1332,7 +1364,7 @@ class Translater(object):
                         nounSentence += nounSymbol + self.getCompleteNounNameByIndex(noun[self.VERB_NOUN_INDEX_TAG], completeNouns, tokens, True) + " "
                     number += 1
                 if nounDeclareString != "":
-                    nounDeclareString = "forall (" + nounDeclareString + ") "
+                    nounDeclareString = "(forall (" + nounDeclareString + ") "
                 temp = headString + nounDeclareString + "(= " + posSentence + nounSentence + ") "
                 temp += "(not " + negSentence + nounSentence
                 res += self.bracketCheck(temp) + "\n"

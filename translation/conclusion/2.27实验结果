@@ -1,0 +1,26 @@
+全称量词的修改：
+原来：寻找全称量词的完整形式是使用getCompleteNounNameByIndex的形式。
+现在：直接让其与前面一个单词复合的形式来形成完整的全称量词。
+效果： Example: If somebody uses thing B to clean thing C, then thing B is dirty, and thing C is cleaned {
+    Tokens: [if, somebody, uses, thing, b, to, clean, thing, c, ,, then, thing, b, is, dirty, ,, and, thing, c, is, cleaned]
+    Lemmatized tokens: [if, somebody, use, thing, b, to, clean, thing, c, ,, then, thing, b, be, dirty, ,, and, thing, c, be, clean]
+    POS tags: [IN, NN, VBZ, NN, NN, TO, JJ, NN, NN, ,, RB, NN, NN, VBD-AUX, JJ, ,, CC, NN, NN, VBD-AUX, VBN]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [mark->0, nsubj->1, dobj->4, nmod:to->8], [], [compound->3], [], [], [], [case->5, amod->6, compound->7], [], [], [], [advmod->10, compound->11], [], [punct->15, cc->16, advcl->2, conj:and->20, punct->9, nsubj->12, cop->13], [], [], [], [compound->17], [], [nsubjpass->18, auxpass->19]]
+  }
+
+该例子中，sempre错把clean解析成形容词，导致thing C全称量词被解析为clean_thing_C.
+直接使用compound来解析的话就不会出现这样的错误
+
+是否在问句末尾添加问号？
+1. 添加则会导致形容词解析出错
+ Example: Who is indiscreet? {
+    Tokens: [who, is, indiscreet, ?]
+    Lemmatized tokens: [who, be, indiscreet, ?]
+    POS tags: [WP, VBD-AUX, NN, .]
+    NER tags: [O, O, O, O]
+    NER values: [null, null, null, null]
+    Dependency children: [[cop->1, nsubj->2, punct->3], [], [], []]
+  }
+2. 不添加则会导致动词解析出错
