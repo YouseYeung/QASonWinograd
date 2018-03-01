@@ -44,5 +44,5 @@
 (assert (= (Verb_not_enough_for Noun_coat Noun_cold ) (Verb_enough_2 Noun_coat Noun_cold )))
 (assert (=> (Verb_not_prepare_for Noun_person Noun_cold ) (Verb_prepare_1 Noun_person )))
 (assert (= (Verb_not_prepare_for Noun_person Noun_cold ) (Verb_prepare_2 Noun_person Noun_cold )))
-(assert (not  (Verb_enough_2 Noun_cold Noun_Alice )))
+(assert (not  (Verb_enough_2 Noun_Alice Noun_person )))
 (check-sat)

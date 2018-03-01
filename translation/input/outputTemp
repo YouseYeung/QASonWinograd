@@ -1,62 +1,48 @@
-  }
   Parser.setEvaluation: 0 candidates 
-  Example: 66.Since it was raining, I carried the newspaper over my backpack to keep it dry. {
-    Tokens: [66, ., since, it, was, raining, ,, i, carried, the, newspaper, over, my, backpack, to, keep, it, dry, .]
-    Lemmatized tokens: [66, ., since, it, be, rain, ,, I, carry, the, newspaper, over, my, backpack, to, keep, it, dry, .]
-    POS tags: [CD, ., IN, PRP, VBD-AUX, VBG, ,, PRP, VBD, DT, NN, IN, PRP$, NN, TO, VB, PRP, JJ, .]
-    NER tags: [NUMBER, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [66.0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[punct->1], [], [], [], [], [aux->4, mark->2, nsubj->3], [], [], [advcl->5, punct->6, nsubj->7, dobj->10, nmod:over->13, punct->18], [], [det->9], [], [], [case->11, nmod:poss->12, acl->15], [], [mark->14, xcomp->17], [], [nsubj->16], []]
+  Example: 148.Alice looked for her friend Jade in the crowd. Since she always wears a red turban, Alice spotted her quickly. {
+    Tokens: [148, ., alice, looked, for, her, friend, jade, in, the, crowd, ., since, she, always, wears, a, red, turban, ,, alice, spotted, her, quickly, .]
+    Lemmatized tokens: [148, ., Alice, look, for, she, friend, Jade, in, the, crowd, ., since, she, always, wear, a, red, turban, ,, Alice, spot, she, quickly, .]
+    POS tags: [CD, ., NNP, VBD, IN, PRP$, NN, NNP, IN, DT, NN, ., IN, PRP, RB, VBZ, DT, JJ, NN, ,, NNP, VBD, PRP$, RB, .]
+    NER tags: [NUMBER, O, PERSON, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [148.0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[punct->1], [], [], [nmod:for->7, punct->11, nsubj->2], [], [], [], [case->4, nmod:poss->5, compound->6, nmod:in->10], [], [], [case->8, det->9], [], [], [], [], [dobj->18, mark->12, nsubj->13, advmod->14], [], [], [amod->17, det->16], [], [], [punct->19, nsubj->20, dobj->22, advmod->23, punct->24, advcl->15], [], [], []]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If somebody carries thing B over thing C, then thing B is over thing C {
-    Tokens: [if, somebody, carries, thing, b, over, thing, c, ,, then, thing, b, is, over, thing, c]
-    Lemmatized tokens: [if, somebody, carry, thing, b, over, thing, c, ,, then, thing, b, be, over, thing, c]
-    POS tags: [IN, NN, VBZ, NN, NN, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, IN, NN, NN]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [parataxis->15, mark->0, nsubj->1, dobj->4, punct->8], [], [compound->3, nmod:over->7], [], [], [case->5, compound->6], [], [], [], [compound->10], [], [], [], [advmod->9, nsubj->11, cop->12, case->13, compound->14]]
+  Example: If  person B has good luck, or person C is obvious, then person B spots person C quickly {
+    Tokens: [if, person, b, has, good, luck, ,, or, person, c, is, obvious, ,, then, person, b, spots, person, c, quickly]
+    Lemmatized tokens: [if, person, b, have, good, luck, ,, or, person, c, be, obvious, ,, then, person, b, spot, person, c, quickly]
+    POS tags: [IN, NN, NN, VBD-AUX, JJ, NN, ,, CC, NN, NN, VBD-AUX, JJ, ,, RB, NN, NN, NNS, NN, NN, RB]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [mark->0, nsubj->2, dobj->5, dobj->9], [], [amod->4, punct->6, cc->7, conj:or->9], [], [], [], [compound->8], [], [csubj->3, cop->10, punct->12, parataxis->13], [], [advmod->19, dep->14], [dep->16], [], [compound->15, dep->18], [], [compound->17], []]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: If somebody carries thing B in thing C, then thing C is over thing B {
-    Tokens: [if, somebody, carries, thing, b, in, thing, c, ,, then, thing, c, is, over, thing, b]
-    Lemmatized tokens: [if, somebody, carry, thing, b, in, thing, c, ,, then, thing, c, be, over, thing, b]
-    POS tags: [IN, NN, VBZ, NN, NN, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, IN, NN, NN]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [parataxis->15, mark->0, nsubj->1, dobj->4, punct->8], [], [compound->3, nmod:in->7], [], [], [case->5, compound->6], [], [], [], [compound->10], [], [], [], [advmod->9, nsubj->11, cop->12, case->13, compound->14]]
+  Example: If person B wears a red turban, then person B is obvious. {
+    Tokens: [if, person, b, wears, a, red, turban, ,, then, person, b, is, obvious, .]
+    Lemmatized tokens: [if, person, b, wear, a, red, turban, ,, then, person, b, be, obvious, .]
+    POS tags: [IN, NN, NN, VBZ, DT, JJ, NN, ,, RB, NN, NN, VBD-AUX, JJ, .]
+    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    Dependency children: [[], [], [compound->1], [mark->0, nsubj->2, dobj->6], [], [], [det->4, amod->5], [], [], [], [advmod->8, compound->9], [], [advcl->3, punct->7, nsubj->10, cop->11, punct->13], []]
   }
 
   Parser.parse: parse {
     Parser.ensureExecuted 
   }
   Parser.setEvaluation: 0 candidates 
-  Example: When it is rainy, and thing B is over thing C, then thing C is dry. {
-    Tokens: [when, it, is, rainy, ,, and, thing, b, is, over, thing, c, ,, then, thing, c, is, dry, .]
-    Lemmatized tokens: [when, it, be, rainy, ,, and, thing, b, be, over, thing, c, ,, then, thing, c, be, dry, .]
-    POS tags: [WRB, PRP, VBD-AUX, JJ, ,, CC, NN, NN, VBD-AUX, IN, NN, NN, ,, RB, NN, NN, VBD-AUX, JJ, .]
-    NER tags: [O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [], [advmod->0, nsubj->1, cop->2, punct->4, cc->5, conj:and->11], [], [], [], [compound->6], [], [], [], [nsubj->7, cop->8, case->9, compound->10], [], [], [], [advmod->13, compound->14], [], [nsubj->15, cop->16, punct->18, advcl->3, advcl->11, punct->12], []]
-  }
-
-  Parser.parse: parse {
-    Parser.ensureExecuted 
-  }
-  Parser.setEvaluation: 0 candidates 
-  Example: What was I trying to keep dry? {
-    Tokens: [what, was, i, trying, to, keep, dry, ?]
-    Lemmatized tokens: [what, be, I, try, to, keep, dry, ?]
-    POS tags: [WP, VBD-AUX, PRP, VBG, TO, VB, JJ, .]
-    NER tags: [O, O, O, O, O, O, O, O]
-    NER values: [null, null, null, null, null, null, null, null]
-    Dependency children: [[], [], [], [aux->1, nsubj->2, xcomp->5, punct->7], [], [dobj->0, mark->4, xcomp->6], [], []]
+  Example: Who always wears a red turban {
+    Tokens: [who, always, wears, a, red, turban]
+    Lemmatized tokens: [who, always, wear, a, red, turban]
+    POS tags: [WP, RB, VBZ, DT, JJ, NN]
+    NER tags: [O, O, O, O, O, O]
+    NER values: [null, null, null, null, null, null]
+    Dependency children: [[], [], [nsubj->0, advmod->1, dobj->5], [], [], [det->3, amod->4]]
   }

@@ -216,7 +216,7 @@ Who told the other about the accident?
 If person B is younger than person C, then person B can beat person C at something. If person B is older than person C, then person C is younger than person B.
 Who is older?
 
-28.Joe's uncle can still beat him at tennis, even though he is 30 years younger.
+28.Joe's uncle can still beat him at tennis, eventhough he is 30 years younger.
 If person B is younger than person C, then person B can beat person C at something. If person B is older than person C, then person C is younger than person B.
 Who is younger?
 
@@ -513,11 +513,11 @@ If chair is broken, then somebody has to stand. If instrument is broken, then so
 What was broken?
 
 66.Since it was raining, I carried the newspaper over my backpack to keep it dry.
-If somebody carries thing B over thing C, then thing B is over thing C. If somebody carries thing B in thing C, then thing C is over thing B. When it is raining and thing B is over thing C, then somebody tries to keep thing C dry.
+If somebody carries thing B over thing C, then thing B is put over thing C. If somebody carries thing B in thing C, then thing C is put over thing B. If it is raining and thing B is put over thing C, then somebody tries to keep thing C dry.
 What was I trying to keep dry?
 
 66.Since it was raining, I carried the newspaper in my backpack to keep it dry.
-If somebody carries thing B over thing C, then thing B is over thing C. If somebody carries thing B in thing C, then thing C is over thing B. When it is raining and thing B is over thing C, then somebody tries to keep thing C dry.
+If somebody carries thing B over thing C, then thing B is put over thing C. If somebody carries thing B in thing C, then thing C is put over thing B. If it is raining and thing B is put over thing C, then somebody tries to keep thing C dry.
 What was I trying to keep dry?
 
 67.Sara borrowed the book from the library because she needs it for an article she is working on. She reads it when she gets home from work.
@@ -537,11 +537,11 @@ If thing C is built by sand, then tide will knock down thing C. Sand castle is b
 What did the tide knock down?
 
 69.Jane knocked on Susan's door, but there was no answer. She was out.
-If person B knocks on person C’s door and there is no answer, then person C might be not at the house or person B might be disappointed. If person C might be not at the house, then person C might be out.
+If person B knocks on person C’s door and there is no answer, then person C might be not at the house and person B might be disappointed. If person C might be not at the house, then person C might be out.
 Who was out?
 
 69.Jane knocked on Susan's door, but there was no answer. She was disappointed.
-If person B knocks on person C’s door and there is no answer, then person C might be not at the house or person B might be disappointed. If person C might be not at the house, then person C might be out.
+If person B knocks on person C’s door and there is no answer, then person C might be not at the house and person B might be disappointed. If person C might be not at the house, then person C might be out.
 Who was disappointed?
 
 70.Jane knocked on the door, and Susan answered it. She invited her to come out.
@@ -569,11 +569,11 @@ Path is used to reach somewhere. If path to somewhere is blocked, path can’t b
 What couldn't we use?
 
 73.The sun was covered by a thick cloud all morning, but luckily, by the time the picnic started, it was gone.
-If sun is covered by thing C and sun is out, then it is lucky. If it is lucky, then it is luckily. If sun is covered by thing C and thing C is gone, then it is lucky.
+If sun is covered by something and sun is out, then it is luckily. If sun is covered by thing C, and thing C is gone, then it is luckily.
 What was gone?
 
 73.The sun was covered by a thick cloud all morning, but luckily, by the time the picnic started, it was out.
-If sun is covered by thing C and sun is out, then it is lucky. If it is lucky, then it is luckily. If sun is covered by thing C and thing C is gone, then it is lucky.
+If sun is covered by something and sun is out, then it is luckily. If sun is covered by thing C, and thing C is gone, then it is luckily.
 What was out?
 
 74.We went to the lake, because a shark had been seen at the ocean beach, so it was a dangerous place to swim.
@@ -592,20 +592,20 @@ What looked like dogs?
 If thing B looks like thing C, then thing B has the same shape with thing C. Shepherd and golfers are same specie. Sheep and dogs are the same specie. Sheep and shepherd are not same specie. If thing B and thing C are same species, then thing B has the same shape with thing C.
 What looked like golfers?
 
-76.Mary tucked her daughter Anne into bed, so that she could sleep.
-If person B tucks person C into bed, then person C could sleep. If person B sleeps, then person B can’t work.
+76.Mary tucked her daughter into bed, so that she could sleep.
+If person B does tuck person C into bed, then person C could sleep and person B is free. If person B is free, then person B can work.
 Who is going to sleep?
 
-76.Mary tucked her daughter Anne into bed, so that she could work.
-If person B tucks person C into bed, then person C could sleep. If person B sleeps, then person B can’t work.
+76.Mary tucked her daughter into bed, so that she could work.
+If person B does tuck person C into bed, then person C could sleep and person B is free. If person B is free, then person B can work.
 Who is going to work?
 
 77.Fred and Alice had very warm down coats, but they were not enough for the cold in Alaska.
-Coats might not be enough for the cold. Persons might not be prepared for the cold.
+Coats might not be enough for the cold. Persons might not be prepared for the cold. Fred is person. Alice is person.
 Who or what were not enough for the cold?
 
 77.Fred and Alice had very warm down coats, but they were not prepared for the cold in Alaska.
-Coats might not be enough for the cold. Persons might not be prepared for the cold.
+Coats might not be enough for the cold. Persons might not be prepared for the cold. Fred is person. Alice is person.
 Who or what were not prepared for the cold?
 
 78.Thomson visited Cooper's grave in 1765. At that date he had been dead for five years.
@@ -641,19 +641,19 @@ If thing C is thick or thing D is small, then somebody can’t cut thing C down 
 What is too small?
 
 82.The foxes are getting in at night and attacking the chickens. I shall have to guard them.
-If thing B attacks thing C, then thing B is dangerous and thing C is in danger. If thing B is dangerous, then person D should kill thing B. If thing B is in danger, person D should guard thing B.
+If thing B does attack thing C, then thing B is dangerous and thing C is in danger. If thing B is dangerous, then person D should kill thing B. If thing B is in danger, person D should guard thing B.
 What do I have to guard?
 
 82.The foxes are getting in at night and attacking the chickens. I shall have to kill them.
-If thing B attacks thing C, then thing B is dangerous and thing C is in danger. If thing B is dangerous, then person D should kill thing B. If thing B is in danger, person D should guard thing B.
+If thing B does attack thing C, then thing B is dangerous and thing C is in danger. If thing B is dangerous, then person D should kill thing B. If thing B is in danger, person D should guard thing B.
 What do I have to kill?
 
 83.The foxes are getting in at night and attacking the chickens. They have gotten very bold.
-If thing B attacks thing C, then thing B gets bold and thing C gets nervous.
+If thing B does attack thing C, then thing B gets bold and thing C gets nervous.
 What has gotten bold?
 
 83.The foxes are getting in at night and attacking the chickens. They have gotten very nervous.
-If thing B attacks thing C, then thing B gets bold and thing C gets nervous.
+If thing B does attack thing C, then thing B gets bold and thing C gets nervous.
 What has gotten nervous?
 
 84.Fred covered his eyes with his hands, because the wind was blowing sand around. He opened them when the wind stopped.
@@ -673,11 +673,11 @@ If name B is easier to pronounce than name C, then somebody might change name B 
 Which name was too hard to pronounce?
 
 86.Fred watched TV while George went out to buy groceries. After an hour he got up.
-If person B go out to buy groceries, then person B is out. If person B is out, then person B could get back. If person B watches TV, then he might sit down. If person B might sit down, then he could get up.
+If person B goes out to buy groceries, then person B is out. If person B is out, then person B could get back. If person B watches TV, then person B might sit down. If person B sits down, then person B could get up.
 Who got up?
 
 86.Fred watched TV while George went out to buy groceries. After an hour he got back.
-If person B go out to buy groceries, then person B is out. If person B is out, then person B could get back. If person B watches TV, then he might sit down. If person B might sit down, then he could get up.
+If person B goes out to buy groceries, then person B is out. If person B is out, then person B could get back. If person B watches TV, then person B might sit down. If person B sits down, then person B could get up.
 Who got back?
 
 87.Fred was supposed to run the dishwasher, but he put it off, because he wanted to watch TV. But the show turned out to be boring, so he changed his mind and turned it on.
@@ -769,19 +769,19 @@ If person B interviewed person C and the interview lasted for a long time, then 
 Who was persistent?
 
 98.The police arrested all of the gang members. They were trying to run the drug trade in the neighborhood.
-The police is good man. The gang members is bad man. Good man do good things. Bad man do bad things. Run the drug trade is to do bad things. Stop drug trade is to do good things.
+If person B arrestes person C, then person B is good man and person C is bad man. Good man does good things. Bad man does bad things. If person B tries to run the drug trade, then person B does bad things. If person B tries to stop drug trade, then person B does good things.
 Who was trying to run the drug trade?
 
 98.The police arrested all of the gang members. They were trying to stop the drug trade in the neighborhood.
-The police is good man. The gang members is bad man. Good man do good things. Bad man do bad things. Run the drug trade is to do bad things. Stop drug trade is to do good things.
+If person B arrestes person C, then person B is good man and person C is bad man. Good man does good things. Bad man does bad things. If person B tries to run the drug trade, then person B does bad things. If person B tries to stop drug trade, then person B does good things.
 Who was trying to stop the drug trade?
 
 99.I put the cake away in the refrigerator. It has a lot of butter in it.
-Cake has butter. Refrigerator has leftovers
+Cake has a lot of butter. Refrigerator has a lot of leftovers
 What has a lot of butter?
 
-990.I put the cake away in the refrigerator. It has a lot of leftovers in it.
-Cake has butter. Refrigerator has leftovers
+99.I put the cake away in the refrigerator. It has a lot of leftovers in it.
+Cake has a lot of butter. Refrigerator has a lot of leftovers
 What has a lot of leftovers?
 
 100.Sam broke both his ankles and he's walking with crutches. But a month or so from now they should be better.
@@ -793,11 +793,11 @@ If thing B is broken, then thing B is bad. If thing B is a tool, then thing B is
 What should be unnecessary?
 
 101.When the sponsors of the bill got to the town hall, they were surprised to find that the room was full of opponents. They were very much in the majority.
-If there is full of person B, then person B is in the majority and person B is not in the minority.
+If a room is full of person B, then person B is in the majority and person B is not in the minority.
 Who were in the majority?
 
 101.When the sponsors of the bill got to the town hall, they were surprised to find that the room was full of opponents. They were very much in the minority.
-If there is full of person B, then person B is in the majority and person B is not in the minority.
+If a room is full of person B, then person B is in the majority and person B is not in the minority.
 Who were in the minority?
 
 102.Everyone really loved the oatmeal cookies; only a few people liked the chocolate chip cookies. Next time, we should make more of them.
@@ -833,11 +833,11 @@ Pen’s content is ink. Coffee’s content is coffee. If person B use thing C to
 What got full of coffee?
 
 106.Steve follows Fred's example in everything. He admires him hugely.
-If person B admires person C, then person B might follow person C's example. If person B follow person C, then person C influences person B.
+If person B admires person C, then person B might follow person C's example. If person B follows person C's example, then person C influences person B.
 Who admires whom?
 
 106.Steve follows Fred's example in everything. He influences him hugely.
-If person B admires person C, then person B might follow person C's example. If person B follow person C, then person C influences person B.
+If person B admires person C, then person B might follow person C's example. If person B follows person C's example, then person C influences person B.
 Who influences whom?
 
 107.The table won't fit through the doorway because it is too wide.
@@ -873,11 +873,11 @@ If person B hires person C to take care of him, then person C takes care of pers
 Who is taking care of whom?
 
 111.John promised Bill to leave, so an hour later he left.
-If person B promise person C to do something, then person B will do it. If person B order person C to do something, then person C will do it. If somebody leave, he is to do something.
+If person B promise person C to leave, then person B will leave. If person B order person C to leave, then person C will leave.
 Who left?
 
 111.John ordered Bill to leave, so an hour later he left.
-If person B promise person C to do something, then person B will do it. If person B order person C to do something, then person C will do it. If somebody leave, he is to do something.
+If person B promise person C to leave, then person B will leave. If person B order person C to leave, then person C will leave.
 Who left?
 
 112.Sam Goodman's biography of the Spartan general Xenophanes conveys a vivid sense of the difficulties he faced in his childhood.
@@ -937,11 +937,11 @@ If person B’s “Dibs!” is quicker, then person B takes the front seat. If p
 Whose "Dibs" was slow?
 
 120.Tom said "Check" to Ralph as he took his bishop.
-If person B has a bishop, then person B might say “Check” to somebody. If person B has a bishop, then person B might moves the bishop or somebody might take the bishop.
+If person B says “Check” to person C, then person B might move his bishop and person C might take his bishop.
 Whose bishop did Tom take?
 
 120.Tom said "Check" to Ralph as he moved his bishop.
-If person B has a bishop, then person B might say “Check” to somebody. If person B has a bishop, then person B might moves the bishop or somebody might take the bishop.
+If person B says “Check” to person C, then person B might move his bishop and person C might take his bishop.
 Whose bishop did Tom move?
 
 121.As Andrea in the crop duster passed over Susan, she could see the landing strip.
@@ -953,11 +953,11 @@ If person B is in the airplane, then person B could see the landing strip. If a 
 Who could see the landing gear?
 
 122.Tom gave Ralph a lift to school so he wouldn't have to walk.
-If person B gives person C a lift to someplace, then person B is a driver and person C might not have to walk. If person B is a driver, then person B might not drive alone.
+If person B gives person C a lift to something, then person B is a driver and person C might not have to walk. If person B is a driver, then person B might not have to drive alone.
 Who wouldn't have to walk?
 
 122.Tom gave Ralph a lift to school so he wouldn't have to drive alone.
-If person B gives person C a lift to someplace, then person B is a driver and person C might not have to walk. If person B is a driver, then person B might not drive alone.
+If person B gives person C a lift to something, then person B is a driver and person C might not have to walk. If person B is a driver, then person B might not have to drive alone.
 Who wouldn't have to drive alone?
 
 123.Bill passed the half-empty plate to John because he was full.
@@ -1097,15 +1097,15 @@ If person B ask person C for a favor, then person B may be refused or person C m
 Who was refused?
 
 140.Kirilov ceded the presidency to Shatov because he was more popular.
-If person B cedes something to person C, then person B lose something and person C get something. If person B is less popular, then person B lose something. If person C is more popular, then person C get something.
+If person B cedes something to person C, then person B lose something and person C get something. If person B is less popular, then person B lose something. If person C is more popular, then person C might get something.
 Who was more popular?
 
 140.Kirilov ceded the presidency to Shatov because he was less popular.
-If person B cedes something to person C, then person B lose something and person C get something. If person B is less popular, then person B lose something. If person C is more popular, then person C get something.
+If person B cedes something to person C, then person B might lose something and person C might get something. If person B is less popular, then person B might lose something. If person C is more popular, then person C might get something.
 Who was less popular?
 
 141.Emma did not pass the ball to Janie although she was open.
-If person B is open, then somebody migth pass the ball to person B. If person B sees that person C is open, then person B might pass the ball to person C.
+If person B is open, somebody migth pass the ball to person B.If person B sees that person C is open, person B might pass the ball to person C.
 Who was open?
 
 141.Emma did not pass the ball to Janie although she saw that she was open.
@@ -1158,13 +1158,12 @@ Fine selection of whose writing?
 147.This book introduced Shakespeare to Goethe; it was a fine selection of his writing.
 Fine selection of whose writing?
 
-148.
 148.Alice looked for her friend Jade in the crowd. Since she always has good luck, Alice spotted her quickly.
-If  person B has good luck or person C is obvious, then person B spots person C quickly. If person B wears a red turban, then person B is obvious.
+If person B has good luck, then person B might spot sombody quickly.
 Who always has good luck?
 
 148.Alice looked for her friend Jade in the crowd. Since she always wears a red turban, Alice spotted her quickly.
-If  person B has good luck or person C is obvious, then person B spots person C quickly. If person B wears a red turban, then person B is obvious.
+If person C is obvious, then sombody might spot person C quickly. If person B wears a red turban, then person B is obvious.
 Who always wears a red turban?
 
 149.During a game of tag, Ethan chased Luke because he was "it".

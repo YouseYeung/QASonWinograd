@@ -90,8 +90,8 @@ class questionParsing(object):
                                 if len(content) > 3 and content[-1] == '.' and content[-3] == ' ' and content[-2].isalpha():
                                     content = content[:-1] + " ."
                             #add ? into content's last position
-                            if content != "" and content[-1] == "?":
-                                content = content[:-1] + "%3F"
+                            #if content != "" and content[-1] == "?":
+                            #    content = content[:-1] + "%3F"
                             content = requests.get(url + content).content
                             startPos = content.find(startSymbol)
                             endPos = content.find(endSymbol)

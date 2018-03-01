@@ -30,6 +30,7 @@ class Translater(object):
         self.outputStr = ""
         self.possessionVerbs = []
         self.questionVerbNames = []
+        self.nounAsVerbs = []
         self.loadFileName = ""
         #errorTypes: [{"type": str, "val" : str},]
         self.errorTypes = []
@@ -157,6 +158,7 @@ class Translater(object):
                     self.addedVerbs = {}
                     self.addedNouns = []
                     self.possessionVerbs = []
+                    self.nounAsVerbs = []
                     self.questionVerbNames = []
                     self.outputStr = ""
                     self.errorTypes = []
@@ -236,16 +238,18 @@ class Translater(object):
         #{nounIndex: [relatedNounsIndex1, relatedNounsIndex2, ...]}
         nouns = {}
         i = 0
+        addedIndex = []
         for tag in tags:
             if "NN" in tag:
                 child = children[i]
                 #adj noun
-                symbols = ["amod", "compound", "nmod:poss"]
+                symbols = ["amod", "compound", "nmod:poss"] 
                 relatedNounsIndex = []
                 for symbol in symbols:
                     index = self.findIndexBySymbol(child, symbol)
-                    if index != -1:
+                    if index != -1 and index not in addedIndex and ("VB" not in tags[index]):
                         relatedNounsIndex.append({"tag":symbol, "index":index})
+                        addedIndex.append(index)
                 if relatedNounsIndex != []:
                     nouns[i] = sorted(relatedNounsIndex, key = lambda x : x["index"])
 
@@ -328,7 +332,7 @@ class Translater(object):
             originalVerbName = tokens[i]
             combinedVerbName = originalVerbName
             #every form of verb as a binary or more parameter predciate
-            if i not in addedVerbsIndex and ("VB" in tag or "JJ" in tag or "RB" in tag or "NN" in tag):
+            if i not in addedVerbsIndex and ("VB" in tag or "JJ" in tag or "RB" in tag or "NN" in tag or "IN" in tag):
                 #determine whether a vbd-aux has to be added as a verb.
                 #do better than => add it.
                 #does study good => negelect it
@@ -344,20 +348,29 @@ class Translater(object):
                         #if it is does +
                         if "not" == tokens[i + 1]:
                             continue
-                #be + adj as an unary predicate, be + adv
-                if "JJ" in tag or"RB" in tag or "NN" in tag:
+                #be + adj, be + adv, be + prep, as an unary predicate, be + adv
+                if "JJ" in tag or"RB" in tag or "NN" in tag or "IN" in tag:
                     if child.find("cop") == -1 and child.find("auxpass") == -1:
                         continue
+                    #if noun is parsed as a verb, then add it into self.nounAsVerbs list
+                    elif "NN" in tag:
+                        self.nounAsVerbs.append(tokens[i])
                 #find negative form
                 if "neg" in child:
                     combinedVerbName = "not_" + combinedVerbName
 
                 #combine prep or adv to get the combined form of verb.
-                index = self.findIndexBySymbol(child, "advmod")
-                if index != -1:
-                    advName = tokens[index]
-                    if advName != "then":
-                        combinedVerbName += "_" + advName
+                #a verb may be combined with many adverbs.
+                indexStart = 0
+                while True:
+                    index = self.findIndexBySymbol(child[indexStart:], "advmod")
+                    indexStart = child.find("advmod", indexStart) + 1
+                    if index != -1:
+                        advName = tokens[index]
+                        if advName != "then":
+                            combinedVerbName += "_" + advName
+                    else:
+                        break
                 
                 index = self.findIndexBySymbol(child, "amod")
                 if index != -1:
@@ -382,6 +395,12 @@ class Translater(object):
                     if "JJ" in tags[index]:
                         adjName = tokens[index]
                         combinedVerbName += "_" + adjName
+                
+                #address the condition: go out, get back, get up
+                index = self.findIndexBySymbol(child, "compound:prt")
+                if index != -1:
+                    advName = tokens[index]
+                    combinedVerbName += "_" + advName
                 
                 #if verb is the form of "not" + prep
                 #change originalVerbName into a combinedVerbName
@@ -555,43 +574,50 @@ class Translater(object):
         for index, info in verbs.iteritems():
             combinedVerbName = info[self.VERB_COMBINE_NAME_TAG]
             originalVerbName = info[self.VERB_ORIGIN_NAME_TAG]
-
-            if combinedVerbName not in self.addedVerbs:
+            nounStr = ""
+            num = 0
+            if combinedVerbName not in self.addedVerbs.keys():
                 nouns = info[self.VERB_RELATION_NOUN_TAG]
                 res += declareRel + verbSymbol + combinedVerbName + " ("
-                num = 0
                 for noun in nouns:
-                    res += noun[self.VERB_NOUN_SORT_TAG] + " "
+                    nounStr += noun[self.VERB_NOUN_SORT_TAG] + " "
                     num += 1
-                res += "))\n"
+                res += nounStr + "))\n"
                 #add all declared verbs and its number of parameters into list addedverb
                 self.addedVerbs[combinedVerbName] = num
+            else:
+                continue
 
             #descending grade for verbs to get predicates with less parameter
-            num = 1
+            lessNum = 1
             nouns = ""
-            if combinedVerbName != originalVerbName:
-                relatedNouns = info[self.VERB_RELATION_NOUN_TAG]
-                for noun in relatedNouns:
-                    lessPredicateVerbName = originalVerbName + "_" + str(num)
-                    if lessPredicateVerbName in self.addedVerbs.keys():
-                        continue
-                    res += declareRel + verbSymbol + lessPredicateVerbName + " ("
-                    nouns += noun[self.VERB_NOUN_SORT_TAG] + " "
-                    res += nouns + "))\n"
-                    self.addedVerbs[lessPredicateVerbName] = num
-                    num += 1
+            relatedNouns = info[self.VERB_RELATION_NOUN_TAG]
+            for noun in relatedNouns:
+                lessPredicateVerbName = originalVerbName + "_" + str(lessNum)
+                if lessPredicateVerbName in self.addedVerbs.keys():
+                    continue
+                res += declareRel + verbSymbol + lessPredicateVerbName + " ("
+                nouns += noun[self.VERB_NOUN_SORT_TAG] + " "
+                res += nouns + "))\n"
+                self.addedVerbs[lessPredicateVerbName] = lessNum
+                lessNum += 1
 
+            #additional verb for positive verb
+            if "not" in combinedVerbName:
+                posVerbName = ""
+                verbNames = combinedVerbName.split("_")
+                for name in verbNames:
+                    if name != "not":
+                        posVerbName += name + "_"
+                posVerbName = posVerbName[:-1]
+                if posVerbName not in self.addedVerbs.keys():
+                    res += declareRel + verbSymbol + posVerbName + " (" + nounStr + "))\n"
+                    self.addedVerbs[posVerbName] = num
             #additional verb for negative verb
             if "not" not in combinedVerbName:
                 newVerbName = "not_" + combinedVerbName
                 if not self.addedVerbs.has_key(newVerbName):
-                    res += declareRel + verbSymbol + newVerbName + " ("
-                    num = 0
-                    for noun in info[self.VERB_RELATION_NOUN_TAG]:
-                        res += noun[self.VERB_NOUN_SORT_TAG] + " "
-                        num += 1
-                    res += "))\n"
+                    res += declareRel + verbSymbol + newVerbName + " (" + nounStr + "))\n"
                     self.addedVerbs[newVerbName] = num
 
         return res
@@ -602,7 +628,7 @@ class Translater(object):
         verbSymbol = self.VERB_SYMBOL
         nounSymbol = self.NOUN_SYMBOL
         for kb in self.kbList:
-            headString = "(assert (forall ("
+            headString = "(assert "
             tokens = kb[self.LEM_TOKEN_TAG]
             verbs = self.findVerbsAndItsRelatedNouns(kb)
             completeNouns = self.findCompleteNouns(kb)
@@ -634,7 +660,8 @@ class Translater(object):
                         number += 1
 
                     combinedVerbString += addedNouns + ") "
-                    nounDeclareString += ") "
+                    if nounDeclareString != "":
+                        nounDeclareString = "(forall (" + nounDeclareString + ") "
                     entailmentTypeStr = "(=> "
                     number = 1
                     for string in lessParaPredicateString:
@@ -1211,6 +1238,7 @@ class Translater(object):
                     possessionStrs.append(posStr)
                     nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, True)
                     possessionName = ""
+                    print nounName, "0--------------"
                     child = children[nounIndex]
                     index = self.findIndexBySymbol(child, "nmod:poss")
                     possessionName = tokens[index]
@@ -1231,8 +1259,10 @@ class Translater(object):
                         self.errorTypes.append({"type" : errorType, "val" : nounName})
 
                 else:
-                    #if noun is added as a verb, then transform verb noun into (=> (noun x) (verb x))
-                    if nounName in self.addedVerbs.keys():
+                    #if noun exists in self.nounAsVerbs list a verb
+                    #then this noun is marked as a classification verb, such as Fish is an anmial
+                    #then transform verb noun into (=> (noun x) (verb x))
+                    if nounName in self.nounAsVerbs:
                         headString += " " + pronoun_name_Map[nounName]
                         nounAsVerbSentence = "(" + verbSymbol + nounName + " " \
                                             + pronoun_name_Map[nounName] + ")"
@@ -1361,12 +1391,24 @@ class Translater(object):
         headString = "(assert "
         for index, info in verbs.iteritems():
             combinedVerbName = info[self.VERB_COMBINE_NAME_TAG]
-            if "not" not in combinedVerbName and combinedVerbName not in addedVerbs:
+            if combinedVerbName not in addedVerbs:
                 addedVerbs.append(combinedVerbName)
-                newVerbName = "not_" + combinedVerbName
+                posVerbName = ""
+                negVerbName = ""
+                if "not" not in combinedVerbName:
+                    negVerbName = "not_" + combinedVerbName
+                    posVerbName = combinedVerbName
+                else:
+                    verbNames = combinedVerbName.split("_")
+                    for name in verbNames:
+                        if name != "not":
+                            posVerbName += name + "_"
+                    posVerbName = posVerbName[:-1]
+                    negVerbName = combinedVerbName
+
                 number = 1
-                negSentence = "(" + verbSymbol + newVerbName + " "
-                posSentence = "(" + verbSymbol + combinedVerbName + " "
+                negSentence = "(" + verbSymbol + negVerbName + " "
+                posSentence = "(" + verbSymbol + posVerbName + " "
                 nounSentence = ""
                 nounDeclareString = ""
                 for noun in info[self.VERB_RELATION_NOUN_TAG]:
@@ -1561,13 +1603,6 @@ class Translater(object):
         tokens = question[self.LEM_TOKEN_TAG]
         tags = question[self.POS_TAG]
         children = question[self.CHILDREN_TAG]
-        verb = ""
-        i = 0
-        for tag in tags:
-            if "VB" in tag and "AUX" not in tag:
-                verb = tokens[i]
-            i += 1
-
         headString = "(assert (not "
         verbSymbol = self.VERB_SYMBOL
         nounSymbol = self.NOUN_SYMBOL
@@ -1735,6 +1770,14 @@ class Translater(object):
                 #the end char is  '\n', delete it
                 var = os.popen("z3 " +  fileName).read()
                 print ("verification result:" + " " + answerSentence + " : " + var)
+                
+                #delete error infos 
+                var = var.split('\n')
+                for string in var:
+                    if len(string) < 10:
+                        var = string
+                        break
+
                 i += 1
                 if str(var).find(answerSymbol) == 0:
                     wordList = answerSentence.split(" ")
