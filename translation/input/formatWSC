@@ -269,17 +269,19 @@ If thing B is between somebody and thing C, then he can’t see thing C and he c
 What can't I see around?
 
 35.They broadcast an announcement, but a subway came into the station and I couldn't hear it.
-If person B does broadcast something, then somebody might not hear it. If there exists a loud, then somebody might not hear over a loud. If a subway comes, there exists a loud.
+If person B does broadcast something, then somebody might not hear it. If there exists a loud, then somebody might not hear over a loud. If a subway comes, then there exists a loud.
 What couldn't I hear?
 
 35.They broadcast an announcement, but a subway came into the station and I couldn't hear over it.
-If person B does broadcast something, then somebody might not hear it. If there exists a loud, then somebody might not hear over a loud. If a subway comes, there exists a loud.
+If person B does broadcast something, then somebody might not hear it. If there exists a loud, then somebody might not hear over a loud. If a subway comes, then there exists a loud.
 What couldn't I hear over?
 
 36.In the middle of the outdoor concert, the rain started falling, and it continued until 10.
+No.
 What continued until 10?
 
 36.In the middle of the outdoor concert, the rain started falling, but it continued until 10.
+No.
 What continued until 10?
 
 37.I used an old rag to clean the knife, and then I put it in the drawer.
@@ -291,11 +293,11 @@ If somebody uses thing B to clean thing C, then thing B is dirty and thing C is 
 What did I put in the trash?
 
 38.Ann asked Mary what time the library closes, but she had forgotten.
-If person B forgets something, then person B might ask sb something.
+If person B does remember something, then somebody might ask person B. If person B does remember something, then person B might forget something.
 Who had forgotten?
 
 38.Ann asked Mary what time the library closes, because she had forgotten.
-If person B forgets something, then person B might ask sb something.
+If person B forgets something, then person B might ask somebody.
 Who had forgotten?
 
 39.I took the water bottle out of the backpack so that it would be lighter.
@@ -315,27 +317,27 @@ If thing B is tall or thing C is high, then somebody can’t put thing B on the 
 What was too tall?
 
 41.I'm sure that my map will show this building; it is very famous.
-If a map shows thing B, then a map might be good and thing B might be famous.
+If a map shows thing B, then a map might be good and thing B might be famous. My map is a map.
 What is famous?
 
 41.I'm sure that my map will show this building; it is very good.
-If a map shows thing B, then a map might be good and thing B might be famous.
+If a map shows thing B, then a map might be good and thing B might be famous. My map is a map.
 What is good?
 
 42.Bob paid for Charlie's college education. He is very generous.
-If person B pays for perosn C's college education, then person B is generous and person C is grateful.
+If person B does charity, then person B is generous. If somebody helps person B, then person B is grateful. If person B pays for person C's college education, then person B does charity, and person B helps person C.
 Who is generous?
 
 42.Bob paid for Charlie's college education. He is very grateful.
-If person B pays for perosn C's college education, then person B is generous and person C is grateful.
+If person B does charity, then person B is generous. If somebody helps person B, then person B is grateful. If person B pays for person C's college education, then person B does charity, and person B helps person C.
 Who is grateful?
 
 43.Bob paid for Charlie's college education, but now Charlie acts as though it never happened. He is very hurt.
-If person B helps person C and person C acts as though it never happened, then person B might be hurt and person C might be ungrateful.
+If person B helps person C and person C acts as though it never happened, then person B might be hurt and person C might be ungrateful. If person B does pay for person C's college education, then person B does help person C.
 Who is hurt?
 
 43.Bob paid for Charlie's college education, but now Charlie acts as though it never happened. He is very ungrateful.
-If person B helps person C and person C acts as though it never happened, then person B might be hurt and person C might be ungrateful.
+If person B helps person C and person C acts as though it never happened, then person B might be hurt and person C might be ungrateful. If person B does pay for person C's college education, then person B does help person C.
 Who is ungrateful?
 
 44.Bob was playing cards with Adam and was way ahead. If Adam hadn't had a sudden run of good luck, he would have won.
@@ -387,17 +389,19 @@ If person B is a woman and person C is a baby, then person B might give birth to
 Who is a very charming baby?
 
 50.Alice tried frantically to stop her daughter from chatting at the party, leaving us to wonder why she was behaving so strangely.
-If person B stop person C doing something normal, then person B behaves so strangely. If person B doing something strange, then person B behaves so strangely. If person B is chatting , then person B is doing something normal. If person B is barking, then person B is doing something strange.
+If person B stopes person C doing something normal, then person B behaves so strangely. If person B doing something strange, then person B behaves so strangely. If person B is chatting , then person B is doing something normal. If person B is barking, then person B is doing something strange.
 Who was behaving strangely?
 
 50.Alice tried frantically to stop her daughter from barking at the party, leaving us to wonder why she was behaving so strangely.
-If person B stop person C doing something normal, then person B behaves so strangely. If person B doing something strange, then person B behaves so strangely. If person B is chatting, then person B is doing something normal. If person B is barking , then person B is doing something strange.
+If person B stopes person C doing something normal, then person B behaves so strangely. If person B doing something strange, then person B behaves so strangely. If person B is chatting , then person B is doing something normal. If person B is barking, then person B is doing something strange.
 Who was behaving strangely?
 
 51.I saw Jim yelling at some guy in a military uniform with a huge red beard. I don't know who he was, but he looked very unhappy.
+No.
 Who looked very unhappy?
 
 51.I saw Jim yelling at some guy in a military uniform with a huge red beard. I don't know why he was, but he looked very unhappy.
+No.
 Who looked very unhappy?
 
 52.The fish ate the worm. It was tasty.

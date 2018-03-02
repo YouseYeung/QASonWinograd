@@ -1,0 +1,8 @@
+1. 从动词到简版动词的推理
+原来：当动词的完整名字与其简化名字不一样时，才加入verb => verb_num的推理
+现在：对所有的动词都加入这样的推理
+例子：20. successful 与 very successful的对应
+
+2.ccomp补语从句
+i know that
+i see that

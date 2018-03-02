@@ -25,8 +25,7 @@ class Translater(object):
         self.kbList = []
         self.context = []
         self.addedVerbs = {}
-        #noun name and its sort map
-        self.addedNouns = {}
+        self.addedNouns = []
         #z3 keywords, these words can not be declared as a rel, we have to add '_' in front of the word.
         self.outputStr = ""
         self.possessionVerbs = []
@@ -157,7 +156,7 @@ class Translater(object):
                     self.description = {}
                     self.context = []
                     self.addedVerbs = {}
-                    self.addedNouns = {}
+                    self.addedNouns = []
                     self.possessionVerbs = []
                     self.nounAsVerbs = []
                     self.questionVerbNames = []
@@ -399,20 +398,12 @@ class Translater(object):
                     combinedVerbName += "_" + prepName
 
                 #address the condition: do better than
-                #address the condition: sb sees sth1 through sth2, sth2 occurs at sth1's children with the form: "nmod:prep->" 
                 index = self.findIndexBySymbol(child, "obj")
                 if index != -1:
                     if "JJ" in tags[index]:
                         adjName = tokens[index]
                         combinedVerbName += "_" + adjName
-                    elif "NN" in tags[index] or "PRP" in tags[index]:
-                        child = children[index]
-                        indexStart = child.find("nmod")
-                        if indexStart != -1:
-                            indexEnd = child[indexStart:].find("->") + indexStart
-                            prepName = child[indexStart + len("nmod:"):indexEnd]
-                            combinedVerbName += "_" + prepName
-
+                
                 #address the condition: go out, get back, get up
                 index = self.findIndexBySymbol(child, "compound:prt")
                 if index != -1:
@@ -437,7 +428,8 @@ class Translater(object):
                         nounInfo[self.VERB_NOUN_SORT_TAG] = tokens[lastWordIndex]
                         nounInfo[self.VERB_NOUN_VAR_TAG] = True
 
-                    elif nounName in existVars: 
+                    elif nounName in existVars:
+                            
                         if nounName == "somebody" or nounName == "sb" or nounName == "he":
                             nounInfo[self.VERB_NOUN_SORT_TAG] = "person"
                             nounInfo[self.VERB_NOUN_VAR_TAG] = True
@@ -560,7 +552,7 @@ class Translater(object):
         nounSymbol = self.NOUN_SYMBOL
         nounSentence = ""
         for verbName in self.addedVerbs.keys():
-            for nounName in self.addedNouns.keys():
+            for nounName in self.addedNouns:
                 if nounName.find(verbName) != -1:
                     res += headString + verbSymbol + verbName + " " + nounName + "))\n"
         return res
@@ -1216,6 +1208,7 @@ class Translater(object):
         tags = library[self.POS_TAG]
         children = library[self.CHILDREN_TAG]
         completeNouns = self.findCompleteNouns(library)
+        addedNounName = []
         nounAsVerbSentence = ""
         for index, info in theVerb.iteritems():
             if index in addedVerbsIndex:
@@ -1238,9 +1231,8 @@ class Translater(object):
                     break
                 nounIndex = noun[self.VERB_NOUN_INDEX_TAG]
                 nounName = tokens[nounIndex] 
-                nounVar = noun[self.VERB_NOUN_SORT_TAG]
-                
-                if nounVar:
+                isVar = noun[self.VERB_NOUN_VAR_TAG]
+                if isVar:
                     #if it is a variable, find its compound noun
                     nounChild = children[nounIndex]
                     if nounChild.find("compound") != -1:
@@ -1254,20 +1246,21 @@ class Translater(object):
                     possessionStrs.append(posStr)
                     nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, True)
                     possessionName = ""
+                    print nounName, "0--------------"
                     child = children[nounIndex]
                     index = self.findIndexBySymbol(child, "nmod:poss")
                     possessionName = tokens[index]
                     #if the verb is related to a possession noun, then add it into the list
                     self.possessionVerbs.append(verbName)
                     self.possessionVerbs.append(info[self.VERB_ORIGIN_NAME_TAG])
+                    if possessionName not in addedNounName:
+                        addedNounName.append(possessionName)
 
-                if nounVar:
-                    #when the words, "he", "it" and so on, is used as variable
+                addedNounName.append(nounName)
+                isVar = noun[self.VERB_NOUN_VAR_TAG]
+                if isVar:
                     if pronoun_name_Map.has_key(nounName):
                         headString += " " + pronoun_name_Map[nounName]
-                    #when the words, "he", "it" and so on, is used as constant
-                    elif nounName in self.addedNouns.keys():
-                        headString += " " + nounSymbol + nounName
                     else:
                         print "[ERROR]: incorrect variable name:", nounName
                         errorType = ErrorTypes.VAR_NAME_ERROR
@@ -1283,10 +1276,9 @@ class Translater(object):
                                             + pronoun_name_Map[nounName] + ")"
                     else:
                         headString += " " + nounSymbol + nounName
-
             headString += ")"
             addedVerbsIndex.append(index)
-            
+
             child = children[index]
             index = child.find("conj:")
             
@@ -1377,11 +1369,11 @@ class Translater(object):
                         return ""
                 #subjname is a constant
                 else:
-                    if subjName + "_p" in self.addedNouns.keys():
+                    if subjName + "_p" in self.addedNouns:
                         res += "(" + verbSymbol + self.Possess_Person_Thing + " " + nounSymbol + subjName + "_p " \
                         + nounSymbol + objName + ") "
          
-                    if subjName + "_t" in self.addedNouns.keys():
+                    if subjName + "_t" in self.addedNouns:
                         res += "(" + verbSymbol + self.Possess_Thing_Thing + " " + nounSymbol + subjName + "_t " \
                         + nounSymbol + objName + ") "
         return res
@@ -1571,17 +1563,7 @@ class Translater(object):
                     if verbName in self.possessionVerbs:
                         nounName = self.getCompleteNounNameByIndex(nounIndex, completeNouns, descriptionTokens, True)
                         possessionStrs.append(self.addPossessionReality(self.description, nounIndex, nounSortMap))
-                    #if nounName has added as possesion name, 
-                    #then transform original name into possesion name
-                    nounVar = noun[self.VERB_NOUN_SORT_TAG]
-                    if self.addedNouns.has_key(nounName):
-                        if self.addedNouns[nounName] == "person":
-                            if self.addedNouns.has_key(nounName + "_p"):
-                                nounName += "_p"
-                        elif self.addedNouns[nounName] == "thing":
-                            if self.addedNouns.has_key(nounName + "_t"):
-                                nounName += "_t"
-                        res += nounSymbol + nounName + ' '
+                    res += nounSymbol + nounName + ' '
 
                 res += ') '
                 number += 1
@@ -1683,8 +1665,7 @@ class Translater(object):
             verbName = info[self.VERB_COMBINE_NAME_TAG]
             nouns = info[self.VERB_RELATION_NOUN_TAG]
             length = len(nouns)
-            #if verbName and verb's related nouns not match, then transform verbName
-            if verbName not in self.addedVerbs.keys() or self.addedVerbs[verbName] != length:
+            if verbName not in self.addedVerbs.keys():
                 number = length
                 verbName = info[self.VERB_ORIGIN_NAME_TAG]
                 for _ in range(length):
@@ -1720,24 +1701,6 @@ class Translater(object):
             i += 1
                 
         i = 1
-
-        answerSymbol = "unsat"
-        reverseSymbol = False
-        for reverseWord in self.reverseKeywords:
-            if reverseSymbol:
-                break
-            num = 0
-            for token in self.description[self.LEM_TOKEN_TAG]:
-                if token == reverseWord:
-                    #if there exists a comma before reverseKeywords 
-                    #or reverseKeywords exists at the begining
-                    if num == 0 or \
-                        num > 1 and self.description[self.LEM_TOKEN_TAG][num - 1] == ',':
-                        answerSymbol = "sat"
-                        reverseSymbol = True
-                    break
-                num += 1
-
         #whose
         if possessionSentences != []:
             for posSentence in possessionSentences:
@@ -1758,7 +1721,7 @@ class Translater(object):
                 var = os.popen("z3 " +  fileName).read()[:-1]
                 print ("verification result:" + " " + tempStr + " : " + var)
                 i += 1
-                if str(var) == answerSymbol:
+                if str(var) == "unsat":
                     answer = tempStr
                     break
 
@@ -1776,6 +1739,19 @@ class Translater(object):
                         completeSentences.append(temp)
                     else:
                         getAnswerSentence(sentenceList[1:], temp, completeSentences)
+
+            answerSymbol = "unsat"
+            reverseSymbol = False
+            for reverseWord in self.reverseKeywords:
+                if reverseSymbol:
+                    break
+                num = 0
+                for token in self.description[self.LEM_TOKEN_TAG]:
+                    if token == reverseWord:
+                        answerSymbol = "sat"
+                        reverseSymbol = True
+                        break
+                    num += 1
 
             answers = []
             getAnswerSentence(verbSentencesList, "", answers)
@@ -1869,12 +1845,12 @@ class Translater(object):
                         nounName1 = self.getCompleteNounNameByIndex(index, completeNouns, tokens, False)
                         nounName2 = self.getCompleteNounNameByIndex(index, completeNouns, tokens, True)
                         def addNounIntoMap(sort, name):
-                            if name not in self.addedNouns.keys():
+                            if name not in self.addedNouns:
                                 if nounSortMap.has_key(sort):
                                     nounSortMap[sort].append(name)
                                 else:
                                     nounSortMap[sort] = [name]
-                                self.addedNouns[name] = sort
+                                self.addedNouns.append(name)
                         
                         addNounIntoMap(sort, nounName1)
                         addNounIntoMap(sort, nounName2)
@@ -1914,12 +1890,12 @@ class Translater(object):
                         nounName1 = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, False)
                         nounName2 = self.getCompleteNounNameByIndex(nounIndex, completeNouns, tokens, True)
                         def addNounIntoMap(sort, name):
-                            if name not in self.addedNouns.keys():
+                            if name not in self.addedNouns:
                                 if nounSortMap.has_key(sort):
                                     nounSortMap[sort].append(name)
                                 else:
                                     nounSortMap[sort] = [name]
-                                self.addedNouns[name] = sort
+                                self.addedNouns.append(name)
 
                         #just add the complete form of noun into self.addedNouns
                         addNounIntoMap(sort, nounName1)
