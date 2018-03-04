@@ -14,7 +14,7 @@ class ErrorTypes(Enum):
     VAR_NAME_ERROR = 3
 
 class Translater(object):
-    def __init__(self):
+    def __init__(self, symbol):
         #tokens: words
         #pos tags: type of words
         #ner tags: mark if a word is the type of person
@@ -27,18 +27,22 @@ class Translater(object):
         self.addedVerbs = {}
         #noun name and its sort map
         self.addedNouns = {}
+        self.candidateAnswers = []
+        self.provedAnswers = []
         #z3 keywords, these words can not be declared as a rel, we have to add '_' in front of the word.
         self.outputStr = ""
         self.possessionVerbs = []
         self.questionVerbNames = []
         self.nounAsVerbs = []
         self.loadFileName = ""
+        self.hasCandidateAnswerSymbol = symbol
         #errorTypes: [{"type": str, "val" : str},]
         self.errorTypes = []
         self.VERB_SYMBOL = "Verb_"
         self.NOUN_SYMBOL = "Noun_"
         self.Possess_Person_Thing = "possess_pt"
         self.Possess_Thing_Thing = "possess_tt"
+        self.EXAMPLE_TAG = "Example:"
         self.TOKEN_TAG = "Tokens:"
         self.LEM_TOKEN_TAG = "Lemmatized tokens:"
         self.POS_TAG = "POS tags:"
@@ -58,6 +62,7 @@ class Translater(object):
         self.questionAnswerTags = ["WP", "WDT", "WRB", "WP$"]
         self.reverseKeywords = ["although", "though"]
         self.preprocessor = Preprocessor()
+        self.answerFileName = "answers.txt"
         self.inputFilePath_Win = "input/"
         self.outputFilePath_Win = "output/"
         self.inputFilePath_Linux = "input/"
@@ -115,6 +120,15 @@ class Translater(object):
         self.preprocessor.parsing()
         return self.preprocessor.getOutputFileName()
 
+    def getCandidateAnswerFromString(self, answersString):
+        self.kbList = self.kbList[:-1]
+        answerTokens = answersString[self.LEM_TOKEN_TAG]
+        temp = set()
+        for answer in answerTokens:
+            if answer.isalpha() and answer != "Example" and answer != "Answers":
+                temp.add(answer)
+        self.candidateAnswers = list(temp)
+
     def loadFromFile(self, fileName):
         systemType = platform.system()
         if "Win" in systemType:
@@ -130,14 +144,21 @@ class Translater(object):
                 if not content:
                     #reach the end of wsc problems, then add the parsing result into question and then translate.
                     if self.parsingResult != {}:
-                        self.question = self.parsingResult
+                        if self.hasCandidateAnswerSymbol:
+                            self.question = self.kbList[-1]
+                            self.getCandidateAnswerFromString(self.parsingResult)
+                        else:
+                            self.question = self.parsingResult
                     return self.translateToZ3()
                     break
 
-                if content.find("Example:") != -1:
-                    self.context.append(content[len("Example: "):-3])
-                    continue
-
+                if content.find(self.EXAMPLE_TAG) != -1:
+                    if content.find("Answers:") == -1:
+                        self.context.append(content[len(self.EXAMPLE_TAG) + 1:-3])
+                    else:
+                        self.parsingResult[self.EXAMPLE_TAG] = content[len(self.EXAMPLE_TAG) + 3 + len("Answers:"):]
+                    continue 
+                
                 #one \n marking for the end of one data in one question
                 if (content == '\r\n' or content == '\n') and (lastLine != '\n' and lastLine != '\r\n'):
                     if not beginMark:
@@ -148,22 +169,29 @@ class Translater(object):
                     beginMark = True
 
                 #two \n marking for the end of one question
-                if (content == '\n' or content == '\r\n') and (lastLine == '\n' or lastLine == '\r\n'):
-                    self.question = self.kbList[-1]
-                    self.kbList = self.kbList[:-1]
+                if (content.strip() == "") and (lastLine.strip() == ""):
+                    if self.hasCandidateAnswerSymbol:
+                        self.question = self.kbList[-2]
+                        self.getCandidateAnswerFromString(self.kbList[-1])
+                    else:
+                        self.question = self.kbList[-1]
+                        self.kbList = self.kbList[:-1]
                     self.translateToZ3()
-                    self.kbList = []
-                    self.question = {}
                     self.description = {}
+                    self.question = {}
+                    self.kbList = []
                     self.context = []
                     self.addedVerbs = {}
                     self.addedNouns = {}
-                    self.possessionVerbs = []
+                    self.candidateAnswers = []
                     self.nounAsVerbs = []
-                    self.questionVerbNames = []
                     self.outputStr = ""
+                    self.possessionVerbs = []
+                    self.questionVerbNames = []
                     self.errorTypes = []
+                    self.parsingResult = {}
                     beginMark = False
+                    continue
 
                 for symbol in self.parsingSymbol:
                     index = content.find(symbol)
@@ -1598,7 +1626,7 @@ class Translater(object):
         return res
 
     def getCandidateAnswerNounForQuestion(self, nounSortMap):
-        res = []
+        res = set()
         tokens = self.question[self.LEM_TOKEN_TAG]
         if "who" in tokens or "whom" in tokens or "whose" in tokens or "which" in tokens:
             if nounSortMap.has_key("person"):
@@ -1609,7 +1637,13 @@ class Translater(object):
                     if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
                         if noun[:-2] in self.pronounList:
                             continue
-                    res.append(noun)
+                    if self.hasCandidateAnswerSymbol:
+                        originalNounNames = noun.split('_')
+                        for name in originalNounNames:
+                            if name in self.candidateAnswers:
+                                res.add(noun)
+                    else:
+                        res.add(noun)
         #thing answer
         if "what" in tokens or "which" in tokens:
             if nounSortMap.has_key("thing"):
@@ -1620,9 +1654,14 @@ class Translater(object):
                     if len(noun) >= 3 and ("_p" == noun[-2:] or "_t" == noun[-2:]):
                         if noun[:-2] in self.pronounList:
                             continue
-                    res.append(noun)
-
-        return res
+                    if self.hasCandidateAnswerSymbol:
+                        originalNounNames = noun.split('_')
+                        for name in originalNounNames:
+                            if name in self.candidateAnswers:
+                                res.add(noun)
+                    else:
+                        res.add(noun)
+        return list(res)
 
     def reasoning(self, nounSortMap, outputStr):
         question = self.question
@@ -1826,14 +1865,20 @@ class Translater(object):
                             answer += completeNounName + " "
                     z3Content = self.outputStr
                     break
+
+        hasGottenAnswer = True 
         if answer == "":
+            hasGottenAnswer = False 
             print "Guessing :"
-            for noun in nounList:
-                if noun not in self.pronounList:
-                    answer = noun
-                    break
+            length = len(nounList)
+            while True:
+                guessingNum = random.randint(0, length - 1)
+                if nounList[guessingNum] not in self.pronounList:
+                    answer = nounList[guessingNum]
+                    break  
+
         print "Answer :", answer
-        return answer, z3Content
+        return answer, z3Content, hasGottenAnswer
 
     def translateToZ3(self):
         self.z3keywordCheck()
@@ -1965,7 +2010,6 @@ class Translater(object):
 
         #add entailment
         res += self.addPrepVerbToVerbEntailment()
-        #res += self.addRules_NounAsVerbRange()
         #res += self.addRules_OnlyOneAnswer(nounSortMap)
         res += self.addDescription(self.description, nounSortMap)
         if len(self.context) >= 3:
@@ -1975,11 +2019,23 @@ class Translater(object):
                 print kb,
             print ""
             print "Queseion", self.context[-1]
-        return self.reasoning(nounSortMap, res)
+        answer, z3Content, symbol = self.reasoning(nounSortMap, res)
+        if symbol:
+            self.provedAnswers.append(answer)
+        else:
+            res += self.addRules_OnlyOneAnswer(nounSortMap)
+            answer, z3Content, symbol = self.reasoning(nounSortMap, res)
+            self.provedAnswers.append(answer)
+        return answer, z3Content
 
     def writeIntoFile(self, fileName):
         with open(fileName, 'w') as f:
             f.write(self.outputStr)
+
+    def saveAnswerIntoFile(self):
+        with open(self.outputFilePath_Win + self.answerFileName, "w") as f:
+            for i in range(len(self.provedAnswers)):
+                f.write(str(i + 1) + " : " + self.provedAnswers[i] + "\n")
 
     def z3keywordCheck(self):
         i = 0
@@ -2025,8 +2081,9 @@ class Translater(object):
         return errorStr
 
 def main():
-    t = Translater()
+    t = Translater(True)
     t.loadFromFile("outputTemp")
+    t.saveAnswerIntoFile()
     #t.parsingSample()
 
 if __name__ == '__main__':
