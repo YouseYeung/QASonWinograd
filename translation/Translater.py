@@ -28,6 +28,7 @@ class Translater(object):
         #noun name and its sort map
         self.addedNouns = {}
         self.candidateAnswers = []
+        self.givenAnswerTokens = []
         self.provedAnswers = []
         #z3 keywords, these words can not be declared as a rel, we have to add '_' in front of the word.
         self.outputStr = ""
@@ -121,11 +122,14 @@ class Translater(object):
         return self.preprocessor.getOutputFileName()
 
     def getCandidateAnswerFromString(self, answersString):
-        self.kbList = self.kbList[:-1]
+        self.givenAnswerTokens = answersString[self.EXAMPLE_TAG][:-2].split("/")
         answerTokens = answersString[self.LEM_TOKEN_TAG]
         temp = set()
+        #remove "Answers" and ":"
+        if len(answerTokens) > 3:
+            answerTokens = answerTokens[2:]
         for answer in answerTokens:
-            if answer.isalpha() and answer != "Example" and answer != "Answers":
+            if answer.isalpha() and answer != "the":
                 temp.add(answer)
         self.candidateAnswers = list(temp)
 
@@ -136,16 +140,19 @@ class Translater(object):
         else:
             fileName = self.inputFilePath_Linux + fileName
 
+
+        i, solvingNum = 0, 10
         with open(fileName, 'r') as f:
             lastLine = ''
             beginMark = False
             while True:
                 content = f.readline()
-                if not content:
+                if not content or i > solvingNum:
                     #reach the end of wsc problems, then add the parsing result into question and then translate.
                     if self.parsingResult != {}:
                         if self.hasCandidateAnswerSymbol:
                             self.question = self.kbList[-1]
+                            self.kbList = self.kbList[:-1]
                             self.getCandidateAnswerFromString(self.parsingResult)
                         else:
                             self.question = self.parsingResult
@@ -173,10 +180,13 @@ class Translater(object):
                     if self.hasCandidateAnswerSymbol:
                         self.question = self.kbList[-2]
                         self.getCandidateAnswerFromString(self.kbList[-1])
+                        self.kbList = self.kbList[:-2]
                     else:
                         self.question = self.kbList[-1]
                         self.kbList = self.kbList[:-1]
-                    self.translateToZ3()
+                    if i <= solvingNum:
+                        self.translateToZ3()
+                    i += 1
                     self.description = {}
                     self.question = {}
                     self.kbList = []
@@ -190,6 +200,7 @@ class Translater(object):
                     self.questionVerbNames = []
                     self.errorTypes = []
                     self.parsingResult = {}
+                    self.givenAnswerTokens = []
                     beginMark = False
                     continue
 
@@ -424,7 +435,8 @@ class Translater(object):
                 if indexStart != -1:
                     indexEnd = child[indexStart:].find("->") + indexStart
                     prepName = child[indexStart + len("nmod:"):indexEnd]
-                    combinedVerbName += "_" + prepName
+                    if prepName != "poss":
+                        combinedVerbName += "_" + prepName
 
                 #address the condition: do better than
                 #address the condition: sb sees sth1 through sth2, sth2 occurs at sth1's children with the form: "nmod:prep->" 
@@ -439,7 +451,8 @@ class Translater(object):
                         if indexStart != -1:
                             indexEnd = child[indexStart:].find("->") + indexStart
                             prepName = child[indexStart + len("nmod:"):indexEnd]
-                            combinedVerbName += "_" + prepName
+                            if prepName != "poss":
+                                combinedVerbName += "_" + prepName
 
                 #address the condition: go out, get back, get up
                 index = self.findIndexBySymbol(child, "compound:prt")
@@ -1382,10 +1395,10 @@ class Translater(object):
             subjIndex = self.findIndexBySymbol(child, "nmod:poss")
             subjName = self.getCompleteNounNameByIndex(subjIndex, completeNouns, tokens, False)
             #subjname is a variable
-            if subjName == "somebody" or subjName == "his":
+            if (subjName == "somebody" or subjName == "his") and pronoun_name_Map.has_key(subjName):
                 res += "(" + verbSymbol + self.Possess_Person_Thing + " " + pronoun_name_Map[subjName] \
                 + " " + nounSymbol + objName + ")"
-            elif subjName == "something" or subjName == "its":
+            elif (subjName == "something" or subjName == "its") and pronoun_name_Map.has_key(subjName):
                 res += "(" + verbSymbol + self.Possess_Thing_Thing + " " + pronoun_name_Map[subjName] \
                 + " " + nounSymbol + objName + ")"
             else:
@@ -1394,10 +1407,10 @@ class Translater(object):
                 if i != -1:
                     compoundIndex = self.findIndexBySymbol(subjChild, "compound")
                     compoundNoun = tokens[compoundIndex]
-                    if compoundNoun == "person":
+                    if compoundNoun == "person" and pronoun_name_Map.has_key(subjName):
                         res += "(" + verbSymbol + self.Possess_Person_Thing + " " + pronoun_name_Map[subjName] + " " \
                             + nounSymbol + objName + ")"
-                    elif compoundNoun == "thing":
+                    elif compoundNoun == "thing" and pronoun_name_Map.has_key(subjName):
                         res += "(" + verbSymbol + self.Possess_Thing_Thing + " " + pronoun_name_Map[subjName] + " " \
                             + nounSymbol + objName + ")"   
                     else:
@@ -1679,31 +1692,33 @@ class Translater(object):
         if "whose" in tokens:
             i = 0
             completeNouns = self.findCompleteNouns(question)
+            solvedRight = True
             for child in children:
                 if child.find("poss") != -1:
                     nounName = self.getCompleteNounNameByIndex(i, completeNouns, tokens, False)
-                    if nounName in nounSortMap["thing"]:
+                    if nounSortMap.has_key("thing") and nounName in nounSortMap["thing"]:
                         possessionStr = "(" + verbSymbol + self.Possess_Thing_Thing \
                                         + " WP " + nounSymbol + nounName
-                    elif nounName in nounSortMap["person"]:
+                    elif nounSortMap.has_key("person") and nounName in nounSortMap["person"]:
                         possessionStr = "(" + verbSymbol + self.Possess_Person_Thing \
                                         + " WP " + nounSymbol + nounName
                     else:
                         nounName = tokens[i]
-                        if nounName in nounSortMap["thing"]:
+                        if nounSortMap.has_key("thing") and nounName in nounSortMap["thing"]:
                             possessionStr = "(" + verbSymbol + self.Possess_Thing_Thing \
                                             + " WP " + nounSymbol + nounName
-                        elif nounName in nounSortMap["person"]:
+                        elif nounSortMap.has_key("person") and nounName in nounSortMap["person"]:
                             possessionStr = "(" + verbSymbol + self.Possess_Person_Thing \
                                             + " WP " + nounSymbol + nounName
                         else:
                             self.errorTypes.append({"type" : ErrorTypes.ENTITY_NAME_ERROR, "val" : nounName})
-                            return "", ""
+                            solvedRight = False
+                            break
                     break
                 i += 1
 
             #replace "WP" with candidate noun words
-            if possessionStr != "":
+            if possessionStr != "" and solvedRight:
                 index = possessionStr.find("WP")
                 for noun in nounList:
                     if noun not in self.pronounList:
@@ -1870,12 +1885,9 @@ class Translater(object):
         if answer == "":
             hasGottenAnswer = False 
             print "Guessing :"
-            length = len(nounList)
-            while True:
-                guessingNum = random.randint(0, length - 1)
-                if nounList[guessingNum] not in self.pronounList:
-                    answer = nounList[guessingNum]
-                    break  
+            length = len(self.givenAnswerTokens)
+            guessingNum = random.randint(0, length - 1)
+            answer = self.givenAnswerTokens[guessingNum]
 
         print "Answer :", answer
         return answer, z3Content, hasGottenAnswer
@@ -2033,7 +2045,7 @@ class Translater(object):
             f.write(self.outputStr)
 
     def saveAnswerIntoFile(self):
-        with open(self.outputFilePath_Win + self.answerFileName, "w") as f:
+        with open(self.inputFilePath_Win + self.answerFileName, "w") as f:
             for i in range(len(self.provedAnswers)):
                 f.write(str(i + 1) + " : " + self.provedAnswers[i] + "\n")
 

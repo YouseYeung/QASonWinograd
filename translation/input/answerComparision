@@ -1,0 +1,447 @@
+1 : city_councilmen The city councilmen
+2 : demonstrator the demonstrators.
+
+3 : brown_suitcase The suitcase
+4 : trophy the trophy.
+
+5 : Susan Susan
+6 : Joan Joan.
+
+7 : Paul Paul
+8 : George George
+
+9 : witness witness The witness
+10 : lawyer lawyer the lawyer.
+
+11 : delivery_truck The truck
+12 : school_bus the bus
+
+13 :  Bill Frank
+14 : Frank Bill
+
+15 : man The man
+16 : he_son the son.
+
+17 : large_ball The ball
+18 : table the table.
+
+19 :  Billy. John
+20 : John Billy.
+
+21 :  Ray. Tom
+22 : Ray Ray.
+
+23 :  Sally. Sue
+24 :  Sally. Sally.
+
+25 : sculpture The sculpture
+26 : shelf the shelf.
+
+27 : Sam's drawing Sam's drawing
+28 : Sam's drawing Tina's drawing.
+
+29 : Anna Anna
+30 : Anna Lucy
+
+31 : fireman The firemen
+32 : police the police.
+
+33 :  Tom. Frank
+34 :  Tom. Tom.
+
+35 : Jim Jim
+36 : Kevin Kevin.
+
+37 : sack sack The sack of potatoes
+38 : bag bag the bag of flour.
+
+39 : Martin Martin
+40 : Martin Pete.
+
+41 : the bottle the bottle
+42 : table the table.
+
+43 : table the table
+44 : cloth the cloth.
+
+45 : older_student The younger students
+46 : The younger students the older students.
+
+47 : cup The cup
+48 : bottle the bottle.
+
+49 : Susan Susan
+50 :  Anne. Anne.
+
+51 : Sid mark Sid did not convince Mark
+52 : mark Sid Mark did not understand Sid.
+
+53 : Susan Susan
+54 : Susan Ann.
+
+55 : Joe's uncle Joe's uncle
+56 : Joe_uncle Joe.
+
+57 : In the garage In the garage
+58 : In the garage in the house.
+
+59 : The painting The painting
+60 : The painting the tree.
+
+61 :  the wall. The gap
+62 : The gap the wall.
+
+63 : drain The drain
+64 : hair the hair.
+
+65 :  the train. The meeting
+66 :  the train. the train.
+
+67 : The stage The stage
+68 : The stage the pillar.
+
+69 :  the subway. The announcement
+70 :  the subway. the subway.
+
+71 : The rain The rain
+72 :  the concert. the concert.
+
+73 : knife The knife
+74 : The knife the rag.
+
+75 : Mary Mary
+76 : Ann Ann.
+
+77 : backpack The backpack
+78 : water_bottle the bottle.
+
+79 : shelf The shelf
+80 : pot the pot.
+
+81 : building The building
+82 : my__map the map.
+
+83 : Bob Bob
+84 : Charlie_p Charlie.
+
+85 : Bob Bob
+86 : Charlie_p Charlie
+
+87 : Bob Bob
+88 : Bob Adam.
+
+89 :  Adam Bob
+90 :  Adam Adam
+
+91 :  Sam. The con artist
+92 : The con artist Sam.
+
+93 : tree The dog
+94 :  The spot under the tree. The spot under the tree.
+
+95 :  the cat. The mouse
+96 : The mouse the cat.
+
+97 : Anne Anne
+98 :  Anne's daughter. Anne's daughter.
+
+99 : Alice Alice
+100 :  Alice's daughter. Alice's daughter.
+
+101 :  Jim. The guy in the uniform
+102 : The guy in the uniform Jim.
+
+103 : worm The worm
+104 : fish the fish.
+
+105 :  the chewing gum. The key
+106 :  the chewing gum. the chewing gum.
+
+107 : The cat The cat
+108 : The cat the dog.
+
+109 : tree The tree
+110 : roof the roof.
+
+111 : teller The teller
+112 : customer the customer.
+
+113 :  the hummer. John
+114 :  the hummer. the hummer.
+
+115 :  the juggler. John
+116 : John the juggler.
+
+117 :  Carl. Bob
+118 :  Carl. Carl.
+
+119 : Amy's parents Amy's parents
+120 :  Sam, and Amy. Sam and Amy.
+
+121 :  Pete. Mark
+122 :  Pete. Pete.
+
+123 : The old house The old house
+124 : The old house the new house.
+
+125 : The readers The readers
+126 : Paul_book the books.
+
+127 : The piece The piece
+128 : The piece the flute.
+
+129 : chair The chair
+130 : chair the piano.
+
+131 :  the newspaper. The backpack
+132 :  the newspaper. the newspaper.
+
+133 : book The book
+134 :  the article. the article.
+
+135 :  the sand castle. The flag
+136 : sand_castle the sand castle.
+
+137 : Susan_p Susan
+138 : Jane Jane.
+
+139 :  Susan invited Jane. Jane invited Susan
+140 : Jane invited Susan Susan invited Jane.
+
+141 : Sam Sam
+142 : Sam Adam.
+
+143 : The lake The lake
+144 :  the path. the path.
+
+145 : The cloud The cloud
+146 :  the sun. the sun.
+
+147 : The beach The beach
+148 :  the lake. the lake.
+
+149 : the sheep the sheep
+150 :  the shepherds. the shepherds.
+
+151 :  Mary. Anne
+152 : Mary Mary.
+
+153 :  Fred, and Alice. The coats
+154 :  Fred, and Alice. Fred and Alice.
+
+155 :  Thomson Cooper
+156 :  Thomson Thomson
+
+157 : Jackson Arnold
+158 : Arnold Jackson.
+
+159 :   Eva and Dr. Stewart. Tom and Dr. Stewart 
+160 :   Eva and Dr. Stewart.  Eva and Dr. Stewart.
+
+161 : tree The tree
+162 : axe the axe.
+
+163 :  the foxes. The chickens
+164 :  the foxes. the foxes.
+
+165 : fox The foxes
+166 : chicken the chickens.
+
+167 :  his hands. His eyes
+168 :  his hands. his hands.
+
+169 :  Terpsichore. Tina
+170 : Tina Terpsichore.
+
+171 : Fred Fred
+172 : George George.
+
+173 : The dishwasher The dishwasher
+174 : The dishwasher the television.
+
+175 : Fred Fred
+176 : Fred my great-grandfather.
+
+177 :  my father. Fred
+178 : Fred my father.
+
+179 :  Kamchatka. Yakutsk
+180 : Yakutsk Kamchatka.
+
+181 :  In Troy In Sparta
+182 :  In Troy In Troy
+
+183 : Springfield Springfield
+184 :  Franklin. Franklin.
+
+185 : The duck The duck
+186 : The duck The minnow.
+
+187 :  the deer. The wolves
+188 : The wolves the deer.
+
+189 : The prehistoric humans The prehistoric humans
+190 :  the archaeologists. the archaeologists.
+
+191 :  the scientists. The fish
+192 : The fish the scientists.
+
+193 : The stars The stars
+194 : The stars the journalists
+
+195 : The gang The gang
+196 : The gang the police.
+
+197 : cake The cake
+198 : refrigerator the refrigerator.
+
+199 :  the crutches. The ankles
+200 : The ankles the crutches.
+
+201 : opponent The opponents 
+202 :  the sponsors. the sponsors.
+
+203 :  the chocolate chip. The oatmeal cookies
+204 :  the chocolate chip. the chocolate chip.
+
+205 : chairs chairs
+206 :  copies of the newsletter. copies of the newsletter.
+
+207 : pin The pin
+208 : carrot the carrot.
+
+209 :  the pen. The coffee
+210 : The coffee the pen.
+
+211 : Steve Fred_p Steve admires Fred
+212 : Fred_p Steve Fred influences Steve.
+
+213 : table The table
+214 : doorway the doorway.
+
+215 : The jacket The jacket
+216 :  the sweater. the sweater.
+
+217 : Bill Bill
+218 :  Bert. Bert.
+
+219 :  John is taking care of Bill. Bill is taking care of John
+220 :  John is taking care of Bill. John is taking care of Bill.
+
+221 : John John
+222 :  Bill. Bill.
+
+223 :  Sam. Xenophanes
+224 :  Sam. Sam.
+
+225 : Emma's mother Emma's mother
+226 : Emma's mother Emma.
+
+227 : Susan_p Susan
+228 : Jane Jane
+
+229 :  the detective. Joe
+230 : Joe the detective.
+
+231 :  Sally Beth
+232 :  Sally Sally
+
+233 : Jim Jim
+234 : Jim the barman.
+
+235 : Bill Bill
+236 :  Dan Dan
+
+237 : Ralph's Ralph's
+238 :  Tom's Tom's
+
+239 : Andrea Andrea
+240 :  Susan Susan
+
+241 : Ralph Ralph Ralph
+242 : Ralph Tom Tom
+
+243 :  John Bill
+244 : Bill John
+
+245 :  John Bill
+246 : Bill John
+
+247 : The boy's The boy's
+248 : The boy's the man's.
+
+249 : The girl's The girl's
+250 : The girl's the woman's
+
+251 :  Billy Toby
+252 : Toby Billy
+
+253 : Donna Donna
+254 :   Lily  Lily
+
+255 : Timmy Timmy
+256 : Timmy Tommy
+
+257 : Tommy Tommy
+258 : Tommy Ollie
+
+259 :  the boy The father
+260 :  the boy the boy
+
+261 :  the girl's The woman's
+262 : The woman's the girl's
+
+263 : Pam, and Paul Pam and Paul
+264 :  Pam's parents. Pam's parents.
+
+265 :  Dr. Adams Kate
+266 : Kate Dr. Adams
+
+267 :  Bill Dan
+268 : Dan Bill
+
+269 : George Eric
+270 : George George.
+
+271 : Joan Joan
+272 : Jane Jane.
+
+273 :   the trees The lemons 
+274 : The lemons   the trees
+
+275 : Robert Robert
+276 : Robert James
+
+277 : Shatov Shatov
+278 : Kirilov Kirilov
+
+279 :  Emma Janie
+280 :  Emma Emma
+
+281 :  Joe's brother. Joe
+282 :  Joe's brother. Joe's brother.
+
+283 : table The table
+284 : The table The butterfly wing.
+
+285 :   Madonna couldn't stand the trainer's boyfriend. The trainer slept with Madonna's boyfriend 
+286 : The trainer slept with Madonna's boyfriend   Madonna couldn't stand the trainer's boyfriend.
+
+287 :   Rebecca Carol 
+288 : Carol   Rebecca
+
+289 :  Goethe Shakespeare
+290 :  Goethe Goethe
+
+291 : Ovid Ovid
+292 : Ovid  Shakespeare
+
+293 :  Jade Alice
+294 : Alice Jade
+
+295 :  Luke Ethan
+296 :  Luke Luke
+
+297 :  the judges (the chatbots
+298 :  the judges the judges)
+

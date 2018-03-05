@@ -52,5 +52,5 @@
 (assert (= (Verb_enough_2 Noun_Alice Noun_coat ) (and (not (Verb_enough_2 Noun_coat Noun_Alice )) (not (Verb_enough_2 Noun_coat Noun_Fred )) (not (Verb_enough_2 Noun_Alice Noun_Fred )) (not (Verb_enough_2 Noun_Fred Noun_coat )) (not (Verb_enough_2 Noun_Fred Noun_Alice )) )))
 (assert (= (Verb_enough_2 Noun_Fred Noun_coat ) (and (not (Verb_enough_2 Noun_coat Noun_Alice )) (not (Verb_enough_2 Noun_coat Noun_Fred )) (not (Verb_enough_2 Noun_Alice Noun_Fred )) (not (Verb_enough_2 Noun_Alice Noun_coat )) (not (Verb_enough_2 Noun_Fred Noun_Alice )) )))
 (assert (= (Verb_enough_2 Noun_Fred Noun_Alice ) (and (not (Verb_enough_2 Noun_coat Noun_Alice )) (not (Verb_enough_2 Noun_coat Noun_Fred )) (not (Verb_enough_2 Noun_Alice Noun_Fred )) (not (Verb_enough_2 Noun_Alice Noun_coat )) (not (Verb_enough_2 Noun_Fred Noun_coat )) )))
-(assert (not  (Verb_enough_2 Noun_Alice Noun_coat )))
+(assert (not  (Verb_enough_2 Noun_Fred Noun_coat )))
 (check-sat)

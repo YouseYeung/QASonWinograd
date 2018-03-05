@@ -129,12 +129,10 @@ What wasn't level?
 Answers:The sculpture / the shelf.
 
 14.Sam's drawing was hung just above Tina's and it did look much better with another one below it.
-No.
 Which looked better?
 Answers:Sam's drawing / Tina's drawing.
 
 14.Sam's drawing was hung just above Tina's and it did look much better with another one above it.
-No.
 Which looked better?
 Answers:Sam's drawing / Tina's drawing.
 
@@ -1337,15 +1335,15 @@ If person B stop person C from doing something crucial, then person B is compass
 Who is cruel?
 Answers:Dan / Bill
 
-135.George got free tickets to the play, but he gave them to Eric because he was particularly eager to see it.
+135.George got free tickets to the play, but he gave them to Eric because he was [particularly/not particularly] eager to see it.
 If person B gives the tickets to person C, then person B is not particularly eager to see something and person C is particularly eager to see something.
 Who was eager to see the play?
-Answers:Eric/George
+Answers:"because" & "particularly": Eric.
 
-135.George got free tickets to the play, but he gave them to Eric even though he was not particularly eager to see it.
+135.George got free tickets to the play, but he gave them to Eric even though he was [particularly/not particularly] eager to see it.
 If person B gives the tickets to person C, then person B is not particularly eager to see something and person C is particularly eager to see something.
 Who  was not eager to see the play?
-Answers: Eric/George
+Answers:"because" & "particularly": Eric.
 
 136.Jane gave Joan candy because she was hungry.
 If person B gives person C food, then person B is not hungry and person C is hungry. Candy is food.
@@ -1410,31 +1408,31 @@ Answers:Joe / Joe's brother.
 142.I put the heavy book on the table and it broke.
 If somebody puts thing B on thing C and thing B is heavy, then thing C might break. If somebody puts thing B on thing C and thing B is fragile, then thing B might break.Butterfly wing is fragile. Heavy book is heavy.
 What broke?
-Answers:The table / The butterfly wing
+Answers:The table / The book Answer Pair B: The butterfly wing/The table
 
 142.I put the butterfly wing on the table and it broke.
 If somebody puts thing B on thing C and thing B is heavy, then thing C might break. If somebody puts thing B on thing C and thing B is fragile, then thing B might break.Butterfly wing is fragile. Heavy book is heavy.
 What broke?
-Answers:The table / The butterfly wing
+Answers:The table / The book Answer Pair B: The butterfly wing/The table
 
 143.Madonna fired her trainer because she slept with her boyfriend.
-No.
+Who couldn't stand whose boyfriend?
 Who slept with whose boyfriend?
 Answers:The trainer slept with Madonna's boyfriend  /  Madonna couldn't stand the trainer's boyfriend.
 
 143.Madonna fired her trainer because she couldn't stand her boyfriend.
-No.
 Who couldn't stand whose boyfriend?
+Who slept with whose boyfriend?
 Answers:The trainer slept with Madonna's boyfriend  /  Madonna couldn't stand the trainer's boyfriend.
 
 144.Carol believed that Rebecca suspected  that she had stolen the watch.
 If person B suspect that somebody do something, then he might be suspected of doing it. If person B regrets that somebody do something, person B might doing it.
-Who is suspected of stealing the watch?
+Who is suspected of stealing the watch? / Who stole the watch?
 Answers:Carol  /  Rebecca
 
 144.Carol believed that Rebecca  regretted that she had stolen the watch.
 If person B suspect that somebody do something, then he might be suspected of doing it. If person B regrets that somebody do something, person B might doing it.
-Who stole the watch?
+Who is suspected of stealing the watch? / Who stole the watch?
 Answers:Carol  /  Rebecca
 
 145.This book introduced Shakespeare to Ovid; it was a major influence on his writing.
@@ -1448,12 +1446,10 @@ Whose writing was influenced?
 Answers:Shakespeare / Goethe
 
 146.This book introduced Shakespeare to Ovid; it was a fine selection of his writing.
-No.
 Fine selection of whose writing?
 Answers:Ovid /  Shakespeare
 
 146.This book introduced Shakespeare to Goethe; it was a fine selection of his writing.
-No.
 Fine selection of whose writing?
 Answers:Ovid /  Shakespeare
 
@@ -1480,9 +1476,9 @@ Answers:Ethan / Luke
 149.At the Loebner competition the judges couldn't figure out which respondents were the chatbots because they were so advanced. 
 No.
 Who were so advanced?
-Answers:the chatbots / the judges
+Answers:(the chatbots / the judges)
 
 149.At the Loebner competition the judges couldn't figure out which respondents were the chatbots because they were so stupid. 
 No.
 Who were so stupid?
-Answers:the chatbots / the judges
+Answers:(the chatbots / the judges)

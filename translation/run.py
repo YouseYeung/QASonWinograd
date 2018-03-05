@@ -101,6 +101,6 @@ class questionParsing(object):
                         break
 
 t = questionParsing()
-t.setInputFileName("input/formatWSC")
+t.setInputFileName("input/completeWSC")
 t.setOutputFileName("output/AllQuestionsParsing")
 t.parsing()
