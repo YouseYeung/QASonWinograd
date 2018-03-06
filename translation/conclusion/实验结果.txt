@@ -1,22 +1,22 @@
-完成程度：
-总体上大概完成了60道题的正确验证。
-因为今天早上还在补充代码，所以还没来得及对新代码进行所有问题的验证。
+解析错误的问题类型：
+1）句式复杂导致无法解析出正确的依赖关系
+从句：10 17 
+There be: 34
 
-遇到的问题：
-1. sempre将本应该是形容词的词解析为名词。
-The sculpture rolled off the shelf because it wasn't level.
-If thing B isn’t anchored, or thing C isn’t level, then thing B runs off thing C .
-What wasn't level?
+2）指代消解
+7 12 14
 
-2. 同位语名词问题
-Frank felt vindicated when his longtime rival Bill revealed that he was the winner of the competition.
-If person C and person B is rival, and person C is the winner of the competition, then person C will feel vindicated and person B will feel crushed.
-Who was the winner of the competition?
+3）动词被当作名词，导致词与词之间的关系解析错误。
+23 
 
+4）背景知识不明确，z3无法解析
+29 30 31 33 36
 
-
-3. 名词指代问题
-Although they ran at about the same speed, Sue beat Sally because she had such a good start.
-If person B has a good start, and person C has bad start, and person B and person C ran at about the same speed, then person B might beat person C. If person B and person C ran at about the same speed, then person C and person B might run at about the same speed.
-Who had a good start?
-
+未能解决的问题的原因：
+1. 同位语
+2. 有宾语从句时，无法解析出宾语从句中的动词的宾语：Frank was upset with Tom because the toaster he had bought from him didn't work.
+3. 介词短语关联的实体：John couldn't see the stage with Billy in front of him because he is so tall.
+4. 谓词关联的实体解析出错，sempre解析时会漏掉一些关联的实体。
+5. Although和but不能单纯取反来做：例1：Although they ran at about the same speed, Sue beat Sally because she had such a bad start. 例2：Pete envies Martin although he is very successful.
+6. 问句中的谓词的解析错误，无法解析出谓词相关的全部实体。What was top-heavy? (Dependency children: [[cop->1, nsubj->3], [], [], [amod->2]])
+7. 动词解析为名词in fooling sb. 中 fooling sb.被当作了复合名词
