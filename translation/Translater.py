@@ -893,8 +893,10 @@ class Translater(object):
 
     #return type of entailment
     def findTypeOfEntailment(self, antecedent, secedent):
-        type_AB1, type_AB2, type_ABC1 = "A>B", "A=B", "A>B^C,B>A,C>A;A>BVC,B>A,C>A"
-        type_ABC2 = "AvB>C, C>A, C>B"
+        type_AB1, type_AB2 = "A>B", "A=B"
+        type_ANT_ABC1 = "A>BVC, A>B^C, C>A, B>A"
+        type_ANT_ABC2 = "AvB>C, C>A, C>B"
+        type_SEC_ABC3 = "A>BVC, A>B, A>C"
         questionVerbs = self.findAnswerPredicate()
         
         for verb in questionVerbs:
@@ -903,16 +905,16 @@ class Translater(object):
             #answer predicate in antecedent
             if orgAnsPreName in antecedent or comAnsPreName in antecedent:
                 if "and" in secedent or "or" in secedent:
-                    return type_ABC1
+                    return type_ANT_ABC1
                 elif "or" in antecedent:
-                    return type_ABC2
+                    return type_ANT_ABC2
                 else:
                     return type_AB2
 
             #answer predicate in secedent
             elif orgAnsPreName in secedent or comAnsPreName in secedent:
                 if "or" in secedent:
-                    return type_ABC1
+                    return type_SEC_ABC3
                 else:
                     return type_AB1
 
@@ -925,7 +927,6 @@ class Translater(object):
         antecedent = tokens[:sepIndex]
         secedent = tokens[sepIndex + 1:]
         entailmentType = self.findTypeOfEntailment(antecedent, secedent)
-        type_AB1, type_AB2, type_ABC1 = "A>B", "A=B", "A>B^C,B>A,C>A;A>BVC,B>A,C>A"
         outputStr += self.addEntailment(library, verbs, entailmentType, sepIndex)
         return outputStr
 
@@ -1062,8 +1063,12 @@ class Translater(object):
         tokens = library[self.LEM_TOKEN_TAG]
         tags = library[self.POS_TAG]
         children = library[self.CHILDREN_TAG]
-        type_AB1, type_AB2, type_ABC1 = "A>B", "A=B", "A>B^C,B>A,C>A;A>BVC,B>A,C>A" 
-        type_ABC2 = "AvB>C, C>A, C>B"
+        type_AB1, type_AB2 = "A>B", "A=B"
+        #ANT marks for answer in antecedent,
+        #SEC marks for answer in secedent.
+        type_ANT_ABC1 = "A>BVC, A>B^C, C>A, B>A"
+        type_ANT_ABC2 = "AvB>C, C>A, C>B"
+        type_SEC_ABC3 = "A>BVC, A>B, A>C"
         antecedent = []
         secedent = []
         addedVerbsIndex = []        
@@ -1183,7 +1188,7 @@ class Translater(object):
             declareString, realityString = addRealityByAntAndSec(antecedent, secedent, verbs)
             return self.bracketCheck(declareString + "(= " + realityString) + "\n"
 
-        elif type_ABC1 == entailmentType:
+        elif type_ANT_ABC1 == entailmentType:
             res = ""
             declareString, realityString = addRealityByAntAndSec(antecedent, secedent, verbs)
             res = self.bracketCheck(declareString + "(=> " + realityString) + "\n"
@@ -1199,7 +1204,7 @@ class Translater(object):
                 res += self.bracketCheck(declareString + "(=> " + realityString) + "\n"
             return res
         
-        elif type_ABC2 == entailmentType:
+        elif type_ANT_ABC2 == entailmentType:
             res = ""
             #neglect the answer antecedent to get description secedent
             #just use description secedent to get answer antecedent
@@ -1214,6 +1219,19 @@ class Translater(object):
                 tempVerbs = newVerbs
                 tempVerbs[verb[0]] = verb[1]
                 declareString, realityString = addRealityByAntAndSec(secedent[:], [verb], tempVerbs)
+                res += self.bracketCheck(declareString + "(=> " + realityString) + "\n"
+            return res
+
+        elif type_SEC_ABC3 == entailmentType:
+            res = ""
+            newVerbs = {}
+            for verb in antecedent:
+                newVerbs[verb[0]] = verb[1]
+            for verb in secedent:
+                addedVerbsIndex = []
+                tempVerbs = newVerbs
+                tempVerbs[verb[0]] = verb[1]
+                declareString, realityString = addRealityByAntAndSec(antecedent, [verb], tempVerbs)
                 res += self.bracketCheck(declareString + "(=> " + realityString) + "\n"
             return res
 

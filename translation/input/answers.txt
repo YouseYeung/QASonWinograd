@@ -10,7 +10,7 @@
 10 : lawyer lawyer 
 11 : delivery_truck 
 12 : school_bus 
-13 :  Bill 
+13 : Frank 
 14 : Frank 
 15 : man 
 16 : he_son 
@@ -24,15 +24,15 @@
 24 :  Sally. 
 25 : sculpture 
 26 : shelf 
-27 : Sam's drawing 
-28 : Sam's drawing 
+27 :  Tina's drawing. 
+28 :  Tina's drawing. 
 29 : Anna 
 30 : Anna 
 31 : fireman 
 32 : police 
 33 :  Tom. 
-34 :  Tom. 
-35 : Jim 
+34 : Frank 
+35 :  Kevin. 
 36 : Kevin 
 37 : sack sack 
 38 : bag bag 
@@ -43,35 +43,35 @@
 43 : table 
 44 : cloth 
 45 : older_student 
-46 : The younger students 
+46 :  the older students. 
 47 : cup 
 48 : bottle 
 49 : Susan 
 50 :  Anne. 
 51 : Sid mark 
 52 : mark Sid 
-53 : Susan 
-54 : Susan 
+53 :  Ann. 
+54 :  Ann. 
 55 : Joe's uncle 
 56 : Joe_uncle 
 57 : In the garage 
 58 : In the garage 
-59 : The painting 
+59 :  the tree. 
 60 : The painting 
-61 :  the wall. 
-62 : The gap 
+61 : The gap 
+62 :  the wall. 
 63 : drain 
 64 : hair 
-65 :  the train. 
-66 :  the train. 
+65 : The meeting 
+66 : The meeting 
 67 : The stage 
-68 : The stage 
-69 :  the subway. 
-70 :  the subway. 
-71 : The rain 
-72 :  the concert. 
+68 :  the pillar. 
+69 : The announcement 
+70 : The announcement 
+71 :  the concert. 
+72 : The rain 
 73 : knife 
-74 : The knife 
+74 :  the rag. 
 75 : Mary 
 76 : Ann 
 77 : backpack 
@@ -88,10 +88,10 @@
 88 : Bob 
 89 :  Adam 
 90 :  Adam 
-91 :  Sam. 
+91 : The con artist 
 92 : The con artist 
 93 : tree 
-94 :  The spot under the tree. 
+94 : The dog 
 95 :  the cat. 
 96 : The mouse 
 97 : Anne 
@@ -104,7 +104,7 @@
 104 : fish 
 105 :  the chewing gum. 
 106 :  the chewing gum. 
-107 : The cat 
+107 :  the dog. 
 108 : The cat 
 109 : tree 
 110 : roof 
@@ -112,84 +112,84 @@
 112 : customer 
 113 :  the hummer. 
 114 :  the hummer. 
-115 :  the juggler. 
-116 : John 
-117 :  Carl. 
-118 :  Carl. 
-119 : Amy's parents 
+115 : John 
+116 :  the juggler. 
+117 : Bob 
+118 : Bob 
+119 :  Sam, and Amy. 
 120 :  Sam, and Amy. 
 121 :  Pete. 
-122 :  Pete. 
+122 : Mark 
 123 : The old house 
-124 : The old house 
-125 : The readers 
+124 :  the new house. 
+125 :  the books. 
 126 : Paul_book 
 127 : The piece 
-128 : The piece 
+128 :  the flute. 
 129 : chair 
 130 : chair 
-131 :  the newspaper. 
+131 : The backpack 
 132 :  the newspaper. 
 133 : book 
-134 :  the article. 
+134 : The book 
 135 :  the sand castle. 
 136 : sand_castle 
 137 : Susan_p 
 138 : Jane 
 139 :  Susan invited Jane. 
-140 : Jane invited Susan 
-141 : Sam 
-142 : Sam 
+140 :  Susan invited Jane. 
+141 :  Adam. 
+142 :  Adam. 
 143 : The lake 
 144 :  the path. 
-145 : The cloud 
-146 :  the sun. 
+145 :  the sun. 
+146 : The cloud 
 147 : The beach 
 148 :  the lake. 
-149 : the sheep 
-150 :  the shepherds. 
+149 :  the shepherds. 
+150 : the sheep 
 151 :  Mary. 
 152 : Mary 
 153 :  Fred, and Alice. 
-154 :  Fred, and Alice. 
+154 : The coats 
 155 :  Thomson 
 156 :  Thomson 
 157 : Jackson 
 158 : Arnold 
 159 :   Eva and Dr. Stewart. 
-160 :   Eva and Dr. Stewart. 
+160 : Tom, and Dr. Stewart  
 161 : tree 
 162 : axe 
-163 :  the foxes. 
-164 :  the foxes. 
+163 : The chickens 
+164 : The chickens 
 165 : fox 
 166 : chicken 
 167 :  his hands. 
-168 :  his hands. 
-169 :  Terpsichore. 
-170 : Tina 
+168 : His eyes 
+169 : Tina 
+170 :  Terpsichore. 
 171 : Fred 
 172 : George 
-173 : The dishwasher 
-174 : The dishwasher 
+173 :  the television. 
+174 :  the television. 
 175 : Fred 
-176 : Fred 
+176 :  my great-grandfather. 
 177 :  my father. 
 178 : Fred 
-179 :  Kamchatka. 
-180 : Yakutsk 
+179 : Yakutsk 
+180 :  Kamchatka. 
 181 :  In Troy 
-182 :  In Troy 
-183 : Springfield 
+182 : In Sparta 
+183 :  Franklin. 
 184 :  Franklin. 
 185 : The duck 
-186 : The duck 
-187 :  the deer. 
-188 : The wolves 
+186 :  The minnow. 
+187 : The wolves 
+188 :  the deer. 
 189 : The prehistoric humans 
-190 :  the archaeologists. 
-191 :  the scientists. 
-192 : The fish 
+190 : The prehistoric humans 
+191 : The fish 
+192 :  the scientists. 
 193 : The stars 
 194 : The stars 
 195 : The gang 
@@ -202,97 +202,97 @@
 202 :  the sponsors. 
 203 :  the chocolate chip. 
 204 :  the chocolate chip. 
-205 : chairs 
-206 :  copies of the newsletter. 
+205 :  copies of the newsletter. 
+206 : chairs 
 207 : pin 
 208 : carrot 
 209 :  the pen. 
-210 : The coffee 
+210 :  the pen. 
 211 : Steve Fred_p 
 212 : Fred_p Steve 
 213 : table 
 214 : doorway 
-215 : The jacket 
+215 :  the sweater. 
 216 :  the sweater. 
-217 : Bill 
-218 :  Bert. 
+217 :  Bert. 
+218 : Bill 
 219 :  John is taking care of Bill. 
-220 :  John is taking care of Bill. 
+220 : Bill is taking care of John 
 221 : John 
 222 :  Bill. 
-223 :  Sam. 
-224 :  Sam. 
+223 : Xenophanes 
+224 : Xenophanes 
 225 : Emma's mother 
 226 : Emma's mother 
 227 : Susan_p 
 228 : Jane 
 229 :  the detective. 
-230 : Joe 
-231 :  Sally 
-232 :  Sally 
+230 :  the detective. 
+231 : Beth 
+232 : Beth 
 233 : Jim 
 234 : Jim 
-235 : Bill 
+235 :  Dan 
 236 :  Dan 
 237 : Ralph's 
-238 :  Tom's 
+238 : Ralph's 
 239 : Andrea 
 240 :  Susan 
 241 : Ralph Ralph 
 242 : Ralph Tom 
-243 :  John 
+243 : Bill 
 244 : Bill 
 245 :  John 
 246 : Bill 
 247 : The boy's 
-248 : The boy's 
-249 : The girl's 
-250 : The girl's 
-251 :  Billy 
-252 : Toby 
-253 : Donna 
-254 :   Lily 
-255 : Timmy 
+248 :  the man's. 
+249 :  the woman's 
+250 :  the woman's 
+251 : Toby 
+252 :  Billy 
+253 :   Lily 
+254 : Donna 
+255 :  Tommy 
 256 : Timmy 
 257 : Tommy 
 258 : Tommy 
-259 :  the boy 
+259 : The father 
 260 :  the boy 
 261 :  the girl's 
 262 : The woman's 
 263 : Pam, and Paul 
-264 :  Pam's parents. 
-265 :  Dr. Adams 
+264 : Pam, and Paul 
+265 : Kate 
 266 : Kate 
-267 :  Bill 
+267 : Dan 
 268 : Dan 
 269 : George 
 270 : George 
 271 : Joan 
 272 : Jane 
-273 :   the trees 
-274 : The lemons  
-275 : Robert 
-276 : Robert 
+273 : The lemons  
+274 :   the trees 
+275 : James 
+276 : James 
 277 : Shatov 
 278 : Kirilov 
-279 :  Emma 
+279 : Janie 
 280 :  Emma 
-281 :  Joe's brother. 
+281 : Joe 
 282 :  Joe's brother. 
 283 : table 
 284 : The table 
-285 :   Madonna couldn't stand the trainer's boyfriend. 
+285 : The trainer slept with Madonna's boyfriend  
 286 : The trainer slept with Madonna's boyfriend  
-287 :   Rebecca 
-288 : Carol  
-289 :  Goethe 
+287 : Carol  
+288 :   Rebecca 
+289 : Shakespeare 
 290 :  Goethe 
-291 : Ovid 
-292 : Ovid 
-293 :  Jade 
-294 : Alice 
-295 :  Luke 
-296 :  Luke 
-297 :  the judges 
+291 :   Shakespeare 
+292 :   Shakespeare 
+293 : Alice 
+294 :  Jade 
+295 : Ethan 
+296 : Ethan 
+297 : the chatbots 
 298 :  the judges 
