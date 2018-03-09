@@ -399,12 +399,12 @@ What was too tall?
 Answers:The shelf / the pot.
 
 41.I'm sure that my map will show this building; it is very famous.
-If a map shows thing B, then a map might be good and thing B might be famous. My map is a map.
+If a map shows thing B, then a map might be good and thing B might be famous.
 What is famous?
 Answers:The building / the map.
 
 41.I'm sure that my map will show this building; it is very good.
-If a map shows thing B, then a map might be good and thing B might be famous. My map is a map.
+If a map shows thing B, then a map might be good and thing B might be famous.
 What is good?
 Answers:The building / the map.
 
@@ -1109,10 +1109,12 @@ Who left?
 Answers:John / Bill.
 
 112.Sam Goodman's biography of the Spartan general Xenophanes conveys a vivid sense of the difficulties he faced in his childhood.
+No.
 Who faced difficulties?
 Answers:Xenophanes / Sam.
 
 112.Sam Goodman's biography of the Spartan general Xenophanes conveys a vivid sense of the difficulties he faced in his research.
+No.
 Who faced difficulties?
 Answers:Xenophanes / Sam.
 
@@ -1318,33 +1320,33 @@ Who were furious?
 Answers:Pam and Paul / Pam's parents.
 
 133.Dr. Adams informed Kate that she had cancer and presented several options for future treatment.
-If person B inform person C something and person B is a doctor, then person C might have illness or person B might have retired.
+If person B is doctor and person C has illness, then person B might inform person C.
 Who had cancer?
 Answers:Kate / Dr. Adams
 
-133.Dr. Adams informed Kate that she had retired and presented several options for future treatment. 
-If person B inform person C something and person B is a doctor, then person C might have illness or person B might have retired.
+133.Dr. Adams informed Kate that she had retired and presented several options for future treatment.
+If person B is doctor and person B had retired, then person B might inform person C.
 Who had retired?
 Answers:Kate / Dr. Adams
 
 134.Dan had to stop Bill from toying with the injured bird. He is very compassionate.
-If person B stop person C from doing something crucial, then person B is compassionate and person C is cruel. If somebody toys with the injured bird, then he is doing something crucial.
+If person B stopes person C from doing something crucial, then person B is compassionate and person C is cruel. If somebody is toying with the injured bird, then he is doing something crucial.
 Who is compassionate?
 Answers:Dan / Bill
 
 134.Dan had to stop Bill from toying with the injured bird. He is very cruel.
-If person B stop person C from doing something crucial, then person B is compassionate and person C is cruel. If somebody toys with the injured bird, then he is doing something crucial.
+If person B stopes person C from doing something crucial, then person B is compassionate and person C is cruel. If somebody is toying with the injured bird, then he is doing something crucial.
 Who is cruel?
 Answers:Dan / Bill
 
 135.George got free tickets to the play, but he gave them to Eric because he was particularly eager to see it.
-If person B gives the tickets to person C, then person B is not particularly eager to see something and person C is particularly eager to see something.
+If person B gives the tickets to person C, then person C might be eager to see something.
 Who was eager to see the play?
 Answers:Eric/George
 
 135.George got free tickets to the play, but he gave them to Eric even though he was not particularly eager to see it.
-If person B gives the tickets to person C, then person B is not particularly eager to see something and person C is particularly eager to see something.
-Who  was not eager to see the play?
+If person B gives the tickets to person C, then person B might be not eager to see something.
+Who was not eager to see the play?
 Answers: Eric/George
 
 136.Jane gave Joan candy because she was hungry.
@@ -1358,52 +1360,52 @@ Who wasn't hungry?
 Answers:Joan / Jane.
 
 137.I tried to paint a picture of an orchard, with lemons in the lemon trees, but they came out looking more like light bulbs .
-If thing B looks like thing C, then thing B have the same shape with thing C. Light bulb’s shape is round. Lemon’s shape is round. Lemon tree’s shape is cylindrical. Telephone pole’s shape is cylindrical.
+If thing B looks like thing C, then thing B has the same shape with thing C. Light bulb’s shape is round. Lemon’s shape is round. Lemon tree’s shape is cylindrical. Telephone pole’s shape is cylindrical.
 What looked like light bulbs ?
 Answers:The lemons  /  the trees
 
 137.I tried to paint a picture of an orchard, with lemons in the lemon trees, but they came out looking more like  telephone poles.
-If thing B looks like thing C, then thing B have the same shape with thing C. Light bulb’s shape is round. Lemon’s shape is round. Lemon tree’s shape is cylindrical. Telephone pole’s shape is cylindrical.
+If thing B looks like thing C, then thing B has the same shape with thing C. Light bulb’s shape is round. Lemon’s shape is round. Lemon tree’s shape is cylindrical. Telephone pole’s shape is cylindrical.
 What looked like  telephone poles?
 Answers:The lemons  /  the trees
 
 138.James asked Robert for a favor but he refused.
-If person B ask person C for a favor, then person B may be refused or person C may refuse.
+If person B askes person C for a favor, then person B may be refused or person C may refuse.
 Who refused?
 Answers:Robert / James
 
 138.James asked Robert for a favor but he was refused.
-If person B ask person C for a favor, then person B may be refused or person C may refuse.
+If person B askes person C for a favor, then person B may be refused or person C may refuse.
 Who was refused?
 Answers:Robert / James
 
 139.Kirilov ceded the presidency to Shatov because he was more popular.
-If person B cedes something to person C, then person B lose something and person C get something. If person B is less popular, then person B lose something. If person C is more popular, then person C might get something.
+If person B cedes something to person C, then person B might lose it and person C might get it. If person B is less popular, then person B might lose something. If person C is more popular, then person C might get something.
 Who was more popular?
 Answers:Shatov / Kirilov
 
 139.Kirilov ceded the presidency to Shatov because he was less popular.
-If person B cedes something to person C, then person B might lose something and person C might get something. If person B is less popular, then person B might lose something. If person C is more popular, then person C might get something.
+If person B cedes something to person C, then person B might lose it and person C might get it. If person B is less popular, then person B might lose something. If person C is more popular, then person C might get something.
 Who was less popular?
 Answers:Shatov / Kirilov
 
 140.Emma did not pass the ball to Janie although she was open.
-If person B is open, somebody migth pass the ball to person B.If person B sees that person C is open, person B might pass the ball to person C.
+If person B is open, then somebody migth pass the ball to person B.If person B sees that person C is open, person B might pass the ball to person C.
 Who was open?
 Answers:Janie / Emma
 
 140.Emma did not pass the ball to Janie although she saw that she was open.
-If person B is open, somebody migth pass the ball to person B.If person B sees that person C is open, person B might pass the ball to person C.
+If person B is open, then somebody migth pass the ball to person B.If person B sees that person C is open, person B might pass the ball to person C.
 Who saw that the other player was open?
 Answers:Janie / Emma
 
 141.Joe saw his brother skiing on TV last night but the fool didn't recognize him.
-If person B sees person C and person B might not recognize person C, person B is a fool. If person B do something in low temperature and person B doesn’t have a coat on, person B is a fool. Skiing on TV is doing something in low temperature.
+If person B sees person C and person B can't recognize person C, person B is a fool. If person B does something in low temperature and person B doesn’t have a coat on, then person B is a fool. Skiing on TV is doing something in low temperature.
 Who is the fool?
 Answers:Joe / Joe's brother.
 
 141.Joe saw his brother skiing on TV last night but the fool didn't have a coat on.
-If person B sees person C and person B might not recognize person C, person B is a fool. If person B do something in low temperature and person B doesn’t have a coat on, person B is a fool. Skiing on TV is doing something in low temperature.
+If person B sees person C and person B can't recognize person C, person B is a fool. If person B does something in low temperature and person B doesn’t have a coat on, then person B is a fool. Skiing on TV is doing something in low temperature.
 Who is the fool?
 Answers:Joe / Joe's brother.
 
@@ -1438,12 +1440,12 @@ Who stole the watch?
 Answers:Carol  /  Rebecca
 
 145.This book introduced Shakespeare to Ovid; it was a major influence on his writing.
-If person B is born before person C, then person C’s writing might be influenced. Ovid is born before Shakespeare. Shakespeare is born before Goethe.
+If person B was born before person C and a book introduces person B to person C, then person C’s writing might be influenced. Ovid was born before Shakespeare. Shakespeare was born before Goethe.
 Whose writing was influenced?
 Answers:Shakespeare / Goethe
 
 145.This book introduced Shakespeare to Goethe; it was a major influence on his writing.
-If person B is born before person C, then person C’s writing might be influenced. Ovid is born before Shakespeare. Shakespeare is born before Goethe.
+If person B was born before person C and a book introduces person B to person C, then person C’s writing might be influenced. Ovid was born before Shakespeare. Shakespeare was born before Goethe.
 Whose writing was influenced?
 Answers:Shakespeare / Goethe
 
@@ -1483,6 +1485,6 @@ Who were so advanced?
 Answers:the chatbots / the judges
 
 149.At the Loebner competition the judges couldn't figure out which respondents were the chatbots because they were so stupid. 
-No.
+If somebody can't figure out something, then he might be stupid.
 Who were so stupid?
 Answers:the chatbots / the judges
