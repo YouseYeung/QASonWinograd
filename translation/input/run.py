@@ -32,7 +32,7 @@ if True:
     i = 1
     answerToken = ""
     with open("answers", "r") as f1:
-        with open("answers.txt", "r") as f2:
+        with open("WSC_Answers", "r") as f2:
             with open("answerComparision", "w") as f3:
                 while True:
                     content = f2.readline()
