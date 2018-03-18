@@ -1,0 +1,19 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: paper.aux
+The style file: splncs.bst
+Database file #1: paper.bib
+A bad cross reference---entry "LevesqueDM12wsc"
+refers to entry "DBLP:conf/kr/2012", which doesn't exist
+A bad cross reference---entry "Levesque11wsc"
+refers to entry "DBLP:conf/aaaiss/2011-6", which doesn't exist
+A bad cross reference---entry "SharmaVAB15towards"
+refers to entry "DBLP:conf/ijcai/2015", which doesn't exist
+A bad cross reference---entry "MouraB08z3"
+refers to entry "DBLP:conf/tacas/2008", which doesn't exist
+Warning--I didn't find a database entry for "DBLP:conf/aaaiss/2011-6"
+Warning--I didn't find a database entry for "DBLP:conf/kr/2012"
+Warning--I didn't find a database entry for "DBLP:conf/ijcai/2015"
+Warning--I didn't find a database entry for "DBLP:conf/tacas/2008"
+Warning--empty booktitle in Singh2004ConceptNetA
+Warning--empty booktitle in NETWORKS2017RnetMR
+Warning--empty booktitle in Barrett2010TheSS
+(There were 4 error messages)

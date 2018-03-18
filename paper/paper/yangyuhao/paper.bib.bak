@@ -1,0 +1,143 @@
+@article{mcdermott1998pddl,
+  title={PDDL-the planning domain definition language},
+  author={McDermott, Drew and Ghallab, Malik and Howe, Adele and Knoblock, Craig and Ram, Ashwin and Veloso, Manuela and Weld, Daniel and Wilkins, David},
+  year={1998},
+  journal={Technical Report CVC TR98003/DCS TR1165, Yale Center for Computational Vision and Control, New Haven, CT.}
+}
+
+@inproceedings{Levesque11wsc,
+  author    = {Hector J. Levesque},
+  title     = {The Winograd Schema Challenge},
+  booktitle = {Logical Formalizations of Commonsense Reasoning, Papers from the 2011
+               {AAAI} Spring Symposium, Technical Report SS-11-06, Stanford, California,
+               USA, March 21-23, 2011},
+  year      = {2011},
+  crossref  = {DBLP:conf/aaaiss/2011-6},
+  url       = {http://www.aaai.org/ocs/index.php/SSS/SSS11/paper/view/2502},
+  timestamp = {Mon, 13 Feb 2012 17:11:42 +0100},
+  biburl    = {https://dblp.org/rec/bib/conf/aaaiss/Levesque11},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{BringsjordBF01creativity,
+  author    = {Selmer Bringsjord and
+               Paul Bello and
+               David A. Ferrucci},
+  title     = {Creativity, the Turing Test, and the (Better) Lovelace Test},
+  journal   = {Minds and Machines},
+  volume    = {11},
+  number    = {1},
+  pages     = {3--27},
+  year      = {2001},
+  url       = {https://doi.org/10.1023/A:1011206622741},
+  doi       = {10.1023/A:1011206622741},
+  timestamp = {Thu, 18 May 2017 09:54:25 +0200},
+  biburl    = {https://dblp.org/rec/bib/journals/mima/BringsjordBF01},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{Riedl14lovelace,
+  author    = {Mark O. Riedl},
+  title     = {The Lovelace 2.0 Test of Artificial Creativity and Intelligence},
+  journal   = {CoRR},
+  volume    = {abs/1410.6142},
+  year      = {2014},
+  url       = {http://arxiv.org/abs/1410.6142},
+  archivePrefix = {arXiv},
+  eprint    = {1410.6142},
+  timestamp = {Wed, 07 Jun 2017 14:42:10 +0200},
+  biburl    = {https://dblp.org/rec/bib/journals/corr/Riedl14},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{LevesqueDM12wsc,
+  author    = {Hector J. Levesque and
+               Ernest Davis and
+               Leora Morgenstern},
+  title     = {The Winograd Schema Challenge},
+  booktitle = {Principles of Knowledge Representation and Reasoning: Proceedings
+               of the Thirteenth International Conference, {KR} 2012, Rome, Italy,
+               June 10-14, 2012},
+  year      = {2012},
+  crossref  = {DBLP:conf/kr/2012},
+  url       = {http://www.aaai.org/ocs/index.php/KR/KR12/paper/view/4492},
+  timestamp = {Wed, 11 Jul 2012 11:19:36 +0200},
+  biburl    = {https://dblp.org/rec/bib/conf/kr/LevesqueDM12},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{SharmaVAB15towards,
+  author    = {Arpit Sharma and
+               Nguyen Ha Vo and
+               Somak Aditya and
+               Chitta Baral},
+  title     = {Towards Addressing the Winograd Schema Challenge - Building and Using
+               a Semantic Parser and a Knowledge Hunting Module},
+  booktitle = {Proceedings of the Twenty-Fourth International Joint Conference on
+               Artificial Intelligence, {IJCAI} 2015, Buenos Aires, Argentina, July
+               25-31, 2015},
+  pages     = {1319--1325},
+  year      = {2015},
+  crossref  = {DBLP:conf/ijcai/2015},
+  url       = {http://ijcai.org/Abstract/15/190},
+  timestamp = {Wed, 20 Jul 2016 15:18:06 +0200},
+  biburl    = {https://dblp.org/rec/bib/conf/ijcai/SharmaVAB15},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{BerantCFL13semantic,
+  author    = {Jonathan Berant and
+               Andrew Chou and
+               Roy Frostig and
+               Percy Liang},
+  title     = {Semantic Parsing on Freebase from Question-Answer Pairs},
+  booktitle = {Proceedings of the 2013 Conference on Empirical Methods in Natural
+               Language Processing, {EMNLP} 2013, 18-21 October 2013, Grand Hyatt
+               Seattle, Seattle, Washington, USA, {A} meeting of SIGDAT, a Special
+               Interest Group of the {ACL}},
+  pages     = {1533--1544},
+  year      = {2013},
+  crossref  = {DBLP:conf/emnlp/2013},
+  url       = {http://aclweb.org/anthology/D/D13/D13-1160.pdf},
+  timestamp = {Fri, 22 Nov 2013 12:57:23 +0100},
+  biburl    = {https://dblp.org/rec/bib/conf/emnlp/BerantCFL13},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{MouraB08z3,
+  author    = {Leonardo Mendon{\c{c}}a de Moura and
+               Nikolaj Bj{\o}rner},
+  title     = {{Z3:} An Efficient {SMT} Solver},
+  booktitle = {Tools and Algorithms for the Construction and Analysis of Systems,
+               14th International Conference, {TACAS} 2008, Held as Part of the Joint
+               European Conferences on Theory and Practice of Software, {ETAPS} 2008,
+               Budapest, Hungary, March 29-April 6, 2008. Proceedings},
+  pages     = {337--340},
+  year      = {2008},
+  crossref  = {DBLP:conf/tacas/2008},
+  url       = {https://doi.org/10.1007/978-3-540-78800-3_24},
+  doi       = {10.1007/978-3-540-78800-3_24},
+  timestamp = {Wed, 24 May 2017 08:28:32 +0200},
+  biburl    = {https://dblp.org/rec/bib/conf/tacas/MouraB08},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{LiuJLZWH16combing,
+  author    = {Quan Liu and
+               Hui Jiang and
+               Zhen{-}Hua Ling and
+               Xiaodan Zhu and
+               Si Wei and
+               Yu Hu},
+  title     = {Combing Context and Commonsense Knowledge Through Neural Networks
+               for Solving Winograd Schema Problems},
+  journal   = {CoRR},
+  volume    = {abs/1611.04146},
+  year      = {2016},
+  url       = {http://arxiv.org/abs/1611.04146},
+  archivePrefix = {arXiv},
+  eprint    = {1611.04146},
+  timestamp = {Wed, 07 Jun 2017 14:42:14 +0200},
+  biburl    = {https://dblp.org/rec/bib/journals/corr/LiuJLZWH16},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
