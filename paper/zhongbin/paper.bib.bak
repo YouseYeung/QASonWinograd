@@ -1,0 +1,130 @@
+@article{bolander2011epistemic,
+  title={Epistemic planning for single-and multi-agent systems},
+  author={Bolander, Thomas and Andersen, Mikkel Birkegaard},
+  journal={Journal of Applied Non-classical Logics},
+  pages={9--34},
+  year={2011}
+}
+
+@book{van2007dynamic,
+  title={Dynamic epistemic logic},
+  author={Van Ditmarsch, Hans and van Der Hoek, Wiebe and Kooi, Barteld},
+  year={2007},
+  publisher={Springer Science \& Business Media}
+}
+
+@inproceedings{kominis2015beliefs,
+  title={Beliefs In Multi-agent Planning: From One Agent to Many.},
+  author={Kominis, Filippos and Geffner, Hector},
+  booktitle={ICAPS},
+  pages={147--155},
+  year={2015}
+}
+
+@inproceedings{muise2015planning,
+  title={Planning Over Multi-Agent Epistemic States: A Classical Planning Approach.},
+  author={Muise, Christian J and Belle, Vaishak and Felli, Paolo and McIlraith, Sheila A and Miller, Tim and Pearce, Adrian R and Sonenberg, Liz},
+  booktitle={AAAI},
+  pages={3327--3334},
+  year={2015}
+}
+
+@inproceedings{Liu2017A,
+  author    = {Xiao Huang, Biqing Fang, Hai Wan, Yongmei Liu},
+  title     = {A General Multi-agent Epistemic Planner Based on Higher-order Belief Change},
+  booktitle = {Proceedings of the Twenty-Sixth International Joint Conference on
+               Artificial Intelligence, {IJCAI-17}},
+  pages     = {1093--1101},
+  year      = {2017},
+  doi       = {10.24963/ijcai.2017/152},
+  url       = {https://doi.org/10.24963/ijcai.2017/152},
+}
+
+@article{bonnet1998hsp,
+  title={HSP: Heuristic search planner},
+  author={Bonnet, Blai and Geffner, H{\'e}ctor},
+  year={1998},
+  publisher={Citeseer},
+  journal={In AIPS-98 Planning Competition Pittsburgh, PA.}
+}
+
+@article{Hoffman2011Fast,
+  title={Fast Plan Generation Through Heuristic Search},
+  author={Hoffman, J. and Nebel, B.},
+  journal={Journal of Artificial Intelligence Research},
+  pages={253--302},
+  year={2011},
+}
+
+@article{Mattm2010Pattern,
+  title={Pattern Database Heuristics for Fully Observable Nondeterministic Planning.},
+  author={Mattm$\ddot{u}$ller, Robert and Ortlieb, Manuela and Helmert, Malte and Bercher, Pascal},
+  journal={Proc. of Icaps},
+  pages={105--112},
+  year={2010},
+}
+
+@article{Hansen2001LAO,
+  title={LAO$^*$: a heuristic search algorithm that finds solutions with loops},
+  author={Hansen, Eric A. and Zilberstein, Shlomo},
+  journal={Artificial Intelligence},
+  pages={35-62},
+  year={2001},
+}
+
+@inproceedings{Winterer2016Structural,
+  title={Structural symmetries for fully observable nondeterministic planning},
+  author={Winterer, Dominik and Katz, Michael and Katz, Michael},
+  booktitle={IJCAI},
+  pages={3293--3299},
+  year={2016},
+}
+
+@article{alchourron1985logic,
+  title={On the logic of theory change: Partial meet contraction and revision functions},
+  author={Alchourr{\'o}n, Carlos E and G{\"a}rdenfors, Peter and Makinson, David},
+  journal={The journal of symbolic logic},
+  pages={510--530},
+  year={1985},
+  publisher={Cambridge University Press}
+}
+
+@article{mendelzon1991difference,
+  title={On the difference between updating a knowledge base and revising it},
+  author={Mendelzon, Alberto O},
+  journal={KR proceedings},
+  pages={387},
+  year={1991}
+}
+
+@article{darwiche1997logic,
+  title={On the logic of iterated belief revision},
+  author={Darwiche, Adnan and Pearl, Judea},
+  journal={Artificial intelligence},
+  pages={1--29},
+  year={1997},
+  publisher={Elsevier}
+}
+
+@article{satoh1988nonmonotonic,
+  title={Non-monotonic reasoning by minimal belief revision},
+  author={Satoh, Ken},
+  year={1988},
+  pages={455--462},
+  journal={Institute for New Generation Computer Technology}
+}
+
+@article{winslett1988reasoning,
+  title={Reasoning about action using a possible models approach},
+  author={Winslett, Marianne},
+  journal={Urbana},
+  pages={61801},
+  year={1988}
+}
+
+@article{mcdermott1998pddl,
+  title={PDDL-the planning domain definition language},
+  author={McDermott, Drew and Ghallab, Malik and Howe, Adele and Knoblock, Craig and Ram, Ashwin and Veloso, Manuela and Weld, Daniel and Wilkins, David},
+  year={1998},
+  journal={Technical Report CVC TR98003/DCS TR1165, Yale Center for Computational Vision and Control, New Haven, CT.}
+}

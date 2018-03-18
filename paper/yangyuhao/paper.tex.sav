@@ -1,0 +1,694 @@
+\documentclass{llncs}
+
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{multirow}
+\usepackage{longtable}
+
+\allowdisplaybreaks[4]
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\renewcommand{\algorithmicreturn}{\textbf{Initialize:}}
+
+\begin{document}
+
+\title{An Improvement on MEPK \\based on Heuristic Searching}
+%\author{Zhongbin Wu \and Yongmei Liu
+%}
+%\institute{
+%Sun Yat-sen University \email{wuzhb3@mail2.sysu.edu.cn}
+%\and Sun Yat-sen University \email{ymliu@mail.sysu.edu.cn}
+%}
+
+\maketitle
+
+\begin{abstract}
+  Recently, multi-agent epistemic planning problem has drawn great attention from both dynamic logic and planning communities. Existing implementation includes compile the problem into a classical planning problem or make use of high-order belief change. In this paper, to support efficient reasoning and progression, we propose a general representation language for the initial KB, the goal, the precondition and effect of actions in multi-agent epistemic planning and the solution is an action tree branching at sensing action. Besides, we propose the satisfiability algorithm, the strong entailment and strong equivalent algorithm, and the revision and update algorithm for knowledge reasoning and progression. And we also handle the propositional common knowledge, which we also called it constraint. Finally, based on the planning setting above, we apply AO* with Cycle Checking(CAO*) as the main search algorithm and propose a heuristic function for our formulas, and implement a multi-agent epistemic planner MEPKL. Our experiment result shows that our planner outperforms MEPK in the most cases.
+\end{abstract}
+
+\section{Introduction}
+Nowadays, many intelligent tasks may involve more than one agent to collaborate and communicate with each other so as to accomplish the goal, which raises the need of agent knowledge reasoning and progression. For example, there is an assembly line with two agents , each of which is responsible for a part of the product. An agent may fail in processing its part, and an agent can assemble the product if it knows that both two agents have processed their part successfully or can restart the assembly line if one of them fail. In this example, knowledge reasoning is needed because before taking an action, the agent need to check whether the current environment and its knowledge base can satisfy the precondition of the action or not. Also knowledge progression is needed because the performance of action will change not only the environment but also the knowledge base of agents. Specifically, in some cases, reasoning and progression about high-order knowledge is also needed. For example, an agent may wish that it knows something and the other agents know that it knows something.
+
+Recently, multi-agent epistemic planning problem has drawn great attention from both dynamic logic and planning communities. On the one hand, theoretically, \cite{bolander2011epistemic} has formalized multi-agent epistemic planning based on dynamic epistemic logic(DEL) proposed in \cite{van2007dynamic} and shown that it is undecidable in general. Further, \cite{aucher2013undecidability} has shown that multi-agent epistemic planning is undecidable in the presence of purely epistemic actions and \cite{yu2013multi} has identified two important decidable fragments of multi-agent epistemic planning. On the other hand, in practice, \cite{kominis2015beliefs} and \cite{muise2015planning} has shown how to solve restricted versions of multi-agent epistemic planning problem by resorting to classical planning and both two methods can only generate the linear solutions. Besides, focusing on beliefs, \cite{Liu2017A} has proposed a general planner based on higher-order belief change with restricted common knowledge.
+
+Revision and update are two methods for knowledge progression with new knowledge. Revision concerns knowledge change due to the partial or incorrect information while update concerns knowledge change caused by the performance of agents' actions. Many guidelines about revision and update have been proposed which includes belief revision in \cite{alchourron1985logic}, belief update in \cite{mendelzon1991difference} and iterated belief revision in \cite{darwiche1997logic}. Further, \cite{aucher2011sequents} has explored the progression of KBs wrt actions, where both of KBs and actions are represented as canonical formulas in modal logic and \cite{miller2016belief} has explored the update for KBs consisting of belief literals.
+
+In the field of planning, heuristic searching has shown large potential and has been widely used to solve both classical planning problem and fully observable planning problem. \cite{bonnet1998hsp} has proposed the Delete Relaxation Heuristic and \cite{Hoffman2011Fast} has proposed the FF Heuristic for classical planning problem based on Delete Relaxation Heuristic, and \cite{Mattm2010Pattern} has Pattern Database Heuristic for fully observable non-deterministic planning problem. Also many searching algorithms based on heuristic search like AO*/LAO*\cite{Hansen2001LAO} have been widely applied for solving planning problem. \cite{Winterer2016Structural} has applied LAO* with structural symmetries for solving fully observable non-deterministic planning problem, and \cite{Wan2015A} and \cite{Liu2017A} have applied PrAO for single-agent and multi-agent epistemic planning problem respectively.
+
+In this paper, we treat multi-agent epistemic planning problem as contingent rather than conformant planning, resulting in nonlinear solution that branches at sensing actions. We formalize states and actions with multi-agent modal logic and restrict the common knowledge to the propositional formula which we called constraint. Based on such planning setting, we adapt the modeling framework in \cite{Liu2017A} where the initial state, the goal, the preconditions and effects of actions can be arbitrary KD45$_n$ formulas and progression of actions can be achieved by revision and update operator. To support efficient reasoning and progression, we make use of disjunction of $\mathcal{L}_\mathcal{K}$ normal terms, which we call KLDNFs, and propose the satisfiability algorithm, strong entailment and strong equivalent algorithm and revision and update algorithm for KLDNFs. Based on the reasoning and progression algorithm, we apply AO* with Cycle Checking(CAO*) algorithm and propose the heuristic function for KLDNFs, and implement a multi-agent epistemic planner called MEPKL. We compare MEPKL with MEPK and our experiment result shows that MEPKL outperforms MEPK in the most cases.
+\section{Preliminary}
+In this section, we will introduce the background work of our paper, which consists of three parts: the multi-agent modal logic KD45$_n$, belief revision and update, and the modeling framework used in \cite{Liu2017A}.
+\subsection{Multi-agent Modal Logic KD45$_n$}
+Throughout our paper, we denote $\mathcal{A}$ a finite set of agents, and $\mathcal{P}$ a finite set of atoms. We use $\phi, \psi, \varphi, \delta$ to represent the formulas, $\Phi, \Psi$ to represent the set of formula, and $\top$ and $\bot$ to represent $True$ and $False$ respectively.
+Besides, we let $\bigvee\Phi$(resp. $\bigwedge\Phi$) represent the disjunction(resp. conjunction) of the member formula in $\Phi$.
+\begin{definition}
+Let $\mathcal{A}$ a finite set of agents, and $\mathcal{P}$ a finite set of atoms, and the language $\mathcal{L}_{\mathcal{K}\mathcal{C}}$ of multi-agent modal logic with common knowledge is generated by the BNF:\\
+\centerline{$\varphi$ $::=p$ $|$ $\lnot\phi$ $|$ $(\phi\land\psi)$ $|$ $K_a\phi$ $|$ $C\phi$}
+, where $a\in\mathcal{A}, p\in\mathcal{P}, \phi,\psi\in\mathcal{L}_{\mathcal{K}\mathcal{C}}$.
+\end{definition}
+Intuitively, $K_a\phi$ means agent $a$ knows $\phi$ and $C\phi$ means all the agents know $\phi$. Similar to \cite{Liu2017A}, we only discuss the case of propositional common knowledge. That's to say, $C\phi$ where $\phi\in\mathcal{L}_0$, and we also call it a constraint.
+\begin{definition}
+A frame is a pair $(W, R)$, where $W$ is a non-empty set of possible worlds and for each agent $a\in\mathcal{A}$, $R_a$ is a binary relation on $W$, called the accessibility relation for $a$.
+\end{definition}
+We say that an accessibility relation for $a$ $R_a$ is serial iff for any $w\in W$ we have $w'\in W$ s.t. $(w, w')\in R_a$; $R_a$ is transitive iff $\forall w,u,v \in W, (w,u)\in R_a, (u,v)\in R_a\Rightarrow (w,v)\in R_a$; $R_a$ is Euclidean iff $\forall w,w_1,w_2 \in W, (w,w_1)\in R_a, (w,w_2)\in R_a\Rightarrow (w_1,w_2)\in R_a$. A KD45$_n$ frame is a frame whose accessibility relations are serial, transitive and Euclidean.
+\begin{definition}
+A Kripke model is a triple $M=(W,R,V)$, where $(W,R)$ is a frame and $V: W\rightarrow 2^{\mathcal{P}}$ is a valuation map from each $w\in W$ to a subset of $\mathcal{P}$. A pointed Kripke model is a pair $(M, w)$, where $M$ is a Kripke model and $w$ is a world of $M$, which is called the actual world.
+\end{definition}
+\begin{definition}
+Let $s = (M, w)$ be an pointed Kripke model where $M=(W,R,V)$. We interpret formulas in $\mathcal{L}_{\mathcal{K}\mathcal{C}}$ inductively:
+\begin{itemize}[label={$\bullet$}]
+  \item $M, w\models p$ iff $p\in V(W)$
+  \item $M, w\models \lnot\phi$ iff $M, w\not\models\phi$
+  \item $M, w\models\phi\land\psi$ iff $M, w\models\phi$ and $M, w\models\psi$
+  \item $M, w\models K_a\phi$ iff for all $v$ s.t. $(w,v)\in R_a$, $M,v\models\phi$
+  \item $M, w\models C\phi$ iff for all $v$ s.t. $(w,v)\in R_\mathcal{T}$, $M, v\models\phi$, where $R_\mathcal{T}$ is the transitive closure of the union of $R$.
+\end{itemize}
+\end{definition}
+Next, we introduce some properties. We say $\phi$ is satisfiable if there exists a pointed KD45$_n$ model s.t. $M, w\models\phi$. We say $\phi$ entails $\psi$, written $\phi\models\psi$ if for all model $(M, w)$, $M, w\models\phi\Rightarrow M,w\models\psi$, and $\phi$ and $\psi$ is equivalent, written $\phi\Leftrightarrow\psi$ if $\phi\models\psi$ and $\psi\models\phi$.\\
+And we define the properties under constraint similar. We say $\phi$ is satisfiable under constraint $\gamma$ if there exists a pointed KD45$_n$ model s.t. $M, w\models\phi\land\gamma$. We say $\phi$ entails $\psi$ under constraint $\gamma$, written $\phi\models_\gamma\psi$ if for all model $(M, w)$, $M, w\models\phi\land\gamma\Rightarrow M,w\models\psi\land\gamma$, and $\phi$ and $\psi$ is equivalent under constraint $\gamma$, written $\phi\Leftrightarrow_\gamma\psi$ if $\phi\models_\gamma\psi$ and $\psi\models_\gamma\phi$.\\
+To simplify the problem, on the one hand, we limit the common knowledge to the propositional one. On the other hand, we restrict our attention to disjunctive normal forms and adapt the definition of normal forms introduced in \cite{Fine1975Normal}.
+\begin{definition}[KLTerm]
+    We define the set of $\mathcal{L}_{K}$ normal terms, called KLTerm, as bellow:
+    \begin{itemize}[label={$\bullet$}]
+      \item A propositional conjunctive term is a normal term;
+      \item $\phi_0\land\bigwedge\limits_{a\in\mathcal{B}\subseteq\mathcal{A}}(K_a\phi_a\land L_a\Psi_a)$, where
+      \begin{itemize}[label={$-$}]
+        \item $\phi_0$ is a propositional conjunctive term
+        \item $\phi_a$ is disjunction of $\mathcal{L}_{K}$ normal terms
+        \item $\Psi_a$ is set of $\mathcal{L}_{K}$ normal terms
+      \end{itemize}
+    \end{itemize}
+\end{definition}
+Here, we let $L_a\phi$ denote $\lnot K_a\lnot\phi$, and $L_a\Phi$ denote the conjunction of $L_a\phi$, where $\Phi$ is a set of normal terms and $\phi\in\Phi$. For example, $(p\land q)\land K_a(p\land q)\land L_a(p)$ and $p\land K_a(p\lor q)\land L_a(p)\land L_a(\lnot q)$ are $\mathcal{L}_{K}$ normal terms while $(p\lor q)\land K_a(p)\land L_a(p\lor q)$ is not because disjunction is not allowed in propositional part and $L$ part.
+\begin{definition}[KLDNF]
+A formula of $\mathcal{L}_\mathcal{K}$ is a KLDNF if it is a disjunction of KLTerms.
+\end{definition}
+We say that a KLTerm has the alternating property if it has the property that the modal operator of an agent does not occur directly inside the modal operator of the same agent. We say that a KLDNF has the alternating property if every KLTerm of it has the alternating property. For example, $K_a(K_b(p))$ has the alternating property while $K_a(K_a(p))$ does not. In the following part of our paper, we only discuss the formulas with the alternating property.
+\begin{proposition}
+Every formula in $\mathcal{L}_\mathcal{K}$ can be transformed into an equivalent alternating KLDNF.
+\end{proposition}
+\begin{proof}
+Let $\phi$ be a given formula s.t. $\phi\in\mathcal{L}_\mathcal{K}$. Firstly, we transform $\phi$ into its negation form $\phi'$. We prove it by induction.
+\begin{enumerate}
+  \item \textbf{Induction Hypothesis}: suppose that if the maximum modal depth of $\phi'$ is n, then $\phi'$ can be transformed into an equivalent alternating KLDNF.
+  \item \textbf{Base Step}: When the modal depth of $\phi'$ is 0, i.e. $\phi'$ is a propositional formula. According to distributive law, we can transform it into an equivalent alternating KLDNF.
+  \item \textbf{Induction Step}: If the maximum modal depth of $\phi'$ is n+1, then by hypothesis, distributive law and the rules bellow:
+      \begin{itemize}[label={$\bullet$}]
+        \item $K_a(\phi\land\psi)=K_a\phi\land K_a\psi$
+        \item $L_a(\phi\lor\psi)=L_a\phi\lor L_a\psi$
+      \end{itemize}
+      we can get the equivalent KLDNF formula, each KLTerm of which is in the form $\phi_0\land\bigwedge\limits_{a\in\mathcal{B}\subseteq\mathcal{A}}(K_a\phi_a\land L_a\Phi_a)$ s.t. $\phi_0, \phi_a, \Psi_a$ are alternating KLDNF formulas. Then apply the rules bellow until the target formula satisfy the alternating property:
+      \begin{itemize}[label={$\bullet$}]
+        \item $L_a(\phi\land K_a\psi\land L_a\varphi)\Leftrightarrow L_a\phi\land K_a\psi \land L_a\varphi$
+        \item $K_a(\phi\lor K_a\psi\lor L_a\varphi)\Leftrightarrow K_a\phi\lor K_a\psi \lor L_a\varphi$
+      \end{itemize}
+      Thus, $\phi'$ can be transformed into an equivalent alternating KLDNF.
+\end{enumerate}
+\end{proof}
+As easy corollaries, we can get:
+\begin{proposition}\label{kltermentail}
+Let $\delta=\phi_0\land\bigwedge\limits_{a\in\mathcal{A}}(K_a\phi_a\land L_a\Psi_a)$ and $\delta'=\phi_0'\land\bigwedge\limits_{a\in\mathcal{A}}(K_a\phi_a'\land L_a\Psi_a')$ be two alternating KLTerms and $\gamma$ be the constraint, then $\delta\models_\gamma\delta'$ iff the following hold:
+\begin{itemize}[label={$\bullet$}]
+  \item $\phi_0\land\gamma\models\phi_0'$ propositionally
+  \item For each $a\in\mathcal{A}$, $\phi_a\models_\gamma\phi_a'$
+  \item For each $a\in\mathcal{A}$, for every $\psi_a'\in\Psi_a'$ there is a $\psi_a\in\Psi_a$ s.t. $\phi_a\land\psi_a\models\psi_a'$
+\end{itemize}
+\end{proposition}
+\subsection{Belief Revision and Update}
+Revision and update are two kinds of method for knowledge modification with new knowledge. We use $\circ$ to denote revision operator and $\diamond$ to denote update operator.  \cite{mendelzon1991difference} has introduced the main difference between revision and update in a model-theoretic way: let $\phi$ and $\psi$ be two formulas, then $\phi\circ\psi$ selects from $\psi$ the models that are closest to that in $\phi$, and $\phi\diamond\psi$ selects, for each model $M$ of $\phi$, the set of models from $\psi$ that are closest to $M$, intuitively. Then, we can get the corollaries bellow:
+\begin{itemize}[label={$\bullet$}]
+  \item Revision operator satisfies the Satisfiability Property: if $\phi\land\psi$ is satisfiable, then $\phi\circ\psi\Leftrightarrow\phi\land\psi$.
+  \item Update operator satisfies the Distribution Property: $(\phi_1\lor\phi_2)\diamond\psi\Leftrightarrow(\phi_1\diamond\psi)\lor(\phi_2\diamond\psi)$.
+  \item Both $\phi\circ\psi$ implies $\psi$ and $\phi\diamond\psi$ implies $\psi$.
+  \item If $\psi$ is satisfiable, then $\phi\circ\psi$ is satisfiable.
+  \item If both $\phi$ and $\psi$ are satisfiable, then $\phi\diamond\psi$ is satisfiable.
+\end{itemize}
+\subsection{Modeling Framework}
+In this section, we will introduce the modeling framework for multi-agent epistemic planning which is slightly vary from that proposed in \cite{Liu2017A}. Similarly, we introduce our modeling framework via the Collaboration-and-Communication\cite{kominis2015beliefs} example.
+\begin{example}\label{example1}
+Assume that there are three rooms $r_1, r_2$ and $r_3$, two agents $a_1$ and $a_2$ and two boxes $b_1$ and $b_2$. Initially, two agents is at room $r_2$, and they knows that neither $b_1$ nor $b_2$ is in $r_2$. The goal is that agent $a_1$ knows the information of box $b_1$ and agent $a_2$ knows the information of box $b_2$. An agent can move back and forth between the rooms, it can find whether a box is in the room and it can communicate with other agents to share the information of boxes.
+\end{example}
+In the following part, we will first give the definition of multi-agent epistemic planning(MEP) problem. Then we will introduce two kinds of action, deterministic and sensing action, and the progression of actions. Finally, we will introduce the solution of MEP problem and end with formalizing Example.\ref{example1}.
+\begin{definition}
+A multi-agent epistemic planning(MEP) problem $\mathcal{Q}$ is a tuple $\langle\mathcal{A}, \mathcal{P}, \mathcal{D}, \mathcal{S}, \mathcal{I}, \mathcal{G}, \gamma\rangle$, where $\mathcal{A}$ is the set of agents, $\mathcal{P}$ is the set of atoms, $\mathcal{D}$ is the set of deterministic actions, $\mathcal{S}$ is the set of sensing actions, $\mathcal{I}\in\mathcal{L}_\mathcal{K}$ is the initial state, $\mathcal{G}\in\mathcal{L}_\mathcal{K}$ is the goal and $\gamma\in\mathcal{L}_0$ is the constraint.
+\end{definition}
+\begin{definition}
+A deterministic action is a pair $\langle pre, effs\rangle$, where $pre\in\mathcal{L}_\mathcal{K}$ is the precondition, and $effs$ is a set of conditional effects, each of which is a pair $\langle con, cef\rangle$, where $con, cef\in\mathcal{L}_\mathcal{K}$ are the condition and conditional effect respectively.
+\end{definition}
+A deterministic action is executable on KB $\phi$ under constraint $\gamma$ if $\phi\models_\gamma pre(a)$. Given a KB $\phi\in\mathcal{L}_\mathcal{K}$, a deterministic action $a=\langle pre, eff\rangle$ and constraint $\gamma$, assume that $\phi\models_\gamma pre(a)$, then the progression of $\phi$ wrt $a$ is defined as update $\phi$ with the conditional effects whose condition can be entailed by $\phi$.
+\begin{definition}
+Let $\phi\in\mathcal{L}_\mathcal{K}$, and $a_d$ a deterministic action with $effs(a_d)=\{\langle con_1, cef_1\rangle,...,\langle con_n, cef_n\rangle\}$. Let $\{\langle c_1, e_1 \rangle,...,\langle c_k, e_k\rangle\}\subseteq eff(a_d)$ s.t. $\phi\models_\gamma c_i$, $i = 1,...,k$. Then the progression of $\phi$ wrt $a_d$ under $\gamma$, written $prog(\phi, a_d)$ is defined as $prog(\phi, a_d)=((\phi\diamond_\gamma e_1)...)\diamond_\gamma e_k$.
+\end{definition}
+\begin{definition}
+A sensing action is a triple $\langle pre, pos, neg \rangle$, where $pre, pos, neg\in\mathcal{L}_\mathcal{K}$ are the precondition, positive result and negative result respectively.
+\end{definition}
+A sensing action $a$ is executable on KB $\phi$ under constraint $\gamma$ if $\phi\models_\gamma pre(a)$. Given a KB $\phi\in\mathcal{L}_\mathcal{K}$, a sensing action $a=\langle pre, pos, neg\rangle$ and constraint $\gamma$. Assume that $\phi\models_\gamma pre(a)$, then the progression of $\phi$ wrt $a$ is a pair $\langle \phi^+, \phi^-\rangle$, where $\phi^+($resp. $\phi^-)$ is revision $\phi$ with $pos(a)($resp. $neg(a))$.
+\begin{definition}
+Let $\phi\in\mathcal{L}_\mathcal{K}$, and $a_s = \{pre, pos, neg\}$ a sensing action. Then the progression of $\phi$ wrt $a_s$ under constraint $\gamma$, written $prog(\phi, a_s)$ is a pair $\langle \phi^+, \phi^-\rangle$, where $\phi^+=\phi\circ_\gamma pos(a_s)$ and $\phi^-=\phi\circ_\gamma neg(a_s)$.
+\end{definition}
+A solution of a multi-agent epistemic planning problem is an action tree branching on sensing actions. We use $\epsilon$ to denote an empty action tree.
+\begin{definition}
+Let $\mathcal{Q}=\langle\mathcal{A}, \mathcal{P}, \mathcal{D}, \mathcal{S}, \mathcal{I}, \mathcal{G}, \gamma\rangle$ be a MEP problem. The set $\mathcal{T}$ of action tree is defined recursively:
+\begin{itemize}[label={$\bullet$}]
+  \item $\epsilon$ is in $\mathcal{T}$
+  \item If $a_d\in\mathcal{D}$ and $T\in\mathcal{T}$, then $a_d;T$ is in $\mathcal{T}$
+  \item If $a_s\in\mathcal{S}$ and $T^+,T^-\in\mathcal{T}$, then $a_s;(T+|T^-)$ is in $\mathcal{T}$
+\end{itemize}
+\end{definition}
+\begin{definition}
+Let $\phi\in\mathcal{L}_\mathcal{K}$, $T$ an action tree. The progression of $\phi$ wrt $T$, written $prog(\phi, T)$ is defined recursively:
+\begin{itemize}[label={$\bullet$}]
+  \item $prog(\phi,\epsilon)=\{\phi\}$
+  \item If $\phi\models_\gamma pre(a_d)$, $prog(\phi, a_d;T')=prog(prog(\phi, a_d), T')$
+  \item If $\phi\models_\gamma pre(a_s)$, $prog(\phi, a_s;(T^+|T^-))=prog(\phi^+, T^+)\bigcup prog(\phi^-, T^-)$, where $prog(\phi, a_s)=\langle \phi^+,\phi^-\rangle$.
+  \item Otherwise, $prog(\phi, T)$ is undefined.
+\end{itemize}
+\end{definition}
+\begin{definition}
+Let $\mathcal{Q}=\langle\mathcal{A}, \mathcal{P}, \mathcal{D}, \mathcal{S}, \mathcal{I}, \mathcal{G}, \gamma\rangle$ be a MEP problem, an action tree $T$ is a solution for $\mathcal{Q}$ if $prog(\mathcal{I}, T)$ is defined, and $\forall \phi\in prog(\mathcal{I}, T)$ s.t. $\phi\models_\gamma\mathcal{G}$.
+\end{definition}
+Now we end up this section by formalizing Example.\ref{example1} and showing a solution for Example.\ref{example1}.
+\begin{itemize}[label={$\bullet$}]
+  \item $\mathcal{A} = \{a_1, a_2\}$, $\mathcal{P}=\{at(a,r), in(b,r)|a\in \mathcal{A}, b\in\{b_1,b_2\}, r\in\{r_1,r_2,r_3\}\}$, where $at(a,r)$ means agent $a$ is at room $r$, and $in(b, r)$ means box $b$ is in room $r$.
+  \item $\mathcal{D} = \{left(a), right(a), tell(a_i, a_j, b, r)|a,a_i,a_j\in\mathcal{A}, b\in\{b_1,b_2\}, r\in\{r_1,r_2,r_3\}\}$. Due to the space restriction, we only formalize the deterministic action $left(a_1)$ here:
+  \begin{itemize}[label={$-$}]
+    \item $pre(left(a_1))=\lnot at(a_1, r_1)\land K_{a_1}(\lnot at(a_1, r_1))$
+    \item $effs(left(a_1)) = \{\langle at(a_1, r_2), at(a_1, r_1)\land K_{a_1}(at(a_1, r_1))\rangle, \langle at(a_1, r_3), at(a_1, r_2)\land K_{a_1}(at(a_1, r_2))\rangle\}$
+  \end{itemize}
+  \item $\mathcal{S}=\{find(a,b,r)|a\in\mathcal{A}, b\in\{b_1,b_2\}, r\in\{r_1,r_2,r_3\}\}$. Similar we only formalize the sensing action $find(a_1, b_1, r_1)$ here:
+  \begin{itemize}[label={$-$}]
+    \item $pre(find(a_1, b_1, r_1))= at(a_1, r_1)\land K_{a_1}(at(a_1, r_1))$
+    \item $pos(find(a_1, b_1, r_1)) = in(b_1, r_1)\land K_{a_1}(in(b_1, r_1))$
+    \item $neg(find(a_1, b_1, r_1)) = \lnot in(b_1, r_1)\land K_{a_1}(\lnot in(b_1, r_1))$
+  \end{itemize}
+  \item $\mathcal{I} = at(a_1, r_2)\land at(a_2, r_2) \land \lnot in(b_1, r_2) \land \lnot in(b_2, r_2) \land K_{a_1}(at(a_1, r_2)\land \lnot in(b_1, r_2)) \land K_{a_2}(at(a_2, r_2) \land \lnot in(b_2, r_2))$
+  \item $\mathcal{G} = \bigwedge_{i=1}^2(K_{a_i}(in(b_i, r_1))\lor K_{a_i}(in(b_i, r_2))\lor K_{a_i}(in(b_i, r_3)))$
+  \item $\gamma=\gamma_1\land\gamma_2$, where $\gamma_1=\bigwedge_{i=1}^2((at(a_i, r_1)\land \lnot at(a_i, r_2)\land \lnot at(a_i, r_3))\lor (\lnot at(a_i, r_1)\land at(a_i, r_2)\land \lnot at(a_i, r_3)) \lor (\lnot at(a_i, r_1)\land \lnot at(a_i, r_2)\land at(a_i, r_3)))$ means each agent is at exactly one room, and $\gamma_2$ is similar which means each box is in exactly one room.
+\end{itemize}
+Figure.\ref{fig1} shows a solution for Example.\ref{example1}. First agent $a_1$ moves left to room $r_1$, and agent $a_2$ moves left too. Then agent $a_1$ and $a_2$ finds whether box $b_1$ and $b_2$ is in room $r_1$ or not respectively.
+\begin{figure}[!htb]
+  \includegraphics[width=\textwidth]{img/solutionTree.png}
+  \caption{\label{fig1}Solution for Example.\ref{example1}}
+\end{figure}
+
+\section{Reasoning and Knowledge Progression}
+In this section, we will introduce the reasoning algorithm, strong entailment and strong equivalence algorithm and the knowledge revision and update algorithm.\\
+In our planner, in order to support efficient reasoning and knowledge progression, we use DNFs to represent the constraint and KLDNFs to represent the other formulas. That's to say, before planning our planner will first compile the initial KB, the positive and negative effects of sensing actions, and the conditional effect of deterministic actions into KLDNF forms and compile the constraint into DNF forms. Finally, the planner will compile the goal, the precondition of sensing actions and deterministic actions and the condition of conditional effect in deterministic actions into the negation KLDNF forms.
+\subsection{Satisfiability}
+As we have mentioned earlier, an action $a$ is executable on KB $\phi$ under constraint $\gamma$ if $\phi\models_\gamma pre(a)$. To support efficient reasoning, our planner will compile KB $\phi$ into KLDNF forms and $pre(a)$ into negation KLDNF forms. Next, we will introduce the reasoning algorithm for KLDNFs.
+\begin{proposition}\label{kltermsat}
+An alternating KLTerm $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}}(K_a\phi_a\land L_a\Psi_a)$ is satisfiable wrt constraint $\gamma$ iff the following hold:
+\begin{enumerate}
+  \item $\phi_0\land\gamma$ is propositionally satisfiable
+  \item For each $a \in \mathcal{B}$, $\phi_a$ is satisfiable wrt $\gamma$
+  \item For each $a \in \mathcal{B}$, for each $\psi\in\Psi_a$, $\phi_a\land\psi$ is satisfiable wrt $\gamma$
+\end{enumerate}
+\end{proposition}
+\begin{proposition}\label{kldnfsat}
+An alternating KLDNF $\phi$ is satisfiable wrt constraint $\gamma$ iff at least one of the KLTerm in $\phi$ is satisfiable wrt constraint $\gamma$.
+\end{proposition}
+The proof is obvious according to \textbf{Proposition 2.11} proposed in \cite{Liu2017A} and the satisfiability property of DNF.
+\begin{proposition}\label{consat}
+Let $\phi$ and $\phi'$ be two KLDNFs, then $\phi\land\phi'$ is satisfiable wrt constraint $\gamma$ iff one of the followings holds:
+    \begin{itemize}[label={$\bullet$}]
+      \item If $\phi$ and $\phi'$ are propositional terms, then $\phi\land\phi'$ is satisfiable wrt constraint $\gamma$ iff $\phi\land\phi'\land\gamma$ has not complementary literals
+      \item Else if $\phi=\bigvee\Psi$ and $\phi'=\bigvee\Psi'$, then $\phi\land\phi'$ is satisfiable wrt constraint $\gamma$ iff exists $\psi\in\Psi$, exists $\psi'\in\Psi'$ s.t. $\psi\land\psi'$ is satisfiable wrt constraint $\gamma$
+      \item Else $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}}(K_a\phi_a\land L_a\Psi_a)$ and $\phi'=\phi_0'\land\bigwedge\limits_{a\in\mathcal{B}'}(K_a\phi_a'\land L_a\Psi_a')$, then $\phi\land\phi'$ is satisfiable wrt constraint $\gamma$ iff the following hold:
+          \begin{itemize}[label={$-$}]
+            \item Both $\phi$ and $\phi'$ are satisfiable wrt constraint $\gamma$
+            \item For each $a\in\mathcal{B}\cap\mathcal{B}'$, $\phi_a\land\phi_a'$ is satisfiable wrt $\gamma$
+            \item For each $a\in\mathcal{B}\cap\mathcal{B}'$, for each $\psi\in\Psi_a$, $\phi_a\land\phi_a'\land\psi$ is satisfiable wrt $\gamma$
+            \item For each $a\in\mathcal{B}\cap\mathcal{B}'$, for each $\psi'\in\Psi_a'$, $\phi_a\land\phi_a'\land\psi'$ is satisfiable wrt $\gamma$
+          \end{itemize}
+    \end{itemize}
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item When $\phi$ and $\phi'$ are propositional terms, it's obvious that $\phi\land\phi'$ is satisfiable wrt constraint $\gamma$ iff $\phi\land\phi'\land\gamma$ has not complementary literals.
+  \item When $\phi=\bigvee\Psi$ and $\phi'=\bigvee\Psi'$, according to distributive law, $\phi\land\phi'=\bigvee\{\psi\land\psi'|\psi\in\Psi, \psi'\in\Psi'\}$. Thus, according to the satisfiability property of DNF,  $\phi\land\phi'$ is satisfiable wrt constraint $\gamma$ iff $\exists \varphi\in\{\psi\land\psi'|\psi\in\Psi, \psi'\in\Psi'\}$ s.t. $\varphi$ is satisfiable wrt constraint $\gamma$.
+  \item When $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}}(K_a\phi_a\land L_a\Psi_a)$ and $\phi'=\phi_0'\land\bigwedge\limits_{a\in\mathcal{B}'}(K_a\phi_a'\land L_a\Psi_a')$,
+      \begin{align}
+        \phi\land\phi'\quad &= \quad\phi_0\land\phi_0' \\
+        &\land\quad\bigwedge\limits_{a\in\mathcal{B}-\mathcal{B}'}(K_a\phi_a\land L_a\Psi_a)\land\bigwedge\limits_{a\in\mathcal{B}'-\mathcal{B}}(K_a\phi_a'\land L_a\Psi_a')\\
+        &\land\quad\bigwedge\limits_{a\in\mathcal{B}\cap\mathcal{B}'}(K_a(\phi_a\land\phi_a')\land L_a(\Psi_a\cup\Psi_a'))
+      \end{align}
+      we proof the proposition in two directions:
+      \begin{itemize}[label={$\bullet$}]
+        \item \textbf{If}: According to Proposition.\ref{kltermsat}, $\phi\land\phi'$ is satisfiable wrt constraint $\gamma$ iff the following holds:
+            \begin{itemize}[label={$-$}]
+              \item $\phi_0\land\phi_0'\land\gamma$ is propositional satisfiable holds because:\\ Both $\phi$ and $\phi'$ are satisfiable wrt constraint $\gamma$ $\Rightarrow$ Both $\phi_0\land\gamma$ and $\phi_0'\land\gamma$ are propositional satisfiable $\Rightarrow \phi_0\land\phi_0'\land\gamma$ is propositional satisfiable.
+              \item For agents $a\in\mathcal{B}-\mathcal{B}'$, $\phi_a$ and $\forall \psi_a\in\Psi_a, \phi_a\land\psi_a$ are satisfiable wrt constraint $\gamma$ holds because:
+                  $\phi$ is satisfiable wrt constraint $\gamma$ $\Rightarrow$ $\phi_a$ and $\forall \psi_a\in\Psi_a, \phi_a\land\psi_a$ are satisfiable wrt constraint $\gamma$
+              \item For agents $a\in\mathcal{B}'-\mathcal{B}$, $\phi_a'$ and $\forall \psi_a'\in\Psi_a', \phi_a'\land\psi_a'$ are satisfiable wrt constraint $\gamma$ holds similarly.
+              \item For agents $a\in\mathcal{B}'\cap\mathcal{B}$, $\phi_a\land\phi_a'$ and $\forall \psi_a^\star\in\Psi_a\cup\Psi_a', \phi_a\land\phi_a'\land\psi_a^\star$ are satisfiable wrt constraint $\gamma$ obviously holds according to the last three items in Proposition.\ref{kltermsat}.
+            \end{itemize}
+        \item \textbf{Only If}: The proof of only if direction is quiet direct.
+            \begin{itemize}[label={$-$}]
+              \item $\phi\land\phi'$ is satisfiable wrt constraint $\gamma$ $\Rightarrow$ Both $\phi$ and $\phi'$ are satisfiable wrt constraint $\gamma$.
+              \item Because $\phi\land\phi'$ is satisfiable wrt constraint $\gamma$, so for agents $a\in\mathcal{B}'\cap\mathcal{B}$, $\phi_a\land\phi_a'$ and $\forall \psi_a^\star\in\Psi_a\cup\Psi_a', \phi_a\land\phi_a'\land\psi_a^\star$ are satisfiable wrt constraint $\gamma$, which is equivalent to the last three items.
+            \end{itemize}
+      \end{itemize}
+\end{enumerate}
+\end{proof}
+\begin{proposition}
+Let $\phi$ and $\phi'$ be two KLDNFs, $\phi\models_\gamma\phi'$ iff $\phi\land\lnot\phi'$ is not satisfiable wrt constraint $\gamma$.
+\end{proposition}
+\subsection{Strong Entailment and Strong Equivalence}
+Our planner search for solution through the space of KBs, and it will perform cycle checking during searching. Thus, we need an efficient algorithm for checking whether two KBs is equivalent or not. In last section, we have defined the algorithm for knowledge reasoning. However, except for the goal, precondition of actions and condition of conditional effects which can be compiled into the negation KLDNF forms during pre-processing, for the new KBs generated during searching, when applying satisfiability algorithm to check equivalence, the cost for transforming the new KBs into the negation KLDNF forms is not tolerable because the formula length may increase too large according to the distributive law. In this section, we introduce a stronger notion of equivalence which can be checked in polynomial time.
+\begin{definition}
+Let $\phi$ and $\phi'$ be two KLDNFs and $\gamma$ be the constraint, the strong entailment relation, written $\phi\mapsto_\gamma\phi'$ is defined recursively:
+    \begin{itemize}[label={$\bullet$}]
+      \item If $\phi$ and $\phi'$ are propositional formulas, $\phi\mapsto_\gamma\phi'$ if $\phi\land\gamma\models\phi'$
+      \item Else if $\phi=\bigvee\Psi$ and $\phi'=\bigvee\Psi'$, $\phi\mapsto_\gamma\phi'$ if for all $\psi\in\Psi$ there exists $\psi'\in\Psi'$ s.t. $\psi\mapsto_\gamma\psi'$
+      \item Else $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}\subseteq\mathcal{A}}(K_a\phi_a\land L_a\Psi_a)$ and $\phi'=\phi_0'\land\bigwedge\limits_{a\in\mathcal{B}'\subseteq\mathcal{A}}(K_a\phi_a'\land L_a\Psi_a')$, $\phi\mapsto_\gamma\phi'$ if the following hold:
+          \begin{itemize}[label={$-$}]
+            \item $\mathcal{B}'\subseteq\mathcal{B}$
+            \item $\phi_0\mapsto_\gamma\phi_0'$
+            \item for each $a\in\mathcal{B}'$, $\phi_a\mapsto_\gamma\phi_a'$
+            \item for each $a\in\mathcal{B}'$, for all $\psi'\in\Phi_a'$ there exists a $\psi\in\Psi_a$ s.t. $\phi_a\land\psi\mapsto_\gamma\psi'$
+          \end{itemize}
+    \end{itemize}
+\end{definition}
+Obviously, the strong entailment relation can be checked in polynomial time. By Proposition \ref{kltermentail} we can easily get the proposition:
+\begin{proposition}
+Let $\phi$ and $\phi'$ be two KLDNFs, and $\gamma$ be the constraint, then $\phi\mapsto_\gamma\phi'\Rightarrow\phi\models_\gamma\phi'$.
+\end{proposition}
+\begin{definition}
+Let $\phi$ and $\phi'$ be two KLDNFs and $\gamma$ be the constraint, we say that $\phi$ and $\phi'$ are strong equivalent under $\gamma$, written $\phi\Leftrightarrow_\gamma\phi'$ if both $\phi\mapsto_\gamma\phi'$ and $\phi'\mapsto_\gamma\phi$.
+\end{definition}
+\subsection{Revision and Update}
+In this section, we will introduce the revision and update algorithm for knowledge progression. The basic idea behind our algorithm is that we revision and update the high order epistemic formulas by the way that reduce it to that of lower order, and apply the revision and update recursively, and finally we resort it to the progression of propositional formulas as basis. Besides, we will also prove that our algorithm satisfies the basic corollaries mentioned before.\\
+We begin with some notions. Let $\Phi$ and $\Phi'$ be two set of formulas and $\gamma$ be the constraint, then we have the following notions:
+\begin{itemize}[label={$\bullet$}]
+  \item $\Phi*\Phi'$=
+        \begin{itemize}[label={$-$}]
+          \item $\{(\phi,\phi')|\phi\in\Phi,\phi'\in\Phi', \phi\land\phi'$ is satisfiable wrt $\gamma\}$ , if there exists $\phi\in\Phi, \phi'\in\Phi'$ s.t. $\phi\land\phi'$ is satisfiable wrt $\gamma$
+          \item $\{(\phi,\phi')|\phi\in\Phi,\phi'\in\Phi'\}$, otherwise
+        \end{itemize}
+  \item $\min{(\Phi)}=\Phi-\{\phi$ $|$ $\phi\in\Phi,$ and there exists $\phi'\in\Phi$ s.t. $\phi'\models_\gamma\phi\}$
+  \item Let $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}\subseteq\mathcal{A}}(K_a\phi_a\land L_a\Psi_a)$ be a KLTerm, we call $\phi_0$ the propositional part of $\phi$, and $\phi_a$ the knowledge of agent $a$. For every KLTerm $\psi_a\in\Psi_a$, we call $\psi_a$ a possibility of agent $a$, and $\phi_a\land\psi_a$ a completed possibility of agent $a$.
+\end{itemize}
+Intutively, $\Phi*\Phi'$ means that we will always restrict our attention to those pair that are consistent whenever possible. $\min{(\Phi)}$ means that minimize a set of formulas by removing those that can be entailed by others for the purpose that minimize the formula length as possible. For example, we will store the formula $L_a\{p\land q\}$ rather than $L_a\{p, p\land q\}$.
+\begin{definition}
+Let $\phi$ and $\phi'$ be two KLDNFs and $\gamma$ be the constraint, the revision of $\phi$ with $\phi'$ under $\gamma$, written $\phi\circ_\gamma\phi'$, is defined recursively:
+    \begin{itemize}[label={$\bullet$}]
+      \item If $\phi$ and $\phi'$ are propositional formulas, $\phi\circ_\gamma\phi'=\phi\circ_s(\phi'\land\gamma)$, where $\circ_c$ is the Satoh's revision operator\cite{satoh1988nonmonotonic}
+      \item Else if $\phi=\bigvee\Psi$ and $\phi'=\bigvee\Psi'$, $\phi\circ_\gamma\phi'=\bigvee\{\psi\circ_\gamma\psi'|(\psi, \psi')\in\Psi*_\gamma\Psi'\}$
+      \item Else if $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}\subseteq\mathcal{A}}(K_a\phi_a\land L_a\Psi_a)$ and $\phi'=\phi_0'\land\bigwedge\limits_{a\in\mathcal{B}'\subseteq\mathcal{A}}(K_a\phi_a'\land L_a\Psi_a')$ is satisfiable wrt $\gamma$, then $\phi\circ_\gamma\phi'=\phi\land\phi'$
+      \item Else $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}\subseteq\mathcal{A}}(K_a\phi_a\land L_a\Psi_a)$ and $\phi'=\phi_0'\land\bigwedge\limits_{a\in\mathcal{B}'\subseteq\mathcal{A}}(K_a\phi_a'\land L_a\Psi_a')$ is unsatisfiable wrt $\gamma$, then
+          \begin{align}
+            \phi\circ_\gamma\phi' \quad &=\quad \phi_0\circ_\gamma\phi_0' \\
+            &\land \quad \bigwedge\limits_{a\in\mathcal{B}-\mathcal{B}'}K_a\phi_a \land \bigwedge\limits_{a\in\mathcal{B}'-\mathcal{B}}K_a\phi_a'\\
+            &\land\quad
+            \bigwedge\limits_{a\in\mathcal{B}\cap\mathcal{B}'}K_a[(\phi_a\circ_\gamma\phi_a')\lor\bigvee\limits_{\psi_a'\in\Psi_a'}(\phi_a\circ_\gamma(\phi_a'\land\psi_a'))]\\
+            &\land \quad \bigwedge\limits_{a\in\mathcal{B}-\mathcal{B}'}L_a\Psi_a \land \bigwedge\limits_{a\in\mathcal{B}'-\mathcal{B}}L_a\Psi_a'\\
+            &\land \quad \bigwedge\limits_{a\in\mathcal{B}\cap\mathcal{B}'}L_a[\min{(\Psi_a'\cup\{\psi\circ_\gamma\psi'|(\psi,\psi')\in\Psi_a*_\gamma\{ \phi_K\}\})}]
+          \end{align}
+    \end{itemize}
+\end{definition}
+Intuitively, we use $\phi_K = (\phi_a\circ_\gamma\phi_a')\lor\bigvee\limits_{\psi_a'\in\Psi_a'}(\phi_a\circ_\gamma(\phi_a'\land\psi_a'))$ to denote the result knowledge of the same agent after revision. In our algorithm, Rule 1 means that we will use the Satoh's revision operator\cite{satoh1988nonmonotonic} for propositional formulas. Rule 2 is for the disjunction property, which means that we keep the consistent term pairs if possible, otherwise we will revision all the term pairs. The intuition behind Rule 3 is that revision operator has the Satisfiability Property, so we will just use the conjunction of two formulas as the result of revision operator. And Rule 4 is for the cases that the conjunction of two KLTerms is not satisfiable, then we just revision the propositional part and keep the knowledge and possibility of agents that appear only in $\mathcal{B}$ or $\mathcal{B}'$ unchanged. For the agents that appear in both $\mathcal{B}$ and $\mathcal{B}'$, the result knowledge is obtained by revision the old knowledge with the new knowledge, that is $\phi_a\circ_\gamma\phi_a'$, and then in order to avoid contradiction between result knowledge and the new possibility, we revision the old knowledge with the new completed knowledge, that is $\phi_a\circ_\gamma(\phi_a'\land\psi_a')$. Finally, the result possibility is obtained by keeping the new possibility, that is $\Psi_a'$, and revision the old possibility with the consistent result knowledge as possible, or revision every old possibility with result knowledge otherwise, that is $\{\psi\circ_\gamma\psi'|(\psi,\psi')\in\Psi_a*\{\phi_K\}\}$ and minimizing the set of formulas in the last.\\
+Next, before introducing the property of revision operator, we first define the notion of disjunctive-wise satisfiable and a basic proposition used for proof.
+\begin{definition}
+Let $\phi$ be a KLDNF, and $\gamma$ be the constraint, then we say $\phi$ is disjunctive-wise satisfiable, in short d-satisfiable, wrt $\gamma$ if one of the following holds:
+\begin{itemize}[label={$\bullet$}]
+  \item If $\phi$ is a propositional term and $\phi\land\gamma$ is propositional satisfiable.
+  \item Else if $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}\subseteq\mathcal{A}}(K_a\phi_a\land L_a\Psi_a)$, and $\phi$ is satisfiable wrt $\gamma$ and for all $a\in\mathcal{B}$, $\phi_a$ is d-satisfiable wrt $\gamma$.
+  \item Else $\phi=\bigvee\Psi$, and for all $\psi\in\Psi, \psi$ is d-satisfiable wrt $\gamma$.
+\end{itemize}
+\end{definition}
+\begin{proposition}
+Let $\phi$ and $\phi'$ be two KLDNFs, and $\gamma$ be the constraint, if both $\phi$ and $\phi'$ are d-satisfiable wrt $\gamma$, and $\phi\models_\gamma\phi'$, then $\phi\land\phi'$ is d-satisfiable wrt $\gamma$.
+\end{proposition}
+The proof is quiet direct and we omit it here. Following is some easy properties of our revision operator.
+\begin{proposition}
+Let $\phi$ and $\phi'$ be two KLDNFs and $\gamma$ be the constraint, if $\phi\land\phi'$ is satisfiable, then $\phi\circ_\gamma\phi'\Leftrightarrow_\gamma\phi\land\phi'$.
+\end{proposition}
+\begin{proof}
+We prove the proposition in the following aspects:
+\begin{enumerate}
+  \item If $\phi$ and $\phi'$ are propositional terms and $\phi\land\phi'$ is satisfiable wrt $\gamma$, then $\phi\circ_\gamma\phi'\Leftrightarrow_\gamma\phi\land\phi'$ according to the definition of Satoh's revision operator.
+  \item Else if $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}\subseteq\mathcal{A}}(K_a\phi_a\land L_a\Psi_a)$ and $\phi'=\phi_0'\land\bigwedge\limits_{a\in\mathcal{B}'\subseteq\mathcal{A}}(K_a\phi_a'\land L_a\Psi_a')$ is satisfiable wrt $\gamma$, $\phi\circ_\gamma\phi'\Leftrightarrow_\gamma\phi\land\phi'$ according to our revision algorithm.
+  \item Else $\phi=\bigvee\Psi$ and $\phi'=\bigvee\Psi'$ and $\phi\land\phi'$ is satisfiable wrt $\gamma$, then exists $\psi\in\Psi$, exists $\psi'\in\Psi'$ s.t. $\psi\land\psi'$ is satisfiable wrt constraint $\gamma$. So $\Psi*_\gamma\Psi'=\{(\psi, \psi')|\psi\in\Psi, \psi'\in\Psi', \psi\land\psi'$ is satisfiable wrt $\gamma\}$ and $\psi\circ_\gamma\psi'\Leftrightarrow_\gamma\psi\land\psi'$ by induction. Thus, $\phi\circ_\gamma\phi'=\bigvee\{\psi\circ_\gamma\psi'|(\psi, \psi')\in\Psi*_\gamma\Psi'\}\Leftrightarrow_\gamma\bigvee\{\psi\land\psi'|(\psi, \psi')\in\Psi*_\gamma\Psi'\}\Leftrightarrow_\gamma\phi\land\phi'$.
+\end{enumerate}
+\end{proof}
+\begin{proposition}
+Let $\phi$ and $\phi'$ be two KLDNFs, $\gamma$ be the constraint and both $\phi$ and $\phi'$ are d-satisfiable wrt $\gamma$, then $\phi\circ_\gamma\phi'\models_\gamma\phi'$.
+\end{proposition}
+\begin{proof}
+We prove the proposition in the following aspects:
+\begin{enumerate}
+  \item If $\phi\land\phi'$ is satisfiable wrt $\gamma$, then $\phi\circ_\gamma\phi'\Leftrightarrow_\gamma\phi\land\phi'\models_\gamma\phi'$.
+  \item If $\phi\land\phi'$ is not satisfiable wrt $\gamma$, we prove by induction:\\
+        \textbf{Induction Hypothesis}: If the modal depth of $\phi$ and $\phi'$ is at most $n$, $\phi\circ_\gamma\phi'\models_\gamma\phi'$.\\
+        \textbf{Base step}: If the modal depth of $\phi$ and $\phi'$ is at most $0$, i.e. $\phi$ and $\phi'$ are propositional terms or DNFs, then $\phi\circ_\gamma\phi'=\phi\circ_s(\phi'\land\gamma)\models\phi'\land\gamma\models\phi'$ according to the definition of Satoh's revision operator.\\
+        \textbf{Induction Step}: If the modal depth of $\phi$ and $\phi'$ is at most $n+1$, we discuss in the following aspects:
+        \begin{itemize}[label={$\bullet$}]
+          \item If $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}\subseteq\mathcal{A}}(K_a\phi_a\land L_a\Psi_a)$, $\phi'=\phi_0'\land\bigwedge\limits_{a\in\mathcal{B}'\subseteq\mathcal{A}}(K_a\phi_a'\land L_a\Psi_a')$, $\phi_0, \phi_0'\in\mathcal{L}_0, \forall a\in\mathcal{B}, \forall\psi\in\Psi_a$ s.t. the modal depth of $\phi_a$ and $\psi$ is at most n, $\forall a\in\mathcal{B}', \forall\psi'\in\Psi_a'$ s.t. the modal depth of $\phi_a'$ and $\psi'$ is at most $n$. Let $\phi^*=\phi\circ_\gamma\phi'=\phi_0^*\land\bigwedge\limits_{a\in\mathcal{B}^*\subseteq\mathcal{A}}(K_a\phi_a^*\land L_a\Psi_a^*)$, then the following hold:
+              \begin{itemize}[label={$-$}]
+                \item $\mathcal{B}'\subseteq\mathcal{B}^*$
+                \item $\phi_0^*=\phi_0\circ_\gamma\phi_0^\prime\models_\gamma\phi_0'$
+                \item For each $a\in\mathcal{B}'$, if $a\in\mathcal{B}'-\mathcal{B}$, then $\phi_a^*=\phi_a'\models_\gamma\phi_a'$; else $a\in\mathcal{B}'\cap\mathcal{B}$, then $\phi_a^*=(\phi_a\circ_\gamma\phi_a')\lor\bigvee\limits_{\psi_a'\in\Psi_a'}
+                    (\phi_a\circ_\gamma(\phi_a'\land\psi_a'))\models_\gamma\phi_a'$ since either $\phi_a\circ_\gamma\phi_a'\models_\gamma\phi_a'$ or $\phi_a\circ_\gamma(\phi_a'\land\psi_a')\models_\gamma\phi_a'\land\psi_a'\models_\gamma\phi_a'$.
+                \item Let $\Psi_a''=\{\psi\circ_\gamma\psi'|(\psi,\psi')\in\Psi_a*\{\phi_K\}\}$. For each $a\in\mathcal{B}'$, if $a\in\mathcal{B}'-\mathcal{B}$, then for each $\psi_a'\in\Psi_a'$ there exists $\psi_a'=\psi_a^*\in\Psi_a^*=\Psi_a'$ s.t. $\phi_a^*\land\psi_a^*\models_\gamma\psi_a'$; else $a\in\mathcal{B}\cap\mathcal{B}'$, for all $\psi'\in\Psi_a'$, if there does not exist $\psi''\in\Psi_a''$ s.t. $\psi''\models_\gamma\psi'$, then $\psi'\in\min{(\Psi_a'\cup\Psi_a'')}$ and $\phi_a^*\land\psi'\models_\gamma\psi'$; else there exist $\psi''\in\Psi_a''$ s.t. $\psi''\models\psi'$, then $\phi_a^*\land\psi''\models\psi''\models_\gamma\psi'$.
+              \end{itemize}
+              Thus, $\phi\circ_\gamma\phi'\models_\gamma\phi'$.
+          \item Else $\phi=\bigvee\Psi$ and $\phi'=\bigvee\Psi'$, then $\Psi*\Psi'=\{(\psi, \psi')|\psi\in\Psi, \psi'\in\Psi'\}$. By induction, for each $\psi^*\in\{\psi\circ_\gamma\psi'|(\psi, \psi')\in\Psi*\Psi'\}$, there exists $\psi'\in\Psi'$ s.t. $\psi^*\models_\gamma\psi'$. So $\phi\circ_\gamma\phi'\models_\gamma\phi'$.
+        \end{itemize}
+\end{enumerate}
+\end{proof}
+% say that a KLDNF is disjunct-wise satisfiable, in short d-satisfiable, wrt $\gamma$ if each disjunct term is satisfiable wrt $\gamma$, or it is a propositional term or a KLTerm satisfiable wrt $\gamma$.
+\begin{proposition}
+Let $\phi$ and $\phi'$ be two KLDNFs and $\gamma$ be the constraint, if both $\phi$ and $\phi'$ is d-satisfiable wrt $\gamma$, then $\phi\circ_\gamma\phi'$ is d-satisfiable wrt $\gamma$.
+\end{proposition}
+\begin{proof}
+We prove the proposition in the following aspects:
+\begin{enumerate}
+  \item If $\phi\land\phi'$ is satisfiable wrt $\gamma$, then $\phi\circ_\gamma\phi'\Leftrightarrow_\gamma\phi\land\phi'$ is d-satisfiable wrt $\gamma$.
+  \item If $\phi\land\phi'$ is not satisfiable wrt $\gamma$, we prove by induction:\\
+        \textbf{Induction Hypothesis}: If the modal depth of $\phi$ and $\phi'$ is at most $n$, then $\phi\circ_\gamma\phi'$ is d-satisfiable wrt $\gamma$.\\
+        \textbf{Base step}: If the modal depth of $\phi$ and $\phi'$ is at most $0$, i.e. $\phi$ and $\phi'$ are propositional terms or DNFs, then $\phi\circ_\gamma\phi'=\phi\circ_s(\phi'\land\gamma)$ is d-satisfiable wrt $\gamma$ according to the definition of Satoh's revision operator.\\
+        \textbf{Induction Step}: If the modal depth of $\phi$ and $\phi'$ is at most $n+1$, we discuss in the following aspects:
+        \begin{itemize}[label={$\bullet$}]
+          \item If $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}\subseteq\mathcal{A}}(K_a\phi_a\land L_a\Psi_a)$, $\phi'=\phi_0'\land\bigwedge\limits_{a\in\mathcal{B}'\subseteq\mathcal{A}}(K_a\phi_a'\land L_a\Psi_a')$, $\phi_0, \phi_0'\in\mathcal{L}_0, \forall a\in\mathcal{B}, \forall\psi\in\Psi_a$ s.t. the modal depth of $\phi_a$ and $\psi$ is at most n, $\forall a\in\mathcal{B}', \forall\psi'\in\Psi_a'$ s.t. the modal depth of $\phi_a'$ and $\psi'$ is at most $n$, then the following hold:
+              \begin{itemize}[label={$-$}]
+                \item $\phi_0\land\phi_0'$ and for all $a\in(\mathcal{B}-\mathcal{B}')\cup(\mathcal{B}'-\mathcal{B})$, $K_a\phi_a\land L_a\Psi_a$ are d-satisfiable wrt $\gamma$.
+                \item For all $a\in\mathcal{B}\cap\mathcal{B}'$, $(\phi_a\circ_\gamma\phi_a')\lor\bigvee\limits_{\psi_a'\in\Psi_a'}(\phi_a\circ_\gamma(\phi_a'\land\psi_a'))$ is d-satisfiable wrt $\gamma$ because $\phi_a\circ_\gamma\phi_a'$ and for all $\psi_a'\in\Psi_a'$, $\phi_a\circ_\gamma(\phi_a'\land\psi_a')$ are d-satisfiable wrt $\gamma$ by induction.
+                \item For all $a\in\mathcal{B}\cap\mathcal{B}'$, for each $\psi^*\in\Psi_a'\cup\{\psi\circ_\gamma\psi'|(\psi,\psi')\in\Psi_a*_\gamma\{ \phi_K\}\}$, if $\psi^*\in\Psi_a'$, note that $\phi_K=(\phi_a\circ_\gamma\phi_a')\lor\bigvee\limits_{\psi_a'\in\Psi_a'}(\phi_a\circ_\gamma(\phi_a'\land\psi_a'))$, then by distributive law, $\phi_K\land\psi^*=[(\phi_a\circ_\gamma\phi_a')\land\psi^*]\lor[\bigvee\limits_{\psi_a'\in\Psi_a'-\{\psi^*\}}
+                    (\phi_a\circ_\gamma(\phi_a'\land\psi_a')\land\psi^*)]\lor[(\phi_a\circ_\gamma(\phi_a'\land\psi^*)\land\psi^*)]$ is satisfiable wrt $\gamma$ because $\phi_a\circ_\gamma(\phi_a'\land\psi^*)\models_\gamma\phi_a'\land\psi^*
+                    \Rightarrow\phi_a\circ_\gamma(\phi_a'\land\psi^*)\land\phi_a'\land\psi^*$ is d-satisfiable wrt $\gamma\Rightarrow\phi_a\circ_\gamma(\phi_a'\land\psi^*)\land\psi^*$ is d-satisfiable wrt $\gamma$; else $\psi^*\in\{\psi\circ_\gamma\psi'|(\psi,\psi')\in\Psi_a*_\gamma\{ \phi_K\}\}$, that is $\psi^*=\psi\circ_\gamma\phi_K\Rightarrow\psi^*\models_\gamma\phi_K\Rightarrow\psi^*\land\phi_K$ is d-satisfiable wrt $\gamma$, where $(\psi, \phi_K)\in\Psi_a*_\gamma\{\phi_K\}$.
+              \end{itemize}
+              Thus, $\phi\circ_\gamma\phi'$ is d-satisfiable wrt $\gamma$.
+          \item Else $\phi=\bigvee\Psi$ and $\phi'=\bigvee\Psi'$, then $\Psi*\Psi'=\{(\psi, \psi')|\psi\in\Psi, \psi'\in\Psi'\}$. By induction, each $\psi^*\in\{\psi\circ_\gamma\psi'|(\psi, \psi')\in\Psi*\Psi'\}$ is d-satisfiable wrt $\gamma$ and thus $\phi\circ_\gamma\phi'$ is d-satisfiable wrt $\gamma$.
+        \end{itemize}
+\end{enumerate}
+\end{proof}
+\begin{definition}
+Let $\phi$ and $\phi'$ be two KLDNFs and $\gamma$ be the constraint, the update of $\phi$ with $\phi'$ under $\gamma$, written $\phi\diamond_\gamma\phi'$, is defined recursively:
+\begin{itemize}[label={$\bullet$}]
+  \item If $\phi$ and $\phi'$ are propositional formulas, $\phi\diamond_\gamma\phi'=\phi\diamond_w(\phi'\land\gamma)$, where $\diamond_w$ is the Winslett's update operator\cite{winslett1988reasoning}
+  \item Else if $\phi=\bigvee\Psi$, $\phi\diamond_\gamma\phi'=\bigvee\limits_{\psi\in\Psi}(\psi\diamond_\gamma\phi')$
+  \item Else if $\phi'=\bigvee\Psi'$, $\phi\diamond_\gamma\phi'=\bigvee\{\psi\diamond_\gamma\psi'|(\psi, \psi')\in\{\phi\}*\Psi'\}$
+  \item Else $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}\subseteq\mathcal{A}}(K_a\phi_a\land L_a\Psi_a)$ and $\phi'=\phi_0'\land\bigwedge\limits_{a\in\mathcal{B}'\subseteq\mathcal{A}}(K_a\phi_a'\land L_a\Psi_a')$, then
+          \begin{align}
+            \phi\diamond_\gamma\phi'\quad &= \quad\phi_0\diamond_\gamma\phi_0' \\
+            &\land \quad \bigwedge\limits_{a\in\mathcal{B}-\mathcal{B}'}K_a\phi_a \land\bigwedge\limits_{a\in\mathcal{B}'-\mathcal{B}}K_a\phi_a'\\ &\land \quad
+            \bigwedge\limits_{a\in\mathcal{B}\cap\mathcal{B}'}K_a[(\phi_a\diamond_\gamma\phi_a')\lor\bigvee\limits_{\psi_a'\in\Psi_a'}(\phi_a\diamond_\gamma(\phi_a'\land\psi_a'))]\\
+            &\land \quad \bigwedge\limits_{a\in\mathcal{B}-\mathcal{B}'}L_a\Psi_a \land \bigwedge\limits_{a\in\mathcal{B}'-\mathcal{B}}L_a\Psi_a'\\
+            &\land \quad \bigwedge\limits_{a\in\mathcal{B}\cap\mathcal{B}'}L_a[
+            \min{(\Psi_a'\cup\{\psi_a\diamond_\gamma\phi_K|\psi_a\in\Psi_a\})}]
+          \end{align}
+\end{itemize}
+\end{definition}
+Similar, $\phi_K=(\phi_a\diamond_\gamma\phi_a')\lor\bigvee\limits_{\psi_a'\in\Psi_a'}(\phi_a\diamond_\gamma(\phi_a'\land\psi_a'))$ denotes the result knowledge of the same agent after update, intuitively. In our algorithm, Rule 1 means that we will use the Winslett's update operator\cite{winslett1988reasoning} for propositional terms. Rule 2 is for the distributive law of update operator. Rule 3 means that if $\phi'$ is in disjunction form, then we update $\phi$ with the consistent terms in $\phi'$ if possible, else update $\phi$ with each terms in $\phi'$. Rule 4 is quiet similar to Rule 4 in revision algorithm. Following is some properties of our update operator:
+\begin{proposition}
+Let $\phi_1$, $\phi_2$ and $\phi'$ be the KLDNFs and $\gamma$ be the constraint, then $(\phi_1\lor\phi_2)\diamond_\gamma\phi'\Leftrightarrow_\gamma(\phi_1\diamond_\gamma\phi'\lor\phi_2\diamond_\gamma\phi')$.
+\end{proposition}
+The proof is quiet direct according to our update algorithm.
+\begin{proposition}
+Let $\phi$ and $\phi'$ be two KLDNFs, $\gamma$ be the constraint and both $\phi$ and $\phi'$ are d-satisfiable wrt $\gamma$, then $\phi\diamond_\gamma\phi'\models_\gamma\phi'$.
+\end{proposition}
+\begin{proof}
+We prove the proposition by induction:\\
+\textbf{Induction Hypothesis}: If the modal depth of $\phi$ and $\phi'$ is at most $n$, $\phi\diamond_\gamma\phi'\models_\gamma\phi'$.\\
+\textbf{Base step}: If the modal depth of $\phi$ and $\phi'$ is at most 0, i.e. $\phi$ and $\phi'$ are propositional terms, then $\phi\diamond_\gamma\phi'=\phi\diamond_w(\phi'\land\gamma)\models\phi'\land\gamma\models\phi'$ according to the definition of the Winslett's update operator.\\
+\textbf{Induction Step}: If the modal depth of $\phi$ and $\phi'$ is at most $n+1$, we discuss in the following aspects:
+\begin{itemize}[label={$\bullet$}]
+  \item If $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}\subseteq\mathcal{A}}(K_a\phi_a\land L_a\Psi_a)$, $\phi'=\phi_0'\land\bigwedge\limits_{a\in\mathcal{B}'\subseteq\mathcal{A}}(K_a\phi_a'\land L_a\Psi_a')$, $\phi_0, \phi_0'\in\mathcal{L}_0, \forall a\in\mathcal{B}, \forall\psi\in\Psi_a$ s.t. the modal depth of $\phi_a$ and $\psi$ is at most n, $\forall a\in\mathcal{B}', \forall\psi'\in\Psi_a'$ s.t. the modal depth of $\phi_a'$ and $\psi'$ is at most $n$. Let $\phi^*=\phi\diamond_\gamma\phi'=\phi_0^*\land\bigwedge\limits_{a\in\mathcal{B}^*\subseteq\mathcal{A}}(K_a\phi_a^*\land L_a\Psi_a^*)$, then the following hold:
+      \begin{itemize}[label={$-$}]
+        \item $\mathcal{B}'\in\mathcal{B}^*$
+        \item $\phi_0^*=\phi_0\diamond_\gamma\phi_0'\models_\gamma\phi_0'$
+        \item For each $a\in\mathcal{B}'$, if $a\in\mathcal{B}'-\mathcal{B}$, then $\phi_a^*=\phi_a'\models_\gamma\phi_a'$; else $a\in\mathcal{B}\cap\mathcal{B}'$, then $\phi_a^*=(\phi_a\diamond_\gamma\phi_a')\lor\bigvee\limits_{\psi_a'\in\Psi_a'}
+            (\phi_a\diamond_\gamma(\phi_a'\land\psi_a'))\models_\gamma\phi_a'$ since either $\phi_a\diamond_\gamma\phi_a'\models_\gamma\phi_a'$ or $\phi_a\diamond_\gamma(\phi_a'\land\psi_a')\models_\gamma(\phi_a'\land\psi_a')\models_\gamma\phi_a'$.
+        \item Let $\Psi_a''=\{\psi_a\diamond_\gamma\phi_K|\psi_a\in\Psi_a\}$. For each $a\in\mathcal{B}'$, if $a\in\mathcal{B}'-\mathcal{B}$, then for each $\psi_a'\in\Psi_a'$ there exists $\psi_a'=\psi_a^*\in\Psi_a^*=\Psi_a'$ s.t. $\phi_a^*\land\psi_a^*\models_\gamma\psi_a'$; else $a\in\mathcal{B}\cap\mathcal{B}'$, for all $\psi'\in\Psi_a'$, if there does not exist $\psi''\in\Psi_a''$ s.t. $\psi''\models\psi'$, then $\psi'\in\min{(\Psi_a'\cup\Psi_a'')}$ and $\phi_a^*\land\psi'\models_\gamma\psi'$; else there exist $\psi''\in\Psi_a''$ s.t. $\psi''\models_\gamma\psi'$, then $\phi_a^*\land\psi''\models_\gamma\psi''\models_\gamma\psi'$.
+      \end{itemize}
+      So, $\phi\diamond_\gamma\phi'\models_\gamma\phi'$.
+  \item If $\phi=\bigvee\Psi$, $\phi\diamond_\gamma\phi'=\bigvee\limits_{\psi\in\Psi}(\psi\diamond_\gamma\phi')$. Then by induction, $(\forall \psi\in\Psi, \psi\diamond_\gamma\phi'\models_\gamma\phi')\Leftrightarrow(\bigvee
+      \limits_{\psi\in\Psi}(\psi\diamond_\gamma\phi')\models_\gamma\phi')
+      \Leftrightarrow(\phi\diamond_\gamma\phi'\models_\gamma\phi')$.
+  \item If $\phi'=\bigvee\Psi'$, $\phi\diamond_\gamma\phi'=\bigvee\{\psi\diamond_\gamma\psi'|(\psi, \psi')\in\{\phi\}*\Psi'\}$. Then by induction, for each $\psi^*\in\{\psi\diamond_\gamma\psi'|(\psi, \psi')\in\{\phi\}*\Psi'\}$, there exist $\psi'\in\Psi'$ s.t. $\psi^*\models_\gamma\psi'$.
+\end{itemize}
+\end{proof}
+\begin{proposition}
+Let $\phi$ and $\phi'$ be two KLDNFs, and $\gamma$ be the constraint, if both $\phi$ and $\phi'$ are d-satisfiable wrt $\gamma$, then $\phi\diamond_\gamma\phi'$ is d-satisfiable wrt $\gamma$.
+\end{proposition}
+\begin{proof}
+We prove the proposition by induction:\\
+\textbf{Induction Hypothesis}: If the modal depth of $\phi$ and $\phi'$ is at most $n$, $\phi\diamond_\gamma\phi'$ is d-satisfiable wrt $\gamma$.\\
+\textbf{Base step}: If the modal depth of $\phi$ and $\phi'$ is at most 0, i.e. $\phi$ and $\phi'$ are propositional terms, then $\phi\diamond_\gamma\phi'=\phi\diamond_w(\phi'\land\gamma)$ is d-satisfiable wrt $\gamma$ according to the definition of the Winslett's update operator.\\
+\textbf{Induction Step}: If the modal depth of $\phi$ and $\phi'$ is at most $n+1$, we discuss in the following aspects:
+\begin{itemize}[label={$\bullet$}]
+  \item If $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}\subseteq\mathcal{A}}(K_a\phi_a\land L_a\Psi_a)$, $\phi'=\phi_0'\land\bigwedge\limits_{a\in\mathcal{B}'\subseteq\mathcal{A}}(K_a\phi_a'\land L_a\Psi_a')$, $\phi_0, \phi_0'\in\mathcal{L}_0, \forall a\in\mathcal{B}, \forall\psi\in\Psi_a$ s.t. the modal depth of $\phi_a$ and $\psi$ is at most n, $\forall a\in\mathcal{B}', \forall\psi'\in\Psi_a'$ s.t. the modal depth of $\phi_a'$ and $\psi'$ is at most $n$, then the following hold:
+      \begin{itemize}[label={$-$}]
+        \item $\phi_0\land\phi_0'$ and for all $a\in(\mathcal{B}-\mathcal{B}')\cup(\mathcal{B}'-\mathcal{B})$, $K_a\phi_a\land L_a\Psi_a$ are d-satisfiable wrt $\gamma$.
+        \item For all $a\in\mathcal{B}\cap\mathcal{B}'$, $(\phi_a\diamond_\gamma\phi_a')\lor\bigvee\limits_{\psi_a'\in\Psi_a'}(\phi_a\diamond_\gamma(\phi_a'\land\psi_a'))$ is d-satisfiable wrt $\gamma$ because $\phi_a\diamond_\gamma\phi_a'$ and for all $\psi_a'\in\Psi_a'$, $\phi_a\diamond_\gamma(\phi_a'\land\psi_a')$ are d-satisfiable wrt $\gamma$ by induction.
+        \item For all $a\in\mathcal{B}\cap\mathcal{B}'$, for each $\psi^*\in\Psi_a'\cup\{\psi_a\diamond_\gamma\phi_K|\psi_a\in\Psi_a\}$, if $\psi^*\in\Psi_a'$, note that $\phi_K=(\phi_a\diamond_\gamma\phi_a')\lor\bigvee\limits_{\psi_a'\in\Psi_a'}(\phi_a\diamond_\gamma(\phi_a'\land\psi_a'))$, then by distributive law, $\phi_K\land\psi^*=[(\phi_a\diamond_\gamma\phi_a')\land\psi^*]\lor[\bigvee\limits_{\psi_a'\in\Psi_a'-\{\psi^*\}}
+            (\phi_a\diamond_\gamma(\phi_a'\land\psi_a')\land\psi^*)]\lor[(\phi_a\diamond_\gamma(\phi_a'\land\psi^*)\land\psi^*)]$ is satisfiable wrt $\gamma$ because $\phi_a\diamond_\gamma(\phi_a'\land\psi^*)\models_\gamma\phi_a'\land\psi^*
+            \Rightarrow\phi_a\diamond_\gamma(\phi_a'\land\psi^*)\land\phi_a'\land\psi^*$ is d-satisfiable wrt $\gamma\Rightarrow\phi_a\diamond_\gamma(\phi_a'\land\psi^*)\land\psi^*$ is d-satisfiable wrt $\gamma$; else $\psi^*\in\{\psi_a\diamond_\gamma\phi_K|\psi_a\in\Psi_a\}$, that is $\psi^*=\psi\diamond_\gamma\phi_K\Rightarrow\psi^*\models_\gamma\phi_K\Rightarrow\psi^*\land\phi_K$ is d-satisfiable wrt $\gamma$, where $\psi\in\Psi_a$.
+      \end{itemize}
+      Thus, $\phi\diamond_\gamma\phi'$ is d-satisfiable wrt $\gamma$.
+  \item If $\phi=\bigvee\Psi$, $\phi\diamond_\gamma\phi'=\bigvee\limits_{\psi\in\Psi}(\psi\diamond_\gamma\phi')$. Then by induction, for all $\psi\in\Psi, \psi\diamond_\gamma\phi'$ is d-satisfiable wrt $\gamma\Rightarrow \phi\diamond_\gamma\phi'$ is d-satisfiable wrt $\gamma$.
+  \item If $\phi'=\bigvee\Psi'$, $\phi\diamond_\gamma\phi'=\bigvee\{\psi\diamond_\gamma\psi'|(\psi, \psi')\in\{\phi\}*\Psi'\}$. Then by induction, for all $(\psi, \psi')\in\{\phi\}*\Psi', \psi\diamond_\gamma\psi'$ is d-satisfiable wrt $\gamma\Rightarrow \phi\diamond_\gamma\phi'$ is d-satisfiable wrt $\gamma$.
+\end{itemize}
+\end{proof}
+
+\section{Planning}
+Currently, heuristic search has been widely used in planning domain. \cite{Hoffman2011Fast} has proposed the FF Heuristic for classical planning problem, and \cite{Mattm2010Pattern} has Pattern Database Heuristic for fully observable non-deterministic planning(FOND) problem. Also many searching algorithms based on heuristic search like AO*/LAO*\cite{Hansen2001LAO} have been widely applied for solving planning problem\cite{Mattm2010Pattern}\cite{Winterer2016Structural}\cite{Wan2015A}\cite{Liu2017A}. As mentioned earlier, our planner search for solution through the space of KBs, thus we also apply heuristic search to accelerate searching. In this section, we will first introduce the heuristic function for our planner, and then introduce the main search algorithm for our planner and finally end up this section with some pruning strategies.
+\subsection{Heuristic Function}
+\begin{definition}
+Let $\phi$ and $\phi'$ be two KLDNFs, the distance from $\phi$ to $\phi'$, $dist(\phi, \phi')$ is recursively defined:
+    \begin{enumerate}
+      \item When $\phi$ and $\phi'$ are propositional terms, $dist(\phi, \phi')=\sum\limits_{p'\in\phi'}f(p')$, where \\
+            \centerline{$f(p')=
+          \begin{cases}
+            0, & \text{there exists }p\text{ in }\phi\text{ s.t. }p\text{ entails }p'\\
+            1, & \text{otherwise}
+          \end{cases}
+          $}
+      \item When $\phi=\bigvee\Psi, \phi^\prime=\bigvee\Psi^\prime$, where $\Psi, \Psi^\prime$ are sets of $\mathcal{L}_\mathcal{K}$ normal terms, $dist(\phi, \phi')=\min (\{dist(\psi, \psi^\prime)$ $|$ $\psi\in\Psi, \psi^\prime\in\Psi^\prime\})$
+      \item When $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}\subseteq\mathcal{A}}(K_a\phi_a\land L_a\Psi_a)$ and $\phi'=\phi_0'\land\bigwedge\limits_{a\in\mathcal{B}'\subseteq\mathcal{A}}(K_a\phi_a'\land L_a\Psi_a')$, then
+          \begin{align}
+            dist(\phi, \phi') \quad &=\quad dist(\phi_0, \phi_0') \\
+            &+ \quad \sum\limits_{a\in\mathcal{B}'-\mathcal{B}}dist(\top, \phi_a')
+            + \sum\limits_{a\in\mathcal{B}'-\mathcal{B}}\sum\limits_{\psi_a'\in\Psi_a'}dist(\top, \psi_a')\\
+            &+ \quad \sum\limits_{a\in\mathcal{B}'\cap\mathcal{B}}dist(\phi_a, \phi_a') + \sum\limits_{a\in\mathcal{B}'\cap\mathcal{B}}\sum\limits_{\psi_a'\in\Psi_a'}\min(\{dist(\psi_a,\psi_a')|\psi_a\in\Psi_a\})
+          \end{align}
+    \end{enumerate}
+\end{definition}
+Intuitively, our definition of $dist(\phi, \phi')$ concerns more on the distance form $\phi$ to $\phi'$ rather than on both direction. The idea is intuitive because we concerns how many steps needed from the current state to the goal but not from goal to the current state. Rule 1 is for propositional terms, which means that to count the number of literals in $\phi'$ which cannot be entailed by $\phi$. Rule 2 is for formulas in disjunction forms, which means that we only consider the term pair that has the minimum distance between them. Rule 3 is for KLTerms, which equals to the sum of followings: 1. the distance between the propositional part; 2. for agents $a\in\mathcal{B}'-\mathcal{B}$, we roughly think that the current formula need to learn the knowledge and possibility for agent $a$ step by step, thus we assign the distance the value $\sum\limits_{a\in\mathcal{B}'-\mathcal{B}}dist(\top, \phi_a')
+            + \sum\limits_{a\in\mathcal{B}'-\mathcal{B}}\sum\limits_{\psi_a'\in\Psi_a'}dist(\top, \psi_a')$; 3. for agents $a\in\mathcal{B}'\cap\mathcal{B}$, the distance is the sum of:
+\begin{itemize}[label={$\bullet$}]
+  \item Firstly, the distance between $\phi_a$ and $\phi_a'$, that is $\sum\limits_{a\in\mathcal{B}'\cap\mathcal{B}}dist(\phi_a, \phi_a')$
+  \item Then, for each $\psi_a'\in\Psi_a'$, we sum up the minimum distance for $\Psi_a$ to $\psi_a'$, that is $\sum\limits_{a\in\mathcal{B}'\cap\mathcal{B}}\sum\limits_{\psi_a'\in\Psi_a'}\min(\{dist(\psi_a,\psi_a')|\psi_a\in\Psi_a\})$
+\end{itemize}
+\begin{definition}
+Let $\phi$ be KLDNF and $\mathcal{G}$ be the goal, then the heuristic value of $\phi$ is defined as:\\
+    \centerline{$heu(\phi)=dist(\phi, \mathcal{G})$}
+\end{definition}
+\subsection{AO* with Cycle Checking}
+AO* and LAO*\cite{Hansen2001LAO} are heuristic search algorithms based on AND/OR graph with the difference that AO* performs backtracking as the strategy for updating state cost while LAO* performs so-called $PolicyIteration/ValueIteration$. Thus LAO* can handle the AND/OR graph with loops and also can find a solution with loops while AO* cannot. Note that the solution for multi-agent epistemic planning problem is an action tree, which will not contains any loops, so we adapt AO* as our main search algorithm which is much more efficient. However, there may be loops through the space of KBs which we need to handle carefully so as that our algorithm will halt finally. In this section, we will introduce the $AO*+CycleChecking$ algorithm which is the main algorithm for our planner. Because we represent KBs with KLDNFs formulas, we will apply satisfiability algorithm for reasoning, strong equivalence algorithm for cycle checking, revision algorithm for sensing action progression and update algorithm for deterministic action progression.\\
+We first introduce some notions in our algorithm:
+\begin{itemize}[label={$\bullet$}]
+  \item We define a policy $\pi: $ KBs $\rightarrow \mathcal{S}\cup\mathcal{D}\cup\{Ter., Undef.\}$ as a mapping from KBs to set of actions, where $Ter.$ denotes terminate and $Undef.$ denotes undefined.
+  \item $negEntail(s, \mathcal{G})$ return true iff $s\land\lnot\mathcal{G}$ is unsatisfiable wrt $\gamma$
+  \item $HeuristicHelper(s)$ return the heuristic value of $s$
+  \item $ExtractPolicy(\mathcal{I)}$ extract new policy $\pi'$. Note that our planner will perform Cycle Checking here to make sure that the policy contains no loops.\\
+        $\pi'(s) := \begin{cases}
+            Ter. & negEntail(s, \mathcal{G}) \text{ return true}\\
+            Undef. & s \text{ is unexplored}\\
+            \arg\min\limits_{a\in A} Cost(a) & \text{, otherwise}
+        \end{cases}
+        $
+        \\, where $A=\{a¡®|a'\in\mathcal{S}\cup\mathcal{D}, s\models_\gamma pre(a')\}$, and if $a\in\mathcal{D}, Cost(a)=1+f(prog(a, s))$, else $Cost(a)=2+0.5*f(\phi^+)+0.5*f(\phi^-), prog(a, s)=\langle \phi^+,\phi^-\rangle$.
+  \item $ExtractSol(\pi)$ extract the solution tree from policy $\pi$.
+  \item $isSolved(s)$ return true if one of the following holds:
+        \begin{itemize}[label={$-$}]
+          \item $negEntail(s, \mathcal{G})$ returns true;
+          \item $\pi(s)\in\mathcal{D}$ and $isSolved(prog(\pi(s), s))$ return true;
+          \item $\pi(s)\in\mathcal{S}, prog(\pi(s), s) = \langle\phi^+,\phi^-\rangle$ and both $isSolved(\phi^+)$ and $isSolved(\phi^-)$ return true.
+        \end{itemize}
+\end{itemize}
+The main algorithm is shown in Algorithm \ref{alg1}
+\begin{algorithm}
+\caption{CAO*}
+\label{alg1}
+\begin{algorithmic}[!htbp]
+\REQUIRE Initial state $\mathcal{I}$, goal $\mathcal{G}$, constraint $\gamma$, set of sensing and deterministic action $\mathcal{S}$ and $\mathcal{D}$
+\ENSURE Solution action tree $T$
+\RETURN Initialize the policy $\pi$ contains only $\pi(\mathcal{I})=Undef.$
+\IF {$negEntail(\mathcal{I}), \mathcal{G})$ return true} \STATE \textbf{return} $T$ \ENDIF
+\REPEAT
+\STATE 1. Choose a state $s$ in $\pi$ s.t $\pi(s)=Undef.$
+\STATE 2. Explore $s$, and assign state cost for every new state $s'$:\\
+        \centerline{$f(s')=
+          \begin{cases}
+            0 & , negEntail(s', \mathcal{G})$ returns true $\\
+            HeuristicHelper(s') & , \text{otherwise}
+          \end{cases}
+          $}
+\STATE 4. Add all the new states to $\pi$, if $negEntail(s', \mathcal{G})$ return true, then $\pi(s')=Ter.$; else $\pi(s')=Undef.$ And assign a random action for $\pi(s)$.
+\STATE 5. Apply backtracking algorithm to update state cost in $\pi$:\\
+        $f(s)=
+          \begin{cases}
+            f(s) & , \pi(s)\in\{Undef., Ter.\}\\
+            1+f(prog(\pi(s),s)) & , \pi(s)\in\mathcal{D}\\
+            2+0.5*f(\phi^+)+0.5*f(\phi^-) & , \pi(s)\in\mathcal{S}, prog(\pi(s),s)=\langle \phi^+,\phi^-\rangle
+          \end{cases}
+          $
+\STATE 6. Extract new policy, $\pi'\leftarrow ExtractPolicy(\mathcal{I})$
+\STATE 7. If $\pi$ equals $\pi'$, do nothing; Else $\pi\leftarrow \pi'$, goto Step. 5.
+\UNTIL $isSolve(\mathcal{I})$ returns true
+\STATE $T\leftarrow ExtractSol(\pi)$
+\STATE \textbf{return} $T$
+
+\end{algorithmic}
+\end{algorithm}
+\subsection{Pruning Strategy}
+In this section, we will introduce some pruning strategy used in our planner:
+\begin{enumerate}
+  \item \textbf{Dead Propagation}\\We say a state is a dead-end if $isDeadend(s)$ return true, where $isDeadend(s)$ is defined recursively:
+      \begin{itemize}[label={$\bullet$}]
+        \item $isDeadend(s)$ returns true if the followings hold:
+        \begin{itemize}[label={$-$}]
+          \item $s\not\models_\gamma\mathcal{G}$
+          \item $\forall a\in\mathcal{S}\cup\mathcal{D}, s\not\models_\gamma pre(a)$
+        \end{itemize}
+        \item $isDeadend(s)$ returns true if the followings hold:
+        \begin{itemize}[label={$-$}]
+          \item $s\not\models_\gamma\mathcal{G}$
+          \item $\forall a\in\mathcal{D}, isDeadend(prog(a, s))$ returns true
+          \item $\forall a\in\mathcal{S}$, both $isDeadend(s^+)$ and $isDeadend(s^-)$ return true, where $prog(a,s)=\langle s^+, s^- \rangle$
+        \end{itemize}
+        \item Else $isDeadend(s)$ return false.
+      \end{itemize}
+      And we define the $deadPropagation(s)$ recursively:
+      \begin{itemize}[label={$\bullet$}]
+        \item If $isDeadend(s)$ returns false, return;
+        \item Else label $s$ by the way that assign a big number to the $f(s)$, where $f$ is the state cost function in our algorithm. And perform the propagation as follow:
+            \begin{itemize}[label={$-$}]
+              \item If there exists an action $a\in\mathcal{D}$ and state $s'$ s.t $prog(a,s')\Leftrightarrow_\gamma s$, perform $deadPropagation(s')$ recursively.
+              \item If there exists an action $a\in\mathcal{S}$ and state $s'$ s.t $s^+ \Leftrightarrow_\gamma s$ or $s^- \Leftrightarrow_\gamma s$, where $prog(a, s') = \langle s^+, s^- \rangle$, perform $deadPpropagation(s')$ recursively.
+            \end{itemize}
+      \end{itemize}
+  %\item \textbf{Objective Inconsistent Sensing Action}:
+  \item \textbf{Common Sub-Formula}\\We denote the notion $AtomSet(\phi)$, where $\phi\in\mathcal{L}_0$, as the set of literals that is assigned true or false in $\phi$. For example, let $\phi=p\land q\land \lnot r$, and $AtomSet(\phi)=\{p, q, \lnot r\}$. Thus, let $\phi$ and $\phi'$ be two KLDNFs, then the Common Sub-Formula of $\phi$ and $\phi'$, written $csf(\phi, \phi')$, is a KLDNF and is defined as:
+      \begin{itemize}[label={$\bullet$}]
+        \item If $\phi$ and $\phi'$ are propositional terms, $csf(\phi,\phi') = \bigwedge(AtomSet(\phi)\cap AtomSet(\phi'))$
+        \item Else if $\phi=\bigvee\Psi$, $csf(\phi,\phi')=csf(\psi_1, csf(..., csf(\psi_n, \phi')))$, where $\Psi=\{\psi_1,\psi_2,...,\psi_n\}$
+        \item Else if $\phi'=\bigvee\Psi'$, $csf(\phi,\phi')=csf(csf(...csf(\phi,\psi_1')..., \psi_{n-1}'), \psi_n')$, where $\Psi'=\{\psi_1',\psi_2',...,\psi_n'\}$
+        \item Else $\phi=\phi_0\land\bigwedge\limits_{a\in\mathcal{B}\subseteq\mathcal{A}}(K_a\phi_a\land L_a\Psi_a)$ and $\phi'=\phi_0'\land\bigwedge\limits_{a\in\mathcal{B}'\subseteq\mathcal{A}}(K_a\phi_a'\land L_a\Psi_a')$, then $csf(\phi,\phi')=csf(\phi_0,\phi_0')\land\bigwedge\limits_{a\in\mathcal{B}\cap\mathcal{B}'}(K_a(csf(\phi_a,\phi_a'))\land L_a(\{csf(\psi_a, \psi_a')|\psi_a\in\Psi_a, \psi_a'\in\Psi_a'\}))$
+      \end{itemize}
+      Our planner will first calculate the common sub-formula of initial state and the goal, that is $csf(\mathcal{I}, \mathcal{G})$, and for every new formula $\phi$ generated during searching, we will increase its heuristic value if $\phi\land csf(\mathcal{I}, \mathcal{G})$ is not satisfiable wrt the constraint $\gamma$. The intuition for this pruning strategy is that $csf(\mathcal{I}, \mathcal{G})$ denotes the part in $\mathcal{I}$ consistent with $\mathcal{G}$, therefore we think that a new formula inconsistent with $csf(\mathcal{I}, \mathcal{G})$ may have higher possibility to mislead the search.
+\end{enumerate}
+
+\section{Experiment}
+Based on the theoretic work, we have implemented a Multi-Agent Epistemic Planner MEPKL. MEPKL takes epddl file, which is a extension of pddl file\cite{mcdermott1998pddl} to describe the multi-agent epistemic planning problem, as input and output the solution action tree if it exists and the search statistic. MEPKL consists mainly four parts:
+\begin{itemize}[label=$\bullet$]
+  \item \textbf{Model}: Define the basic data structure and the operations for them.
+  \item \textbf{Parser}: Compile the epddl file.
+  \item \textbf{HeuristicHelper}: Calculate and return heuristic value of states during planning.
+  \item \textbf{Planner}: Apply CAO* algorithm so as to get the solution action tree.
+\end{itemize}
+We evaluate MEPKL with all the domains from \cite{Liu2017A}, which includes Hexa Game, \\Collaboration-and-Communi-cation(CC), Gossip, Grapevine, Selective-Communi-cation(SC) and Assembly-Line(AL). Besides, inspired by \cite{kominis2015beliefs}, we make up a new domain Simple Muddy Children(SMC) by removing the public announcement. Next we briefly introduce the domain Simple Muddy Children:
+\begin{itemize}[label={$\bullet$}]
+  \item \textbf{Simple Muddy Children: SMC($n$)}. There are $n$ children and at least $1$ and at most $n-1$ children are muddy in their head. Each child can sense whether another is muddy or not and can also ask other children whether they knows theirs. Initially the child doesn't know whether he is muddy and the goal is the child knows he is muddy or he isn't.
+\end{itemize}
+Our experiment were run on a Linux machine with 2.50GHz CPU and 4GB RAM and the experiment statistic is shown in Table \ref{t1}. Note that the first column in the table is the name of domain, and 2nd-5th columns indicate $|\mathcal{A}|$ the number of agents, $|\mathcal{S}|+|\mathcal{D}|$ the number of sensing actions and deterministic actions, $|\mathcal{P}|$ the number of atoms and $d$ the modal depth. In the last two columns, $A-B(X/Y/Z)$ denotes $A$ the total time, $B$ the search time, $X$ the solution tree depth, $Y$ nodes of solution tree and $Z$ nodes explored during searching. And $N/A$ denotes the planner cannot solve the domain within the allotted time.
+%\begin{table} [!htbp]\label{t1}
+%\centering
+\begin{center}
+\begin{longtable}{|c|c|c|c|c|c|c|}
+\hline
+Problem & $|\mathcal{A}|$ & $|\mathcal{S}|+|\mathcal{D}|$ & $|\mathcal{P}|$ & $d$ & MEPK & MEPKL\\
+\hline
+\multirow{3} {*} {Hexa Game} & 3&18+0&9&1&0.00-0.00(1/3/1)&0.00-0.00(1/3/1) \\
+& 4&48+0&16&1&0.02-0.02(3/11/6)&0.02-0.02(4/11/5)\\
+& 5&100+0&25&1&28.08-24.64(6/47/185)&1.14-1.13(7/47/23)\\
+& 6&180+0&36&1&N/A&173.31-173.20(11/239/119)\\
+\hline
+CC(2,4)&2&0+18&18&1&0.14-0.13(3/4/4)&0.09-0.08(3/4/3) \\
+CC(3,4)&2&0+18&20&1&1.87-1.85(3/4/4)&1.01-1.00(3/4/3) \\
+CC(4,4)&2&0+18&24&1&81.31-81.24(3/4/4)&34.57-34.55(3/4/3) \\
+*CC(2,3)$^1$&2&8+16&12&1&3.49-3.48(4/12/35)&3.76-3.75(4/9/16) \\
+*CC(2,3)$^2$&2&12+42&12&1&11.70-11.69(5/16/312)&1.31-1.30(5/11/37) \\
+*CC(2,4)&2&12+20&16&1&8.68-8.67(6/18/300)&0.78-0.78(7/21/28) \\
+*CC(3,3)&3&18+60&18&1&10.12-10.09(3/15/50)&2.86-2.85(5/13/23) \\
+*CC(3,4)&3&27+78&24&1&1187.76-1187.73(3/15/50)&32.76-32.75(9/21/29) \\
+\hline
+\multirow{3} {*} {Gossip}
+&3&0+6&3&2&0.04-0.03(3/4/5)&0.02-0.01(3/4/3) \\
+&4&0+24&4&2&4.98-4.35(4/5/47)&1.20-1.18(4/5/13) \\
+&5&0+120&5&2&17.46-11.60(4/5/47)&4.43-4.33(4/5/13) \\
+\hline
+Grapevine(2)&3&0+18&9&2&0.02-0.01(2/3/7)&0.01-0.01(2/3/4) \\
+Grapevine(2)&4&0+56&12&1&0.09-0.05(2/3/8)&0.06-0.05(2/3/5) \\
+Grapevine(2)&4&0+56&12&2&0.11-0.07(2/3/8)&0.06-0.04(2/3/4) \\
+Grapevine(2)&4&0+56&12&3&0.17-0.11(2/3/8)&0.08-0.05(2/3/4) \\
+Grapevine(2)&4&0+56&12&4&0.30-0.20(2/3/8)&0.10-0.07(2/3/4) \\
+Grapevine(3)&4&0+152&16&1&1.10-0.71(2/3/9)&0.20-0.13(2/3/5) \\
+Grapevine(3)$^1$&5&0+730&20&1&N/A&7.45-7.31(2/3/20) \\
+Grapevine(3)$^2$&5&0+730&20&1&N/A&32.31-32.17(3/4/46) \\
+\hline
+SC(4)&3&1+3&7&1&0.04-0.03(5/10/23)&0.09-0.09(5/10/20) \\
+SC(4)&7&1+3&11&1&13.72-0.05(5/10/23)&0.31-0.30(5/10/20) \\
+SC(4)$^1$&8&1+3&33&1&110.48-0.10(5/10/39)&0.72-0.71(5/10/26) \\
+SC(4)$^2$&8&1+3&33&1&118.17-0.03(3/6/8)&0.06-0.04(3/6/4) \\
+SC(4)&3&1+3&7&3&0.04-0.03(5/10/23)&0.07-0.06(5/10/14) \\
+SC(4)&3&1+3&7&4&0.07-0.05(5/10/23)&0.07-0.06(5/10/14) \\
+SC(8)&3&1+3&11&1&0.21-0.14(10/19/41)&0.43-0.42(10/19/30) \\
+\hline
+\multirow{5} {*} {AL}
+&2&4+2&4&2&0.02-0.01(5/12/25)&0.02-0.02(5/12/16) \\
+&2&4+2&4&3&0.03-0.03(5/12/25)&0.03-0.03(5/12/16) \\
+&2&4+2&4&4&0.03-0.03(5/12/25)&0.03-0.03(5/12/16) \\
+&2&4+2&4&5&0.05-0.04(5/12/25)&0.04-0.04(5/12/16) \\
+&2&4+2&4&7&0.13-0.12(5/12/25)&0.07-0.07(5/12/16) \\
+\hline
+SMC(3)&3&12+0&3&1&0.10-0.10(3/11/24)&0.01-0.01(3/11/5) \\
+SMC(4)&4&36+0&4&1&406.95-406.94(5/27/706)&0.42-0.40(5/27/13) \\
+SMC(5)&5&140+0&5&1&N/A&1.59-1.55(5/27/13) \\
+SMC(6)&6&750+0&6&1&N/A&6.57-6.37(5/27/13) \\
+\hline
+\caption{\label{t1}:Experiment Result}
+\end{longtable}
+\end{center}
+%\end{table}
+
+%\begin{table} [h]\label{t2}
+%\centering
+%\begin{tabular}{|c|c|c|}
+%\hline
+%Problem&MEPK&MEPKL\\
+%\hline
+%Hexa Game(3)&0.000088&0.000184 \\
+%Hexa Game(4)&0.001414&0.000368 \\
+%Hexa Game(5)&0.112630&0.000621 \\
+%\hline
+%Gossip(3)&0.001497&0.000392 \\
+%Gossip(4)&0.064376&0.002097 \\
+%Gossip(5)&0.203358&0.011659 \\
+%\hline
+%\end{tabular}
+%\caption{Average Reasoning Time}
+%\end{table}
+The experiment result shows that our planner outperforms MEPK in the following aspects:
+\begin{itemize}[label={$\bullet$}]
+  \item The preprocess time of our planner is far less than that of MEPK, and our planner can complete the preprocess within $1s$ in all domains, which makes it possible for our planner to handle a larger domain.
+  \item Our planner performs much better than MEPK in most domains except for SC, especially when the domain scale increases. The main reason for SC domain is that in order to be more efficient, our planner will allow formula redundancy to some extent but not minimize all the formulas during searching which may waste too much time. As a result, the formula length may increase too large in some extreme domain like SC.
+  \item In all domains, the nodes explored during searching is less in our planner than MEPK, which shows the viability of our heuristic function, that is our heuristic function can guide the search correctly.
+\end{itemize}
+Obviously, our planner can perform much better than MEPK due to more efficient reasoning and progression algorithm and heuristic searching. From the aspect of heuristic searching, our heuristic function can guide the search procedure correctly and thus decrease the number of nodes to be explored. On the other hand, our reasoning and progression algorithm is more efficient theoretically because:
+\begin{itemize}[label={$\bullet$}]
+  \item Compared with ACDFs, KLTerms and KLDNFs are more compact and take up less memory.
+  \item When checking whether two formulas are equivalent, our strong entailment algorithm is more efficient because 
+\end{itemize}
+
+\section{Conclusion}
+
+\bibliographystyle{splncs}
+\bibliography{paper}
+\end{document}
